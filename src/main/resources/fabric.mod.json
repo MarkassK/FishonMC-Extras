@@ -1,11 +1,12 @@
 {
 	"schemaVersion": 1,
 	"id": "fishonmcextras",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"name": "FishOnMC-Extras",
 	"description": "A QOL mod for play.fishonmc.net.",
 	"authors": [
-		"MarkassK"
+		"MarkassK",
+		"DannyPX"
 	],
 	"contributors": [
 		"ItsMeDjeff"
