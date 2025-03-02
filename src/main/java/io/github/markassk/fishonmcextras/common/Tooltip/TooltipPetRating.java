@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.common;
+package io.github.markassk.fishonmcextras.common.Tooltip;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -8,21 +8,21 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 
 import java.util.List;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class TooltipPetRating {
     private static final Gson gson = new Gson();
 
-    private static float getRarityMultiplier(String rarity) {
-        String lastChar = "\\u" + Integer.toHexString(rarity.charAt(rarity.length() - 1) | 0x10000).substring(1);
-        return switch (lastChar) {
-            case "\\uf033" -> 1f; // Common
-            case "\\uf034" -> 2f; // Rare
-            case "\\uf035" -> 3f; // Epic
-            case "\\uf036" -> 5f; // Legendary
-            case "\\uf037" -> 7.5f; // Mythical
-            default -> 1;
-        };
+    private static float findMultiplier(String petStr) {
+        if (petStr.indexOf('\uf033') != -1) return 1f;
+        else if (petStr.indexOf('\uf034') != -1) return 2f;
+        else if (petStr.indexOf('\uf035') != -1) return 3f;
+        else if (petStr.indexOf('\uf036') != -1) return 5f;
+        else if (petStr.indexOf('\uf037') != -1) return 7.5f;
+        return 1;
     }
 
     private static float clampRarity(float rating, String json) {
@@ -45,7 +45,7 @@ public class TooltipPetRating {
             String petLocationLuck = getMaxFromString(textList.get(13).copy().getString());
             String petLocationScale = getMaxFromString(textList.get(14).copy().getString());
 
-            float multiplier = getRarityMultiplier(textList.get(2).getString());
+            float multiplier = findMultiplier(textList.get(2).getString());
             float total = Stream.of(petClimateLuck, petClimateScale, petLocationLuck, petLocationScale).mapToInt(Integer::parseInt).sum();
 
             if (config.petTooltipToggles.showIndividualRating) {
@@ -71,31 +71,40 @@ public class TooltipPetRating {
 
     public static Text appendTooltipRating(Text textLine) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-        String[] lines = textLine.getString().split("\\r?\\n");
-        if(lines.length >= 3 && lines[0].contains(" Pet") && lines[2].contains(" ᴘᴇᴛ")) {
-            String petClimateLuck = getMaxFromString(lines[8]);
-            String petClimateScale = getMaxFromString(lines[9]);
-            String petLocationLuck = getMaxFromString(lines[12]);
-            String petLocationScale = getMaxFromString(lines[13]);
+        String json = textToJson(textLine.copy());
+        if (json.contains("ᴘᴇᴛ ʀᴀᴛɪɴɢ")) {
+            String petStr = json.substring(json.indexOf(" Pet\\n"), json.indexOf("ʀɪɢʜᴛ ᴄʟɪᴄᴋ ᴛᴏ ᴏᴘᴇɴ ᴘᴇᴛ ᴍᴇɴᴜ"));
+            Pattern statNumber = Pattern.compile("(?<=\\+)(.*?)(?=\")");
+            Matcher statNumberMatcher = statNumber.matcher(petStr);
 
-            float multiplier = getRarityMultiplier(lines[1]);
-            float total = Stream.of(petClimateLuck, petClimateScale, petLocationLuck, petLocationScale).mapToInt(Integer::parseInt).sum();
+            if(statNumberMatcher.find()) {
+                List<String> matches = statNumberMatcher.results().map(MatchResult::group).toList();
 
-            Text petRatingLine = textLine.copy();
+                String petClimateLuck = matches.get(matches.size() - 7);
+                String petClimateScale = matches.get(matches.size() - 5);
+                String petLocationLuck = matches.get(matches.size() - 3);
+                String petLocationScale = matches.getLast();
 
-            if (config.petTooltipToggles.showIndividualRating) {
-                petRatingLine = appendRating(petRatingLine, Float.parseFloat(petClimateLuck), multiplier, 4, "\\n", 9, textToJson(textLine), false);
-                petRatingLine = appendRating(petRatingLine, Float.parseFloat(petClimateScale), multiplier, 4, "\\n", 10, textToJson(textLine), false);
-                petRatingLine = appendRating(petRatingLine, Float.parseFloat(petLocationLuck), multiplier, 4, "\\n", 13, textToJson(textLine), false);
-                petRatingLine = appendRating(petRatingLine, Float.parseFloat(petLocationScale), multiplier, 4, "\\n", 14, textToJson(textLine), false);
+                float multiplier = findMultiplier(petStr);
+                float total = Stream.of(petClimateLuck, petClimateScale, petLocationLuck, petLocationScale).mapToInt(Integer::parseInt).sum();
+
+                StringBuilder builder = new StringBuilder(petStr);
+                String petStrNew = builder.toString();
+
+                if (config.petTooltipToggles.showIndividualRating) {
+                    petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 9), " (" + String.format("%.0f", (Float.parseFloat(petClimateLuck) * 4 / multiplier)) + "%)").toString();
+                    petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 10), " (" + String.format("%.0f", (Float.parseFloat(petClimateScale) * 4 / multiplier)) + "%)").toString();
+                    petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 13), " (" + String.format("%.0f", (Float.parseFloat(petLocationLuck) * 4 / multiplier)) + "%)").toString();
+                    petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 14), " (" + String.format("%.0f", (Float.parseFloat(petLocationScale) * 4 / multiplier)) + "%)").toString();
+                }
+
+                if (config.petTooltipToggles.showFullRating) {
+                    petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 16), " (" + String.format("%.0f", clampRarity(total / multiplier, petStr)) + "%)").toString();
+                }
+                return jsonToText(json.replace(petStr, petStrNew));
             }
-
-            if (config.petTooltipToggles.showFullRating) {
-                petRatingLine = appendRating(petRatingLine, total, multiplier, 1, "\\n", 16, textToJson(textLine), true);
-            }
-            return petRatingLine;
         }
-        return textLine;
+        return jsonToText(json);
     }
 
     private static Text appendRating(Text line, float rating, float rarityMultiplier, float extraMultiplier, String substr, int occurrence, String rarity, boolean clamp) {
@@ -104,10 +113,7 @@ public class TooltipPetRating {
         float ratingPercentage = clamp ? clampRarity(rating * extraMultiplier / rarityMultiplier, rarity) : rating * extraMultiplier / rarityMultiplier;
         String newJson = builder.insert(ordinalIndexOf(json, substr, occurrence), " (" + String.format("%.0f", ratingPercentage) + "%)").toString();
 
-        return TextCodecs.CODEC
-                .decode(JsonOps.INSTANCE, gson.fromJson(newJson, JsonElement.class))
-                .getOrThrow()
-                .getFirst();
+        return jsonToText(newJson);
     }
 
     private static int ordinalIndexOf(String str, String substr, int n) {
@@ -123,5 +129,12 @@ public class TooltipPetRating {
 
     private static String textToJson(Text text) {
         return gson.toJson(TextCodecs.CODEC.encodeStart(JsonOps.INSTANCE, text).getOrThrow());
+    }
+
+    private static Text jsonToText(String text) {
+        return TextCodecs.CODEC
+                .decode(JsonOps.INSTANCE, gson.fromJson(text, JsonElement.class))
+                .getOrThrow()
+                .getFirst();
     }
 }

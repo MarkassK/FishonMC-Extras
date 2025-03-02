@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras;
 
 import io.github.markassk.fishonmcextras.commands.CommandRegistration;
+import io.github.markassk.fishonmcextras.common.Tooltip.TooltipPetRating;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.hud.HudRenderer;
 import io.github.markassk.fishonmcextras.trackers.FishTracker;
@@ -8,7 +9,9 @@ import io.github.markassk.fishonmcextras.trackers.EquippedPetTracker;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -50,10 +53,13 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(HUD_RENDERER);
         HUD_RENDERER.loadStats();
 
-
         ClientPlayConnectionEvents.JOIN.register(this::onServerJoin);
         ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
         ScreenEvents.BEFORE_INIT.register(this::onScreenOpen);
+
+        ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> lines = TooltipPetRating.appendTooltipRating(lines));
+
+        ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> TooltipPetRating.appendTooltipRating(message));
     }
 
     private void onClientTick(MinecraftClient client) {

@@ -25,7 +25,7 @@ A Minecraft mod that enhances your experience on FishOnMC with advanced tracking
     - [Fabric API](https://modrinth.com/mod/fabric-api)
     - [Cloth Config](https://modrinth.com/mod/cloth-config)
     - [ModMenu](https://modrinth.com/mod/modmenu)
-3. Place `fishonmc-extras-0.1.0+1.21-1.21.3.jar` in your `mods` folder
+3. Place `fishonmc-extras-0.1.1+1.21-1.21.3.jar` in your `mods` folder
 
 ### Mod Managers
 - **Modrinth App**: [![Modrinth](https://cdn.modrinth.com/img/modrinth-badge.png)](https://modrinth.com/mod/fishonmc-extras)
