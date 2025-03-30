@@ -72,6 +72,10 @@ public class FishOnMCExtrasConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean showRarities = true;
         @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean showBaby = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean showJuvenile = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean showAdult = true;
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean showLarge = true;

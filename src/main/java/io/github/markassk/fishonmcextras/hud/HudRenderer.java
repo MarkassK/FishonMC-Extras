@@ -386,25 +386,35 @@ public class HudRenderer implements HudRenderCallback {
 
                     scaledYHolder[0] += lineHeight;
                 }
-                if ((config.fishHUDToggles.showAdult || config.fishHUDToggles.showLarge || config.fishHUDToggles.showGigantic) && !config.fishHUDToggles.showRarities) {
+                if ((config.fishHUDToggles.showBaby || config.fishHUDToggles.showJuvenile || config.fishHUDToggles.showAdult || config.fishHUDToggles.showLarge || config.fishHUDToggles.showGigantic) && !config.fishHUDToggles.showRarities) {
                     scaledYHolder[0] += lineHeight;
                 }
 
+                // Baby section
+                if (config.fishHUDToggles.showBaby) {
+                    drawHudLine(drawContext, textRenderer, "ʙᴀʙʏ", displaySizeCounts.getOrDefault("baby", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                    drawContext.drawText(textRenderer, "ʙᴀʙʏ ", scaledX, scaledYHolder[0] - lineHeight, 0x468CE7, shadows);
+                }
+                // Juvenile section
+                if (config.fishHUDToggles.showJuvenile) {
+                    drawHudLine(drawContext, textRenderer, "ᴊᴜᴠᴇɴɪʟᴇ", displaySizeCounts.getOrDefault("juvenile", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                    drawContext.drawText(textRenderer, "ᴊᴜᴠᴇɴɪʟᴇ ", scaledX, scaledYHolder[0] - lineHeight, 0x22EA08, shadows);
+                }
                 // Adult section
                 if (config.fishHUDToggles.showAdult) {
                     drawHudLine(drawContext, textRenderer, "ᴀᴅᴜʟᴛ", displaySizeCounts.getOrDefault("adult", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ᴀᴅᴜʟᴛ ", scaledX, scaledYHolder[0] - lineHeight, 0x4699C9, shadows);
+                    drawContext.drawText(textRenderer, "ᴀᴅᴜʟᴛ ", scaledX, scaledYHolder[0] - lineHeight, 0x1C7DA0, shadows);
                 }
                 // Large section
                 if (config.fishHUDToggles.showLarge) {
                     drawHudLine(drawContext, textRenderer, "ʟᴀʀɢᴇ", displaySizeCounts.getOrDefault("large", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ʟᴀʀɢᴇ ", scaledX, scaledYHolder[0] - lineHeight, 0xBF8B27, shadows);
+                    drawContext.drawText(textRenderer, "ʟᴀʀɢᴇ ", scaledX, scaledYHolder[0] - lineHeight, 0xFF9000, shadows);
                 }
 
                 // Gigantics section
                 if (config.fishHUDToggles.showGigantic) {
                     drawHudLine(drawContext, textRenderer, "ɢɪɢᴀɴᴛɪᴄ", displaySizeCounts.getOrDefault("gigantic", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ɢɪɢᴀɴᴛɪᴄ ", scaledX, scaledYHolder[0] - lineHeight, 0xFF0000, shadows);
+                    drawContext.drawText(textRenderer, "ɢɪɢᴀɴᴛɪᴄ ", scaledX, scaledYHolder[0] - lineHeight, 0xAF3333, shadows);
                 }
 
 
