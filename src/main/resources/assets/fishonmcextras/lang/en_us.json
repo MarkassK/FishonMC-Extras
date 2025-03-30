@@ -2,12 +2,10 @@
   "key.fishonmcextras.openconfig": "Open Config",
   "category.fishonmcextras.general": "FishOnMC Extras",
 
-
-
   "text.autoconfig.fishonmcextras.title": "Fish on MC Extras",
 
 
-  "text.autoconfig.fishonmcextras.category.general": "General",
+  "text.autoconfig.fishonmcextras.category.fishoptions": "Fish Options",
 
   "text.autoconfig.fishonmcextras.option.fishHUD.@PrefixText" : "Fish HUD Options:",
   "text.autoconfig.fishonmcextras.option.fishHUD": "Fish Stats HUD",
@@ -18,6 +16,7 @@
   "text.autoconfig.fishonmcextras.option.trackTimed.@Tooltip[1]": "Disabled will show alltime stats. These cannot be reset.",
 
   "text.autoconfig.fishonmcextras.option.fishHUDToggles": "Fish HUD Toggles",
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.@Tooltip": "Click to Open or Close.",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showTimeSinceReset": "Show time since /foe reset",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showTimeSinceReset.@Tooltip[0]": "Enable or disable the HUD timer.",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showTimeSinceReset.@Tooltip[1]": "This affects the HUD display.",
@@ -25,24 +24,16 @@
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showFishPerHour.@Tooltip[0]": "Enable or disable the display for Fish/Hour.",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showFishPerHour.@Tooltip[1]": "This affects the HUD display.",
 
-  "text.autoconfig.fishonmcextras.option.otherHUDToggles": "Other HUD Toggles",
-  "text.autoconfig.fishonmcextras.option.otherHUDToggles.showItemFrameTooltip": "Show tooltip on Item frame hover",
-  "text.autoconfig.fishonmcextras.option.otherHUDToggles.showItemFrameTooltip.@Tooltip": "Enable or disable the tooltip on hovering an Item frame with a FishOnMC item.",
-
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.@PrefixText" : "Pet Tooltip Options:",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles": "Pet Tooltip Toggles",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showFullRating": "Show pet percentage rating",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showFullRating.@Tooltip": "Enable or disable the percentage for pet ratings.",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showIndividualRating": "Show individual pet stats percentage rating",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showIndividualRating.@Tooltip": "Enable or disable the percentage for individual pet stats rating.",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage": "Show accurate percentages",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[0]": "Enable or disable accurate percentages.",
-  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[1]": "!! THIS ONLY WORKS FOR PET TOOLTIP. NOT CHAT TOOLTIP",
-
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showRarities.@PrefixText" : "Rarity & Size Options:",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showRarities": "Show Rarities",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showRarities.@Tooltip[0]": "Enable or disable the display for amount of rarities.",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showRarities.@Tooltip[1]": "This affects the HUD display.",
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.showBaby": "Show Baby",
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.showBaby.@Tooltip[0]": "Enable or disable the display of babies.",
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.showBaby.@Tooltip[1]": "This affects the HUD display.",
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.showJuvenile": "Show Juvenile",
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.showJuvenile.@Tooltip[0]": "Enable or disable the display of juveniles.",
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.showJuvenile.@Tooltip[1]": "This affects the HUD display.",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showAdult": "Show Adult",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showAdult.@Tooltip[0]": "Enable or disable the display of adults.",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showAdult.@Tooltip[1]": "This affects the HUD display.",
@@ -76,16 +67,64 @@
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showUnique.@Tooltip[0]": "Enable or disable the display of all other fish.",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showUnique.@Tooltip[1]": "This affects the HUD display. (Enable Variants to see)",
 
+
+  "text.autoconfig.fishonmcextras.category.petoptions": "Pet Options",
+
   "text.autoconfig.fishonmcextras.option.petHUD.@PrefixText" : "Pet HUD Options:",
   "text.autoconfig.fishonmcextras.option.petHUD": "Active Pet HUD",
+  "text.autoconfig.fishonmcextras.option.petHUD.@Tooltip": "Click to Open or Close.",
   "text.autoconfig.fishonmcextras.option.petHUD.@Tooltip[0]": "Enable or disable the currently Active Pet HUD.",
   "text.autoconfig.fishonmcextras.option.petHUD.@Tooltip[1]": "Tracks chat messages to read when a pet is enabled/disabled.",
 
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.@PrefixText" : "Pet Tooltip Options:",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles": "Pet Tooltip Toggles",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.@Tooltip": "Click to Open or Close.",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showFullRating": "Show pet percentage rating",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showFullRating.@Tooltip": "Enable or disable the percentage for pet ratings.",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showIndividualRating": "Show individual pet stats percentage rating",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showIndividualRating.@Tooltip": "Enable or disable the percentage for individual pet stats rating.",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage": "Show accurate pet stats percentages",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[0]": "Enable or disable accurate percentages.",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[1]": "!! THIS ONLY WORKS FOR PET TOOLTIP. NOT CHAT TOOLTIP",
 
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig" : "Pet Warning HUD Config",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.@Tooltip": "Click to Open or Close.",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.enableWarning" : "Unequipped pet warning",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.enableWarning.Tooltip[0]" : "Enable or disable the unequipped pet warning.",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.enableWarning.Tooltip[1]" : "Shows up above the hotbar when a pet isn't equipped.",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.flashWarning" : "Warning flashes",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.flashWarning.Tooltip[0]" : "Enable or disable the unequipped pet warning flashing.",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.flashWarning.Tooltip[1]" : "",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.petWarningHUDShadows" : "Text Shadows",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.petWarningHUDShadows.Tooltip[0]" : "Enable or disable text shadows for the pet warning HUD.",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.petWarningHUDShadows.Tooltip[2]" : "",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningColor" : "Warning color",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningColor.Tooltip" : "Change the unequipped pet warning color",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningFontSize" : "Warning Size",
+  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningFontSize.Tooltip" : "Change the unequipped pet warning font size.",
+
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig" : "Active Pet HUD Config",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.@Tooltip": "Click to Open or Close.",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveHUDShadows" : "Text Shadows",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveHUDShadows.Tooltip[0]" : "Enable or disable text shadows.",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveHUDShadows.Tooltip[1]" : "This affects the HUD display.",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveColor" : "Color",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveFontSize" : "Font Size",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petHUDX": "Pet HUD X position",
+  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petHUDY": "Pet HUD Y position",
+
+  "text.autoconfig.fishonmcextras.category.otheroptions": "Other Options",
+
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig.@PrefixText": "Other HUD Options",
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig": "Other HUDs",
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig.@Tooltip": "Click to Open or Close.",
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig.showItemFrameTooltip": "Show tooltip on Item frame hover",
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig.showItemFrameTooltip.@Tooltip": "Enable or disable the tooltip on hovering an Item frame with a FishOnMC item.",
 
   "text.autoconfig.fishonmcextras.category.textStyling": "HUD Styling",
 
   "text.autoconfig.fishonmcextras.option.fishHUDConfig": "Fish HUD Config",
+  "text.autoconfig.fishonmcextras.option.fishHUDConfig.@Tooltip": "Click to Open or Close.",
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDAutoPause": "Auto pause timer after: (sec)",
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.showRarityPercentages": "Rarity Percentages",
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.showRarityPercentages.@Tooltip[0]": "Enable or disable rarity percentages.",
@@ -106,35 +145,10 @@
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDY": "Fish HUD Y position",
 
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDColorConfig" : "Fish HUD Colors",
+  "text.autoconfig.fishonmcextras.option.fishHUDConfigs.@Tooltip": "Click to Open or Close.",
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDColorConfig.fishHUDCaughtColor" : "Caught color",
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDColorConfig.fishHUDTimerColor" : "Timer color",
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDColorConfig.fishHUDXPColor" : "XP color",
   "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDColorConfig.fishHUDValueColor" : "Value color",
-  "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDColorConfig.fishHUDUniqueColor" : "Unique Variant Color",
-
-
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig" : "Pet Warning HUD Config",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.enableWarning" : "Unequipped pet warning",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.enableWarning.Tooltip[0]" : "Enable or disable the unequipped pet warning.",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.enableWarning.Tooltip[1]" : "Shows up above the hotbar when a pet isn't equipped.",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.flashWarning" : "Warning flashes",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.flashWarning.Tooltip[0]" : "Enable or disable the unequipped pet warning flashing.",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.flashWarning.Tooltip[1]" : "",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.petWarningHUDShadows" : "Text Shadows",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.petWarningHUDShadows.Tooltip[0]" : "Enable or disable text shadows for the pet warning HUD.",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.petWarningHUDShadows.Tooltip[2]" : "",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningColor" : "Warning color",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningColor.Tooltip" : "Change the unequipped pet warning color",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningFontSize" : "Warning Size",
-  "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.warningFontSize.Tooltip" : "Change the unequipped pet warning font size.",
-
-
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig" : "Active Pet HUD Config",
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveHUDShadows" : "Text Shadows",
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveHUDShadows.Tooltip[0]" : "Enable or disable text shadows.",
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveHUDShadows.Tooltip[1]" : "This affects the HUD display.",
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveColor" : "Color",
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petActiveFontSize" : "Font Size",
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petHUDX": "Pet HUD X position",
-  "text.autoconfig.fishonmcextras.option.petActiveHUDConfig.petHUDY": "Pet HUD Y position"
+  "text.autoconfig.fishonmcextras.option.fishHUDConfig.fishHUDColorConfig.fishHUDUniqueColor" : "Unique Variant Color"
 }
