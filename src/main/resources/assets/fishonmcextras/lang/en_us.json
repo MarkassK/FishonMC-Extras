@@ -35,6 +35,9 @@
   "text.autoconfig.fishonmcextras.option.petTooltipToggles.showFullRating.@Tooltip": "Enable or disable the percentage for pet ratings.",
   "text.autoconfig.fishonmcextras.option.petTooltipToggles.showIndividualRating": "Show individual pet stats percentage rating",
   "text.autoconfig.fishonmcextras.option.petTooltipToggles.showIndividualRating.@Tooltip": "Enable or disable the percentage for individual pet stats rating.",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage": "Show accurate percentages",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[0]": "Enable or disable accurate percentages.",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[1]": "!! THIS ONLY WORKS FOR PET TOOLTIP. NOT CHAT TOOLTIP",
 
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showRarities.@PrefixText" : "Rarity & Size Options:",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showRarities": "Show Rarities",

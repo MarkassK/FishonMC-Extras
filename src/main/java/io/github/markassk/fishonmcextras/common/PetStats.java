@@ -1,20 +1,30 @@
 package io.github.markassk.fishonmcextras.common;
 
+import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
+
 public class PetStats {
     private final String name;
     private final String rarity;
-    private final float lBaseLuck;
-    private final float lBaseScale;
-    private final float cBaseLuck;
-    private final float cBaseScale;
+    private final float lLuck;
+    private final float lScale;
+    private final float cLuck;
+    private final float cScale;
+    private final float lLuckPercent;
+    private final float lScalePercent;
+    private final float cLuckPercent;
+    private final float cScalePercent;
 
-    public PetStats(String name, String rarity, float lBaseLuck, float lBaseScale, float cBaseLuck, float cBaseScale) {
+    public PetStats(String name, String rarity, float lLuck, float lScale, float cLuck, float cScale, float lLuckPercent, float lScalePercent, float cLuckPercent, float cScalePercent) {
         this.name = name;
         this.rarity = rarity;
-        this.lBaseLuck = lBaseLuck;
-        this.lBaseScale = lBaseScale;
-        this.cBaseLuck = cBaseLuck;
-        this.cBaseScale = cBaseScale;
+        this.lLuck = lLuck;
+        this.lScale = lScale;
+        this.cLuck = cLuck;
+        this.cScale = cScale;
+        this.lLuckPercent = lLuckPercent;
+        this.lScalePercent = lScalePercent;
+        this.cLuckPercent = cLuckPercent;
+        this.cScalePercent = cScalePercent;
     }
 
 
@@ -26,19 +36,47 @@ public class PetStats {
         return rarity;
     }
 
-    public float getlBaseLuck() {
-        return lBaseLuck;
+    public float getlLuck() {
+        return lLuck;
     }
 
-    public float getlBaseScale() {
-        return lBaseScale;
+    public float getlScale() {
+        return lScale;
     }
 
-    public float getcBaseLuck() {
-        return cBaseLuck;
+    public float getcLuck() {
+        return cLuck;
     }
 
-    public float getcBaseScale() {
-        return cBaseScale;
+    public float getcScale() {
+        return cScale;
+    }
+
+    public float getlLuckPercent() {
+        return lLuckPercent;
+    }
+
+    public float getlScalePercent() {
+        return lScalePercent;
+    }
+
+    public float getcLuckPercent() {
+        return cLuckPercent;
+    }
+
+    public float getcScalePercent() {
+        return cScalePercent;
+    }
+
+    public float getTotalPercent() {
+        return (lLuckPercent + lScalePercent + cLuckPercent + cScalePercent) / 4f;
+    }
+
+    public String getRatingValue() {
+        return PetMergeCalculatorHandler.ratingValue(this.getTotalPercent() * 100);
+    }
+
+    public Object[] getRatingString() {
+        return PetMergeCalculatorHandler.ratingString(this.getRatingValue());
     }
 }
