@@ -45,17 +45,10 @@ public class PetMergeCalculatorHandler {
     private void update() {
         if(selectedPets[0] != null) {
             NbtCompound componentOne = getNbt(selectedPets[0]);
-            Gson gson = new Gson();
-
-            System.out.println(gson.toJson(NbtCompound.CODEC.encodeStart(JsonOps.INSTANCE, componentOne).getOrThrow()));
 
             // Pet one data
             assert componentOne != null;
             petOne = getStats(componentOne);
-
-            // Pet One - [STDOUT]: {"level":100,"lbase":[{"min":5,"cur_max":20,"id":"toledobend_luck","max":25,"percent_max":0.84,"cur":20},{"min":5,"cur_max":23,"id":"toledobend_scale","max":25,"percent_max":0.92,"cur":23}],"location":"toledobend","xp_cur":12000.0,"rarity":"common","date":"12/26/2024","id":[412308345,1123962446,-2032311133,-953008819],"username":"{MINECRAFT_USERNAME}","updatedStats":1,"cbase":[{"min":5,"cur_max":23,"id":"subtropical_luck","max":25,"percent_max":0.92,"cur":23},{"min":5,"cur_max":18,"id":"subtropical_scale","max":25,"percent_max":0.72,"cur":18}],"climate":"subtropical","xp_need":100000.0,"uuid":[-1247167561,1119111786,-1631666698,1769770720],"pet":"duck","type":"pet"}
-
-            // Pet Two - [STDOUT]: {"level":100,"lbase":[{"min":5,"cur_max":25,"id":"toledobend_luck","max":25,"percent_max":1.0,"cur":25},{"min":5,"cur_max":25,"id":"toledobend_scale","max":25,"percent_max":1.0,"cur":25}],"location":"toledobend","xp_cur":107500.0,"rarity":"common","date":"01/26/2025","max_stack_size":1,"id":[-1955563180,-962115005,-1394308568,-179744566],"username":"ItsMeDjeff","updatedStats":1,"cbase":[{"min":5,"cur_max":14,"id":"subtropical_luck","max":25,"percent_max":0.56,"cur":14},{"min":5,"cur_max":25,"id":"subtropical_scale","max":25,"percent_max":1.0,"cur":25}],"climate":"subtropical","xp_need":100000.0,"uuid":[372878717,-1193916841,-1658116853,449039815],"pet":"duck","type":"pet"}
         }
 
         if(selectedPets[1] != null) {
