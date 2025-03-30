@@ -1,5 +1,7 @@
 package io.github.markassk.fishonmcextras.common.handler;
 
+import com.google.gson.Gson;
+import com.mojang.serialization.JsonOps;
 import io.github.markassk.fishonmcextras.common.PetStats;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
@@ -43,17 +45,17 @@ public class PetMergeCalculatorHandler {
     private void update() {
         if(selectedPets[0] != null) {
             NbtCompound componentOne = getNbt(selectedPets[0]);
+            Gson gson = new Gson();
+
+            System.out.println(gson.toJson(NbtCompound.CODEC.encodeStart(JsonOps.INSTANCE, componentOne).getOrThrow()));
 
             // Pet one data
             assert componentOne != null;
-            petOne = new PetStats(
-                    capitalize(componentOne.getString("pet")),
-                    componentOne.getString("rarity"),
-                    (float) componentOne.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
-                    (float) componentOne.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max"),
-                    (float) componentOne.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
-                    (float) componentOne.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max")
-            );
+            petOne = getStats(componentOne);
+
+            // Pet One - [STDOUT]: {"level":100,"lbase":[{"min":5,"cur_max":20,"id":"toledobend_luck","max":25,"percent_max":0.84,"cur":20},{"min":5,"cur_max":23,"id":"toledobend_scale","max":25,"percent_max":0.92,"cur":23}],"location":"toledobend","xp_cur":12000.0,"rarity":"common","date":"12/26/2024","id":[412308345,1123962446,-2032311133,-953008819],"username":"{MINECRAFT_USERNAME}","updatedStats":1,"cbase":[{"min":5,"cur_max":23,"id":"subtropical_luck","max":25,"percent_max":0.92,"cur":23},{"min":5,"cur_max":18,"id":"subtropical_scale","max":25,"percent_max":0.72,"cur":18}],"climate":"subtropical","xp_need":100000.0,"uuid":[-1247167561,1119111786,-1631666698,1769770720],"pet":"duck","type":"pet"}
+
+            // Pet Two - [STDOUT]: {"level":100,"lbase":[{"min":5,"cur_max":25,"id":"toledobend_luck","max":25,"percent_max":1.0,"cur":25},{"min":5,"cur_max":25,"id":"toledobend_scale","max":25,"percent_max":1.0,"cur":25}],"location":"toledobend","xp_cur":107500.0,"rarity":"common","date":"01/26/2025","max_stack_size":1,"id":[-1955563180,-962115005,-1394308568,-179744566],"username":"ItsMeDjeff","updatedStats":1,"cbase":[{"min":5,"cur_max":14,"id":"subtropical_luck","max":25,"percent_max":0.56,"cur":14},{"min":5,"cur_max":25,"id":"subtropical_scale","max":25,"percent_max":1.0,"cur":25}],"climate":"subtropical","xp_need":100000.0,"uuid":[372878717,-1193916841,-1658116853,449039815],"pet":"duck","type":"pet"}
         }
 
         if(selectedPets[1] != null) {
@@ -61,19 +63,27 @@ public class PetMergeCalculatorHandler {
 
             // Pet two data
             assert componentTwo != null;
-            petTwo = new PetStats(
-                    capitalize(componentTwo.getString("pet")),
-                    componentTwo.getString("rarity"),
-                    (float) componentTwo.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
-                    (float) componentTwo.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max"),
-                    (float) componentTwo.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
-                    (float) componentTwo.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max")
-            );
+            petTwo = getStats(componentTwo);
         }
 
         if (selectedPets[0] != null && selectedPets[1] != null) {
             this.calculatedPet = calculatePet(petOne, petTwo);
         }
+    }
+
+    private PetStats getStats(NbtCompound compound) {
+        return new PetStats(
+                capitalize(compound.getString("pet")),
+                compound.getString("rarity"),
+                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
+                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max"),
+                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
+                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max"),
+                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getDouble("percent_max"),
+                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getDouble("percent_max"),
+                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getDouble("percent_max"),
+                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getDouble("percent_max")
+        );
     }
 
     private PetStats calculatePet(PetStats petOne, PetStats petTwo) {
@@ -82,34 +92,42 @@ public class PetMergeCalculatorHandler {
             float petMultiplier = rarityMultiplier(petOne.getRarity());
             float petResultMultiplier = rarityMultiplier(rarityUpgrade(petOne.getRarity()));
 
-            float petResultlBaseLuck = (((petOne.getlBaseLuck() / petMultiplier) + (petTwo.getlBaseLuck() / petMultiplier)) / 2) * petResultMultiplier;
-            float petResultlBaseScale = (((petOne.getlBaseScale() / petMultiplier) + (petTwo.getlBaseScale() / petMultiplier)) / 2) * petResultMultiplier;
-            float petResultcBaseLuck = (((petOne.getcBaseLuck() / petMultiplier) + (petTwo.getcBaseLuck() / petMultiplier)) / 2) * petResultMultiplier;
-            float petResultcBaseScale = (((petOne.getcBaseScale() / petMultiplier) + (petTwo.getcBaseScale() / petMultiplier)) / 2) * petResultMultiplier;
+            float petResultlLuck = (petOne.getlLuck() / petMultiplier + petTwo.getlLuck() / petMultiplier) / 2 * petResultMultiplier;
+            float petResultlScale = (petOne.getlScale() / petMultiplier + petTwo.getlScale() / petMultiplier) / 2 * petResultMultiplier;
+            float petResultcLuck = (petOne.getcLuck() / petMultiplier + petTwo.getcLuck() / petMultiplier) / 2 * petResultMultiplier;
+            float petResultcScale = (petOne.getcScale() / petMultiplier + petTwo.getcScale() / petMultiplier) / 2 * petResultMultiplier;
+            float petResultlLuckPercent = (petOne.getlLuckPercent() + petTwo.getlLuckPercent()) / 2;
+            float petResultlScalePercent = (petOne.getlScalePercent() + petTwo.getlScalePercent()) / 2;
+            float petResultcLuckPercent = (petOne.getcLuckPercent() + petTwo.getcLuckPercent()) / 2;
+            float petResultcScalePercent = (petOne.getcScalePercent() + petTwo.getcScalePercent()) / 2;
 
             return new PetStats(
                     Objects.equals(petOne.getName(), petTwo.getName()) ? petOne.getName() : petOne.getName() + " + " + petTwo.getName(),
                     petResultRarity,
-                    petResultlBaseLuck,
-                    petResultlBaseScale,
-                    petResultcBaseLuck,
-                    petResultcBaseScale
+                    petResultlLuck,
+                    petResultlScale,
+                    petResultcLuck,
+                    petResultcScale,
+                    petResultlLuckPercent,
+                    petResultlScalePercent,
+                    petResultcLuckPercent,
+                    petResultcScalePercent
             );
-
         }
         return null;
     }
 
     public static String ratingValue(float value) {
-        if (value < 10) return "Awful";
-        else if (value < 20) return "Bad";
-        else if (value < 35) return "Below Average";
-        else if (value < 50) return "Average";
-        else if (value < 60) return "Good";
-        else if (value < 80) return "Great";
-        else if (value < 90) return "Excellent";
-        else if (value < 100) return "Amazing";
-        else if (value < 101) return "Perfect";
+        float ceilValue = Math.round(value);
+        if (ceilValue < 10) return "Awful";
+        else if (ceilValue < 20) return "Bad";
+        else if (ceilValue < 35) return "Below Average";
+        else if (ceilValue < 50) return "Average";
+        else if (ceilValue < 60) return "Good";
+        else if (ceilValue < 80) return "Great";
+        else if (ceilValue < 90) return "Excellent";
+        else if (ceilValue < 100) return "Amazing";
+        else if (ceilValue < 101) return "Perfect";
         return "Wrong Rarity Selected";
     }
 
@@ -126,16 +144,6 @@ public class PetMergeCalculatorHandler {
             case "Perfect \uD83D\uDCAF" -> new Object[]{"ᴘᴇʀꜰᴇᴄᴛ", 0xFFA800A8};
             default -> new Object[]{"", 0xFFFFFFFF};
         };
-    }
-
-    public static float percentageRating(PetStats pet) {
-        float total = pet.getcBaseLuck() + pet.getcBaseScale() + pet.getlBaseLuck() + pet.getlBaseScale();
-        return total / rarityMultiplier(pet.getRarity());
-    }
-
-    public static float percentageStat(float stat, String rarity) {
-        float baseStat = stat / rarityMultiplier(rarity);
-        return baseStat * 4;
     }
 
     public static String capitalize(String str) {

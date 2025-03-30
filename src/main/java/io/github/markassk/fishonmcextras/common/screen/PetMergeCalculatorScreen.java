@@ -1,8 +1,11 @@
 package io.github.markassk.fishonmcextras.common.screen;
 
+import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
+import io.github.markassk.fishonmcextras.common.PetStats;
 import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
 import io.github.markassk.fishonmcextras.common.screen.widget.ClickablePetItemWidget;
 import io.github.markassk.fishonmcextras.common.util.TextHelper;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
@@ -27,6 +30,7 @@ public class PetMergeCalculatorScreen extends Screen {
     int x = 50;
     int y = 0;
     int padding = 10;
+    FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
 
     public PetMergeCalculatorScreen(PlayerEntity player, Screen parent) {
         super(Text.literal("Pet Merge Calculator"));
@@ -55,8 +59,6 @@ public class PetMergeCalculatorScreen extends Screen {
 
         int columns = (int) Math.ceil((double) petList.size() / 9) - 1;
         AtomicInteger count = new AtomicInteger();
-        Text luckText = Text.literal("ʟᴜᴄᴋ: ").withColor(0xFF7ED7C1);
-        Text scaleText = Text.literal("ѕᴄᴀʟᴇ: ").withColor(0xFF4B86EE);
 
         // Pet One
         context.fill(
@@ -75,26 +77,11 @@ public class PetMergeCalculatorScreen extends Screen {
                 true
         );
         if (PetMergeCalculatorHandler.instance().petOne != null) {
-            List<Text> petOneTextList = new ArrayList<>();
-            petOneTextList.add(Text.literal((PetMergeCalculatorHandler.instance().petOne.getName())));
-            petOneTextList.add(Text.literal(PetMergeCalculatorHandler.rarityString(PetMergeCalculatorHandler.instance().petOne.getRarity())));
-            petOneTextList.add(Text.empty());
-            petOneTextList.add(Text.literal("Climate").formatted(Formatting.BOLD));
-            petOneTextList.add(TextHelper.concat(luckText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petOne.getcBaseLuck())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petOne.getcBaseLuck(), PetMergeCalculatorHandler.instance().petOne.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petOneTextList.add(TextHelper.concat(scaleText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petOne.getcBaseScale())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petOne.getcBaseScale(), PetMergeCalculatorHandler.instance().petOne.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petOneTextList.add(Text.empty());
-            petOneTextList.add(Text.literal("Location").formatted(Formatting.BOLD));
-            petOneTextList.add(TextHelper.concat(luckText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petOne.getlBaseLuck())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petOne.getlBaseLuck(), PetMergeCalculatorHandler.instance().petOne.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petOneTextList.add(TextHelper.concat(scaleText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petOne.getlBaseScale())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petOne.getlBaseScale(), PetMergeCalculatorHandler.instance().petOne.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petOneTextList.add(Text.empty());
-            petOneTextList.add(Text.literal("Rating").formatted(Formatting.BOLD));
-            petOneTextList.add(Text.literal((PetMergeCalculatorHandler.ratingString(PetMergeCalculatorHandler.ratingValue(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().petOne)))[0]) + "").withColor((int) PetMergeCalculatorHandler.ratingString(PetMergeCalculatorHandler.ratingValue(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().petOne)))[1]));
-            petOneTextList.add(Text.literal(TextHelper.fmt(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().petOne)) + "%").formatted(Formatting.GRAY));
-            petOneTextList.forEach(text -> context.drawText(textRenderer, text, width / 2 - x - textRenderer.getWidth(text) / 2 - 50 - (columns * 18), height / 2 - (9 * 18 / 2) + 18 + (count.getAndIncrement() * 10), 0xFFFFFFFF, true));
+            PetStats petOne = PetMergeCalculatorHandler.instance().petOne;
+            renderPetText(context, petOne, columns, 0);
         }
 
         count.set(0);
-
 
         // Pet Two
         context.fill(
@@ -113,22 +100,8 @@ public class PetMergeCalculatorScreen extends Screen {
                 true
         );
         if (PetMergeCalculatorHandler.instance().petTwo != null) {
-            List<Text> petTwoTextList = new ArrayList<>();
-            petTwoTextList.add(Text.literal((PetMergeCalculatorHandler.instance().petTwo.getName())));
-            petTwoTextList.add(Text.literal(PetMergeCalculatorHandler.rarityString(PetMergeCalculatorHandler.instance().petTwo.getRarity())));
-            petTwoTextList.add(Text.empty());
-            petTwoTextList.add(Text.literal("Climate").formatted(Formatting.BOLD));
-            petTwoTextList.add(TextHelper.concat(luckText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petTwo.getcBaseLuck())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petTwo.getcBaseLuck(), PetMergeCalculatorHandler.instance().petTwo.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petTwoTextList.add(TextHelper.concat(scaleText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petTwo.getcBaseScale())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petTwo.getcBaseScale(), PetMergeCalculatorHandler.instance().petTwo.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petTwoTextList.add(Text.empty());
-            petTwoTextList.add(Text.literal("Location").formatted(Formatting.BOLD));
-            petTwoTextList.add(TextHelper.concat(luckText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petTwo.getlBaseLuck())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petTwo.getlBaseLuck(), PetMergeCalculatorHandler.instance().petTwo.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petTwoTextList.add(TextHelper.concat(scaleText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().petTwo.getlBaseScale())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().petTwo.getlBaseScale(), PetMergeCalculatorHandler.instance().petTwo.getRarity())) + "%").formatted(Formatting.GRAY)));
-            petTwoTextList.add(Text.empty());
-            petTwoTextList.add(Text.literal("Rating").formatted(Formatting.BOLD));
-            petTwoTextList.add(Text.literal(( PetMergeCalculatorHandler.ratingString(PetMergeCalculatorHandler.ratingValue(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().petTwo)))[0]) + "").withColor((int) PetMergeCalculatorHandler.ratingString(PetMergeCalculatorHandler.ratingValue(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().petTwo)))[1]));
-            petTwoTextList.add(Text.literal(TextHelper.fmt(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().petTwo)) + "%").formatted(Formatting.GRAY));
-            petTwoTextList.forEach(text -> context.drawText(textRenderer, text, width / 2 + x - textRenderer.getWidth(text) / 2 + 50 + (columns * 18), height / 2 - (9 * 18 / 2) + 18 + (count.getAndIncrement() * 10), 0xFFFFFFFF, true));
+            PetStats petTwo = PetMergeCalculatorHandler.instance().petTwo;
+            renderPetText(context, petTwo, columns, 2);
         }
 
         count.set(0);
@@ -158,27 +131,22 @@ public class PetMergeCalculatorScreen extends Screen {
                 Text warning = Text.literal("Cannot merge pets of different pet types!").formatted(Formatting.DARK_RED);
                 context.drawText(textRenderer, warning, width / 2 - textRenderer.getWidth(warning) / 2, height / 2 + (9 * 18) / 2 + padding, 0xFFFFFFFF, true);
             } else if (PetMergeCalculatorHandler.instance().calculatedPet != null) {
-                List<Text> petTwoTextList = new ArrayList<>();
-                petTwoTextList.add(Text.literal((PetMergeCalculatorHandler.instance().calculatedPet.getName())));
-                petTwoTextList.add(Text.literal(PetMergeCalculatorHandler.rarityString(PetMergeCalculatorHandler.instance().calculatedPet.getRarity())));
-                petTwoTextList.add(Text.empty());
-                petTwoTextList.add(Text.literal("Climate").formatted(Formatting.BOLD));
-                petTwoTextList.add(TextHelper.concat(luckText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().calculatedPet.getcBaseLuck())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().calculatedPet.getcBaseLuck(), PetMergeCalculatorHandler.instance().calculatedPet.getRarity())) + "%").formatted(Formatting.GRAY)));
-                petTwoTextList.add(TextHelper.concat(scaleText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().calculatedPet.getcBaseScale())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().calculatedPet.getcBaseScale(), PetMergeCalculatorHandler.instance().calculatedPet.getRarity())) + "%").formatted(Formatting.GRAY)));
-                petTwoTextList.add(Text.empty());
-                petTwoTextList.add(Text.literal("Location").formatted(Formatting.BOLD));
-                petTwoTextList.add(TextHelper.concat(luckText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().calculatedPet.getlBaseLuck())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().calculatedPet.getlBaseLuck(), PetMergeCalculatorHandler.instance().calculatedPet.getRarity())) + "%").formatted(Formatting.GRAY)));
-                petTwoTextList.add(TextHelper.concat(scaleText, Text.literal("" +((int) PetMergeCalculatorHandler.instance().calculatedPet.getlBaseScale())), Text.literal(" " + TextHelper.fmt(PetMergeCalculatorHandler.percentageStat(PetMergeCalculatorHandler.instance().calculatedPet.getlBaseScale(), PetMergeCalculatorHandler.instance().calculatedPet.getRarity())) + "%").formatted(Formatting.GRAY)));
-                petTwoTextList.add(Text.empty());
-                petTwoTextList.add(Text.literal("Rating").formatted(Formatting.BOLD));
-                petTwoTextList.add(Text.literal(( PetMergeCalculatorHandler.ratingString(PetMergeCalculatorHandler.ratingValue(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().calculatedPet)))[0]) + "").withColor((int) PetMergeCalculatorHandler.ratingString(PetMergeCalculatorHandler.ratingValue(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().calculatedPet)))[1]));
-                petTwoTextList.add(Text.literal(TextHelper.fmt(PetMergeCalculatorHandler.percentageRating(PetMergeCalculatorHandler.instance().calculatedPet)) + "%").formatted(Formatting.GRAY));
-                petTwoTextList.forEach(text -> context.drawText(textRenderer, text, width / 2 - textRenderer.getWidth(text) / 2, height / 2 - (9 * 18 / 2) + 18 + (count.getAndIncrement() * 10), 0xFFFFFFFF, true));
+                PetStats calculatedPet = PetMergeCalculatorHandler.instance().calculatedPet;
+                renderPetText(context, calculatedPet, columns, 1);
             }
         }
-
-
-
+        if(!config.petTooltipToggles.showAccuratePercentage) {
+            Text accurateWarning = Text.literal("Accurate Percentages setting is forced to be enabled when merging")
+                    .formatted(Formatting.RED, Formatting.ITALIC);
+            context.drawText(
+                    textRenderer,
+                    accurateWarning,
+                    width / 2 - (textRenderer.getWidth(accurateWarning) / 2),
+                    height / 2 - (9 * 18 / 2) - 26,
+                    0xFFFFFFFF,
+                    true
+            );
+        }
 
         Text titleText = Text.literal("Pet Merge Calculator")
                 .formatted(Formatting.WHITE, Formatting.BOLD);
@@ -189,6 +157,60 @@ public class PetMergeCalculatorScreen extends Screen {
                 height / 2 - (9 * 18 / 2) - 14,
                 0xFFFFFFFF,
                 true);
+    }
+
+    // WIP
+    private void renderPetText(DrawContext context, PetStats petStat, int petColumns, int column) {
+        List<Text> petTextList = new ArrayList<>();
+        AtomicInteger count = new AtomicInteger();
+        Text luckText = Text.literal("ʟᴜᴄᴋ: ").withColor(0xFF7ED7C1);
+        Text scaleText = Text.literal("ѕᴄᴀʟᴇ: ").withColor(0xFF4B86EE);
+
+        petTextList.add(Text.literal(petStat.getName()));
+        petTextList.add(Text.literal(PetMergeCalculatorHandler.rarityString(petStat.getRarity())));
+        petTextList.add(Text.empty());
+        petTextList.add(Text.literal("Climate").formatted(Formatting.BOLD));
+        petTextList.add(TextHelper.concat(
+                luckText,
+                Text.literal(TextHelper.fmt(petStat.getcLuck())),
+                Text.literal(" " + TextHelper.fmt(petStat.getcLuckPercent() * 100) + "%").formatted(Formatting.GRAY)
+        ));
+        petTextList.add(TextHelper.concat(
+                scaleText,
+                Text.literal(TextHelper.fmt(petStat.getcScale())),
+                Text.literal(" " + TextHelper.fmt(petStat.getcScalePercent() * 100) + "%").formatted(Formatting.GRAY)
+        ));
+        petTextList.add(Text.empty());
+        petTextList.add(Text.literal("Location").formatted(Formatting.BOLD));
+        petTextList.add(TextHelper.concat(
+                luckText,
+                Text.literal(TextHelper.fmt(petStat.getlLuck())),
+                Text.literal(" " + TextHelper.fmt(petStat.getlLuckPercent() * 100) + "%").formatted(Formatting.GRAY)
+        ));
+        petTextList.add(TextHelper.concat(
+                scaleText,
+                Text.literal(TextHelper.fmt(petStat.getlScale())),
+                Text.literal(" " + TextHelper.fmt(petStat.getlScalePercent() * 100) + "%").formatted(Formatting.GRAY)
+        ));
+        petTextList.add(Text.empty());
+        petTextList.add(Text.literal("Rating").formatted(Formatting.BOLD));
+        Object[] ratingString = petStat.getRatingString();
+        petTextList.add(Text.literal(ratingString[0] + "").withColor((Integer) ratingString[1]));
+        petTextList.add(Text.literal(TextHelper.fmt(petStat.getTotalPercent() * 100) + "%").formatted(Formatting.GRAY));
+
+        switch (column) {
+            case 0:
+                petTextList.forEach(text -> context.drawText(textRenderer, text, width / 2 - x - textRenderer.getWidth(text) / 2 - 50 - (petColumns * 18), height / 2 - (9 * 18 / 2) + 18 + (count.getAndIncrement() * 10), 0xFFFFFFFF, true));
+                break;
+            case 1:
+                petTextList.forEach(text -> context.drawText(textRenderer, text, width / 2 - textRenderer.getWidth(text) / 2, height / 2 - (9 * 18 / 2) + 18 + (count.getAndIncrement() * 10), 0xFFFFFFFF, true));
+                break;
+            case 2:
+                petTextList.forEach(text -> context.drawText(textRenderer, text, width / 2 + x - textRenderer.getWidth(text) / 2 + 50 + (petColumns * 18), height / 2 - (9 * 18 / 2) + 18 + (count.getAndIncrement() * 10), 0xFFFFFFFF, true));
+                break;
+            default:
+                break;
+        }
     }
 
     private void renderWidgets() {

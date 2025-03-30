@@ -106,6 +106,8 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public boolean showFullRating = true;
         @ConfigEntry.Gui.Tooltip()
         public boolean showIndividualRating = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean showAccuratePercentage = false;
     }
 
     public static class PetWarningHUDConfig{
