@@ -457,7 +457,7 @@ public class HudRenderer implements HudRenderCallback {
                     }
                 }
 
-                if (config.otherHUDToggles.showItemFrameTooltip) {
+                if (config.otherHUDConfig.showItemFrameTooltip) {
                     if(LookTickHandler.instance().targetedItem != null) {
                         drawContext.drawItemTooltip(textRenderer, LookTickHandler.instance().targetedItem, screenWidth / 2, 50);
                     }
