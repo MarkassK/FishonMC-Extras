@@ -128,6 +128,7 @@
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvFontColor": "Full Inventory Font Color",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDShadows": "Full Inventory Text Shadows",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDWarningSlot": "Change Inventory Warning Slots",
+  "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDHeight": "Change Height of Warning Text",
 
   "text.autoconfig.fishonmcextras.category.textStyling": "HUD Styling",
 

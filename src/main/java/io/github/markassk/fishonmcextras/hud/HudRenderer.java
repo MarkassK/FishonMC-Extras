@@ -3,7 +3,7 @@ package io.github.markassk.fishonmcextras.hud;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
-import io.github.markassk.fishonmcextras.common.handler.LookTickHandler;
+import io.github.markassk.fishonmcextras.handler.LookTickHandler;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
@@ -160,7 +160,6 @@ public class HudRenderer implements HudRenderCallback {
         client.execute(() -> client.inGameHud.setOverlayMessage(Text.of("HUD Updated"), false));
     }
 
-
     // Updates whats shown on the HUD
     public void updateFishHUD(float xp, float value, String variant, String rarity, String size) {
         // Alltime caught
@@ -283,7 +282,7 @@ public class HudRenderer implements HudRenderCallback {
         }
     }
 
-    public void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
+    private void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
         FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         TextRenderer textRenderer = client.textRenderer;
         int WARNING_THRESHOLD = config.fullInvHUDConfig.FullInvHUDWarningSlot;
@@ -311,7 +310,7 @@ public class HudRenderer implements HudRenderCallback {
                 // Position calculation
                 int textWidth = textRenderer.getWidth(warningText);
                 int x = (int) (((float) screenWidth / 2 - textWidth * scale / 2) / scale);
-                int y = (int) ((screenHeight - 45) / scale);
+                int y = (int) ((screenHeight - config.fullInvHUDConfig.FullInvHUDHeight) / scale);
 
                 // Text Color and Shadows
                 int color = config.fullInvHUDConfig.FullInvFontColor;
@@ -320,6 +319,163 @@ public class HudRenderer implements HudRenderCallback {
             } finally {
                 context.getMatrices().pop();
             }
+        }
+    }
+
+    private void trackerHud(DrawContext drawContext) {
+        FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+        TextRenderer textRenderer = client.textRenderer;
+
+        // First declare display variables
+        int displayFishCaughtCount = config.trackTimed ? fishCaughtCount : allFishCaughtCount;
+        float displayTotalXP = config.trackTimed ? totalXP : allTotalXP;
+        float displayTotalValue = config.trackTimed ? totalValue : allTotalValue;
+        Map<String, Integer> displayVariantCounts = config.trackTimed ? variantCounts : allVariantCounts;
+        Map<String, Integer> displayRarityCounts = config.trackTimed ? rarityCounts : allRarityCounts;
+        Map<String, Integer> displaySizeCounts = config.trackTimed ? sizeCounts : allSizeCounts;
+
+        // Push matrix FIRST
+        drawContext.getMatrices().push();
+        try {
+            // Get screen size
+            int screenWidth = client.getWindow().getScaledWidth();
+            int screenHeight = client.getWindow().getScaledHeight();
+
+            // Convert percentage config values to screen coordinates
+            float xPercent = config.fishHUDConfig.fishHUDX / 100f;
+            float yPercent = config.fishHUDConfig.fishHUDY / 100f;
+
+            // Calculate base positions relative to screen size
+            int baseX = (int) (screenWidth * xPercent);
+            int baseY = (int) (screenHeight * yPercent);
+
+            // Scaling setup
+            boolean shadows = config.fishHUDConfig.fishHUDShadows;
+            int fontSize = config.fishHUDConfig.fishHUDFontSize;
+            float scale = fontSize / 10.0f;
+            drawContext.getMatrices().scale(scale, scale, 1f);
+
+            int padding = 2;
+            int scaledX = (int) (baseX / scale);
+            int[] scaledYHolder = {(int) (baseY / scale)};
+            int lineHeight = (int) (textRenderer.fontHeight + (padding / scale));
+
+            // Now use the display variables
+            drawContext.drawText(textRenderer,
+                    "Fish Caught: " + displayFishCaughtCount,
+                    scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDCaughtColor, shadows
+            );
+            scaledYHolder[0] += lineHeight;
+
+            // Display the timer and fish/hour if enabled in config
+            if (config.trackTimed) {
+                long timeSinceResetMillis = activeTime;
+
+                if (config.fishHUDToggles.showTimeSinceReset) {
+                    long hours = TimeUnit.MILLISECONDS.toHours(timeSinceResetMillis);
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(timeSinceResetMillis) % 60;
+                    long seconds = TimeUnit.MILLISECONDS.toSeconds(timeSinceResetMillis) % 60;
+                    String timeSinceReset = String.format("Time Counted: %02d:%02d:%02d", hours, minutes, seconds);
+                    drawContext.drawText(textRenderer, timeSinceReset, scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDTimerColor, shadows);
+                    scaledYHolder[0] += lineHeight;
+                }
+
+                if (config.fishHUDToggles.showFishPerHour) {
+                    double fishPerHour = (fishCaughtCount / (timeSinceResetMillis / 3600000.0));
+                    drawContext.drawText(textRenderer, "Fish/Hour: " + String.format("%.1f", fishPerHour), scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDTimerColor, shadows);
+                    scaledYHolder[0] += lineHeight;
+                }
+            }
+
+            drawContext.drawText(textRenderer, "Total XP: " + displayTotalXP, scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDXPColor, shadows);
+            scaledYHolder[0] += lineHeight;
+            drawContext.drawText(textRenderer, "Total Value: " + displayTotalValue + "$", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDValueColor, shadows);
+            scaledYHolder[0] += lineHeight;
+
+            // Rarities section
+            if (config.fishHUDToggles.showRarities) {
+                scaledYHolder[0] += lineHeight;
+
+                drawHudLine(drawContext, textRenderer, "\uF033", displayRarityCounts.getOrDefault("common", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawHudLine(drawContext, textRenderer, "\uF034", displayRarityCounts.getOrDefault("rare", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawHudLine(drawContext, textRenderer, "\uF035", displayRarityCounts.getOrDefault("epic", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawHudLine(drawContext, textRenderer, "\uF036", displayRarityCounts.getOrDefault("legendary", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawHudLine(drawContext, textRenderer, "\uF037", displayRarityCounts.getOrDefault("mythical", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+
+                scaledYHolder[0] += lineHeight;
+            }
+            if ((config.fishHUDToggles.showBaby || config.fishHUDToggles.showJuvenile || config.fishHUDToggles.showAdult || config.fishHUDToggles.showLarge || config.fishHUDToggles.showGigantic) && !config.fishHUDToggles.showRarities) {
+                scaledYHolder[0] += lineHeight;
+            }
+
+            // Baby section
+            if (config.fishHUDToggles.showBaby) {
+                drawHudLine(drawContext, textRenderer, "ʙᴀʙʏ", displaySizeCounts.getOrDefault("baby", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawContext.drawText(textRenderer, "ʙᴀʙʏ ", scaledX, scaledYHolder[0] - lineHeight, 0x468CE7, shadows);
+            }
+            // Juvenile section
+            if (config.fishHUDToggles.showJuvenile) {
+                drawHudLine(drawContext, textRenderer, "ᴊᴜᴠᴇɴɪʟᴇ", displaySizeCounts.getOrDefault("juvenile", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawContext.drawText(textRenderer, "ᴊᴜᴠᴇɴɪʟᴇ ", scaledX, scaledYHolder[0] - lineHeight, 0x22EA08, shadows);
+            }
+            // Adult section
+            if (config.fishHUDToggles.showAdult) {
+                drawHudLine(drawContext, textRenderer, "ᴀᴅᴜʟᴛ", displaySizeCounts.getOrDefault("adult", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawContext.drawText(textRenderer, "ᴀᴅᴜʟᴛ ", scaledX, scaledYHolder[0] - lineHeight, 0x1C7DA0, shadows);
+            }
+            // Large section
+            if (config.fishHUDToggles.showLarge) {
+                drawHudLine(drawContext, textRenderer, "ʟᴀʀɢᴇ", displaySizeCounts.getOrDefault("large", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawContext.drawText(textRenderer, "ʟᴀʀɢᴇ ", scaledX, scaledYHolder[0] - lineHeight, 0xFF9000, shadows);
+            }
+
+            // Gigantics section
+            if (config.fishHUDToggles.showGigantic) {
+                drawHudLine(drawContext, textRenderer, "ɢɪɢᴀɴᴛɪᴄ", displaySizeCounts.getOrDefault("gigantic", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                drawContext.drawText(textRenderer, "ɢɪɢᴀɴᴛɪᴄ ", scaledX, scaledYHolder[0] - lineHeight, 0xAF3333, shadows);
+            }
+
+
+            // Variants section
+            if (config.fishHUDToggles.showVariants) {
+                scaledYHolder[0] += lineHeight;
+                if (displayVariantCounts != null) {
+                    // Track which variants we've already displayed
+                    Set<String> displayedVariants = new HashSet<>(Arrays.asList(
+                            "normal","albino", "melanistic", "trophy", "fabled", "zombie"
+                    ));
+
+                    if (config.fishHUDToggles.showAlbino) {
+                        drawHudLine(drawContext, textRenderer, "\uF041", displayVariantCounts.getOrDefault("albino", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                    }
+                    if (config.fishHUDToggles.showMelanistic){
+                        drawHudLine(drawContext, textRenderer, "\uF042", displayVariantCounts.getOrDefault("melanistic", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                    }
+                    if (config.fishHUDToggles.showTrophy) {
+                        drawHudLine(drawContext, textRenderer, "\uF043", displayVariantCounts.getOrDefault("trophy", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                    }
+                    if (config.fishHUDToggles.showFabled) {
+                        drawHudLine(drawContext, textRenderer, "\uF044", displayVariantCounts.getOrDefault("fabled", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                    }
+                    if (config.fishHUDToggles.showZombie) {
+                        drawHudLine(drawContext, textRenderer, "\uF089", displayVariantCounts.getOrDefault("zombie", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                    }
+                    // Calculate others
+                    if (config.fishHUDToggles.showUnique) {
+                        int othersSum = displayVariantCounts.entrySet().stream()
+                                .filter(entry -> !displayedVariants.contains(entry.getKey()))
+                                .mapToInt(Map.Entry::getValue)
+                                .sum();
+
+                        drawContext.drawText(textRenderer, "ᴜɴɪꞯᴜᴇ " + othersSum, scaledX, scaledYHolder[0], 0xFFFFFF, shadows);
+                        drawContext.drawText(textRenderer, "ᴜɴɪꞯᴜᴇ ", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDUniqueColor, shadows);
+                        scaledYHolder[0] += lineHeight;
+
+                    }
+                }
+            }
+        } finally { // Guaranteed to execute even if exceptions occur
+            drawContext.getMatrices().pop();
         }
     }
 
@@ -343,164 +499,10 @@ public class HudRenderer implements HudRenderCallback {
             timerPaused = true;
         }
 
-
         if (config.fishHUD){
-            TextRenderer textRenderer = client.textRenderer;
-
-            // First declare display variables
-            int displayFishCaughtCount = config.trackTimed ? fishCaughtCount : allFishCaughtCount;
-            float displayTotalXP = config.trackTimed ? totalXP : allTotalXP;
-            float displayTotalValue = config.trackTimed ? totalValue : allTotalValue;
-            Map<String, Integer> displayVariantCounts = config.trackTimed ? variantCounts : allVariantCounts;
-            Map<String, Integer> displayRarityCounts = config.trackTimed ? rarityCounts : allRarityCounts;
-            Map<String, Integer> displaySizeCounts = config.trackTimed ? sizeCounts : allSizeCounts;
-
-
-            // Push matrix FIRST
-            drawContext.getMatrices().push();
-            try {
-                // Get screen size
-                int screenWidth = client.getWindow().getScaledWidth();
-                int screenHeight = client.getWindow().getScaledHeight();
-
-                // Convert percentage config values to screen coordinates
-                float xPercent = config.fishHUDConfig.fishHUDX / 100f;
-                float yPercent = config.fishHUDConfig.fishHUDY / 100f;
-
-                // Calculate base positions relative to screen size
-                int baseX = (int) (screenWidth * xPercent);
-                int baseY = (int) (screenHeight * yPercent);
-
-                // Scaling setup
-                boolean shadows = config.fishHUDConfig.fishHUDShadows;
-                int fontSize = config.fishHUDConfig.fishHUDFontSize;
-                float scale = fontSize / 10.0f;
-                drawContext.getMatrices().scale(scale, scale, 1f);
-
-                int padding = 2;
-                int scaledX = (int) (baseX / scale);
-                int[] scaledYHolder = {(int) (baseY / scale)};
-                int lineHeight = (int) (textRenderer.fontHeight + (padding / scale));
-
-                // Now use the display variables
-                drawContext.drawText(textRenderer,
-                        "Fish Caught: " + displayFishCaughtCount,
-                        scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDCaughtColor, shadows
-                );
-                scaledYHolder[0] += lineHeight;
-
-                // Display the timer and fish/hour if enabled in config
-                if (config.trackTimed) {
-                    long timeSinceResetMillis = activeTime;
-
-                    if (config.fishHUDToggles.showTimeSinceReset) {
-                        long hours = TimeUnit.MILLISECONDS.toHours(timeSinceResetMillis);
-                        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeSinceResetMillis) % 60;
-                        long seconds = TimeUnit.MILLISECONDS.toSeconds(timeSinceResetMillis) % 60;
-                        String timeSinceReset = String.format("Time Counted: %02d:%02d:%02d", hours, minutes, seconds);
-                        drawContext.drawText(textRenderer, timeSinceReset, scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDTimerColor, shadows);
-                        scaledYHolder[0] += lineHeight;
-                    }
-
-                    if (config.fishHUDToggles.showFishPerHour) {
-                        double fishPerHour = (fishCaughtCount / (timeSinceResetMillis / 3600000.0));
-                        drawContext.drawText(textRenderer, "Fish/Hour: " + String.format("%.1f", fishPerHour), scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDTimerColor, shadows);
-                        scaledYHolder[0] += lineHeight;
-                    }
-                }
-
-                drawContext.drawText(textRenderer, "Total XP: " + displayTotalXP, scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDXPColor, shadows);
-                scaledYHolder[0] += lineHeight;
-                drawContext.drawText(textRenderer, "Total Value: " + displayTotalValue + "$", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDValueColor, shadows);
-                scaledYHolder[0] += lineHeight;
-
-                // Rarities section
-                if (config.fishHUDToggles.showRarities) {
-                    scaledYHolder[0] += lineHeight;
-
-                    drawHudLine(drawContext, textRenderer, "\uF033", displayRarityCounts.getOrDefault("common", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawHudLine(drawContext, textRenderer, "\uF034", displayRarityCounts.getOrDefault("rare", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawHudLine(drawContext, textRenderer, "\uF035", displayRarityCounts.getOrDefault("epic", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawHudLine(drawContext, textRenderer, "\uF036", displayRarityCounts.getOrDefault("legendary", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawHudLine(drawContext, textRenderer, "\uF037", displayRarityCounts.getOrDefault("mythical", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-
-                    scaledYHolder[0] += lineHeight;
-                }
-                if ((config.fishHUDToggles.showBaby || config.fishHUDToggles.showJuvenile || config.fishHUDToggles.showAdult || config.fishHUDToggles.showLarge || config.fishHUDToggles.showGigantic) && !config.fishHUDToggles.showRarities) {
-                    scaledYHolder[0] += lineHeight;
-                }
-
-                // Baby section
-                if (config.fishHUDToggles.showBaby) {
-                    drawHudLine(drawContext, textRenderer, "ʙᴀʙʏ", displaySizeCounts.getOrDefault("baby", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ʙᴀʙʏ ", scaledX, scaledYHolder[0] - lineHeight, 0x468CE7, shadows);
-                }
-                // Juvenile section
-                if (config.fishHUDToggles.showJuvenile) {
-                    drawHudLine(drawContext, textRenderer, "ᴊᴜᴠᴇɴɪʟᴇ", displaySizeCounts.getOrDefault("juvenile", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ᴊᴜᴠᴇɴɪʟᴇ ", scaledX, scaledYHolder[0] - lineHeight, 0x22EA08, shadows);
-                }
-                // Adult section
-                if (config.fishHUDToggles.showAdult) {
-                    drawHudLine(drawContext, textRenderer, "ᴀᴅᴜʟᴛ", displaySizeCounts.getOrDefault("adult", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ᴀᴅᴜʟᴛ ", scaledX, scaledYHolder[0] - lineHeight, 0x1C7DA0, shadows);
-                }
-                // Large section
-                if (config.fishHUDToggles.showLarge) {
-                    drawHudLine(drawContext, textRenderer, "ʟᴀʀɢᴇ", displaySizeCounts.getOrDefault("large", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ʟᴀʀɢᴇ ", scaledX, scaledYHolder[0] - lineHeight, 0xFF9000, shadows);
-                }
-
-                // Gigantics section
-                if (config.fishHUDToggles.showGigantic) {
-                    drawHudLine(drawContext, textRenderer, "ɢɪɢᴀɴᴛɪᴄ", displaySizeCounts.getOrDefault("gigantic", 0), displayFishCaughtCount, config.fishHUDConfig.showSizePercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                    drawContext.drawText(textRenderer, "ɢɪɢᴀɴᴛɪᴄ ", scaledX, scaledYHolder[0] - lineHeight, 0xAF3333, shadows);
-                }
-
-
-                // Variants section
-                if (config.fishHUDToggles.showVariants) {
-                    scaledYHolder[0] += lineHeight;
-                    if (displayVariantCounts != null) {
-                        // Track which variants we've already displayed
-                        Set<String> displayedVariants = new HashSet<>(Arrays.asList(
-                                "normal","albino", "melanistic", "trophy", "fabled", "zombie"
-                        ));
-
-                        if (config.fishHUDToggles.showAlbino) {
-                            drawHudLine(drawContext, textRenderer, "\uF041", displayVariantCounts.getOrDefault("albino", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                        }
-                        if (config.fishHUDToggles.showMelanistic){
-                            drawHudLine(drawContext, textRenderer, "\uF042", displayVariantCounts.getOrDefault("melanistic", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                        }
-                        if (config.fishHUDToggles.showTrophy) {
-                            drawHudLine(drawContext, textRenderer, "\uF043", displayVariantCounts.getOrDefault("trophy", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                        }
-                        if (config.fishHUDToggles.showFabled) {
-                            drawHudLine(drawContext, textRenderer, "\uF044", displayVariantCounts.getOrDefault("fabled", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                        }
-                        if (config.fishHUDToggles.showZombie) {
-                            drawHudLine(drawContext, textRenderer, "\uF089", displayVariantCounts.getOrDefault("zombie", 0), displayFishCaughtCount, config.fishHUDConfig.showVariantPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
-                        }
-                        // Calculate others
-                        if (config.fishHUDToggles.showUnique) {
-                            int othersSum = displayVariantCounts.entrySet().stream()
-                                    .filter(entry -> !displayedVariants.contains(entry.getKey()))
-                                    .mapToInt(Map.Entry::getValue)
-                                    .sum();
-
-                            drawContext.drawText(textRenderer, "ᴜɴɪꞯᴜᴇ " + othersSum, scaledX, scaledYHolder[0], 0xFFFFFF, shadows);
-                            drawContext.drawText(textRenderer, "ᴜɴɪꞯᴜᴇ ", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDUniqueColor, shadows);
-                            scaledYHolder[0] += lineHeight;
-
-                        }
-                    }
-                }
-
-            }finally { // Guaranteed to execute even if exceptions occur
-                drawContext.getMatrices().pop();
-            }
+            trackerHud(drawContext);
         }
+
         if(config.petHUD){
             if (config.petWarningHUDConfig.enableWarning && currentPet == null){
                 renderNoPetWarning(drawContext); // Add this line
@@ -510,8 +512,10 @@ public class HudRenderer implements HudRenderCallback {
         }
 
         if(config.fullInvHUDConfig.FullInvWarningEnable) {
+            assert client.player != null;
             checkInventorySpace(client.player.getInventory(), drawContext);
         }
+
         if (config.otherHUDConfig.showItemFrameTooltip) {
             if(LookTickHandler.instance().targetedItem != null) {
                 drawContext.drawItemTooltip(client.textRenderer, LookTickHandler.instance().targetedItem, client.getWindow().getScaledWidth() / 2, client.getWindow().getScaledHeight() / 2);

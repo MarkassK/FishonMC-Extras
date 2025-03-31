@@ -1,10 +1,9 @@
 package io.github.markassk.fishonmcextras.model_types;
 
-import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
+import io.github.markassk.fishonmcextras.handler.PetMergeCalculatorHandler;
+import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-
-import static io.github.markassk.fishonmcextras.common.util.TextHelper.capitalize;
 
 public class PetStats {
     private final String name;
@@ -86,7 +85,7 @@ public class PetStats {
 
     public static PetStats getStats(NbtCompound compound) {
         return new PetStats(
-                capitalize(compound.getString("pet")),
+                TextHelper.capitalize(compound.getString("pet")),
                 compound.getString("rarity"),
                 (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
                 (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max"),

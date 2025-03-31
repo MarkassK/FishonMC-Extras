@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.common.util;
+package io.github.markassk.fishonmcextras.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

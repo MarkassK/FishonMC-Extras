@@ -1,9 +1,9 @@
 package io.github.markassk.fishonmcextras;
 
 import io.github.markassk.fishonmcextras.commands.CommandRegistration;
-import io.github.markassk.fishonmcextras.common.tooltip.TooltipPetRating;
-import io.github.markassk.fishonmcextras.common.handler.LookTickHandler;
-import io.github.markassk.fishonmcextras.common.screen.PetMergeCalculatorScreen;
+import io.github.markassk.fishonmcextras.tooltip.TooltipPetRating;
+import io.github.markassk.fishonmcextras.handler.LookTickHandler;
+import io.github.markassk.fishonmcextras.screen.PetMergeCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.hud.HudRenderer;
 import io.github.markassk.fishonmcextras.trackers.FishTracker;

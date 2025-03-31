@@ -1,10 +1,10 @@
-package io.github.markassk.fishonmcextras.common.screen;
+package io.github.markassk.fishonmcextras.screen;
 
 import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
 import io.github.markassk.fishonmcextras.model_types.PetStats;
-import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
-import io.github.markassk.fishonmcextras.common.screen.widget.ClickablePetItemWidget;
-import io.github.markassk.fishonmcextras.common.util.TextHelper;
+import io.github.markassk.fishonmcextras.handler.PetMergeCalculatorHandler;
+import io.github.markassk.fishonmcextras.screen.widget.ClickablePetItemWidget;
+import io.github.markassk.fishonmcextras.util.TextHelper;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
