@@ -128,23 +128,10 @@ public class TooltipPetRating {
         return jsonToText(json);
     }
 
-    private static Text appendRating(Text line, float rating, float rarityMultiplier, float extraMultiplier, String substr, int occurrence) {
-        String json = textToJson(line);
-        StringBuilder builder = new StringBuilder(json);
-        float ratingPercentage = rating * extraMultiplier / rarityMultiplier;
-        String newJson = builder.insert(ordinalIndexOf(json, substr, occurrence), " (" + String.format("%.0f", ratingPercentage) + "%)").toString();
-
-        return jsonToText(newJson);
-    }
-
     private static int ordinalIndexOf(String str, String substr, int n) {
         int pos = str.indexOf(substr);
         while (--n > 0 && pos != -1)
             pos = str.indexOf(substr, pos + 1);
         return pos;
-    }
-
-    private static String getMaxFromString(String str) {
-        return str.substring(str.indexOf("/") + 1, str.indexOf(")"));
     }
 }
