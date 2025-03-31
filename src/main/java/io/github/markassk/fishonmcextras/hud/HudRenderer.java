@@ -12,6 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
@@ -282,6 +283,45 @@ public class HudRenderer implements HudRenderCallback {
         }
     }
 
+    public void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
+        FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
+        TextRenderer textRenderer = client.textRenderer;
+        int WARNING_THRESHOLD = config.fullInvHUDConfig.FullInvHUDWarningSlot;
+        int emptySlots = 0;
+
+        // Check main inventory (including hotbar)
+        for (int i = 0; i < 36; i++) { //  0-8 are hotbar slots / 9-35 are main inventory slots
+            if (inventory.getStack(i).isEmpty()) {
+                emptySlots++;
+            }
+        }
+
+        if (emptySlots <= WARNING_THRESHOLD) {
+            String warningText = "Warning! Only " + emptySlots + " empty slots left!";
+            context.getMatrices().push();
+            try {
+                // Use configurable font size
+                float scale = config.fullInvHUDConfig.FullInvFontSize / 10f;
+                context.getMatrices().scale(scale, scale, 1f);
+
+                // Gets screen size
+                int screenWidth = client.getWindow().getScaledWidth();
+                int screenHeight = client.getWindow().getScaledHeight();
+
+                // Position calculation
+                int textWidth = textRenderer.getWidth(warningText);
+                int x = (int) (((float) screenWidth / 2 - textWidth * scale / 2) / scale);
+                int y = (int) ((screenHeight - 45) / scale);
+
+                // Text Color and Shadows
+                int color = config.fullInvHUDConfig.FullInvFontColor;
+
+                context.drawText(textRenderer, warningText, x, y, color, config.fullInvHUDConfig.FullInvHUDShadows);
+            } finally {
+                context.getMatrices().pop();
+            }
+        }
+    }
 
 
     @Override
@@ -449,14 +489,15 @@ public class HudRenderer implements HudRenderCallback {
                                     .mapToInt(Map.Entry::getValue)
                                     .sum();
 
-                            drawContext.drawText(textRenderer, "ᴜɴɪǫᴜᴇ " + othersSum, scaledX, scaledYHolder[0], 0xFFFFFF, shadows);
-                            drawContext.drawText(textRenderer, "ᴜɴɪǫᴜᴇ ", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDUniqueColor, shadows);
+                            drawContext.drawText(textRenderer, "ᴜɴɪꞯᴜᴇ " + othersSum, scaledX, scaledYHolder[0], 0xFFFFFF, shadows);
+                            drawContext.drawText(textRenderer, "ᴜɴɪꞯᴜᴇ ", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDUniqueColor, shadows);
                             scaledYHolder[0] += lineHeight;
 
                         }
                     }
                 }
-            } finally { // Guaranteed to execute even if exceptions occur
+
+            }finally { // Guaranteed to execute even if exceptions occur
                 drawContext.getMatrices().pop();
             }
         }
@@ -466,6 +507,10 @@ public class HudRenderer implements HudRenderCallback {
             } else if (currentPet != null) {
                 renderCurrentPet(drawContext);
             }
+        }
+
+        if(config.fullInvHUDConfig.FullInvWarningEnable) {
+            checkInventorySpace(client.player.getInventory(), drawContext);
         }
         if (config.otherHUDConfig.showItemFrameTooltip) {
             if(LookTickHandler.instance().targetedItem != null) {

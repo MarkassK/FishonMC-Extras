@@ -52,9 +52,13 @@ public class FishOnMCExtrasConfig implements ConfigData {
     // Other Options
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Category(value = "otheroptions")
-    @ConfigEntry.Gui.CollapsibleObject
     @ConfigEntry.Gui.Tooltip()
     public OtherHUDConfig otherHUDConfig = new OtherHUDConfig();
+
+    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Category(value = "otheroptions")
+    @ConfigEntry.Gui.Tooltip()
+    public FullInvHUDConfig fullInvHUDConfig = new FullInvHUDConfig();
 
 
     // ----------- HUD Styling -----------
@@ -174,5 +178,17 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public int fishHUDValueColor = 0xFFFFFF; // White by default
         @ConfigEntry.ColorPicker
         public int fishHUDUniqueColor = 0x00FFFF; // Cyan by default
+    }
+
+    public static class FullInvHUDConfig{
+        public boolean FullInvWarningEnable = true;
+        @ConfigEntry.BoundedDiscrete(min = 10, max = 40)
+        public int FullInvFontSize = 10;
+        @ConfigEntry.ColorPicker
+        public int FullInvFontColor = 0xFF5555;
+        public boolean FullInvHUDShadows = true;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 35)
+        public int FullInvHUDWarningSlot = 3;
+
     }
 }
