@@ -21,6 +21,7 @@ A Minecraft mod that enhances your experience on FishOnMC with advanced tracking
 - Pet stat percentages
 - Pet Merge calculator
 - Item Frame tooltip shower
+- Warning when inventory gets nearly full
 
 ## ⚙️ Installation
 1. **Install Fabric Loader** for your Minecraft version
