@@ -40,7 +40,9 @@ public class LookTickHandler {
                                 || itemStack.getItem() == Items.ROTTEN_FLESH
                                 || itemStack.getItem() == Items.LEATHER_BOOTS
                                 || itemStack.getItem() == Items.LEATHER_LEGGINGS
-                                || itemStack.getItem() == Items.LEATHER_CHESTPLATE) &&
+                                || itemStack.getItem() == Items.LEATHER_CHESTPLATE
+                                || itemStack.getItem() == Items.COOKED_COD
+                                || itemStack.getItem() == Items.SLIME_BALL) &&
                                 itemStack.contains(DataComponentTypes.CUSTOM_DATA)
                 ) {
                     targetedItem = itemStack;
