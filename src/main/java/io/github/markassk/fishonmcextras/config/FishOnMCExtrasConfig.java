@@ -51,6 +51,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
     // ----------- Other Options -----------
     // Other Options
     @ConfigEntry.Gui.PrefixText
+    @ConfigEntry.Gui.CollapsibleObject
     @ConfigEntry.Category(value = "otheroptions")
     @ConfigEntry.Gui.Tooltip()
     public OtherHUDConfig otherHUDConfig = new OtherHUDConfig();
@@ -189,6 +190,8 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public boolean FullInvHUDShadows = true;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 35)
         public int FullInvHUDWarningSlot = 3;
+        @ConfigEntry.BoundedDiscrete(min = 45, max = 500)
+        public int FullInvHUDHeight = 45;
 
     }
 }
