@@ -29,7 +29,7 @@ public class HudRenderer implements HudRenderCallback {
     public float addOnFishWeight;
     public float alpha2 = 1.0f; 
     public float alpha3 = 1.0f;
-    public boolean shouldReset = false; // Flaga na reset
+    public boolean shouldReset = false; 
 
 
     // Current tracker caught
@@ -328,12 +328,12 @@ public class HudRenderer implements HudRenderCallback {
             
             if(this.hasFishRendered > 0) {
                 this.hasFishRendered -=1;
-                if(this.hasFishRendered<=120 && this.hasFishRendered !=0){ //sprawdzenie czy czas jest mniejszy niz 120 i rozpoczecie fadingu
+                if(this.hasFishRendered<=120 && this.hasFishRendered !=0){
                     this.hasFishRendered -=1;
                     alpha2 -=0.01f;
                     
                 }
-                if(this.hasFishRendered<=120 && this.hasFishRendered !=0){ //sprawdzenie czy czas jest mniejszy niz 120 i rozpoczecie fadingu
+                if(this.hasFishRendered<=120 && this.hasFishRendered !=0){ 
                     alpha3 -=0.01f;
                     
                 }
@@ -341,18 +341,18 @@ public class HudRenderer implements HudRenderCallback {
                 
                 
 
-                int alpha2Int = (int) (alpha2 * 255) << 24; // Przekształcenie alpha2 do 8-bitowego formatu
+                int alpha2Int = (int) (alpha2 * 255) << 24; 
                     int color1 = alpha2Int | 0x458ae4;
                     int color2 = alpha2Int | 0x22e708;
                     int color3 = alpha2Int | 0x4699C9;
                     int color4 = alpha2Int | 0xBF8B27;
-                    int color5 = alpha2Int | 0xFF0000; // Połączenie alpha z kolorem
-                int alpha3Int = (int) (alpha3 * 255) << 24; // Przekształcenie alpha3 do 8-bitowego formatu
+                    int color5 = alpha2Int | 0xFF0000; 
+                int alpha3Int = (int) (alpha3 * 255) << 24; 
                     int color13 = alpha3Int | 0xff0033;
                     int color23 = alpha3Int | 0x5414a9;
                     int color33 = alpha3Int | 0xf1c40f;
                     int color43 = alpha3Int | 0xe75a26;
-                    int color53 = alpha3Int | 0xffffff; // Połączenie alpha z kolorem
+                    int color53 = alpha3Int | 0xffffff; 
                 
                 drawContext.getMatrices().push();
                 try {
@@ -385,7 +385,7 @@ public class HudRenderer implements HudRenderCallback {
                     // Now use the display variables
                     float weightKg = this.addOnFishWeight * 0.453592f;
                     String weightText = String.format("%.2f lb (%.2f kg)", this.addOnFishWeight,weightKg);
-                    int textWidth = textRenderer.getWidth(weightText); // Możesz zamienić na rzeczywisty tekst
+                    int textWidth = textRenderer.getWidth(weightText); 
                     int scaledX = Math.round((screenWidth - textWidth * scale) / 2 / scale);
                     if(this.addOnFishWeight<1.0f){
                         drawContext.drawText(textRenderer,
@@ -442,7 +442,7 @@ public class HudRenderer implements HudRenderCallback {
         
                     // Now use the display variables
                     String size = this.addOnFishSize;
-                    int textWidth2 = textRenderer.getWidth(size); // Możesz zamienić na rzeczywisty tekst
+                    int textWidth2 = textRenderer.getWidth(size); 
                     int scaledX = Math.round((screenWidth - textWidth2 * scale) / 2 / scale);
                     switch(this.addOnFishSize){
                         case "baby":
