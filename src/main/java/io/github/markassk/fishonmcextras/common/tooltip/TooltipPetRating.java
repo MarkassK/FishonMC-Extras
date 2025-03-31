@@ -1,15 +1,15 @@
-package io.github.markassk.fishonmcextras.common.Tooltip;
+package io.github.markassk.fishonmcextras.common.tooltip;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
+import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
+import io.github.markassk.fishonmcextras.common.util.TextHelper;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.model_types.PetStats;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextCodecs;
+import net.minecraft.util.Formatting;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,8 +18,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static io.github.markassk.fishonmcextras.common.util.TextHelper.jsonToText;
+import static io.github.markassk.fishonmcextras.common.util.TextHelper.textToJson;
+
 public class TooltipPetRating {
-    private static final Gson gson = new Gson();
 
     private static float findMultiplier(String petStr) {
         if (petStr.indexOf('\uf033') != -1) return 1f;
@@ -35,32 +37,53 @@ public class TooltipPetRating {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         if(textList.size() >= 3 && textList.get(1).getString().contains(" Pet") && textList.get(3).getString().contains(" ᴘᴇᴛ") && itemStack.getItem() == Items.PLAYER_HEAD && itemStack.contains(DataComponentTypes.CUSTOM_DATA)) {
             NbtCompound compound = itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt();
+            PetStats petStats = PetStats.getStats(compound);
 
             if(Objects.equals(compound.getString("type"), "pet")) {
-                String petClimateLuck = getMaxFromString(textList.get(9).copy().getString());
-                String petClimateScale = getMaxFromString(textList.get(10).copy().getString());
-                String petLocationLuck = getMaxFromString(textList.get(13).copy().getString());
-                String petLocationScale = getMaxFromString(textList.get(14).copy().getString());
+                if (!config.petTooltipToggles.showAccuratePercentage) {
 
-                float multiplier = findMultiplier(textList.get(2).getString());
-                float total = Stream.of(petClimateLuck, petClimateScale, petLocationLuck, petLocationScale).mapToInt(Integer::parseInt).sum();
+                    if (config.petTooltipToggles.showIndividualRating) {
+                        float petClimateLuck = petStats.getcLuck() * 4 / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
+                        float petClimateScale = petStats.getcScale() * 4 / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
+                        float petLocationLuck = petStats.getlLuck() * 4 / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
+                        float petLocationScale = petStats.getlScale() * 4 / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
 
-                if (config.petTooltipToggles.showIndividualRating) {
-                    Text petClimateLuckLine = appendRating(textList.get(9), Float.parseFloat(petClimateLuck), multiplier, 4, "\",\"italic\"", 3);
-                    Text petClimateScaleLine = appendRating(textList.get(10), Float.parseFloat(petClimateScale), multiplier, 4, "\",\"italic\"", 3);
-                    Text petLocationLuckLine = appendRating(textList.get(13), Float.parseFloat(petLocationLuck), multiplier, 4, "\",\"italic\"", 3);
-                    Text petLocationScaleLine = appendRating(textList.get(14), Float.parseFloat(petLocationScale), multiplier, 4, "\",\"italic\"", 3);
+                        Text petClimateLuckLine = TextHelper.concat(textList.get(9), Text.literal(" (" + TextHelper.fmt(petClimateLuck) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petClimateScaleLine = TextHelper.concat(textList.get(10), Text.literal(" (" + TextHelper.fmt(petClimateScale) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationLuckLine = TextHelper.concat(textList.get(13), Text.literal(" (" + TextHelper.fmt(petLocationLuck) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationScaleLine = TextHelper.concat(textList.get(14), Text.literal(" (" + TextHelper.fmt(petLocationScale) + "%)").formatted(Formatting.DARK_GRAY));
 
-                    textList.set(9, petClimateLuckLine);
-                    textList.set(10, petClimateScaleLine);
-                    textList.set(13, petLocationLuckLine);
-                    textList.set(14, petLocationScaleLine);
-                }
 
-                if (config.petTooltipToggles.showFullRating) {
-                    Text petRatingLine = appendRating(textList.get(16), total, multiplier, 1, "\",\"italic\"", 2);
+                        textList.set(9, petClimateLuckLine);
+                        textList.set(10, petClimateScaleLine);
+                        textList.set(13, petLocationLuckLine);
+                        textList.set(14, petLocationScaleLine);
+                    }
 
-                    textList.set(16, petRatingLine);
+                    if (config.petTooltipToggles.showFullRating) {
+                        float total = (petStats.getcLuck() + petStats.getcScale() + petStats.getlLuck() + petStats.getlScale()) / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
+                        Text petRatingLine = TextHelper.concat(textList.get(16), Text.literal(" (" + TextHelper.fmt(total) + "%)").formatted(Formatting.DARK_GRAY));
+
+                        textList.set(16, petRatingLine);
+                    }
+                } else {
+                    if (config.petTooltipToggles.showIndividualRating) {
+                        Text petClimateLuckLine = TextHelper.concat(textList.get(9), Text.literal(" (" + TextHelper.fmt(petStats.getcLuckPercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petClimateScaleLine = TextHelper.concat(textList.get(10), Text.literal(" (" + TextHelper.fmt(petStats.getcScalePercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationLuckLine = TextHelper.concat(textList.get(13), Text.literal(" (" + TextHelper.fmt(petStats.getlLuckPercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationScaleLine = TextHelper.concat(textList.get(14), Text.literal(" (" + TextHelper.fmt(petStats.getlScalePercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
+
+                        textList.set(9, petClimateLuckLine);
+                        textList.set(10, petClimateScaleLine);
+                        textList.set(13, petLocationLuckLine);
+                        textList.set(14, petLocationScaleLine);
+                    }
+
+                    if (config.petTooltipToggles.showFullRating) {
+                        Text petRatingLine = TextHelper.concat(textList.get(16), Text.literal(" (" + TextHelper.fmt(petStats.getTotalPercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
+
+                        textList.set(16, petRatingLine);
+                    }
                 }
             }
         }
@@ -123,16 +146,5 @@ public class TooltipPetRating {
 
     private static String getMaxFromString(String str) {
         return str.substring(str.indexOf("/") + 1, str.indexOf(")"));
-    }
-
-    private static String textToJson(Text text) {
-        return gson.toJson(TextCodecs.CODEC.encodeStart(JsonOps.INSTANCE, text).getOrThrow());
-    }
-
-    private static Text jsonToText(String text) {
-        return TextCodecs.CODEC
-                .decode(JsonOps.INSTANCE, gson.fromJson(text, JsonElement.class))
-                .getOrThrow()
-                .getFirst();
     }
 }
