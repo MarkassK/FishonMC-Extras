@@ -4,10 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,33 +30,38 @@ public class TooltipPetRating {
         return 1;
     }
 
-    public static List<Text> appendTooltipRating(List<Text> textList) {
+    public static List<Text> appendTooltipRating(List<Text> textList, ItemStack itemStack) {
+
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-        if(textList.size() >= 3 && textList.get(1).getString().contains(" Pet") && textList.get(3).getString().contains(" ᴘᴇᴛ")) {
-            String petClimateLuck = getMaxFromString(textList.get(9).copy().getString());
-            String petClimateScale = getMaxFromString(textList.get(10).copy().getString());
-            String petLocationLuck = getMaxFromString(textList.get(13).copy().getString());
-            String petLocationScale = getMaxFromString(textList.get(14).copy().getString());
+        if(textList.size() >= 3 && textList.get(1).getString().contains(" Pet") && textList.get(3).getString().contains(" ᴘᴇᴛ") && itemStack.getItem() == Items.PLAYER_HEAD && itemStack.contains(DataComponentTypes.CUSTOM_DATA)) {
+            NbtCompound compound = itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt();
 
-            float multiplier = findMultiplier(textList.get(2).getString());
-            float total = Stream.of(petClimateLuck, petClimateScale, petLocationLuck, petLocationScale).mapToInt(Integer::parseInt).sum();
+            if(Objects.equals(compound.getString("type"), "pet")) {
+                String petClimateLuck = getMaxFromString(textList.get(9).copy().getString());
+                String petClimateScale = getMaxFromString(textList.get(10).copy().getString());
+                String petLocationLuck = getMaxFromString(textList.get(13).copy().getString());
+                String petLocationScale = getMaxFromString(textList.get(14).copy().getString());
 
-            if (config.petTooltipToggles.showIndividualRating) {
-                Text petClimateLuckLine = appendRating(textList.get(9), Float.parseFloat(petClimateLuck), multiplier, 4, "\",\"italic\"", 3);
-                Text petClimateScaleLine = appendRating(textList.get(10), Float.parseFloat(petClimateScale), multiplier, 4, "\",\"italic\"", 3);
-                Text petLocationLuckLine = appendRating(textList.get(13), Float.parseFloat(petLocationLuck), multiplier, 4, "\",\"italic\"", 3);
-                Text petLocationScaleLine = appendRating(textList.get(14), Float.parseFloat(petLocationScale), multiplier, 4, "\",\"italic\"", 3);
+                float multiplier = findMultiplier(textList.get(2).getString());
+                float total = Stream.of(petClimateLuck, petClimateScale, petLocationLuck, petLocationScale).mapToInt(Integer::parseInt).sum();
 
-                textList.set(9, petClimateLuckLine);
-                textList.set(10, petClimateScaleLine);
-                textList.set(13, petLocationLuckLine);
-                textList.set(14, petLocationScaleLine);
-            }
+                if (config.petTooltipToggles.showIndividualRating) {
+                    Text petClimateLuckLine = appendRating(textList.get(9), Float.parseFloat(petClimateLuck), multiplier, 4, "\",\"italic\"", 3);
+                    Text petClimateScaleLine = appendRating(textList.get(10), Float.parseFloat(petClimateScale), multiplier, 4, "\",\"italic\"", 3);
+                    Text petLocationLuckLine = appendRating(textList.get(13), Float.parseFloat(petLocationLuck), multiplier, 4, "\",\"italic\"", 3);
+                    Text petLocationScaleLine = appendRating(textList.get(14), Float.parseFloat(petLocationScale), multiplier, 4, "\",\"italic\"", 3);
 
-            if (config.petTooltipToggles.showFullRating) {
-                Text petRatingLine = appendRating(textList.get(16), total, multiplier, 1, "\",\"italic\"", 2);
+                    textList.set(9, petClimateLuckLine);
+                    textList.set(10, petClimateScaleLine);
+                    textList.set(13, petLocationLuckLine);
+                    textList.set(14, petLocationScaleLine);
+                }
 
-                textList.set(16, petRatingLine);
+                if (config.petTooltipToggles.showFullRating) {
+                    Text petRatingLine = appendRating(textList.get(16), total, multiplier, 1, "\",\"italic\"", 2);
+
+                    textList.set(16, petRatingLine);
+                }
             }
         }
         return textList;

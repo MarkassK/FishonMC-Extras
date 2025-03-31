@@ -456,13 +456,7 @@ public class HudRenderer implements HudRenderCallback {
                         }
                     }
                 }
-
-                if (config.otherHUDConfig.showItemFrameTooltip) {
-                    if(LookTickHandler.instance().targetedItem != null) {
-                        drawContext.drawItemTooltip(textRenderer, LookTickHandler.instance().targetedItem, screenWidth / 2, 50);
-                    }
-                }
-            }finally { // Guaranteed to execute even if exceptions occur
+            } finally { // Guaranteed to execute even if exceptions occur
                 drawContext.getMatrices().pop();
             }
         }
@@ -471,6 +465,11 @@ public class HudRenderer implements HudRenderCallback {
                 renderNoPetWarning(drawContext); // Add this line
             } else if (currentPet != null) {
                 renderCurrentPet(drawContext);
+            }
+        }
+        if (config.otherHUDConfig.showItemFrameTooltip) {
+            if(LookTickHandler.instance().targetedItem != null) {
+                drawContext.drawItemTooltip(client.textRenderer, LookTickHandler.instance().targetedItem, client.getWindow().getScaledWidth() / 2, client.getWindow().getScaledHeight() / 2);
             }
         }
     }

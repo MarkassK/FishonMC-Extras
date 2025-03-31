@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.common;
+package io.github.markassk.fishonmcextras.model_types;
 
 import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
 

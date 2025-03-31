@@ -1,8 +1,6 @@
 package io.github.markassk.fishonmcextras.common.handler;
 
-import com.google.gson.Gson;
-import com.mojang.serialization.JsonOps;
-import io.github.markassk.fishonmcextras.common.PetStats;
+import io.github.markassk.fishonmcextras.model_types.PetStats;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;

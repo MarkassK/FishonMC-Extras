@@ -52,6 +52,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
     // Other Options
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Category(value = "otheroptions")
+    @ConfigEntry.Gui.CollapsibleObject
     @ConfigEntry.Gui.Tooltip()
     public OtherHUDConfig otherHUDConfig = new OtherHUDConfig();
 

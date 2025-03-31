@@ -1,7 +1,7 @@
 package io.github.markassk.fishonmcextras.common.screen;
 
 import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
-import io.github.markassk.fishonmcextras.common.PetStats;
+import io.github.markassk.fishonmcextras.model_types.PetStats;
 import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
 import io.github.markassk.fishonmcextras.common.screen.widget.ClickablePetItemWidget;
 import io.github.markassk.fishonmcextras.common.util.TextHelper;
