@@ -1,7 +1,7 @@
-package io.github.markassk.fishonmcextras.common.tooltip;
+package io.github.markassk.fishonmcextras.tooltip;
 
-import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
-import io.github.markassk.fishonmcextras.common.util.TextHelper;
+import io.github.markassk.fishonmcextras.handler.PetMergeCalculatorHandler;
+import io.github.markassk.fishonmcextras.util.TextHelper;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.model_types.PetStats;
 import net.minecraft.component.DataComponentTypes;
@@ -17,9 +17,6 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
-import static io.github.markassk.fishonmcextras.common.util.TextHelper.jsonToText;
-import static io.github.markassk.fishonmcextras.common.util.TextHelper.textToJson;
 
 public class TooltipPetRating {
 
@@ -92,7 +89,7 @@ public class TooltipPetRating {
 
     public static Text appendTooltipRating(Text textLine) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-        String json = textToJson(textLine.copy());
+        String json = TextHelper.textToJson(textLine.copy());
         if (json.contains("ᴘᴇᴛ ʀᴀᴛɪɴɢ")) {
             String petStr = json.substring(json.indexOf(" Pet\\n"), json.indexOf("ʀɪɢʜᴛ ᴄʟɪᴄᴋ ᴛᴏ ᴏᴘᴇɴ ᴘᴇᴛ ᴍᴇɴᴜ"));
             Pattern statNumber = Pattern.compile("(?<=\\+)(.*?)(?=\")");
@@ -122,10 +119,10 @@ public class TooltipPetRating {
                 if (config.petTooltipToggles.showFullRating) {
                     petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 16), " (" + String.format("%.0f", (total / multiplier)) + "%)").toString();
                 }
-                return jsonToText(json.replace(petStr, petStrNew));
+                return TextHelper.jsonToText(json.replace(petStr, petStrNew));
             }
         }
-        return jsonToText(json);
+        return TextHelper.jsonToText(json);
     }
 
     private static int ordinalIndexOf(String str, String substr, int n) {

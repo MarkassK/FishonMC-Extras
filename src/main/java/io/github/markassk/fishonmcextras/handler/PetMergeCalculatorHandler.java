@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.common.handler;
+package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.model_types.PetStats;
 import net.minecraft.component.DataComponentTypes;

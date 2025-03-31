@@ -3,7 +3,7 @@ package io.github.markassk.fishonmcextras.hud;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
-import io.github.markassk.fishonmcextras.common.handler.LookTickHandler;
+import io.github.markassk.fishonmcextras.handler.LookTickHandler;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
