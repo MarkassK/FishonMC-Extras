@@ -115,8 +115,8 @@
 
   "text.autoconfig.fishonmcextras.category.otheroptions": "Other Options",
 
-  "text.autoconfig.fishonmcextras.option.otherHUDConfig.@PrefixText": "Other HUD Options",
-  "text.autoconfig.fishonmcextras.option.otherHUDConfig": "Other HUDs",
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig.@PrefixText": "Item Frame Tooltips:",
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig": "Hover Tooltips",
   "text.autoconfig.fishonmcextras.option.otherHUDConfig.@Tooltip": "Click to Open or Close.",
   "text.autoconfig.fishonmcextras.option.otherHUDConfig.showItemFrameTooltip": "Show tooltip on Item frame hover",
   "text.autoconfig.fishonmcextras.option.otherHUDConfig.showItemFrameTooltip.@Tooltip": "Enable or disable the tooltip on hovering an Item frame with a FishOnMC item.",
