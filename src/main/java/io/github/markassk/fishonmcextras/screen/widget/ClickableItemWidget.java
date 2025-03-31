@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.common.screen.widget;
+package io.github.markassk.fishonmcextras.screen.widget;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

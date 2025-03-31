@@ -1,9 +1,9 @@
 package io.github.markassk.fishonmcextras;
 
 import io.github.markassk.fishonmcextras.commands.CommandRegistration;
-import io.github.markassk.fishonmcextras.common.Tooltip.TooltipPetRating;
-import io.github.markassk.fishonmcextras.common.handler.LookTickHandler;
-import io.github.markassk.fishonmcextras.common.screen.PetMergeCalculatorScreen;
+import io.github.markassk.fishonmcextras.tooltip.TooltipPetRating;
+import io.github.markassk.fishonmcextras.handler.LookTickHandler;
+import io.github.markassk.fishonmcextras.screen.PetMergeCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.hud.HudRenderer;
 import io.github.markassk.fishonmcextras.trackers.FishTracker;
@@ -67,7 +67,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ScreenEvents.BEFORE_INIT.register(this::beforeScreenOpen);
         ScreenEvents.AFTER_INIT.register(this::afterScreenOpen);
 
-        ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> lines = TooltipPetRating.appendTooltipRating(lines));
+        ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> lines = TooltipPetRating.appendTooltipRating(lines, stack));
 
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> TooltipPetRating.appendTooltipRating(message));
     }

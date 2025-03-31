@@ -18,6 +18,9 @@ A Minecraft mod that enhances your experience on FishOnMC with advanced tracking
 - Auto-pause timer after inactivity
 - Active pet / No pet Warning
 - "/foe" chat command
+- Pet stat percentages
+- Pet Merge calculator
+- Item Frame tooltip shower
 
 ## ⚙️ Installation
 1. **Install Fabric Loader** for your Minecraft version
@@ -25,7 +28,7 @@ A Minecraft mod that enhances your experience on FishOnMC with advanced tracking
     - [Fabric API](https://modrinth.com/mod/fabric-api)
     - [Cloth Config](https://modrinth.com/mod/cloth-config)
     - [ModMenu](https://modrinth.com/mod/modmenu)
-3. Place `fishonmc-extras-0.1.1+1.21-1.21.3.jar` in your `mods` folder
+3. Place `fishonmc-extras-0.x.x+1.21-1.21.3.jar` in your `mods` folder
 
 ### Mod Managers
 - **Modrinth App**: [![Modrinth](https://cdn.modrinth.com/img/modrinth-badge.png)](https://modrinth.com/mod/fishonmc-extras)
@@ -39,9 +42,7 @@ Access config screen via:
 ## 🏗️ Future Features (NO ORDER)
 - Tracking of specific fish types in fish HUD
 - Make Fish HUD stats groups moveable individually
-- Show juvi and baby in fish HUD
 - More toggles
-
 - Shards tracking (with hourly rate)
 - Quest HUD (Tracker for rewards & completions, No quest Warning)
 - Crew Quest HUD (Maybe)

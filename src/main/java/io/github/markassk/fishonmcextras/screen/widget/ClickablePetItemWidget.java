@@ -1,6 +1,6 @@
-package io.github.markassk.fishonmcextras.common.screen.widget;
+package io.github.markassk.fishonmcextras.screen.widget;
 
-import io.github.markassk.fishonmcextras.common.handler.PetMergeCalculatorHandler;
+import io.github.markassk.fishonmcextras.handler.PetMergeCalculatorHandler;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
