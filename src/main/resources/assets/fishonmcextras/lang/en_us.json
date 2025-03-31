@@ -123,6 +123,7 @@
 
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig": "Full Inventory Options",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.@Tooltip": "Click to Open or Close.",
+  "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvWarningEnable": "Enable or Disable",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvFontSize": "Full Inventory Font Size",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvFontColor": "Full Inventory Font Color",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDShadows": "Full Inventory Text Shadows",

@@ -284,8 +284,7 @@ public class HudRenderer implements HudRenderCallback {
         }
     }
 
-    public void checkInventorySpace(PlayerEntity player, DrawContext context) {
-        PlayerInventory inventory = player.getInventory();
+    public void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
         FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         TextRenderer textRenderer = client.textRenderer;
         int WARNING_THRESHOLD = config.fullInvHUDConfig.FullInvHUDWarningSlot;
@@ -516,8 +515,8 @@ public class HudRenderer implements HudRenderCallback {
             }
         }
 
-        if(true) {
-            checkInventorySpace(client.player, drawContext);
+        if(config.fullInvHUDConfig.FullInvWarningEnable) {
+            checkInventorySpace(client.player.getInventory(), drawContext);
         }
     }
 }

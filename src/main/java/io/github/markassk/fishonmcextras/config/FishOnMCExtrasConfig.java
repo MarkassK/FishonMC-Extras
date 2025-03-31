@@ -181,6 +181,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
     }
 
     public static class FullInvHUDConfig{
+        public boolean FullInvWarningEnable = true;
         @ConfigEntry.BoundedDiscrete(min = 10, max = 40)
         public int FullInvFontSize = 10;
         @ConfigEntry.ColorPicker
