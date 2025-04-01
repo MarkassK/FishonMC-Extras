@@ -152,6 +152,12 @@ public class FishTracker {
                 nbt.getString("rarity"),
                 nbt.getString("size")
         );
+
+        hudRenderer.fishOnHookRenderStats(
+                nbt.getFloat("weight"),
+                nbt.getFloat("length"),
+                nbt.getString("size")
+        );
     }
 
     public void reset() {
