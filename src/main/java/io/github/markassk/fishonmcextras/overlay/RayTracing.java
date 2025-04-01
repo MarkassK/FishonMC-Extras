@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.common.overlay;
+package io.github.markassk.fishonmcextras.overlay;
 
 
 import net.minecraft.client.MinecraftClient;

@@ -8,59 +8,70 @@ import me.shedaniel.autoconfig.AutoConfig;
 @Config(name = "fishonmcextras")
 public class FishOnMCExtrasConfig implements ConfigData {
 
-    // ----------- General -----------
+    // ----------- Fish Options -----------
     //Fish HUD Options
     @ConfigEntry.Gui.PrefixText
-    @ConfigEntry.Category(value = "general")
+    @ConfigEntry.Category(value = "fishoptions")
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean fishHUD = true;
 
-    @ConfigEntry.Category(value = "general")
+    @ConfigEntry.Category(value = "fishoptions")
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean trackTimed = true;
 
-    @ConfigEntry.Category(value = "general")
+    @ConfigEntry.Category(value = "fishoptions")
     @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.Tooltip()
     public FishHUDToggles fishHUDToggles = new FishHUDToggles();
 
-    @ConfigEntry.Category(value = "general")
-    @ConfigEntry.Gui.CollapsibleObject
-    public OtherHUDToggles otherHUDToggles = new OtherHUDToggles();
-
-
-    // Pet HUD Options
+    // ----------- Pet Options -----------
+    // Pet Options
     @ConfigEntry.Gui.PrefixText
-    @ConfigEntry.Category(value = "general")
+    @ConfigEntry.Category(value = "petoptions")
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean petHUD = true;
 
-
     // Pet Tooltip Options
     @ConfigEntry.Gui.PrefixText
-    @ConfigEntry.Category(value = "general")
+    @ConfigEntry.Category(value = "petoptions")
     @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.Tooltip()
     public PetTooltipToggles petTooltipToggles = new PetTooltipToggles();
+
+    @ConfigEntry.Category(value = "petoptions")
+    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.Tooltip()
+    public PetWarningHUDConfig petWarningHUDConfig = new PetWarningHUDConfig();
+
+    @ConfigEntry.Category(value = "petoptions")
+    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.Tooltip()
+    public PetActiveHUDConfig petActiveHUDConfig = new PetActiveHUDConfig();
+
+    // ----------- Other Options -----------
+    // Other Options
+    @ConfigEntry.Gui.PrefixText
+    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Category(value = "otheroptions")
+    @ConfigEntry.Gui.Tooltip()
+    public OtherHUDConfig otherHUDConfig = new OtherHUDConfig();
+
+    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Category(value = "otheroptions")
+    @ConfigEntry.Gui.Tooltip()
+    public FullInvHUDConfig fullInvHUDConfig = new FullInvHUDConfig();
 
 
     // ----------- HUD Styling -----------
     @ConfigEntry.Category(value = "textStyling")
     @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.Tooltip()
     public FishHUDConfig fishHUDConfig = new FishHUDConfig();
-
-    @ConfigEntry.Category(value = "textStyling")
-    @ConfigEntry.Gui.CollapsibleObject
-    public PetWarningHUDConfig petWarningHUDConfig = new PetWarningHUDConfig();
-
-    @ConfigEntry.Category(value = "textStyling")
-    @ConfigEntry.Gui.CollapsibleObject
-    public PetActiveHUDConfig petActiveHUDConfig = new PetActiveHUDConfig();
-
 
 
     public static FishOnMCExtrasConfig getConfig() {
         return AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).getConfig();
     }
-
 
     public static class FishHUDToggles {
         @ConfigEntry.Gui.Tooltip(count = 2)
@@ -71,6 +82,10 @@ public class FishOnMCExtrasConfig implements ConfigData {
         @ConfigEntry.Gui.PrefixText
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean showRarities = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean showBaby = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean showJuvenile = true;
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean showAdult = true;
         @ConfigEntry.Gui.Tooltip(count = 2)
@@ -96,18 +111,13 @@ public class FishOnMCExtrasConfig implements ConfigData {
 
     }
 
-    public static class OtherHUDToggles {
-        @ConfigEntry.Gui.Tooltip()
-        public boolean showItemFrameTooltip = true;
-    }
-
     public static class PetTooltipToggles {
         @ConfigEntry.Gui.Tooltip()
         public boolean showFullRating = true;
         @ConfigEntry.Gui.Tooltip()
         public boolean showIndividualRating = true;
         @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean showAccuratePercentage = false;
+        public boolean showAccuratePercentage = true;
     }
 
     public static class PetWarningHUDConfig{
@@ -132,6 +142,11 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public int petHUDX = 65;
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int petHUDY = 96;
+    }
+
+    public static class OtherHUDConfig {
+        @ConfigEntry.Gui.Tooltip()
+        public boolean showItemFrameTooltip = true;
     }
 
     public static class FishHUDConfig{
@@ -166,4 +181,17 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public int fishHUDUniqueColor = 0x00FFFF; // Cyan by default
     }
 
+    public static class FullInvHUDConfig{
+        public boolean FullInvWarningEnable = true;
+        @ConfigEntry.BoundedDiscrete(min = 10, max = 40)
+        public int FullInvFontSize = 10;
+        @ConfigEntry.ColorPicker
+        public int FullInvFontColor = 0xFF5555;
+        public boolean FullInvHUDShadows = true;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 35)
+        public int FullInvHUDWarningSlot = 3;
+        @ConfigEntry.BoundedDiscrete(min = 45, max = 500)
+        public int FullInvHUDHeight = 45;
+
+    }
 }

@@ -1,15 +1,14 @@
-package io.github.markassk.fishonmcextras.common.handler;
+package io.github.markassk.fishonmcextras.handler;
 
-import com.google.gson.Gson;
-import com.mojang.serialization.JsonOps;
-import io.github.markassk.fishonmcextras.common.PetStats;
+import io.github.markassk.fishonmcextras.model_types.PetStats;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 
 import java.util.Objects;
+
+import static io.github.markassk.fishonmcextras.model_types.PetStats.getStats;
 
 public class PetMergeCalculatorHandler {
     private static PetMergeCalculatorHandler INSTANCE = new PetMergeCalculatorHandler();
@@ -62,21 +61,6 @@ public class PetMergeCalculatorHandler {
         if (selectedPets[0] != null && selectedPets[1] != null) {
             this.calculatedPet = calculatePet(petOne, petTwo);
         }
-    }
-
-    private PetStats getStats(NbtCompound compound) {
-        return new PetStats(
-                capitalize(compound.getString("pet")),
-                compound.getString("rarity"),
-                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
-                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max"),
-                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max"),
-                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max"),
-                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getDouble("percent_max"),
-                (float) compound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getDouble("percent_max"),
-                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getDouble("percent_max"),
-                (float) compound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getDouble("percent_max")
-        );
     }
 
     private PetStats calculatePet(PetStats petOne, PetStats petTwo) {
@@ -139,10 +123,7 @@ public class PetMergeCalculatorHandler {
         };
     }
 
-    public static String capitalize(String str) {
-        if(str == null || str.length()<=1) return str;
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
-    }
+
 
     public static String rarityString(String rarity) {
         return switch (rarity) {

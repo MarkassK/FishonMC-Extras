@@ -1,6 +1,6 @@
-package io.github.markassk.fishonmcextras.common.handler;
+package io.github.markassk.fishonmcextras.handler;
 
-import io.github.markassk.fishonmcextras.common.overlay.RayTracing;
+import io.github.markassk.fishonmcextras.overlay.RayTracing;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -40,7 +40,9 @@ public class LookTickHandler {
                                 || itemStack.getItem() == Items.ROTTEN_FLESH
                                 || itemStack.getItem() == Items.LEATHER_BOOTS
                                 || itemStack.getItem() == Items.LEATHER_LEGGINGS
-                                || itemStack.getItem() == Items.LEATHER_CHESTPLATE) &&
+                                || itemStack.getItem() == Items.LEATHER_CHESTPLATE
+                                || itemStack.getItem() == Items.COOKED_COD
+                                || itemStack.getItem() == Items.SLIME_BALL) &&
                                 itemStack.contains(DataComponentTypes.CUSTOM_DATA)
                 ) {
                     targetedItem = itemStack;
