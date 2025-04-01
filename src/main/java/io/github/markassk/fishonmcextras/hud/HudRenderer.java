@@ -281,7 +281,6 @@ public class HudRenderer implements HudRenderCallback {
             // Adjust for scaling
             int scaledX = (int) (baseX / scale);
             int scaledY = (int) (baseY / scale);
-
             // Draw pet text with configurable color
             context.drawText(textRenderer, text, scaledX, scaledY, config.petActiveHUDConfig.petActiveColor, config.petActiveHUDConfig.petActiveHUDShadows);
 
@@ -290,12 +289,12 @@ public class HudRenderer implements HudRenderCallback {
         }
     }
 
-    public void fishOnHookRenderStats( String size) {
+    public void fishOnHookRenderStats(String size) {
         this.addOnFishSize = size;
         this.hasFishRendered = 313;
         alpha2 = 1.0f;
     }
-    public void fishOnHookRenderStats( Float weight) {
+    public void fishOnHookRenderStats(Float weight) {
         this.addOnFishWeight = weight;
         alpha3 = 1.0f;
     }
@@ -446,29 +445,29 @@ public class HudRenderer implements HudRenderCallback {
                     int scaledX = Math.round((screenWidth - textWidth2 * scale) / 2 / scale);
                     switch(this.addOnFishSize){
                         case "baby":
-                        drawContext.drawText(textRenderer,
-                        "ʙᴀʙʏ",
-                        scaledX, scaledYHolder[0], color1, shadows);
+                            drawContext.drawText(textRenderer,
+                            "ʙᴀʙʏ",
+                            scaledX, scaledYHolder[0], color1, shadows);
                         break;
                         case "juvenile":
-                        drawContext.drawText(textRenderer,
-                        "ᴊᴜᴠᴇɴɪʟᴇ",
-                        scaledX, scaledYHolder[0], color2, shadows);
+                            drawContext.drawText(textRenderer,
+                            "ᴊᴜᴠᴇɴɪʟᴇ",
+                            scaledX, scaledYHolder[0], color2, shadows);
                         break;
                         case "adult":
-                        drawContext.drawText(textRenderer,
-                        "ᴀᴅᴜʟᴛ",
-                        scaledX, scaledYHolder[0], color3, shadows);
+                            drawContext.drawText(textRenderer,
+                            "ᴀᴅᴜʟᴛ",
+                            scaledX, scaledYHolder[0], color3, shadows);
                         break;
                         case "large":
-                        drawContext.drawText(textRenderer,
-                        "ʟᴀʀɢᴇ",
-                        scaledX, scaledYHolder[0], color4, shadows);
+                            drawContext.drawText(textRenderer,
+                            "ʟᴀʀɢᴇ",
+                            scaledX, scaledYHolder[0], color4, shadows);
                         break;
                         case "gigantic":
-                        drawContext.drawText(textRenderer,
-                        "ɢɪɢᴀɴᴛɪᴄ",
-                        scaledX, scaledYHolder[0], color5, shadows);
+                            drawContext.drawText(textRenderer,
+                            "ɢɪɢᴀɴᴛɪᴄ",
+                            scaledX, scaledYHolder[0], color5, shadows);
                         break;
                     }
 
