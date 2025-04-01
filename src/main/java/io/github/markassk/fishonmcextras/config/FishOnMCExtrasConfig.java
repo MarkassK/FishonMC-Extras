@@ -145,8 +145,20 @@ public class FishOnMCExtrasConfig implements ConfigData {
     }
 
     public static class OtherHUDConfig {
+        @ConfigEntry.Gui.PrefixText
         @ConfigEntry.Gui.Tooltip()
         public boolean showItemFrameTooltip = true;
+
+        @ConfigEntry.Gui.PrefixText
+        @ConfigEntry.Gui.Tooltip()
+        public boolean showExtraFishingStats = true;
+        public boolean showSizeRating = true;
+        public boolean showWeight = true;
+        public boolean showLength = true;
+        @ConfigEntry.ColorPicker
+        public int statColor = 0xAAAAAA;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 100)
+        public int statHeight = 61;
     }
 
     public static class FishHUDConfig{
