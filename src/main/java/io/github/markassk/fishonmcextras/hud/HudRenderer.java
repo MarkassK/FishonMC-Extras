@@ -25,6 +25,14 @@ import java.util.concurrent.TimeUnit;
 public class HudRenderer implements HudRenderCallback {
     private final MinecraftClient client = MinecraftClient.getInstance();
 
+    public int hasFishRendered;
+    public String addOnFishSize;  
+    public float addOnFishWeight;
+    public float alpha2 = 1.0f; 
+    public float alpha3 = 1.0f;
+    public boolean shouldReset = false; 
+
+
     // Current tracker caught
     private int fishCaughtCount = 0;
     private float totalXP = 0.0f;
@@ -282,6 +290,174 @@ public class HudRenderer implements HudRenderCallback {
         }
     }
 
+
+    public void fishOnHookRenderStats( String size) {
+        this.addOnFishSize = size;
+        this.hasFishRendered = 313;
+        alpha2 = 1.0f;
+    }
+    public void fishOnHookRenderStats( Float weight) {
+        this.addOnFishWeight = weight;
+        alpha3 = 1.0f;
+    }
+    private void justFishCaughtAddon(DrawContext drawContext){
+        FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
+        
+        TextRenderer textRenderer = client.textRenderer;
+        if(this.hasFishRendered > 0) {
+            this.hasFishRendered -=1;
+            if(this.hasFishRendered<=120 && this.hasFishRendered !=0){ 
+                this.hasFishRendered -=1;
+                alpha2 -=0.01f;
+                
+            }
+            if(this.hasFishRendered<=120 && this.hasFishRendered !=0){ 
+                alpha3 -=0.01f;
+                
+            }
+            
+            
+            
+
+            int alpha2Int = (int) (alpha2 * 255) << 24; 
+                int color1 = alpha2Int | 0x458ae4;
+                int color2 = alpha2Int | 0x22e708;
+                int color3 = alpha2Int | 0x4699C9;
+                int color4 = alpha2Int | 0xBF8B27;
+                int color5 = alpha2Int | 0xFF0000; 
+            int alpha3Int = (int) (alpha3 * 255) << 24;
+                int color13 = alpha3Int | 0xff0033;
+                int color23 = alpha3Int | 0x5414a9;
+                int color33 = alpha3Int | 0xf1c40f;
+                int color43 = alpha3Int | 0xe75a26;
+                int color53 = alpha3Int | 0xffffff; 
+            
+            drawContext.getMatrices().push();
+            try {
+                // Get screen size
+                int screenWidth = client.getWindow().getScaledWidth();
+                int screenHeight = client.getWindow().getScaledHeight();
+    
+                // Convert percentage config values to screen coordinates
+                
+                float yPercent = 63f / 100f;
+                
+    
+                // Calculate base positions relative to screen size
+                
+                int baseY = (int) (screenHeight * yPercent);
+    
+                // Scaling setup
+                boolean shadows = config.fishHUDConfig.fishHUDShadows;
+                int fontSize = config.fishHUDConfig.fishHUDFontSize;
+                float scale = fontSize / 8.8f;
+                drawContext.getMatrices().scale(scale, scale, 1f);
+    
+                int padding = 2;
+                
+                int[] scaledYHolder = {(int) (baseY / scale)};
+                int lineHeight = (int) (textRenderer.fontHeight + (padding / scale));
+             
+          
+    
+                // Now use the display variables
+                float weightKg = this.addOnFishWeight * 0.453592f;
+                String weightText = String.format("%.2f lb (%.2f kg)", this.addOnFishWeight,weightKg);
+                int textWidth = textRenderer.getWidth(weightText); 
+                int scaledX = Math.round((screenWidth - textWidth * scale) / 2 / scale);
+                if(this.addOnFishWeight<1.0f){
+                    drawContext.drawText(textRenderer,
+                    weightText,
+                    scaledX, scaledYHolder[0], color13, shadows);
+                } else if(this.addOnFishWeight>=1.0f && this.addOnFishWeight<=9.9999f){
+                    drawContext.drawText(textRenderer,
+                    weightText,
+                    scaledX, scaledYHolder[0], color23, shadows);
+                } else if(this.addOnFishWeight>10.0f && this.addOnFishWeight<=99.9999f){
+                    drawContext.drawText(textRenderer,
+                    weightText,
+                    scaledX, scaledYHolder[0], color33, shadows);
+                } else if(this.addOnFishWeight>100.0f && this.addOnFishWeight<=999.9999f){
+                    drawContext.drawText(textRenderer,
+                    weightText,
+                    scaledX, scaledYHolder[0], color43, shadows);
+                } else if(this.addOnFishWeight>=1000.0f){
+                    drawContext.drawText(textRenderer,
+                    weightText,
+                    scaledX, scaledYHolder[0], color53, shadows);
+                }
+                
+                scaledYHolder[0] += lineHeight;
+            }finally { // Guaranteed to execute even if exceptions occur
+                drawContext.getMatrices().pop();
+            }
+            drawContext.getMatrices().push();
+            try {
+                // Get screen size
+                int screenWidth = client.getWindow().getScaledWidth();
+                int screenHeight = client.getWindow().getScaledHeight();
+    
+                // Convert percentage config values to screen coordinates
+                
+                float yPercent = 57f / 100f;
+    
+                // Calculate base positions relative to screen size
+               
+                int baseY = (int) (screenHeight * yPercent);
+    
+                // Scaling setup
+                boolean shadows = config.fishHUDConfig.fishHUDShadows;
+                int fontSize = config.fishHUDConfig.fishHUDFontSize;
+                float scale = fontSize / 5.0f;
+                drawContext.getMatrices().scale(scale, scale, 1f);
+    
+                int padding = 2;
+                
+                int[] scaledYHolder = {(int) (baseY / scale)};
+                int lineHeight = (int) (textRenderer.fontHeight + (padding / scale));
+             
+          
+    
+                // Now use the display variables
+                String size = this.addOnFishSize;
+                int textWidth2 = textRenderer.getWidth(size); 
+                int scaledX = Math.round((screenWidth - textWidth2 * scale) / 2 / scale);
+                switch(this.addOnFishSize){
+                    case "baby":
+                    drawContext.drawText(textRenderer,
+                    "ʙᴀʙʏ",
+                    scaledX, scaledYHolder[0], color1, shadows);
+                    break;
+                    case "juvenile":
+                    drawContext.drawText(textRenderer,
+                    "ᴊᴜᴠᴇɴɪʟᴇ",
+                    scaledX, scaledYHolder[0], color2, shadows);
+                    break;
+                    case "adult":
+                    drawContext.drawText(textRenderer,
+                    "ᴀᴅᴜʟᴛ",
+                    scaledX, scaledYHolder[0], color3, shadows);
+                    break;
+                    case "large":
+                    drawContext.drawText(textRenderer,
+                    "ʟᴀʀɢᴇ",
+                    scaledX, scaledYHolder[0], color4, shadows);
+                    break;
+                    case "gigantic":
+                    drawContext.drawText(textRenderer,
+                    "ɢɪɢᴀɴᴛɪᴄ",
+                    scaledX, scaledYHolder[0], color5, shadows);
+                    break;
+                }
+
+                scaledYHolder[0] += lineHeight;
+            }finally { // Guaranteed to execute even if exceptions occur
+                drawContext.getMatrices().pop();
+            }
+        }
+    }
+    
+
     private void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
         FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         TextRenderer textRenderer = client.textRenderer;
@@ -294,6 +470,7 @@ public class HudRenderer implements HudRenderCallback {
                 emptySlots++;
             }
         }
+
 
         if (emptySlots <= WARNING_THRESHOLD) {
             String warningText = "Warning! Only " + emptySlots + " empty slots left!";
@@ -312,6 +489,7 @@ public class HudRenderer implements HudRenderCallback {
                 int x = (int) (((float) screenWidth / 2 - textWidth * scale / 2) / scale);
                 int y = (int) ((screenHeight - config.fullInvHUDConfig.FullInvHUDHeight) / scale);
 
+
                 // Text Color and Shadows
                 int color = config.fullInvHUDConfig.FullInvFontColor;
 
@@ -321,6 +499,7 @@ public class HudRenderer implements HudRenderCallback {
             }
         }
     }
+ 
 
     private void trackerHud(DrawContext drawContext) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
@@ -509,7 +688,9 @@ public class HudRenderer implements HudRenderCallback {
             } else if (currentPet != null) {
                 renderCurrentPet(drawContext);
             }
+                
         }
+        justFishCaughtAddon(drawContext);
 
         if(config.fullInvHUDConfig.FullInvWarningEnable) {
             assert client.player != null;
