@@ -154,10 +154,9 @@ public class FishTracker {
         );
 
         hudRenderer.fishOnHookRenderStats(
+                nbt.getFloat("weight"),
+                nbt.getFloat("length"),
                 nbt.getString("size")
-        );
-        hudRenderer.fishOnHookRenderStats(
-                nbt.getFloat("weight")
         );
     }
 
