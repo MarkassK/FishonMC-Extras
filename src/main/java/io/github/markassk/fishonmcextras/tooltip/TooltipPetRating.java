@@ -30,11 +30,10 @@ public class TooltipPetRating {
     }
 
     public static List<Text> appendTooltipRating(List<Text> textList, ItemStack itemStack) {
-
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         if(textList.size() >= 3 && textList.get(1).getString().contains(" Pet") && textList.get(3).getString().contains(" ᴘᴇᴛ") && itemStack.getItem() == Items.PLAYER_HEAD && itemStack.contains(DataComponentTypes.CUSTOM_DATA)) {
             NbtCompound compound = itemStack.get(DataComponentTypes.CUSTOM_DATA).getNbt();
-            PetStats petStats = PetStats.getStats(compound);
+            PetStats petStats = PetStats.getStats(compound, PetMergeCalculatorHandler.getRatingFromJson(PetMergeCalculatorHandler.petToJson(itemStack)));
 
             if(Objects.equals(compound.getString("type"), "pet")) {
                 if (!config.petTooltipToggles.showAccuratePercentage) {
@@ -45,10 +44,10 @@ public class TooltipPetRating {
                         float petLocationLuck = petStats.getlLuck() * 4 / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
                         float petLocationScale = petStats.getlScale() * 4 / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
 
-                        Text petClimateLuckLine = TextHelper.concat(textList.get(9), Text.literal(" (" + TextHelper.fmt(petClimateLuck) + "%)").formatted(Formatting.DARK_GRAY));
-                        Text petClimateScaleLine = TextHelper.concat(textList.get(10), Text.literal(" (" + TextHelper.fmt(petClimateScale) + "%)").formatted(Formatting.DARK_GRAY));
-                        Text petLocationLuckLine = TextHelper.concat(textList.get(13), Text.literal(" (" + TextHelper.fmt(petLocationLuck) + "%)").formatted(Formatting.DARK_GRAY));
-                        Text petLocationScaleLine = TextHelper.concat(textList.get(14), Text.literal(" (" + TextHelper.fmt(petLocationScale) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petClimateLuckLine = TextHelper.concat(textList.get(9), Text.literal(" (" + TextHelper.fmt(petClimateLuck, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petClimateScaleLine = TextHelper.concat(textList.get(10), Text.literal(" (" + TextHelper.fmt(petClimateScale, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationLuckLine = TextHelper.concat(textList.get(13), Text.literal(" (" + TextHelper.fmt(petLocationLuck, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationScaleLine = TextHelper.concat(textList.get(14), Text.literal(" (" + TextHelper.fmt(petLocationScale, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
 
 
                         textList.set(9, petClimateLuckLine);
@@ -59,16 +58,16 @@ public class TooltipPetRating {
 
                     if (config.petTooltipToggles.showFullRating) {
                         float total = (petStats.getcLuck() + petStats.getcScale() + petStats.getlLuck() + petStats.getlScale()) / PetMergeCalculatorHandler.rarityMultiplier(petStats.getRarity());
-                        Text petRatingLine = TextHelper.concat(textList.get(16), Text.literal(" (" + TextHelper.fmt(total) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petRatingLine = TextHelper.concat(textList.get(16), Text.literal(" (" + TextHelper.fmt(total, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
 
                         textList.set(16, petRatingLine);
                     }
                 } else {
                     if (config.petTooltipToggles.showIndividualRating) {
-                        Text petClimateLuckLine = TextHelper.concat(textList.get(9), Text.literal(" (" + TextHelper.fmt(petStats.getcLuckPercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
-                        Text petClimateScaleLine = TextHelper.concat(textList.get(10), Text.literal(" (" + TextHelper.fmt(petStats.getcScalePercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
-                        Text petLocationLuckLine = TextHelper.concat(textList.get(13), Text.literal(" (" + TextHelper.fmt(petStats.getlLuckPercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
-                        Text petLocationScaleLine = TextHelper.concat(textList.get(14), Text.literal(" (" + TextHelper.fmt(petStats.getlScalePercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petClimateLuckLine = TextHelper.concat(textList.get(9), Text.literal(" (" + TextHelper.fmt(petStats.getcLuckPercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petClimateScaleLine = TextHelper.concat(textList.get(10), Text.literal(" (" + TextHelper.fmt(petStats.getcScalePercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationLuckLine = TextHelper.concat(textList.get(13), Text.literal(" (" + TextHelper.fmt(petStats.getlLuckPercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petLocationScaleLine = TextHelper.concat(textList.get(14), Text.literal(" (" + TextHelper.fmt(petStats.getlScalePercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
 
                         textList.set(9, petClimateLuckLine);
                         textList.set(10, petClimateScaleLine);
@@ -77,7 +76,7 @@ public class TooltipPetRating {
                     }
 
                     if (config.petTooltipToggles.showFullRating) {
-                        Text petRatingLine = TextHelper.concat(textList.get(16), Text.literal(" (" + TextHelper.fmt(petStats.getTotalPercent() * 100) + "%)").formatted(Formatting.DARK_GRAY));
+                        Text petRatingLine = TextHelper.concat(textList.get(16), Text.literal(" (" + TextHelper.fmt(petStats.getTotalPercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%)").formatted(Formatting.DARK_GRAY));
 
                         textList.set(16, petRatingLine);
                     }

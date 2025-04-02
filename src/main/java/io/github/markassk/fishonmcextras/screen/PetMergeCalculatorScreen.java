@@ -173,30 +173,30 @@ public class PetMergeCalculatorScreen extends Screen {
         petTextList.add(TextHelper.concat(
                 luckText,
                 Text.literal(TextHelper.fmt(petStat.getcLuck())),
-                Text.literal(" " + TextHelper.fmt(petStat.getcLuckPercent() * 100) + "%").formatted(Formatting.GRAY)
+                Text.literal(" " + TextHelper.fmt(petStat.getcLuckPercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%").formatted(Formatting.GRAY)
         ));
         petTextList.add(TextHelper.concat(
                 scaleText,
                 Text.literal(TextHelper.fmt(petStat.getcScale())),
-                Text.literal(" " + TextHelper.fmt(petStat.getcScalePercent() * 100) + "%").formatted(Formatting.GRAY)
+                Text.literal(" " + TextHelper.fmt(petStat.getcScalePercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%").formatted(Formatting.GRAY)
         ));
         petTextList.add(Text.empty());
         petTextList.add(Text.literal("Location").formatted(Formatting.BOLD));
         petTextList.add(TextHelper.concat(
                 luckText,
                 Text.literal(TextHelper.fmt(petStat.getlLuck())),
-                Text.literal(" " + TextHelper.fmt(petStat.getlLuckPercent() * 100) + "%").formatted(Formatting.GRAY)
+                Text.literal(" " + TextHelper.fmt(petStat.getlLuckPercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%").formatted(Formatting.GRAY)
         ));
         petTextList.add(TextHelper.concat(
                 scaleText,
                 Text.literal(TextHelper.fmt(petStat.getlScale())),
-                Text.literal(" " + TextHelper.fmt(petStat.getlScalePercent() * 100) + "%").formatted(Formatting.GRAY)
+                Text.literal(" " + TextHelper.fmt(petStat.getlScalePercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%").formatted(Formatting.GRAY)
         ));
         petTextList.add(Text.empty());
         petTextList.add(Text.literal("Rating").formatted(Formatting.BOLD));
-        Object[] ratingString = petStat.getRatingString();
+        Object[] ratingString = petStat.hasRoundingError() ? PetMergeCalculatorHandler.ratingString(petStat.hiddenRating) : petStat.getRatingString();
         petTextList.add(Text.literal(ratingString[0] + "").withColor((Integer) ratingString[1]));
-        petTextList.add(Text.literal(TextHelper.fmt(petStat.getTotalPercent() * 100) + "%").formatted(Formatting.GRAY));
+        petTextList.add(Text.literal(TextHelper.fmt(petStat.getTotalPercent() * 100, config.petTooltipToggles.percentageDecimalPlaces) + "%").formatted(Formatting.GRAY));
 
         switch (column) {
             case 0:

@@ -1,11 +1,15 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import com.google.gson.Gson;
+import com.mojang.serialization.JsonOps;
 import io.github.markassk.fishonmcextras.model_types.PetStats;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 import static io.github.markassk.fishonmcextras.model_types.PetStats.getStats;
@@ -47,7 +51,7 @@ public class PetMergeCalculatorHandler {
 
             // Pet one data
             assert componentOne != null;
-            petOne = getStats(componentOne);
+            petOne = getStats(componentOne, getRatingFromJson(petToJson(selectedPets[0])));
         }
 
         if(selectedPets[1] != null) {
@@ -55,7 +59,7 @@ public class PetMergeCalculatorHandler {
 
             // Pet two data
             assert componentTwo != null;
-            petTwo = getStats(componentTwo);
+            petTwo = getStats(componentTwo, getRatingFromJson(petToJson(selectedPets[1])));
         }
 
         if (selectedPets[0] != null && selectedPets[1] != null) {
@@ -95,17 +99,31 @@ public class PetMergeCalculatorHandler {
     }
 
     public static String ratingValue(float value) {
-        float ceilValue = Math.round(value);
-        if (ceilValue < 10) return "Awful";
-        else if (ceilValue < 20) return "Bad";
-        else if (ceilValue < 35) return "Below Average";
-        else if (ceilValue < 50) return "Average";
-        else if (ceilValue < 60) return "Good";
-        else if (ceilValue < 80) return "Great";
-        else if (ceilValue < 90) return "Excellent";
-        else if (ceilValue < 100) return "Amazing";
-        else if (ceilValue < 101) return "Perfect";
+        BigDecimal decimal = new BigDecimal(Float.toString(value));
+        decimal = decimal.setScale(2, RoundingMode.HALF_EVEN);
+        if (decimal.floatValue() < 10) return "Awful";
+        else if (decimal.floatValue() < 20) return "Bad";
+        else if (decimal.floatValue() < 35) return "Below Average";
+        else if (decimal.floatValue() < 50) return "Average";
+        else if (decimal.floatValue() < 60) return "Good";
+        else if (decimal.floatValue() < 80) return "Great";
+        else if (decimal.floatValue() < 90) return "Excellent";
+        else if (decimal.floatValue() < 100) return "Amazing";
+        else if (decimal.floatValue() < 101) return "Perfect";
         return "Wrong Rarity Selected";
+    }
+
+    public static String getRatingFromJson(String json) {
+        if(json.contains("ᴀᴡꜰᴜʟ")) return "Awful";
+        else if(json.contains("ʙᴀᴅ")) return "Bad";
+        else if(json.contains("ʙᴇʟᴏᴡ ᴀᴠᴇʀᴀɢᴇ")) return "Below Average";
+        else if(json.contains("ᴀᴠᴇʀᴀɢᴇ")) return "Average";
+        else if(json.contains("ɢᴏᴏᴅ")) return "Good";
+        else if(json.contains("ɢʀᴇᴀᴛ")) return "Great";
+        else if(json.contains("ᴇxᴄᴇʟʟᴇɴᴛ")) return "Excellent";
+        else if(json.contains("ᴀᴍᴀᴢɪɴɢ")) return "Amazing";
+        else if(json.contains("ᴘᴇʀꜰᴇᴄᴛ")) return "Perfect";
+        return "";
     }
 
     public static Object[] ratingString(String value) {
@@ -122,8 +140,6 @@ public class PetMergeCalculatorHandler {
             default -> new Object[]{"", 0xFFFFFFFF};
         };
     }
-
-
 
     public static String rarityString(String rarity) {
         return switch (rarity) {
@@ -160,5 +176,10 @@ public class PetMergeCalculatorHandler {
     private NbtCompound getNbt(ItemStack itemStack) {
         NbtComponent component = itemStack.get(DataComponentTypes.CUSTOM_DATA);
         return component != null ? component.getNbt() : null;
+    }
+
+    public static String petToJson(ItemStack itemStack) {
+        Gson gson = new Gson();
+        return gson.toJson(ItemStack.CODEC.encodeStart(JsonOps.INSTANCE, itemStack).getOrThrow());
     }
 }
