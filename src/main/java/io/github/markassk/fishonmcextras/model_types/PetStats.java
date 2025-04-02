@@ -117,8 +117,6 @@ public class PetStats {
     public boolean hasRoundingError() {
         boolean one = !TextHelper.fmt((getcLuck() + getcScale() + getlLuck() + getlScale()) / PetMergeCalculatorHandler.rarityMultiplier(getRarity()), 2).equals(TextHelper.fmt(getTotalPercent() * 100, 2));
         boolean two = hiddenRating != null && !PetMergeCalculatorHandler.ratingValue(this.getTotalPercent() * 100).equals(this.hiddenRating);
-        System.out.println(one);
-        System.out.println(two);
         return one && two;
     }
 }
