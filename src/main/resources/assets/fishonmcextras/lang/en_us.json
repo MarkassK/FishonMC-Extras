@@ -86,6 +86,7 @@
   "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage": "Show accurate pet stats percentages",
   "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[0]": "Enable or disable accurate percentages.",
   "text.autoconfig.fishonmcextras.option.petTooltipToggles.showAccuratePercentage.@Tooltip[1]": "!! THIS ONLY WORKS FOR PET TOOLTIP. NOT CHAT TOOLTIP",
+  "text.autoconfig.fishonmcextras.option.petTooltipToggles.percentageDecimalPlaces": "Show decimal places on percentages",
 
   "text.autoconfig.fishonmcextras.option.petWarningHUDConfig" : "Pet Warning HUD Config",
   "text.autoconfig.fishonmcextras.option.petWarningHUDConfig.@Tooltip": "Click to Open or Close.",

@@ -118,6 +118,8 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public boolean showIndividualRating = true;
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean showAccuratePercentage = true;
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 2)
+        public int percentageDecimalPlaces = 1;
     }
 
     public static class PetWarningHUDConfig{
