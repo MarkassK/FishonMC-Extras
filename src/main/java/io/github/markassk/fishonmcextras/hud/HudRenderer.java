@@ -641,7 +641,6 @@ public class HudRenderer implements HudRenderCallback {
         MinecraftClient client = MinecraftClient.getInstance();
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
-        // Calculate time delta
         long currentTime = System.currentTimeMillis();
         long delta = currentTime - lastUpdateTime;
         lastUpdateTime = currentTime;
@@ -655,31 +654,33 @@ public class HudRenderer implements HudRenderCallback {
             timerPaused = true;
         }
 
-        if (config.fishHUD){
-            trackerHud(drawContext);
-        }
-
-        if(config.petHUD){
-            if (config.petWarningHUDConfig.enableWarning && currentPet == null){
-                renderNoPetWarning(drawContext); // Add this line
-            } else if (currentPet != null) {
-                renderCurrentPet(drawContext);
+        // Calculate time delta
+        if(!client.options.hudHidden) {
+            if (config.petHUD) {
+                if (config.petWarningHUDConfig.enableWarning && currentPet == null) {
+                    renderNoPetWarning(drawContext); // Add this line
+                } else if (currentPet != null) {
+                    renderCurrentPet(drawContext);
+                }
             }
-                
-        }
 
-        if(config.otherHUDConfig.showExtraFishingStats) {
-            justFishCaughtAddon(drawContext);
-        }
+            if (config.otherHUDConfig.showExtraFishingStats) {
+                justFishCaughtAddon(drawContext);
+            }
 
-        if(config.fullInvHUDConfig.FullInvWarningEnable) {
-            assert client.player != null;
-            checkInventorySpace(client.player.getInventory(), drawContext);
-        }
+            if (config.fullInvHUDConfig.FullInvWarningEnable) {
+                assert client.player != null;
+                checkInventorySpace(client.player.getInventory(), drawContext);
+            }
 
-        if (config.otherHUDConfig.showItemFrameTooltip) {
-            if(LookTickHandler.instance().targetedItem != null) {
-                drawContext.drawItemTooltip(client.textRenderer, LookTickHandler.instance().targetedItem, client.getWindow().getScaledWidth() / 2, client.getWindow().getScaledHeight() / 2);
+            if (config.otherHUDConfig.showItemFrameTooltip) {
+                if (LookTickHandler.instance().targetedItem != null) {
+                    drawContext.drawItemTooltip(client.textRenderer, LookTickHandler.instance().targetedItem, client.getWindow().getScaledWidth() / 2, client.getWindow().getScaledHeight() / 2);
+                }
+            }
+
+            if (config.fishHUD) {
+                trackerHud(drawContext);
             }
         }
     }
