@@ -13,6 +13,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
@@ -433,11 +434,12 @@ public class HudRenderer implements HudRenderCallback {
             }
         }
     }
-    
 
+    private long lastSoundPlayTime = 0;
     private void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
         FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         TextRenderer textRenderer = client.textRenderer;
+        boolean PlayWarningSound = config.fullInvHUDConfig.FullInvPlayWarningSound;
         int WARNING_THRESHOLD = config.fullInvHUDConfig.FullInvHUDWarningSlot;
         int emptySlots = 0;
 
@@ -447,7 +449,6 @@ public class HudRenderer implements HudRenderCallback {
                 emptySlots++;
             }
         }
-
 
         if (emptySlots <= WARNING_THRESHOLD) {
             String warningText = "Warning! Only " + emptySlots + " empty slots left!";
@@ -466,17 +467,21 @@ public class HudRenderer implements HudRenderCallback {
                 int x = (int) (((float) screenWidth / 2 - textWidth * scale / 2) / scale);
                 int y = (int) ((screenHeight - config.fullInvHUDConfig.FullInvHUDHeight) / scale);
 
-
                 // Text Color and Shadows
                 int color = config.fullInvHUDConfig.FullInvFontColor;
-
                 context.drawText(textRenderer, warningText, x, y, color, config.fullInvHUDConfig.FullInvHUDShadows);
+
+                // Plays a sound when inventory is full
+                if (PlayWarningSound && System.currentTimeMillis() - lastSoundPlayTime > config.fullInvHUDConfig.FullInvPlayWarningSoundTime * 1000L) {
+                    client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value());
+                    lastSoundPlayTime = System.currentTimeMillis();
+                }
+
             } finally {
                 context.getMatrices().pop();
             }
         }
     }
- 
 
     private void trackerHud(DrawContext drawContext) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();

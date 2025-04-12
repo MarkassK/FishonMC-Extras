@@ -139,6 +139,8 @@
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDShadows": "Full Inventory Text Shadows",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDWarningSlot": "Change Inventory Warning Slots",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDHeight": "Change Height of Warning Text",
+  "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvPlayWarningSound": "Enable or Disable Warning Sound",
+  "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvPlayWarningSoundTime": "Change Timing of Warning Sound",
 
   "text.autoconfig.fishonmcextras.category.textStyling": "HUD Styling",
 
