@@ -47,7 +47,6 @@ Access config screen via:
 - Shards tracking (with hourly rate)
 - Quest HUD (Tracker for rewards & completions, No quest Warning)
 - Crew Quest HUD (Maybe)
-- Inventory getting full, 3 slot warning
 - Event timer
 - /foe drystreak (shows fish since variant)
 - popup screen for variants
