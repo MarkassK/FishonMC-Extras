@@ -439,7 +439,6 @@ public class HudRenderer implements HudRenderCallback {
     private void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
         FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         TextRenderer textRenderer = client.textRenderer;
-        boolean PlayWarningSound = config.fullInvHUDConfig.FullInvPlayWarningSound;
         int WARNING_THRESHOLD = config.fullInvHUDConfig.FullInvHUDWarningSlot;
         int emptySlots = 0;
 
