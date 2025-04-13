@@ -13,6 +13,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
@@ -323,18 +324,18 @@ public class HudRenderer implements HudRenderCallback {
             int alpha3Int = (int) (alpha3 * 255) << 24;
             int colorSubStats = alpha3Int | config.otherHUDConfig.statColor;
 
+            // Get screen size
+            int screenWidth = client.getWindow().getScaledWidth();
+            int screenHeight = client.getWindow().getScaledHeight();
+
+            // Convert percentage config values to screen coordinates
+            float yPercent = (float) config.otherHUDConfig.statHeight / 100f;
+
+            // Calculate base positions relative to screen size
+            int baseY = (int) (screenHeight * yPercent);
+
             drawContext.getMatrices().push();
             try {
-                // Get screen size
-                int screenWidth = client.getWindow().getScaledWidth();
-                int screenHeight = client.getWindow().getScaledHeight();
-
-                // Convert percentage config values to screen coordinates
-                float yPercent = (float) config.otherHUDConfig.statHeight / 100f;
-
-                // Calculate base positions relative to screen size
-                int baseY = (int) (screenHeight * yPercent);
-
                 // Scaling setup
                 boolean shadows = config.fishHUDConfig.fishHUDShadows;
                 int fontSize = config.fishHUDConfig.fishHUDFontSize;
@@ -359,7 +360,6 @@ public class HudRenderer implements HudRenderCallback {
                     drawContext.drawText(textRenderer,
                             weightText,
                             scaledXWeight, scaledYHolder, colorSubStats, shadows);
-
                     scaledYHolder += lineHeight;
                 }
 
@@ -374,25 +374,13 @@ public class HudRenderer implements HudRenderCallback {
             if (config.otherHUDConfig.showSizeRating) {
                 drawContext.getMatrices().push();
                 try {
-                    // Get screen size
-                    int screenWidth = client.getWindow().getScaledWidth();
-                    int screenHeight = client.getWindow().getScaledHeight();
-
-                    // Convert percentage config values to screen coordinates
-                    float yPercent = (config.otherHUDConfig.statHeight - 4) / 100f;
-
-                    // Calculate base positions relative to screen size
-                    int baseY = (int) (screenHeight * yPercent);
-
                     // Scaling setup
                     boolean shadows = config.fishHUDConfig.fishHUDShadows;
                     int fontSize = config.fishHUDConfig.fishHUDFontSize;
                     float scale = fontSize / 5.0f;
                     drawContext.getMatrices().scale(scale, scale, 1f);
 
-                    int padding = 2;
-                    int[] scaledYHolder = {(int) (baseY / scale)};
-                    int lineHeight = (int) (textRenderer.fontHeight + (padding / scale));
+                    int scaledYHolder = (int) (baseY / scale) - 12;
 
                     // Now use the display variables
                     String size = this.addOnFishSize;
@@ -402,32 +390,31 @@ public class HudRenderer implements HudRenderCallback {
                         case "baby":
                             drawContext.drawText(textRenderer,
                                     "ʙᴀʙʏ",
-                                    scaledX, scaledYHolder[0], color1, shadows);
+                                    scaledX, scaledYHolder, color1, shadows);
                             break;
                         case "juvenile":
                             drawContext.drawText(textRenderer,
                                     "ᴊᴜᴠᴇɴɪʟᴇ",
-                                    scaledX, scaledYHolder[0], color2, shadows);
+                                    scaledX, scaledYHolder, color2, shadows);
                             break;
                         case "adult":
                             drawContext.drawText(textRenderer,
                                     "ᴀᴅᴜʟᴛ",
-                                    scaledX, scaledYHolder[0], color3, shadows);
+                                    scaledX, scaledYHolder, color3, shadows);
                             break;
                         case "large":
                             drawContext.drawText(textRenderer,
                                     "ʟᴀʀɢᴇ",
-                                    scaledX, scaledYHolder[0], color4, shadows);
+                                    scaledX, scaledYHolder, color4, shadows);
                             break;
                         case "gigantic":
                             drawContext.drawText(textRenderer,
                                     "ɢɪɢᴀɴᴛɪᴄ",
-                                    scaledX, scaledYHolder[0], color5, shadows);
+                                    scaledX, scaledYHolder, color5, shadows);
                             break;
                         default:
                             break;
                     }
-                    scaledYHolder[0] += lineHeight;
                 } finally { // Guaranteed to execute even if exceptions occur
                     drawContext.getMatrices().pop();
                 }
@@ -439,7 +426,6 @@ public class HudRenderer implements HudRenderCallback {
     private void checkInventorySpace(PlayerInventory inventory, DrawContext context) {
         FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         TextRenderer textRenderer = client.textRenderer;
-        int WARNING_THRESHOLD = config.fullInvHUDConfig.FullInvHUDWarningSlot;
         int emptySlots = 0;
 
         // Check main inventory (including hotbar)
@@ -449,7 +435,7 @@ public class HudRenderer implements HudRenderCallback {
             }
         }
 
-        if (emptySlots <= WARNING_THRESHOLD) {
+        if (emptySlots <= config.fullInvHUDConfig.FullInvHUDWarningSlot) {
             String warningText = "Warning! Only " + emptySlots + " empty slots left!";
             context.getMatrices().push();
             try {
@@ -472,10 +458,10 @@ public class HudRenderer implements HudRenderCallback {
 
                 // Plays a sound when inventory is full
                 if (config.fullInvHUDConfig.FullInvPlayWarningSound && System.currentTimeMillis() - lastSoundPlayTime > config.fullInvHUDConfig.FullInvPlayWarningSoundTime * 1000L) {
-                    client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value());
+                    assert client.player != null;
+                    client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
                     lastSoundPlayTime = System.currentTimeMillis();
                 }
-
             } finally {
                 context.getMatrices().pop();
             }

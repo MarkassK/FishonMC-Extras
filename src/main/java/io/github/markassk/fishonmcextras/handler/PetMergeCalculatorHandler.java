@@ -12,8 +12,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
-import static io.github.markassk.fishonmcextras.model_types.PetStats.getStats;
-
 public class PetMergeCalculatorHandler {
     private static PetMergeCalculatorHandler INSTANCE = new PetMergeCalculatorHandler();
     public ItemStack[] selectedPets = {null, null};
@@ -51,7 +49,7 @@ public class PetMergeCalculatorHandler {
 
             // Pet one data
             assert componentOne != null;
-            petOne = getStats(componentOne, getRatingFromJson(petToJson(selectedPets[0])));
+            petOne = PetStats.getStats(componentOne, getRatingFromJson(petToJson(selectedPets[0])));
         }
 
         if(selectedPets[1] != null) {
@@ -59,7 +57,7 @@ public class PetMergeCalculatorHandler {
 
             // Pet two data
             assert componentTwo != null;
-            petTwo = getStats(componentTwo, getRatingFromJson(petToJson(selectedPets[1])));
+            petTwo = PetStats.getStats(componentTwo, getRatingFromJson(petToJson(selectedPets[1])));
         }
 
         if (selectedPets[0] != null && selectedPets[1] != null) {
@@ -101,9 +99,9 @@ public class PetMergeCalculatorHandler {
     public static String ratingValue(float value) {
         BigDecimal decimal = new BigDecimal(Float.toString(value));
         decimal = decimal.setScale(2, RoundingMode.HALF_EVEN);
-        if (decimal.floatValue() < 10) return "Awful";
-        else if (decimal.floatValue() < 20) return "Bad";
-        else if (decimal.floatValue() < 35) return "Below Average";
+        if (decimal.floatValue() <= 20) return "Sickly";
+        else if (decimal.floatValue() < 30) return "Bad";
+        else if (decimal.floatValue() < 40) return "Below Average";
         else if (decimal.floatValue() < 50) return "Average";
         else if (decimal.floatValue() < 60) return "Good";
         else if (decimal.floatValue() < 80) return "Great";
@@ -114,7 +112,7 @@ public class PetMergeCalculatorHandler {
     }
 
     public static String getRatingFromJson(String json) {
-        if(json.contains("ᴀᴡꜰᴜʟ")) return "Awful";
+        if(json.contains("ѕɪᴄᴋʟʏ")) return "Sickly";
         else if(json.contains("ʙᴀᴅ")) return "Bad";
         else if(json.contains("ʙᴇʟᴏᴡ ᴀᴠᴇʀᴀɢᴇ")) return "Below Average";
         else if(json.contains("ᴀᴠᴇʀᴀɢᴇ")) return "Average";
@@ -128,7 +126,7 @@ public class PetMergeCalculatorHandler {
 
     public static Object[] ratingString(String value) {
         return switch (value) {
-            case "Awful" -> new Object[]{"ᴀᴡꜰᴜʟ", 0xFFAA0000};
+            case "Sickly" -> new Object[]{"ѕɪᴄᴋʟʏ", 0xFF74403B};
             case "Bad" -> new Object[]{"ʙᴀᴅ", 0xFFFF5555};
             case "Below Average" -> new Object[]{"ʙᴇʟᴏᴡ ᴀᴠᴇʀᴀɢᴇ", 0xFFFCFC54};
             case "Average" -> new Object[]{"ᴀᴠᴇʀᴀɢᴇ", 0xFFFCA800};
