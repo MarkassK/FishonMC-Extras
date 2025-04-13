@@ -206,6 +206,8 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public int FullInvHUDWarningSlot = 3;
         @ConfigEntry.BoundedDiscrete(min = 45, max = 500)
         public int FullInvHUDHeight = 45;
-
+        public boolean FullInvPlayWarningSound = true;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
+        public int FullInvPlayWarningSoundTime = 5;
     }
 }
