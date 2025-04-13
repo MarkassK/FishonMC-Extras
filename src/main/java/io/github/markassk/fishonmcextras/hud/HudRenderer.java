@@ -316,7 +316,7 @@ public class HudRenderer implements HudRenderCallback {
             int alpha2Int = (int) (alpha2 * 255) << 24;
             int color1 = alpha2Int | 0x468CE7;
             int color2 = alpha2Int | 0x22EA08;
-            int color3 = alpha2Int | 0x22EA08;
+            int color3 = alpha2Int | 0x1C7DA0;
             int color4 = alpha2Int | 0xFF9000;
             int color5 = alpha2Int | 0xAF3333;
 
