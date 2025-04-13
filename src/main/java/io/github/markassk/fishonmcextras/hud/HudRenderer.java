@@ -315,11 +315,11 @@ public class HudRenderer implements HudRenderCallback {
             }
 
             int alpha2Int = (int) (alpha2 * 255) << 24;
-            int color1 = alpha2Int | 0x468CE7;
-            int color2 = alpha2Int | 0x22EA08;
-            int color3 = alpha2Int | 0x1C7DA0;
-            int color4 = alpha2Int | 0xFF9000;
-            int color5 = alpha2Int | 0xAF3333;
+            int colorBaby = alpha2Int | 0x468CE7;
+            int colorJuvenile = alpha2Int | 0x22EA08;
+            int colorAdult = alpha2Int | 0x1C7DA0;
+            int colorLarge = alpha2Int | 0xFF9000;
+            int colorGigantic = alpha2Int | 0xAF3333;
 
             int alpha3Int = (int) (alpha3 * 255) << 24;
             int colorSubStats = alpha3Int | config.otherHUDConfig.statColor;
@@ -390,27 +390,27 @@ public class HudRenderer implements HudRenderCallback {
                         case "baby":
                             drawContext.drawText(textRenderer,
                                     "ʙᴀʙʏ",
-                                    scaledX, scaledYHolder, color1, shadows);
+                                    scaledX, scaledYHolder, colorBaby, shadows);
                             break;
                         case "juvenile":
                             drawContext.drawText(textRenderer,
                                     "ᴊᴜᴠᴇɴɪʟᴇ",
-                                    scaledX, scaledYHolder, color2, shadows);
+                                    scaledX, scaledYHolder, colorJuvenile, shadows);
                             break;
                         case "adult":
                             drawContext.drawText(textRenderer,
                                     "ᴀᴅᴜʟᴛ",
-                                    scaledX, scaledYHolder, color3, shadows);
+                                    scaledX, scaledYHolder, colorAdult, shadows);
                             break;
                         case "large":
                             drawContext.drawText(textRenderer,
                                     "ʟᴀʀɢᴇ",
-                                    scaledX, scaledYHolder, color4, shadows);
+                                    scaledX, scaledYHolder, colorLarge, shadows);
                             break;
                         case "gigantic":
                             drawContext.drawText(textRenderer,
                                     "ɢɪɢᴀɴᴛɪᴄ",
-                                    scaledX, scaledYHolder, color5, shadows);
+                                    scaledX, scaledYHolder, colorGigantic, shadows);
                             break;
                         default:
                             break;
