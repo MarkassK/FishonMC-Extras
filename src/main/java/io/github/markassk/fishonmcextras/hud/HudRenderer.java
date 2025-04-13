@@ -471,7 +471,7 @@ public class HudRenderer implements HudRenderCallback {
                 context.drawText(textRenderer, warningText, x, y, color, config.fullInvHUDConfig.FullInvHUDShadows);
 
                 // Plays a sound when inventory is full
-                if (PlayWarningSound && System.currentTimeMillis() - lastSoundPlayTime > config.fullInvHUDConfig.FullInvPlayWarningSoundTime * 1000L) {
+                if (config.fullInvHUDConfig.FullInvPlayWarningSound && System.currentTimeMillis() - lastSoundPlayTime > config.fullInvHUDConfig.FullInvPlayWarningSoundTime * 1000L) {
                     client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value());
                     lastSoundPlayTime = System.currentTimeMillis();
                 }
