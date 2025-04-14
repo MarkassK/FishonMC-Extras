@@ -516,12 +516,14 @@ public class HudRenderer implements HudRenderCallback {
             int[] scaledYHolder = {(int) (baseY / scale)};
             int lineHeight = (int) (textRenderer.fontHeight + (padding / scale));
 
-            // Now use the display variables
-            drawContext.drawText(textRenderer,
-                    "Fish Caught: " + displayFishCaughtCount,
-                    scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDCaughtColor, shadows
-            );
-            scaledYHolder[0] += lineHeight;
+            // Display for Fish Caught
+            if (config.fishHUDToggles.showFishCaught) {
+                drawContext.drawText(textRenderer,
+                        "Fish Caught: " + displayFishCaughtCount,
+                        scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDCaughtColor, shadows
+                );
+                scaledYHolder[0] += lineHeight;
+            }
 
             // Display the timer and fish/hour if enabled in config
             if (config.trackTimed) {
@@ -543,10 +545,17 @@ public class HudRenderer implements HudRenderCallback {
                 }
             }
 
-            drawContext.drawText(textRenderer, "Total XP: " + displayTotalXP, scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDXPColor, shadows);
-            scaledYHolder[0] += lineHeight;
-            drawContext.drawText(textRenderer, "Total Value: " + displayTotalValue + "$", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDValueColor, shadows);
-            scaledYHolder[0] += lineHeight;
+            // Display for Total XP
+            if (config.fishHUDToggles.showFishTotalXP) {
+                drawContext.drawText(textRenderer, "Total XP: " + displayTotalXP, scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDXPColor, shadows);
+                scaledYHolder[0] += lineHeight;
+            }
+
+            // Display for Total Value
+            if (config.fishHUDToggles.showFishTotalValue) {
+                drawContext.drawText(textRenderer, "Total Value: " + displayTotalValue + "$", scaledX, scaledYHolder[0], config.fishHUDConfig.fishHUDColorConfig.fishHUDValueColor, shadows);
+                scaledYHolder[0] += lineHeight;
+            }
 
             // Rarities section
             if (config.fishHUDToggles.showRarities) {
