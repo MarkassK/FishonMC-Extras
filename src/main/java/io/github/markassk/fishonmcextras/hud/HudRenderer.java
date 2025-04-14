@@ -27,12 +27,11 @@ import java.util.concurrent.TimeUnit;
 public class HudRenderer implements HudRenderCallback {
     private final MinecraftClient client = MinecraftClient.getInstance();
 
-    private int hasFishRendered;
+    private long hasFishRendered;
     private String addOnFishSize;
     private float addOnFishLength;
     private float addOnFishWeight;
-    private float alpha2 = 1.0f;
-    private float alpha3 = 1.0f;
+    private float alpha = 1.0f;
 
 
     // Current tracker caught
@@ -293,36 +292,35 @@ public class HudRenderer implements HudRenderCallback {
     }
 
     public void fishOnHookRenderStats(Float weight, Float length, String size) {
+        FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         this.addOnFishSize = size;
-        this.hasFishRendered = 300;
+        this.hasFishRendered = (config.otherHUDConfig.statTime * 1000L - 500L) + System.currentTimeMillis();
         this.addOnFishWeight = weight;
         this.addOnFishLength = length;
-        alpha2 = 1.0f;
-        alpha3 = 1.0f;
+        alpha = 1.000f;
     }
 
     private void justFishCaughtAddon(DrawContext drawContext){
         FishOnMCExtrasConfig config = FishOnMCExtrasClient.CONFIG;
         TextRenderer textRenderer = client.textRenderer;
 
-        if(this.hasFishRendered > 0) {
-            this.hasFishRendered -= 1;
+        if(this.hasFishRendered > System.currentTimeMillis()) {
+            if(this.hasFishRendered - System.currentTimeMillis() <= 1000L && this.hasFishRendered != 0) {
+                alpha = (float) (hasFishRendered - System.currentTimeMillis()) / 1000f;
 
-            if(this.hasFishRendered <= 120 && this.hasFishRendered != 0) {
-                this.hasFishRendered -= 1;
-                alpha2 -= 0.01f;
-                alpha3 -= 0.01f;
+                if(alpha <= 0.005f) {
+                    alpha = 0.0f;
+                }
             }
 
-            int alpha2Int = (int) (alpha2 * 255) << 24;
-            int colorBaby = alpha2Int | 0x468CE7;
-            int colorJuvenile = alpha2Int | 0x22EA08;
-            int colorAdult = alpha2Int | 0x1C7DA0;
-            int colorLarge = alpha2Int | 0xFF9000;
-            int colorGigantic = alpha2Int | 0xAF3333;
+            int alphaInt = (int) (alpha * 255f) << 24;
+            int colorBaby = alphaInt | 0x468CE7;
+            int colorJuvenile = alphaInt | 0x22EA08;
+            int colorAdult = alphaInt | 0x1C7DA0;
+            int colorLarge = alphaInt | 0xFF9000;
+            int colorGigantic = alphaInt | 0xAF3333;
 
-            int alpha3Int = (int) (alpha3 * 255) << 24;
-            int colorSubStats = alpha3Int | config.otherHUDConfig.statColor;
+            int colorSubStats = alphaInt | config.otherHUDConfig.statColor;
 
             // Get screen size
             int screenWidth = client.getWindow().getScaledWidth();
