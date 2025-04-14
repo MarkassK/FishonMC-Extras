@@ -305,12 +305,8 @@ public class HudRenderer implements HudRenderCallback {
         TextRenderer textRenderer = client.textRenderer;
 
         if(this.hasFishRendered > System.currentTimeMillis()) {
-            if(this.hasFishRendered - System.currentTimeMillis() <= 1000L && this.hasFishRendered != 0) {
+            if(this.hasFishRendered - System.currentTimeMillis() <= 1000L && this.hasFishRendered != 0 && this.hasFishRendered - System.currentTimeMillis() > 20L) {
                 alpha = (float) (hasFishRendered - System.currentTimeMillis()) / 1000f;
-
-                if(alpha <= 0.005f) {
-                    alpha = 0.0f;
-                }
             }
 
             int alphaInt = (int) (alpha * 255f) << 24;
