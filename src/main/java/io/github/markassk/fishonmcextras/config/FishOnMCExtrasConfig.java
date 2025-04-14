@@ -74,39 +74,45 @@ public class FishOnMCExtrasConfig implements ConfigData {
     }
 
     public static class FishHUDToggles {
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showTimeSinceReset = false;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
+        public boolean showFishCaught = true;
+        @ConfigEntry.Gui.Tooltip
         public boolean showFishPerHour = true;
+        @ConfigEntry.Gui.Tooltip
+        public boolean showFishTotalXP = true;
+        @ConfigEntry.Gui.Tooltip
+        public boolean showFishTotalValue = true;
 
         @ConfigEntry.Gui.PrefixText
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showRarities = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showBaby = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showJuvenile = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showAdult = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showLarge = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showGigantic = true;
 
         @ConfigEntry.Gui.PrefixText
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showVariants = false;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showAlbino = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showMelanistic = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showTrophy = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showFabled = false;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showZombie = false;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean showUnique = false;
 
     }
@@ -138,8 +144,6 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public int petActiveColor = 0x00FF00; // Green by default
         @ConfigEntry.BoundedDiscrete(min = 1, max = 20)
         public int petActiveFontSize = 10;
-
-
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int petHUDX = 65;
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
