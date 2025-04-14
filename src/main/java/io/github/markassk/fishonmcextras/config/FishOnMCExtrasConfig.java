@@ -161,6 +161,8 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public int statColor = 0xAAAAAA;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 100)
         public int statHeight = 61;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 10)
+        public int statTime = 5;
     }
 
     public static class FishHUDConfig{

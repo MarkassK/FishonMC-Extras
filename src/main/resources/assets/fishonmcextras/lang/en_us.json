@@ -130,6 +130,7 @@
   "text.autoconfig.fishonmcextras.option.otherHUDConfig.showLength": "Show length stat",
   "text.autoconfig.fishonmcextras.option.otherHUDConfig.statColor": "Show extra stats on catching fish",
   "text.autoconfig.fishonmcextras.option.otherHUDConfig.statHeight": "Height of the extra stats",
+  "text.autoconfig.fishonmcextras.option.otherHUDConfig.statTime": "How long the stats stay on screen in seconds",
 
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig": "Full Inventory Options",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.@Tooltip": "Click to Open or Close.",
