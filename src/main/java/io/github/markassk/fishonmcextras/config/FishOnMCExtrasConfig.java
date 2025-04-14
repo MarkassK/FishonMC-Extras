@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.config;
 
+import io.github.markassk.fishonmcextras.hud.HudRenderer;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -215,5 +216,6 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public boolean FullInvPlayWarningSound = true;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
         public int FullInvPlayWarningSoundTime = 5;
+        public HudRenderer.InventorySound FullInvWarningSoundSample = HudRenderer.InventorySound.PLING;
     }
 }

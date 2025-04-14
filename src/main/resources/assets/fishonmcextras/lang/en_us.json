@@ -130,6 +130,7 @@
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvHUDHeight": "Height of Warning Text",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvPlayWarningSound": "Warning Sound",
   "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvPlayWarningSoundTime": "Timing of Warning Sound",
+  "text.autoconfig.fishonmcextras.option.fullInvHUDConfig.FullInvWarningSoundSample": "Change Warning Sound",
 
   "text.autoconfig.fishonmcextras.category.textStyling": "HUD Styling",
 

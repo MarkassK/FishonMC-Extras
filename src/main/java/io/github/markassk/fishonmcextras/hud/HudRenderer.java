@@ -305,12 +305,8 @@ public class HudRenderer implements HudRenderCallback {
         TextRenderer textRenderer = client.textRenderer;
 
         if(this.hasFishRendered > System.currentTimeMillis()) {
-            if(this.hasFishRendered - System.currentTimeMillis() <= 1000L && this.hasFishRendered != 0) {
+            if(this.hasFishRendered - System.currentTimeMillis() <= 1000L && this.hasFishRendered != 0 && this.hasFishRendered - System.currentTimeMillis() > 20L) {
                 alpha = (float) (hasFishRendered - System.currentTimeMillis()) / 1000f;
-
-                if(alpha <= 0.005f) {
-                    alpha = 0.0f;
-                }
             }
 
             int alphaInt = (int) (alpha * 255f) << 24;
@@ -457,13 +453,29 @@ public class HudRenderer implements HudRenderCallback {
                 // Plays a sound when inventory is full
                 if (config.fullInvHUDConfig.FullInvPlayWarningSound && System.currentTimeMillis() - lastSoundPlayTime > config.fullInvHUDConfig.FullInvPlayWarningSoundTime * 1000L) {
                     assert client.player != null;
-                    client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
+
+                    switch (config.fullInvHUDConfig.FullInvWarningSoundSample) {
+                        case PLING -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
+                        case BASS -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASS.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
+                        case BIT -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BIT.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
+                        case BELL -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BELL.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
+                        case DIDGERIDOO -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_DIDGERIDOO.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
+                    }
                     lastSoundPlayTime = System.currentTimeMillis();
                 }
             } finally {
                 context.getMatrices().pop();
             }
         }
+    }
+
+    public enum InventorySound {
+        PLING,
+        BASS,
+        BIT,
+        BELL,
+        DIDGERIDOO
+
     }
 
     private void trackerHud(DrawContext drawContext) {
