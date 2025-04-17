@@ -1,0 +1,68 @@
+{
+  "id": "minecraft:cod",
+  "count": 1,
+  "components": {
+    "minecraft:lore": [
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀁  \",\"underlined\":false},{\"bold\":false,\"color\":\"#4E4E51\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"B\",\"underlined\":false},{\"bold\":false,\"color\":\"#5B5956\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"i\",\"underlined\":false},{\"bold\":false,\"color\":\"#67635A\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"w\",\"underlined\":false},{\"bold\":false,\"color\":\"#746E5F\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"a \",\"underlined\":false},{\"bold\":false,\"color\":\"#807863\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"G\",\"underlined\":false},{\"bold\":false,\"color\":\"#8D8368\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"u\",\"underlined\":false},{\"bold\":false,\"color\":\"#A49A81\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"d\",\"underlined\":false},{\"bold\":false,\"color\":\"#BAB19A\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"g\",\"underlined\":false},{\"bold\":false,\"color\":\"#D1C9B3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"e\",\"underlined\":false},{\"bold\":false,\"color\":\"#E7E0CC\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"o\",\"underlined\":false},{\"bold\":false,\"color\":\"#FEF7E5\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"n\",\"underlined\":false}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"color\":\"white\",\"italic\":false,\"text\":\" \"},{\"color\":\"white\",\"italic\":false,\"text\":\"\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"color\":\"dark_gray\",\"italic\":false,\"text\":\" ʙɪᴡɪᴀ ᴢᴇᴢᴇʀᴀ\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"color\":\"dark_gray\",\"italic\":false,\"strikethrough\":true,\"text\":\" \"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ᴠᴀʟᴜᴇ: \",\"underlined\":false},{\"color\":\"green\",\"italic\":false,\"text\":\"$33.46\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ɴᴀᴛᴜʀᴇ: \",\"underlined\":false},{\"bold\":false,\"color\":\"#FFFB00\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"ᴊᴏʟʟʏ\",\"underlined\":false}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ʟᴏᴄᴀᴛɪᴏɴ: \",\"underlined\":false},{\"bold\":false,\"color\":\"#FBC0FA\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"ʟᴀᴋᴇ ʙɪᴡᴀ\",\"underlined\":false}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" sɪᴢᴇ: \",\"underlined\":false},{\"bold\":false,\"color\":\"#1C7DA0\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"ᴀᴅᴜʟᴛ \",\"underlined\":false},{\"color\":\"aqua\",\"italic\":false,\"text\":\"♂\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ᴡᴇɪɢʜᴛ: \",\"underlined\":false},{\"bold\":false,\"color\":\"#E7FFF5\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"0.16lb \",\"underlined\":false},{\"color\":\"dark_gray\",\"italic\":false,\"text\":\"(0.07kg)\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ʟᴇɴɢᴛʜ: \",\"underlined\":false},{\"bold\":false,\"color\":\"#E7FFF5\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"8.57in \",\"underlined\":false},{\"color\":\"dark_gray\",\"italic\":false,\"text\":\"(21.76cm)\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"color\":\"dark_gray\",\"italic\":false,\"strikethrough\":true,\"text\":\" \"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#F6CF6D\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ꜰɪsʜ ɢʀᴏᴜᴘ: \",\"underlined\":false},{\"color\":\"gray\",\"italic\":false,\"text\":\"ɢᴜᴅɢᴇᴏɴs\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#F6CF6D\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ʟɪꜰᴇsᴛʏʟᴇ: \",\"underlined\":false},{\"bold\":false,\"color\":\"#435E9A\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"ᴅᴇᴍᴇʀsᴀʟ\",\"underlined\":false}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#F6CF6D\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" ᴇᴄᴏsʏsᴛᴇᴍ: \",\"underlined\":false},{\"bold\":false,\"color\":\"#49C65C\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"ɴᴀᴛɪᴠᴇ\",\"underlined\":false}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"color\":\"dark_gray\",\"italic\":false,\"strikethrough\":true,\"text\":\" \"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" Angler: \",\"underlined\":false},{\"bold\":false,\"color\":\"#80B3C6\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"Altaria17\",\"underlined\":false}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" Date: \",\"underlined\":false},{\"color\":\"gold\",\"italic\":false,\"text\":\"12/29/2024\"}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀃  \",\"underlined\":false},{\"bold\":false,\"color\":\"#CBCED3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" Rod: \",\"underlined\":false},{\"bold\":false,\"color\":\"#D886CE\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"S\",\"underlined\":false},{\"bold\":false,\"color\":\"#E0A0DC\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"a\",\"underlined\":false},{\"bold\":false,\"color\":\"#E8B9EA\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"k\",\"underlined\":false},{\"bold\":false,\"color\":\"#E3A8E1\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"u\",\"underlined\":false},{\"bold\":false,\"color\":\"#DD97D7\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"r\",\"underlined\":false},{\"bold\":false,\"color\":\"#D886CE\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"a \",\"underlined\":false},{\"bold\":false,\"color\":\"#E8B9EA\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"R\",\"underlined\":false},{\"bold\":false,\"color\":\"#E0A0DC\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"o\",\"underlined\":false},{\"bold\":false,\"color\":\"#D886CE\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"d\",\"underlined\":false}],\"text\":\"\"}",
+      "{\"extra\":[{\"bold\":false,\"color\":\"white\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\" 퀄  \",\"underlined\":false}],\"text\":\"\"}"
+    ],
+    "minecraft:hide_additional_tooltip": {},
+    "minecraft:custom_name": "{\"extra\":[{\"bold\":false,\"color\":\"#4E4E51\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"B\",\"underlined\":false},{\"bold\":false,\"color\":\"#5B5956\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"i\",\"underlined\":false},{\"bold\":false,\"color\":\"#67635A\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"w\",\"underlined\":false},{\"bold\":false,\"color\":\"#746E5F\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"a \",\"underlined\":false},{\"bold\":false,\"color\":\"#807863\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"G\",\"underlined\":false},{\"bold\":false,\"color\":\"#8D8368\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"u\",\"underlined\":false},{\"bold\":false,\"color\":\"#A49A81\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"d\",\"underlined\":false},{\"bold\":false,\"color\":\"#BAB19A\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"g\",\"underlined\":false},{\"bold\":false,\"color\":\"#D1C9B3\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"e\",\"underlined\":false},{\"bold\":false,\"color\":\"#E7E0CC\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"o\",\"underlined\":false},{\"bold\":false,\"color\":\"#FEF7E5\",\"italic\":false,\"obfuscated\":false,\"strikethrough\":false,\"text\":\"n\",\"underlined\":false}],\"text\":\"\"}",
+    "minecraft:attribute_modifiers": {
+      "modifiers": [],
+      "show_in_tooltip": false
+    },
+    "minecraft:custom_model_data": 115,
+    "minecraft:custom_data": {
+      "date": "12/29/2024",
+      "nature": "jolly",
+      "rod": "§x§D§8§8§6§C§ES§x§E§0§A§0§D§Ca§x§E§8§B§9§E§Ak§x§E§3§A§8§E§1u§x§D§D§9§7§D§7r§x§D§8§8§6§C§Ea §x§E§8§B§9§E§AR§x§E§0§A§0§D§Co§x§D§8§8§6§C§Ed",
+      "scientific": "Biwia zezera",
+      "sex": "♂",
+      "length": 8.565301,
+      "catcher": [
+        949210280,
+        -79608969,
+        -2000536256,
+        -1137246612
+      ],
+      "weight": 0.16150247,
+      "water": "freshwater",
+      "lifestyle": "demersal",
+      "conservation": "LC",
+      "size": "adult",
+      "native": "Native",
+      "fish": "biwagudgeon",
+      "xp": 35.050926,
+      "migration": "non-migratory",
+      "variant": "normal",
+      "location": "biwa",
+      "id": [
+        -1153166289,
+        -1298051273,
+        -1901016484,
+        1367344365
+      ],
+      "value": 33.464558,
+      "group": "gudgeons",
+      "rarity": "common"
+    }
+  }
+}

@@ -1,14 +1,16 @@
 package io.github.markassk.fishonmcextras.config;
 
-import io.github.markassk.fishonmcextras.hud.HudRenderer;
+import io.github.markassk.fishonmcextras.v1.hud.HudRenderer;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.AutoConfig;
 
+import static io.github.markassk.fishonmcextras.config.ConfigConstants.TRACKERS;
+
 @Config(name = "fishonmcextras")
 public class FishOnMCExtrasConfig implements ConfigData {
-
+    //region Old Config
     // ----------- Fish Options -----------
     //Fish HUD Options
     @ConfigEntry.Gui.PrefixText
@@ -218,4 +220,19 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public int FullInvPlayWarningSoundTime = 5;
         public HudRenderer.InventorySound FullInvWarningSoundSample = HudRenderer.InventorySound.PLING;
     }
+    //endregion
+
+    //region Trackers
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerFishHUDConfig.FishTracker fishTracker = new TrackerFishHUDConfig.FishTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerPetEquipHUDConfig.PetEquipTracker petEquipTracker = new TrackerPetEquipHUDConfig.PetEquipTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerFullInventoryHUDConfig.FullInventoryTracker fullInventoryTracker = new TrackerFullInventoryHUDConfig.FullInventoryTracker();
+    //endregion
 }
