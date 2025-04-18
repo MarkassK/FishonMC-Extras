@@ -42,6 +42,8 @@
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showGigantic": "Show Gigantic",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showGigantic.@Tooltip": "Toggle the display of Gigantics.",
 
+  "text.autoconfig.fishonmcextras.option.fishHUDToggles.showSpecial": "Show Special",
+
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showVariants.@PrefixText" : "Variant Options:",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showVariants": "Show Variants",
   "text.autoconfig.fishonmcextras.option.fishHUDToggles.showVariants.@Tooltip": "Toggle the display of Variants.",
