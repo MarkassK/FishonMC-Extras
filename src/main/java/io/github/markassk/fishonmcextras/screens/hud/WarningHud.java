@@ -2,7 +2,6 @@ package io.github.markassk.fishonmcextras.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constants;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
-import io.github.markassk.fishonmcextras.handler.screens.hud.PetEquipHudHandler;
 import io.github.markassk.fishonmcextras.handler.screens.hud.WarningHudHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -36,7 +35,7 @@ public class WarningHud {
                int baseY = (int) (screenHeight * yPercent);
 
                // Scaling setup
-               int fontSize = config.petEquipTracker.activePetHUDOptions.fontSize;
+               int fontSize = config.warning.fontSize;
                float scale = fontSize / 10.0f;
                drawContext.getMatrices().scale(scale, scale, 1f);
 
