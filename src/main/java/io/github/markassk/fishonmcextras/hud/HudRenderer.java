@@ -569,6 +569,12 @@ public class HudRenderer implements HudRenderCallback {
 
                 scaledYHolder[0] += lineHeight;
             }
+
+            if(config.fishHUDToggles.showSpecial) {
+                drawHudLine(drawContext, textRenderer, "\uF092", displayRarityCounts.getOrDefault("special", 0), displayFishCaughtCount, config.fishHUDConfig.showRarityPercentages, 0xFFFFFF, scaledX, scaledYHolder, shadows, lineHeight);
+                scaledYHolder[0] += lineHeight;
+            }
+
             if ((config.fishHUDToggles.showBaby || config.fishHUDToggles.showJuvenile || config.fishHUDToggles.showAdult || config.fishHUDToggles.showLarge || config.fishHUDToggles.showGigantic) && !config.fishHUDToggles.showRarities) {
                 scaledYHolder[0] += lineHeight;
             }

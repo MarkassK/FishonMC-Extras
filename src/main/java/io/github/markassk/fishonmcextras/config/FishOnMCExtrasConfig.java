@@ -99,6 +99,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
         public boolean showLarge = true;
         @ConfigEntry.Gui.Tooltip
         public boolean showGigantic = true;
+        public boolean showSpecial = true;
 
         @ConfigEntry.Gui.PrefixText
         @ConfigEntry.Gui.Tooltip
