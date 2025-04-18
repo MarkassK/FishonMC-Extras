@@ -3,6 +3,7 @@ package io.github.markassk.fishonmcextras.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
+import io.github.markassk.fishonmcextras.FOMC.Constants;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
@@ -51,5 +52,16 @@ public class TextHelper {
                 .decode(JsonOps.INSTANCE, gson.fromJson(text, JsonElement.class))
                 .getOrThrow()
                 .getFirst();
+    }
+
+    public static String convertRarity(String rarity) {
+        return switch(rarity) {
+            case Constants.Identifier.COMMON -> Constants.Tag.COMMON;
+            case Constants.Identifier.RARE -> Constants.Tag.RARE;
+            case Constants.Identifier.EPIC -> Constants.Tag.EPIC;
+            case Constants.Identifier.LEGENDARY -> Constants.Tag.LEGENDARY;
+            case Constants.Identifier.MYTHICAL -> Constants.Tag.MYTHICAL;
+            default -> Constants.Identifier.DEFAULT;
+        };
     }
 }

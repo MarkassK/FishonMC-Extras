@@ -161,7 +161,7 @@ public class Types {
         public final String fishId; // fish
         public final String rarityId; // rarity
         public final String scientific; // scientific
-        public final String variant; // variant
+        public final String variantId; // variant
 
         public final float value; // value
         public final float xp;
@@ -188,7 +188,7 @@ public class Types {
             this.fishId = nbtCompound.getString("fish");
             this.rarityId = nbtCompound.getString("rarity");
             this.scientific = nbtCompound.getString("scientific");
-            this.variant = nbtCompound.getString("variant");
+            this.variantId = nbtCompound.getString("variant");
             this.value = nbtCompound.getFloat("value");
             this.xp = nbtCompound.getFloat("xp");
             this.natureId = nbtCompound.getString("nature");

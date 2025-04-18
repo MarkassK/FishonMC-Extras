@@ -1,8 +1,7 @@
 package io.github.markassk.fishonmcextras;
 
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
-import io.github.markassk.fishonmcextras.handler.FishCatchHandler;
-import io.github.markassk.fishonmcextras.handler.PetEquipHandler;
+import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
 import io.github.markassk.fishonmcextras.v1.tooltip.TooltipPetRating;
 import io.github.markassk.fishonmcextras.v1.handler.LookTickHandler;
@@ -84,6 +83,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ClientPlayConnectionEvents.JOIN.register(this::onJoin);
         ClientPlayConnectionEvents.DISCONNECT.register(this::onLeave);
         ClientTickEvents.END_CLIENT_TICK.register(this::onEndClientTick);
+        ClientReceiveMessageEvents.GAME.register(this::receiveGameMessage);
 
         HudRenderCallback.EVENT.register(MAIN_HUD_RENDERER);
     }
@@ -93,18 +93,23 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         if(minecraftClient.getCurrentServerEntry() != null ) {
             if(Objects.equals(minecraftClient.getCurrentServerEntry().address, "play.fishonmc.net")) {
                 assert minecraftClient.player != null;
-                FishCatchHandler.instance().tick(minecraftClient.player);
-                PetEquipHandler.instance().tick();
+                LoadingHandler.instance().tick(minecraftClient);
+                FishCatchHandler.instance().tick(minecraftClient);
+                PetEquipHandler.instance().tick(minecraftClient);
+                FullInventoryHandler.instance().tick(minecraftClient);
+                WarningHandler.instance().tick(minecraftClient);
             }
         }
     }
 
     private void onJoin(ClientPlayNetworkHandler clientPlayNetworkHandler, PacketSender packetSender, MinecraftClient minecraftClient) {
-        FishCatchHandler.instance().isDoneScanning = false;
+        LoadingHandler.instance().init();
+        PetEquipHandler.instance().init();
+        WarningHandler.instance().init();
 
         if(minecraftClient.getCurrentServerEntry() != null ) {
             if(Objects.equals(minecraftClient.getCurrentServerEntry().address, "play.fishonmc.net")) {
-                System.out.println("[FoE] Scan Start");
+                FishOnMCExtras.LOGGER.info("[FoE] Loading Start");
                 minecraftClient.execute(() -> {
                     assert minecraftClient.player != null;
                     FishCatchHandler.instance().onJoinServer(minecraftClient.player);
@@ -113,6 +118,9 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         }
     }
 
+    private void receiveGameMessage(Text text, boolean b) {
+        PetEquipHandler.instance().onReceiveMessage(text);
+    }
 
     private void onLeave(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
         FishCatchHandler.instance().onLeaveServer();

@@ -16,6 +16,9 @@ public class Constants {
         public static final String LEGENDARY = "legendary";
         public static final String MYTHICAL = "mythical";
 
+        //TODO Remove after event
+        public static final String SPECIAL = "special";
+
         // Location
         // TODO Location Identifier
         public static final String CYPRESS_LAKE = "spawn";
@@ -96,6 +99,9 @@ public class Constants {
         public static final String EPIC = "\uF035";
         public static final String LEGENDARY = "\uF036";
         public static final String MYTHICAL = "\uF037";
+
+        //TODO Remove after event
+        public static final String SPECIAL = "\uF092";
 
         // Pet Rating
         public static final String AWFUL = "ᴀᴡꜰᴜʟ";

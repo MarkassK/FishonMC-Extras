@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -12,10 +13,11 @@ import java.util.regex.Pattern;
 public class PetEquipHandler  {
     private static PetEquipHandler INSTANCE = new PetEquipHandler();
 
-    private ItemStack currentPetItem;
+    private boolean isInInventory = false;
 
-    public boolean isDoneScanning = false;
+    public ItemStack currentPetItem;
     public long startScanTime = 0;
+    public PetStatus petStatus = PetStatus.LOADING;
 
     private static final Pattern PET_EQUIP_PATTERN =
             Pattern.compile("PETS\\s*[»:]\\s*Equipped your (.+?)\\.?$", Pattern.CASE_INSENSITIVE);
@@ -29,8 +31,36 @@ public class PetEquipHandler  {
         return INSTANCE;
     }
 
-    public void tick() {
-        //TODO Find Pet Entity & Find Pet in Hotbar
+    public void init() {
+        petStatus = PetStatus.LOADING;
+    }
+
+    public void tick(MinecraftClient minecraftClient) {
+        if(ProfileStatsHandler.instance().profileStats.equippedPetSlot == -1) {
+            petStatus = PetStatus.NO_PET;
+        } else if (System.currentTimeMillis() - startScanTime < 10000
+                && LoadingHandler.instance().isLoadingDone
+                && petStatus == PetStatus.LOADING
+        ) {
+            if(minecraftClient.player != null && !isInInventory) {
+                ItemStack itemInSlot = minecraftClient.player.getInventory().getStack(ProfileStatsHandler.instance().profileStats.equippedPetSlot);
+
+                if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileStatsHandler.instance().profileStats.equippedPet.id)) {
+                    isInInventory = true;
+                    currentPetItem = itemInSlot;
+                }
+            }
+
+            if(minecraftClient.world != null && isInInventory) {
+                minecraftClient.world.getEntities().forEach(entity -> {
+                    if(entity.getName().getString().contains(minecraftClient.player.getName().getString() + "'s " + currentPetItem.getName().getString())) {
+                        petStatus = PetStatus.HAS_PET;
+                    }
+                });
+            }
+        } else if (LoadingHandler.instance().isLoadingDone && petStatus == PetStatus.LOADING) {
+            petStatus = PetStatus.NO_PET;
+        }
     }
 
     public void onReceiveMessage(Text message) {
@@ -55,12 +85,34 @@ public class PetEquipHandler  {
             if(Types.getFOMCItem(heldItem) instanceof Types.Pet pet) {
                 this.currentPetItem = heldItem;
                 ProfileStatsHandler.instance().updatePet(pet, itemSlot);
+                petStatus = PetStatus.HAS_PET;
+
+                FishOnMCExtras.LOGGER.info("[FoE] Equipped Pet");
             }
         }
     }
 
     private void handlePetUnequip() {
         this.currentPetItem = null;
+        petStatus = PetStatus.NO_PET;
         ProfileStatsHandler.instance().resetPet();
+
+        FishOnMCExtras.LOGGER.info("[FoE] Unequipped Pet");
+    }
+
+    public void updatePet(PlayerEntity player) {
+        if(petStatus == PetStatus.HAS_PET) {
+            ItemStack itemInSlot = player.getInventory().getStack(ProfileStatsHandler.instance().profileStats.equippedPetSlot);
+
+            if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileStatsHandler.instance().profileStats.equippedPet.id)) {
+                ProfileStatsHandler.instance().updatePet(pet, ProfileStatsHandler.instance().profileStats.equippedPetSlot);
+            }
+        }
+    }
+
+    public enum PetStatus {
+        LOADING,
+        NO_PET,
+        HAS_PET
     }
 }

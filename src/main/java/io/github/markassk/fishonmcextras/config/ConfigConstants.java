@@ -4,5 +4,5 @@ public class ConfigConstants {
     // Categories
     public static final String TRACKERS = "trackers";
     public static final String TOOLTIPS = "tooltips";
-    public static final String OTHER_SCREENS = "other_screens";
+    public static final String OTHER = "other";
 }

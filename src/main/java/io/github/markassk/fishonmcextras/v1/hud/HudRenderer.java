@@ -475,7 +475,6 @@ public class HudRenderer implements HudRenderCallback {
         BIT,
         BELL,
         DIDGERIDOO
-
     }
 
     private void trackerHud(DrawContext drawContext) {

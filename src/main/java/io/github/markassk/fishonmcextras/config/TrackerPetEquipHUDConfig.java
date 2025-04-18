@@ -1,37 +1,37 @@
 package io.github.markassk.fishonmcextras.config;
 
+import io.github.markassk.fishonmcextras.handler.WarningHandler;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 public class TrackerPetEquipHUDConfig {
     public static class PetEquipTracker {
         @ConfigEntry.Gui.Tooltip
-        public boolean showPetEquipTracker = true;
+        public boolean showPetEquipTrackerHUD = true;
 
         @ConfigEntry.Gui.CollapsibleObject
         public ActivePetHUDOptions activePetHUDOptions = new ActivePetHUDOptions();
         public static class ActivePetHUDOptions {
-            @ConfigEntry.Gui.Tooltip
-            public boolean showPetEquipTrackerHUD = true;
-            @ConfigEntry.ColorPicker
-            public int fontColor = 0x00FF00;
             @ConfigEntry.BoundedDiscrete(min = 1, max = 20)
             public int fontSize = 10;
             @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+            public int backgroundOpacity = 40;
+            @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
             public int hudX = 65;
             @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-            public int hudY = 96;
+            public int hudY = 90;
+
         }
 
         @ConfigEntry.Gui.CollapsibleObject
-        public PetEquipWarningHUDOptions petEquipWarningHUDOptions = new PetEquipWarningHUDOptions();
-        public static class PetEquipWarningHUDOptions {
+        public WarningOptions warningOptions = new WarningOptions();
+        public static class WarningOptions {
             @ConfigEntry.Gui.Tooltip
             public boolean showPetEquipWarningHUD = true;
-            public boolean textFlashes = true;
-            @ConfigEntry.ColorPicker
-            public int fontColor = 0xFF0000;
-            @ConfigEntry.BoundedDiscrete(min = 10, max = 40)
-            public int fontSize = 18;
+            @ConfigEntry.Gui.Tooltip
+            public boolean usePetEquipWarningSound = false;
+            @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
+            public int timePetEquipWarningSound = 5;
+            public WarningHandler.WarningSound petEquipWarningSound = WarningHandler.WarningSound.BASS;
         }
     }
 }

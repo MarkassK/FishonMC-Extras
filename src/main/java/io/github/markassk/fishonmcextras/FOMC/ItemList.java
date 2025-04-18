@@ -1,11 +1,5 @@
 package io.github.markassk.fishonmcextras.FOMC;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
-import io.github.markassk.fishonmcextras.FOMC.Types;
-import net.minecraft.item.ItemStack;
-
 public class ItemList {
     public static class Pets {
         public static Types.Pet BULLFROG;

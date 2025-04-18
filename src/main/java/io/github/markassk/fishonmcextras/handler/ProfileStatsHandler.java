@@ -40,7 +40,7 @@ public class ProfileStatsHandler {
         this.profileStats.allTotalXP += fish.xp;
         this.profileStats.allTotalValue += fish.value;
         this.profileStats.allFishSizeCounts.put(fish.sizeId, this.profileStats.allFishSizeCounts.getOrDefault(fish.sizeId, 0) + 1);
-        this.profileStats.allVariantCounts.put(fish.variant, this.profileStats.allVariantCounts.getOrDefault(fish.variant, 0) + 1);
+        this.profileStats.allVariantCounts.put(fish.variantId, this.profileStats.allVariantCounts.getOrDefault(fish.variantId, 0) + 1);
         this.profileStats.allRarityCounts.put(fish.rarityId, this.profileStats.allRarityCounts.getOrDefault(fish.rarityId, 0) + 1);
 
         this.profileStats.lastFishCaughtTime = System.currentTimeMillis();
@@ -51,7 +51,7 @@ public class ProfileStatsHandler {
         this.profileStats.totalXP += fish.xp;
         this.profileStats.totalValue += fish.value;
         this.profileStats.fishSizeCounts.put(fish.sizeId, this.profileStats.fishSizeCounts.getOrDefault(fish.sizeId, 0) + 1);
-        this.profileStats.variantCounts.put(fish.variant, this.profileStats.variantCounts.getOrDefault(fish.variant, 0) + 1);
+        this.profileStats.variantCounts.put(fish.variantId, this.profileStats.variantCounts.getOrDefault(fish.variantId, 0) + 1);
         this.profileStats.rarityCounts.put(fish.rarityId, this.profileStats.rarityCounts.getOrDefault(fish.rarityId, 0) + 1);
 
         this.saveStats();

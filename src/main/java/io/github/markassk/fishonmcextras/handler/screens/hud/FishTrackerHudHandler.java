@@ -22,7 +22,7 @@ public class FishTrackerHudHandler {
         return INSTANCE;
     }
 
-    public List<Text> assembleFishStats() {
+    public List<Text> assembleFishText() {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         ProfileStatsHandler.ProfileStats profileStats = ProfileStatsHandler.instance().profileStats;
         List<Text> textList = new ArrayList<>();
@@ -69,6 +69,8 @@ public class FishTrackerHudHandler {
         int displayTrophyCount = displayVariantCounts.getOrDefault(Constants.Identifier.TROPHY, 0);
         int displayFabledCount = displayVariantCounts.getOrDefault(Constants.Identifier.FABLED, 0);
 
+        int displaySpecialCount = displayRarityCounts.getOrDefault(Constants.Identifier.SPECIAL, 0);
+
         // Put into Texts if enabled in config
         if (config.fishTracker.fishTrackerToggles.generalToggles.showFishCaught) textList.add(TextHelper.concat(
                     Text.literal("ꜰɪѕʜ ᴄᴀᴜɢʜᴛ: ").formatted(Formatting.GRAY),
@@ -98,12 +100,12 @@ public class FishTrackerHudHandler {
 
         if (config.fishTracker.fishTrackerToggles.generalToggles.showTotalXp) textList.add(TextHelper.concat(
                 Text.literal("ᴛᴏᴛᴀʟ xᴘ: ").formatted(Formatting.GRAY),
-                Text.literal(String.valueOf(displayTotalXp)).formatted(Formatting.WHITE)
+                Text.literal(TextHelper.fmt(displayTotalXp, 2)).formatted(Formatting.WHITE)
         ));
 
         if (config.fishTracker.fishTrackerToggles.generalToggles.showTotalValue) textList.add(TextHelper.concat(
                 Text.literal("ᴛᴏᴛᴀʟ ᴠᴀʟᴜᴇ: ").formatted(Formatting.GRAY),
-                Text.literal(String.valueOf(displayTotalValue)).formatted(Formatting.WHITE),
+                Text.literal(TextHelper.fmt(displayTotalValue, 2)).formatted(Formatting.WHITE),
                 Text.literal("$").formatted(Formatting.WHITE)
         ));
 
@@ -164,6 +166,15 @@ public class FishTrackerHudHandler {
                     Text.literal(Constants.Tag.MYTHICAL + " "),
                     Text.literal(String.valueOf(displayMythicalCount)),
                     getPercentage(displayMythicalCount, displayFishCaughtCount)
+            ));
+
+            //TODO Remove after event
+            textList.add(Text.empty());
+
+            textList.add(TextHelper.concat(
+                    Text.literal(Constants.Tag.SPECIAL + " "),
+                    Text.literal(String.valueOf(displaySpecialCount)),
+                    getPercentage(displaySpecialCount, displayFishCaughtCount)
             ));
         }
 
