@@ -54,7 +54,7 @@ public class PetCalculatorScreen extends Screen {
         // Assemble all text lines
         HashMap<String, List<Text>> textListHashMap = PetCalculatorScreenHandler.instance().assemblePetText();
 
-        int columns = (int) Math.ceil((double) petListStack.size() / 9) - 1;
+        int columns = (int) Math.ceil((double) petListStack.size() / 9);
 
 
         renderBox(context, PetCalculatorHandler.PetList.LEFT, columns);
@@ -69,7 +69,7 @@ public class PetCalculatorScreen extends Screen {
     private void renderBox(DrawContext context, PetCalculatorHandler.PetList petList, int columns) {
         int translate = 0;
 
-        final int translation = padding + (16 + padding) * columns * 2 + boxWidth;
+        final int translation = padding + (16 + padding) * columns + boxWidth;
         switch (petList) {
             case LEFT -> {
                 translate -= translation;
@@ -90,7 +90,7 @@ public class PetCalculatorScreen extends Screen {
         int translate = 0;
         AtomicInteger count = new AtomicInteger(0);
 
-        final int translation = padding + (16 + padding) * columns * 2 + boxWidth;
+        final int translation = padding + (16 + padding) * columns + boxWidth;
         switch (petList) {
             case LEFT -> {
                 translate -= translation;

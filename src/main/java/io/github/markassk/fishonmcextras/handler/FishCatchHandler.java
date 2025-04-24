@@ -128,7 +128,7 @@ public class FishCatchHandler  {
             } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && pet.discoverer.equals(player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
-                    ProfileStatsHandler.instance().updateStatsOnCatch(pet);
+                    ProfileStatsHandler.instance().updateStatsOnCatch();
                 }
             } else if (Types.getFOMCItem(stack) instanceof Types.Shard) {
                 shardCount += stack.getCount();

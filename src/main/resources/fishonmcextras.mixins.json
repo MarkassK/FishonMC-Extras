@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "io.github.markassk.fishonmcextras.v1.mixin",
+  "package": "io.github.markassk.fishonmcextras.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],

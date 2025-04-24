@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.v1.mixin;
+package io.github.markassk.fishonmcextras.mixin;
 
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.FishCatchHandler;

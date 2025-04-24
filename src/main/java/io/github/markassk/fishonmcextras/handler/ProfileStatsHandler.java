@@ -66,7 +66,7 @@ public class ProfileStatsHandler {
         this.saveStats();
     }
 
-    public void updateStatsOnCatch(Types.Pet pet) {
+    public void updateStatsOnCatch() {
         // All-time stats
         this.profileStats.allPetCaughtCount++;
 

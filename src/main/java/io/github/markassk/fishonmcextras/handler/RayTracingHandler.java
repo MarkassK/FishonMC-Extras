@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.handler;
 
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
