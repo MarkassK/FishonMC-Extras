@@ -17,7 +17,7 @@ public class CommandRegistry {
                         .executes(context -> {
                             ProfileStatsHandler.instance().resetStats();
                             context.getSource().sendFeedback(
-                                    Text.literal("Fish Tracker reset locally.")
+                                    Text.literal("[FoE] Fish Tracker reset")
                             );
                             return 1;
                         })
@@ -25,12 +25,9 @@ public class CommandRegistry {
                 .then(ClientCommandManager.literal("reload")
                         .executes(context -> {
                             ProfileStatsHandler.instance().loadStats();
-                            context.getSource().sendFeedback(
-                                    Text.literal("Fish Tracker stats reloaded from disk.")
-                            );
                             AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).load();
                             context.getSource().sendFeedback(
-                                    Text.literal("Reloaded FoE config.")
+                                    Text.literal("[FoE] Reloaded")
                             );
                             return 1;
                         })

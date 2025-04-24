@@ -26,12 +26,12 @@ public class TrackerPetEquipHUDConfig {
         public WarningOptions warningOptions = new WarningOptions();
         public static class WarningOptions {
             @ConfigEntry.Gui.Tooltip
-            public boolean showPetEquipWarningHUD = true;
+            public boolean showPetEquipWarningHUD = false;
             @ConfigEntry.Gui.Tooltip
             public boolean usePetEquipWarningSound = false;
             @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
-            public int timePetEquipWarningSound = 5;
-            public WarningHandler.WarningSound petEquipWarningSound = WarningHandler.WarningSound.BASS;
+            public int timePetEquipWarningSound = 10;
+            public WarningHandler.WarningSound petEquipWarningSound = WarningHandler.WarningSound.DIDGERIDOO;
         }
     }
 }

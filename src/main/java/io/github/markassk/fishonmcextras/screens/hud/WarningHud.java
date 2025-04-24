@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.screens.hud;
 
-import io.github.markassk.fishonmcextras.FOMC.Constants;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.screens.hud.WarningHudHandler;
 import net.minecraft.client.MinecraftClient;
@@ -55,7 +54,7 @@ public class WarningHud {
                drawContext.fill(scaledX - maxLength / 2 - padding, scaledY, scaledX + maxLength / 2 + padding, scaledY + ((textList.size() - 1) * lineHeight) + padding * 3, alphaInt);
 
                textList.forEach(text -> {
-                   drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY + padding + (count.getAndIncrement() * lineHeight), Constants.Color.DEFAULT, true);
+                   drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY + padding + (count.getAndIncrement() * lineHeight), 0xFFFFFF, true);
                });
            }
         } finally {

@@ -10,6 +10,8 @@ public class MainHudRenderer implements HudRenderCallback {
     FishTrackerHud fishTrackerHud = new FishTrackerHud();
     PetEquipHud petEquipHud = new PetEquipHud();
     WarningHud warningHud = new WarningHud();
+    TitleHud titleHud = new TitleHud();
+    ItemFrameTooltipHud itemFrameTooltipHud = new ItemFrameTooltipHud();
 
     @Override
     public void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter) {
@@ -25,6 +27,14 @@ public class MainHudRenderer implements HudRenderCallback {
 
             if(config.warning.showWarningHud) {
                 this.warningHud.render(drawContext, MinecraftClient.getInstance());
+            }
+
+            if(config.titlePopup.useNewTitleSystem) {
+                this.titleHud.render(drawContext, MinecraftClient.getInstance());
+            }
+
+            if(config.itemFrameTooltip.showTooltip) {
+                this.itemFrameTooltipHud.render(drawContext, MinecraftClient.getInstance());
             }
         }
 

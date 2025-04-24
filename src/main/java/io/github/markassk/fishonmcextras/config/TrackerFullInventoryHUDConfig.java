@@ -13,7 +13,7 @@ public class TrackerFullInventoryHUDConfig {
         @ConfigEntry.Gui.Tooltip
         public boolean useInventoryWarningSound = true;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
-        public int timeInventoryWarningSound = 5;
-        public WarningHandler.WarningSound fullInventoryWarningSound = WarningHandler.WarningSound.BASS;
+        public int timeInventoryWarningSound = 10;
+        public WarningHandler.WarningSound fullInventoryWarningSound = WarningHandler.WarningSound.DIDGERIDOO;
     }
 }

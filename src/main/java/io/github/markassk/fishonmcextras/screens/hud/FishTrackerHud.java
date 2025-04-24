@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.screens.hud;
 
-import io.github.markassk.fishonmcextras.FOMC.Constants;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.screens.hud.FishTrackerHudHandler;
 import net.minecraft.client.MinecraftClient;
@@ -10,7 +9,6 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 public class FishTrackerHud {
     public void render(DrawContext drawContext, MinecraftClient client) {
@@ -61,7 +59,7 @@ public class FishTrackerHud {
 
 
             textList.forEach(text -> {
-                drawContext.drawText(textRenderer, text, rightAlignment ? scaledX - textRenderer.getWidth(text) - padding: scaledX + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding, Constants.Color.DEFAULT, true);
+                drawContext.drawText(textRenderer, text, rightAlignment ? scaledX - textRenderer.getWidth(text) - padding: scaledX + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding, 0xFFFFFF, true);
             });
         } finally {
             drawContext.getMatrices().pop();

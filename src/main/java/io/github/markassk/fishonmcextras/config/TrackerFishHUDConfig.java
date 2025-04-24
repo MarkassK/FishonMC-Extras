@@ -39,6 +39,7 @@ public class TrackerFishHUDConfig {
                 public boolean showEpic = true;
                 public boolean showLegendary = true;
                 public boolean showMythical = true;
+                public boolean showSpecial = false;
             }
 
             @ConfigEntry.Gui.CollapsibleObject
@@ -65,9 +66,39 @@ public class TrackerFishHUDConfig {
             }
 
             @ConfigEntry.Gui.CollapsibleObject
+            public DryStreakToggles dryStreakToggles = new DryStreakToggles();
+            public static class DryStreakToggles {
+                @ConfigEntry.Gui.PrefixText
+                public boolean showCommon = false;
+                public boolean showRare = false;
+                public boolean showEpic = false;
+                public boolean showLegendary = false;
+                public boolean showMythical = false;
+                @ConfigEntry.Gui.PrefixText
+                public boolean showBaby = false;
+                public boolean showJuvenile = false;
+                public boolean showAdult = false;
+                public boolean showLarge = false;
+                public boolean showGigantic = true;
+                public boolean showSpecial = true;
+                @ConfigEntry.Gui.PrefixText
+                public boolean showAlbino = true;
+                public boolean showMelanistic = true;
+                public boolean showTrophy = true;
+                public boolean showFabled = false;
+                @ConfigEntry.Gui.PrefixText
+                public boolean showPet = false;
+                public boolean showShard = false;
+            }
+
+            @ConfigEntry.Gui.CollapsibleObject
             public OtherToggles otherToggles = new OtherToggles();
             public static class OtherToggles {
                 public boolean showPercentages = true;
+                public boolean useNewTitle = true;
+                public boolean showStatsOnCatch = true;
+                @ConfigEntry.BoundedDiscrete(min = 1, max = 10)
+                public int showStatsOnCatchTime = 6;
             }
         }
 

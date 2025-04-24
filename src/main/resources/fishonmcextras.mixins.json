@@ -1,13 +1,13 @@
 {
-	"required": true,
-	"package": "io.github.markassk.fishonmcextras.v1.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"client": [
-	]
+  "required": true,
+  "package": "io.github.markassk.fishonmcextras.v1.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "InGameHudMixin"
+  ]
 }

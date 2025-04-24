@@ -1,6 +1,5 @@
-package io.github.markassk.fishonmcextras.v1.handler;
+package io.github.markassk.fishonmcextras.handler;
 
-import io.github.markassk.fishonmcextras.v1.overlay.RayTracing;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -11,7 +10,7 @@ import net.minecraft.util.hit.HitResult;
 
 public class LookTickHandler {
     private static LookTickHandler INSTANCE = new LookTickHandler();
-    public ItemStack targetedItem = null;
+    public ItemStack targetedItemInItemFrame = null;
 
     public static LookTickHandler instance() {
         if (INSTANCE == null) {
@@ -20,9 +19,8 @@ public class LookTickHandler {
         return INSTANCE;
     }
 
-    public void tickClient() {
-        RayTracing.INSTANCE.fire();
-        HitResult hitResult = RayTracing.INSTANCE.getTarget();
+    public void tick() {
+        HitResult hitResult = RayTracingHandler.instance().getTarget();
 
         if(hitResult != null && hitResult.getType() == HitResult.Type.ENTITY) {
             Entity entity = ((EntityHitResult) hitResult).getEntity();
@@ -45,13 +43,13 @@ public class LookTickHandler {
                                 || itemStack.getItem() == Items.SLIME_BALL) &&
                                 itemStack.contains(DataComponentTypes.CUSTOM_DATA)
                 ) {
-                    targetedItem = itemStack;
+                    targetedItemInItemFrame = itemStack;
                 } else {
-                    targetedItem = null;
+                    targetedItemInItemFrame = null;
                 }
             }
         } else {
-            targetedItem = null;
+            targetedItemInItemFrame = null;
         }
     }
 }

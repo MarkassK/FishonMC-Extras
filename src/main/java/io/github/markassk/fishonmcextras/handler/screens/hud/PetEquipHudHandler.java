@@ -22,28 +22,28 @@ public class PetEquipHudHandler {
     }
 
     public List<Text> assemblePetText() {
-        FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         ProfileStatsHandler.ProfileStats profileStats = ProfileStatsHandler.instance().profileStats;
 
         List<Text> textList = new ArrayList<>();
 
         if (PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.HAS_PET) {
             Text namePet = PetEquipHandler.instance().currentPetItem.getName();
-            String rarity = TextHelper.convertRarity(profileStats.equippedPet.rarityId);
             int level = profileStats.equippedPet.lvl;
             float currentXp = profileStats.equippedPet.currentXp;
             float neededXp = profileStats.equippedPet.neededXp;
             float percentXp = currentXp / neededXp * 100f;
 
+            assert profileStats.equippedPet.rarity != null;
             textList.add(TextHelper.concat(
-                    Text.literal(rarity + " ").formatted(Formatting.WHITE),
+                    profileStats.equippedPet.rarity.TAG,
+                    Text.literal(" "),
                     namePet,
                     Text.literal(" (ʟᴠʟ " + level + ")").formatted(Formatting.GRAY)
             ));
             if(level == 100) {
                 textList.add(TextHelper.concat(
                         Text.literal("(").formatted(Formatting.GRAY),
-                        Text.literal("MAX").formatted(Formatting.YELLOW),
+                        Text.literal(TextHelper.fmnt(currentXp)).formatted(Formatting.YELLOW),
                         Text.literal("/").formatted(Formatting.GRAY),
                         Text.literal("MAX").formatted(Formatting.YELLOW),
                         Text.literal(") ").formatted(Formatting.GRAY),

@@ -235,8 +235,20 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public TrackerFullInventoryHUDConfig.FullInventoryTracker fullInventoryTracker = new TrackerFullInventoryHUDConfig.FullInventoryTracker();
 
+    @ConfigEntry.Category(value = TOOLTIPS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TooltipPetConfig.PetTooltip petTooltip = new TooltipPetConfig.PetTooltip();
+
+    @ConfigEntry.Category(value = TOOLTIPS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TooltipItemFrameConfig.ItemFrameTooltip itemFrameTooltip = new TooltipItemFrameConfig.ItemFrameTooltip();
+
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public WarningConfig.Warning warning = new WarningConfig.Warning();
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TitleHudConfig.TitlePopup titlePopup = new TitleHudConfig.TitlePopup();
     //endregion
 }

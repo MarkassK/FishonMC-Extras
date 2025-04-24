@@ -11,7 +11,7 @@ import java.util.Map;
 public class WarningHandler {
     private static WarningHandler INSTANCE = new WarningHandler();
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-    private Map<WarningType, Long> lastPlayedTime = new HashMap<>();
+    private final Map<WarningType, Long> lastPlayedWarningSoundTime = new HashMap<>();
 
     public static WarningHandler instance() {
         if (INSTANCE == null) {
@@ -21,8 +21,8 @@ public class WarningHandler {
     }
 
     public void init() {
-        lastPlayedTime.put(WarningType.PET_EQUIP, 0L);
-        lastPlayedTime.put(WarningType.INVENTORY_FULL, 0L);
+        lastPlayedWarningSoundTime.put(WarningType.PET_EQUIP, 0L);
+        lastPlayedWarningSoundTime.put(WarningType.INVENTORY_FULL, 0L);
     }
 
     public void tick(MinecraftClient minecraftClient) {
@@ -32,9 +32,9 @@ public class WarningHandler {
                     && config.petEquipTracker.warningOptions.usePetEquipWarningSound
                     && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
             ) {
-                if(System.currentTimeMillis() - lastPlayedTime.get(WarningType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
+                if(System.currentTimeMillis() - lastPlayedWarningSoundTime.get(WarningType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
                     playSoundWarning(config.petEquipTracker.warningOptions.petEquipWarningSound, minecraftClient);
-                    lastPlayedTime.put(WarningType.PET_EQUIP, System.currentTimeMillis());
+                    lastPlayedWarningSoundTime.put(WarningType.PET_EQUIP, System.currentTimeMillis());
                 }
             }
 
@@ -43,9 +43,9 @@ public class WarningHandler {
                     && config.fullInventoryTracker.useInventoryWarningSound
                     && FullInventoryHandler.instance().isOverThreshold
             ) {
-                if(System.currentTimeMillis() - lastPlayedTime.get(WarningType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
+                if(System.currentTimeMillis() - lastPlayedWarningSoundTime.get(WarningType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
                     playSoundWarning(config.fullInventoryTracker.fullInventoryWarningSound, minecraftClient);
-                    lastPlayedTime.put(WarningType.INVENTORY_FULL, System.currentTimeMillis());
+                    lastPlayedWarningSoundTime.put(WarningType.INVENTORY_FULL, System.currentTimeMillis());
                 }
             }
         }

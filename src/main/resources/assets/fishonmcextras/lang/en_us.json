@@ -238,6 +238,7 @@
 
   "text.autoconfig.fishonmcextras.option.warning": "§f§lWarning HUD Options",
   "text.autoconfig.fishonmcextras.option.warning.showWarningHud": "Show Warning HUD",
+  "text.autoconfig.fishonmcextras.option.warning.showWarningHud.@Tooltip": "§7This will §cdisable §4ALL §7warnings.\nPlease go to the respective feature config,\nif you want to disable only one type of warning",
   "text.autoconfig.fishonmcextras.option.warning.fontSize": "Font size",
   "text.autoconfig.fishonmcextras.option.warning.backgroundOpacity": "Background opacity",
   "text.autoconfig.fishonmcextras.option.warning.hudY": "HUD §fY §7position"

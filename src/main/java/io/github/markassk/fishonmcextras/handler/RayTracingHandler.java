@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.v1.overlay;
+package io.github.markassk.fishonmcextras.handler;
 
 
 import net.minecraft.client.MinecraftClient;
@@ -12,15 +12,23 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.Nullable;
 
-public class RayTracing {
-    public static final RayTracing INSTANCE = new RayTracing();
-    private final MinecraftClient client = MinecraftClient.getInstance();
+public class RayTracingHandler {
+    private static RayTracingHandler INSTANCE = new RayTracingHandler();
     @Nullable
     private HitResult target;
 
-    private RayTracing() {}
+    public static RayTracingHandler instance() {
+        if (INSTANCE == null) {
+            INSTANCE = new RayTracingHandler();
+        }
+        return INSTANCE;
+    }
 
-    public void fire() {
+    public void tick(MinecraftClient client) {
+        this.fire(client);
+    }
+
+    public void fire(MinecraftClient client) {
         Entity viewEntity = client.getCameraEntity();
         PlayerEntity viewPlayer = viewEntity instanceof PlayerEntity ? (PlayerEntity) viewEntity : client.player;
         if (viewEntity == null || viewPlayer == null) {
@@ -29,7 +37,7 @@ public class RayTracing {
 
         if (client.crosshairTarget != null && client.crosshairTarget.getType() == HitResult.Type.ENTITY) {
             Entity targetEntity = ((EntityHitResult) client.crosshairTarget).getEntity();
-            if (canBeTarget(targetEntity, viewEntity)) {
+            if (canBeTarget(client, targetEntity, viewEntity)) {
                 target = client.crosshairTarget;
                 return;
             }
@@ -56,7 +64,7 @@ public class RayTracing {
         return entity.getEntityWorld().raycast(context);
     }
 
-    private boolean canBeTarget(Entity target, Entity viewEntity) {
+    private boolean canBeTarget(MinecraftClient client, Entity target, Entity viewEntity) {
         if (target.isRemoved()) {
             return false;
         }

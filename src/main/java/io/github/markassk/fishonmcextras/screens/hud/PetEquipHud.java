@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.screens.hud;
 
-import io.github.markassk.fishonmcextras.FOMC.Constants;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.PetEquipHandler;
 import io.github.markassk.fishonmcextras.handler.screens.hud.PetEquipHudHandler;
@@ -65,7 +64,7 @@ public class PetEquipHud {
 
             // Draw Text
             textList.forEach(text -> {
-                drawContext.drawText(textRenderer, text, scaledX + padding + 16 + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding, Constants.Color.DEFAULT, true);
+                drawContext.drawText(textRenderer, text, scaledX + padding + 16 + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding, 0xFFFFFF, true);
             });
         } finally {
             drawContext.getMatrices().pop();

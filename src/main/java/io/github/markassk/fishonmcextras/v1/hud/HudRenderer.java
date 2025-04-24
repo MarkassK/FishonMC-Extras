@@ -3,7 +3,7 @@ package io.github.markassk.fishonmcextras.v1.hud;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
-import io.github.markassk.fishonmcextras.v1.handler.LookTickHandler;
+import io.github.markassk.fishonmcextras.handler.LookTickHandler;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
@@ -682,8 +682,8 @@ public class HudRenderer implements HudRenderCallback {
             }
 
             if (config.otherHUDConfig.showItemFrameTooltip) {
-                if (LookTickHandler.instance().targetedItem != null) {
-                    drawContext.drawItemTooltip(client.textRenderer, LookTickHandler.instance().targetedItem, client.getWindow().getScaledWidth() / 2, client.getWindow().getScaledHeight() / 2);
+                if (LookTickHandler.instance().targetedItemInItemFrame != null) {
+                    drawContext.drawItemTooltip(client.textRenderer, LookTickHandler.instance().targetedItemInItemFrame, client.getWindow().getScaledWidth() / 2, client.getWindow().getScaledHeight() / 2);
                 }
             }
 
