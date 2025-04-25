@@ -80,6 +80,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 WarningHandler.instance().tick(minecraftClient);
                 RayTracingHandler.instance().tick(minecraftClient);
                 LookTickHandler.instance().tick();
+                LocationHandler.instance().tick(minecraftClient);
              }
         }
     }
