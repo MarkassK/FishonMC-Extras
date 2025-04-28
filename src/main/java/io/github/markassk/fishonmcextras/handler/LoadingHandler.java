@@ -9,6 +9,7 @@ public class LoadingHandler {
     private static LoadingHandler INSTANCE = new LoadingHandler();
 
     public boolean isLoadingDone = false;
+    public boolean isOnServer = false;
 
     public static LoadingHandler instance() {
         if (INSTANCE == null) {

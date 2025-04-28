@@ -1,5 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.FOMC.FishStrings;
 import io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
@@ -62,8 +64,6 @@ public class FishCatchHandler  {
     }
 
     public void onJoinServer(PlayerEntity player) {
-        ProfileStatsHandler.instance().playerUUID = player.getUuid();
-        ProfileStatsHandler.instance().loadStats();
         trackedFishes.clear();
         trackedPets.clear();
         trackedShards = 0;
@@ -144,8 +144,14 @@ public class FishCatchHandler  {
     private void sendToTitleHud(ItemStack stack, Types.Fish fish) {
         // Send to TitleHud
         List<Text> title = new ArrayList<>();
+        if(FishStrings.valueOfId(fish.fishId) != null) {
+            title.add(Text.literal(Objects.requireNonNull(FishStrings.valueOfId(fish.fishId)).CHARACTER).formatted(Formatting.WHITE));
+            title.add(Text.empty());
+        }
         assert fish.variant != null;
-        title.add(fish.variant.TAG);
+        if(fish.variant != Constant.NORMAL) {
+            title.add(fish.variant.TAG);
+        }
         assert fish.rarity != null;
         title.add(TextHelper.concat(
                 fish.rarity.TAG,

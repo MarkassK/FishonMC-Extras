@@ -26,6 +26,18 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public TrackerFullInventoryHUDConfig.FullInventoryTracker fullInventoryTracker = new TrackerFullInventoryHUDConfig.FullInventoryTracker();
 
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerScoreboardHUDConfig.ScoreboardTracker scoreboardTracker = new TrackerScoreboardHUDConfig.ScoreboardTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerBossBarHUDConfig.BossBarTracker bossBarTracker = new TrackerBossBarHUDConfig.BossBarTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerContestHUDConfig.ContestTracker contestTracker = new TrackerContestHUDConfig.ContestTracker();
+
     @ConfigEntry.Category(value = TOOLTIPS)
     @ConfigEntry.Gui.CollapsibleObject
     public TooltipPetConfig.PetTooltip petTooltip = new TooltipPetConfig.PetTooltip();
@@ -36,10 +48,14 @@ public class FishOnMCExtrasConfig implements ConfigData {
 
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
-    public WarningConfig.Warning warning = new WarningConfig.Warning();
+    public NotificationsConfig.Notifications notifications = new NotificationsConfig.Notifications();
 
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public TitleHudConfig.TitlePopup titlePopup = new TitleHudConfig.TitlePopup();
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public BarHUDConfig.BarHUD barHUD = new BarHUDConfig.BarHUD();
     //endregion
 }

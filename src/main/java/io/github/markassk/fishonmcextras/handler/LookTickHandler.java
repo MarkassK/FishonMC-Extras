@@ -10,6 +10,7 @@ import net.minecraft.util.hit.HitResult;
 
 public class LookTickHandler {
     private static LookTickHandler INSTANCE = new LookTickHandler();
+
     public ItemStack targetedItemInItemFrame = null;
 
     public static LookTickHandler instance() {

@@ -27,9 +27,12 @@ public class PetEquipHud {
             int screenWidth = client.getWindow().getScaledWidth();
             int screenHeight = client.getWindow().getScaledHeight();
 
+            boolean rightAlignment = config.petEquipTracker.activePetHUDOptions.rightAlignment;
+
             // Convert percentage config values to screen coordinates
-            float xPercent = config.petEquipTracker.activePetHUDOptions.hudX / 100f;
+            float xPercent = rightAlignment ?  1f - (config.petEquipTracker.activePetHUDOptions.hudX / 100f) : config.petEquipTracker.activePetHUDOptions.hudX / 100f;
             float yPercent = config.petEquipTracker.activePetHUDOptions.hudY / 100f;
+
 
             // Calculate base positions relative to screen size
             int baseX = (int) (screenWidth * xPercent);
@@ -51,20 +54,31 @@ public class PetEquipHud {
             AtomicInteger count = new AtomicInteger(0);
 
             int maxLength = textList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
+            int heightClampTranslation = (int) ((padding * 2 + textList.size() * lineHeight) * yPercent);
+            heightClampTranslation -= (int) ((padding * 3) * (1 - yPercent));
 
             // Draw Background
-            drawContext.fill(scaledX, scaledY, scaledX + maxLength + padding * 2 + 16 + padding, scaledY + ((textList.size() - 1) * lineHeight) + padding * 3, alphaInt);
-            drawContext.drawBorder(scaledX + padding - padding / 2, scaledY + padding + 1 - padding / 2, 16 + padding, 16 + padding, alphaInt | 0xFFFFFF);
-
+            if(rightAlignment) {
+                drawContext.fill(scaledX, scaledY - heightClampTranslation, scaledX - maxLength - padding * 2 - 16 - padding, scaledY + ((textList.size() - 1) * lineHeight) + padding * 3 - heightClampTranslation, alphaInt);
+                drawContext.drawBorder(scaledX - padding + padding / 2, scaledY + padding + 1 - padding / 2 - heightClampTranslation, - 16 - padding, 16 + padding, alphaInt | 0xFFFFFF);
+            } else {
+                drawContext.fill(scaledX, scaledY - heightClampTranslation, scaledX + maxLength + padding * 2 + 16 + padding, scaledY + ((textList.size() - 1) * lineHeight) + padding * 3 - heightClampTranslation, alphaInt);
+                drawContext.drawBorder(scaledX + padding - padding / 2, scaledY + padding + 1 - padding / 2 - heightClampTranslation, 16 + padding, 16 + padding, alphaInt | 0xFFFFFF);
+            }
 
             if(PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.HAS_PET) {
                 // Draw Pet
-                drawContext.drawItem(activePet, scaledX + padding, scaledY + padding + 1);
+                if(rightAlignment) {
+                    drawContext.drawItem(activePet, scaledX - padding - 16, scaledY + padding + 1 - heightClampTranslation);
+                } else {
+                    drawContext.drawItem(activePet, scaledX + padding, scaledY + padding + 1 - heightClampTranslation);
+                }
             }
 
             // Draw Text
+            int finalHeightClampTranslation = heightClampTranslation;
             textList.forEach(text -> {
-                drawContext.drawText(textRenderer, text, scaledX + padding + 16 + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding, 0xFFFFFF, true);
+                drawContext.drawText(textRenderer, text, rightAlignment ? scaledX - padding - 16 - padding - textRenderer.getWidth(text) : scaledX + padding + 16 + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding - finalHeightClampTranslation, 0xFFFFFF, true);
             });
         } finally {
             drawContext.getMatrices().pop();

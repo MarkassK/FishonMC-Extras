@@ -9,6 +9,7 @@ import java.util.Objects;
 
 public class PetCalculatorHandler {
     private static PetCalculatorHandler INSTANCE = new PetCalculatorHandler();
+
     public ItemStack[] selectedPetStacks = {null, null};
     public Types.Pet[] selectedPet = {null, null};
     public Text calculatedPetName = Text.empty();

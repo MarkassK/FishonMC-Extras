@@ -8,6 +8,7 @@ import io.github.markassk.fishonmcextras.adapter.FOMCConstantTypeAdapter;
 import io.github.markassk.fishonmcextras.adapter.LocalDateTypeAdapter;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -26,13 +27,18 @@ public class ProfileStatsHandler {
 
     public ProfileStats profileStats = new ProfileStats();
     public long lastUpdateTime = System.currentTimeMillis();
-    public UUID playerUUID;
+    public UUID playerUUID = UUID.randomUUID();
 
     public static ProfileStatsHandler instance() {
         if (INSTANCE == null) {
             INSTANCE = new ProfileStatsHandler();
         }
         return INSTANCE;
+    }
+
+    public void onJoinServer(PlayerEntity player) {
+        ProfileStatsHandler.instance().playerUUID = player.getUuid();
+        ProfileStatsHandler.instance().loadStats();
     }
 
     /**
