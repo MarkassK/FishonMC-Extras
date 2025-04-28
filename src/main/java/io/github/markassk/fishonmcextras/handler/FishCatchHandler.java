@@ -124,6 +124,10 @@ public class FishCatchHandler  {
                     if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
                         sendToTitleHud(stack, fish);
                     }
+
+                    // Send to quest tracker
+                    QuestHandler.instance().updateQuest(fish);
+
                 }
             } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && pet.discoverer.equals(player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {

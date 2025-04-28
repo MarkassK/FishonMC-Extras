@@ -81,6 +81,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 RayTracingHandler.instance().tick(minecraftClient);
                 LookTickHandler.instance().tick();
                 LocationHandler.instance().tick(minecraftClient);
+                QuestHandler.instance().tick(minecraftClient);
              }
         }
     }
@@ -128,6 +129,13 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
                     .tooltip(Tooltip.of(Text.literal("Open up the screen to calculate pet merging.")))
                     .build());
+        } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4\uD539")) {
+            // Quest Menu : 픹
+            QuestHandler.setQuestMenuState(true);
+        }
+        else{
+            System.out.println(screen.getTitle().getString());
+            QuestHandler.setQuestMenuState(false);
         }
     }
 }
