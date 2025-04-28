@@ -17,19 +17,15 @@ import java.util.Objects;
 
 public class QuestHandler {
     private static QuestHandler INSTANCE = new QuestHandler();
+    private final Map<Constant, Map<Integer, Quests>> activeQuests = new HashMap<>();
+
+    public boolean questMenuState = false;
 
     public static QuestHandler instance() {
         if (INSTANCE == null) {
             INSTANCE = new QuestHandler();
         }
         return INSTANCE;
-    }
-
-    private static boolean questMenuState = false;
-    private final Map<Constant, Map<Integer, Quests>> activeQuests = new HashMap<>();
-
-    public static void setQuestMenuState(boolean state){
-        questMenuState = state;
     }
 
     public void tick(MinecraftClient minecraftClient){
@@ -62,28 +58,27 @@ public class QuestHandler {
 
                 if (slot != 0) {
                     LoreComponent lore = components.get(DataComponentTypes.LORE);
-                    assert lore != null;
-                    List<Text> lines = lore.lines();
+                    if(lore != null) {
+                        List<Text> lines = lore.lines();
 
-                    int progress = 0;
-                    int needed = 0;
-                    String fish = "";
+                        int progress = 0;
+                        int needed = 0;
+                        String fish = "";
 
-                    // TODO Stop crash, "contains" check lines to pull progress, needed, fish
-                    // Consider switching all instances of the "fish" variable to "Types.Fish", currently String as it's easier for updateQuest, also when pulling quests dont need to worry about whether its rarity or size were catching.
-                    for (Text line : lines){
-                        String raw = line.getString();
+                        // TODO Stop crash, "contains" check lines to pull progress, needed, fish
+                        // Consider switching all instances of the "fish" variable to "Types.Fish", currently String as it's easier for updateQuest, also when pulling quests dont need to worry about whether its rarity or size were catching.
+                        for (Text line : lines){
+                            String raw = line.getString();
 
-                        System.out.println(raw);
+                            System.out.println(raw);
+                        }
+
+                        Constant location = LocationHandler.instance().currentLocation;
+                        Map<Integer, Quests> questsAtLocation = activeQuests.computeIfAbsent(location, k -> new HashMap<>());
+
+                        Quests newQuest = new Quests(location, slot, fish, progress, needed);
+                        questsAtLocation.put(slot, newQuest);
                     }
-
-                    Constant location = LocationHandler.instance().currentLocation;
-                    Map<Integer, Quests> questsAtLocation = activeQuests.computeIfAbsent(location, k -> new HashMap<>());
-
-                    Quests newQuest = new Quests(location, slot, fish, progress, needed);
-                    questsAtLocation.put(slot, newQuest);
-
-
                 }
             }
         }

@@ -139,8 +139,10 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
     }
 
     private void afterScreenInit(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
-        if(LoadingHandler.instance().isOnServer) {// Pet Menu핑
+        System.out.println("Open: " + screen.getTitle().getString());
+        if(LoadingHandler.instance().isOnServer) {
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
+                // Pet Menu핑
                 Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
                             assert minecraftClient.player != null;
                             minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
@@ -148,13 +150,21 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                         .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
                         .tooltip(Tooltip.of(Text.literal("Open up the screen to calculate pet merging.")))
                         .build());
-            } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4\uD539")) {
+            } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
                 // Quest Menu : 픹
-                QuestHandler.setQuestMenuState(true);
+                QuestHandler.instance().questMenuState = true;
             }
-            else{
-                System.out.println(screen.getTitle().getString());
-                QuestHandler.setQuestMenuState(false);
+        }
+        ScreenEvents.remove(screen).register(this::onRemoveScreen);
+    }
+
+    private void onRemoveScreen(Screen screen) {
+        System.out.println("Close: " + screen.getTitle().getString());
+        if(LoadingHandler.instance().isOnServer) {
+            if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
+                // Quest Menu : 픹
+                QuestHandler.instance().questMenuState = false;
+            }
         }
     }
 }

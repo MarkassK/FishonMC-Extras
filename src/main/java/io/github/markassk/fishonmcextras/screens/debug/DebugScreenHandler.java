@@ -65,9 +65,10 @@ public class DebugScreenHandler {
             case LOADING -> {
                 LoadingHandler loadingHandler = LoadingHandler.instance();
 
-                textList.add(
-                        assembleText("isLoadingDone", loadingHandler.isLoadingDone)
-                );
+                textList.addAll(List.of(
+                        assembleText("isLoadingDone", loadingHandler.isLoadingDone),
+                        assembleText("isOnServer", loadingHandler.isOnServer)
+                ));
             }
             case LOCATION -> {
                 LocationHandler locationHandler = LocationHandler.instance();
