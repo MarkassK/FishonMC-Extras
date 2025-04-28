@@ -1,6 +1,6 @@
 package io.github.markassk.fishonmcextras.FOMC;
 
-//Location 1 < Location 2
+//MAKE SURE : Location 1 < Location 2
 public enum Locations {
     SPAWN(-53, -95, 294, 252),
     KENAI(298, -621, 661, -346),
