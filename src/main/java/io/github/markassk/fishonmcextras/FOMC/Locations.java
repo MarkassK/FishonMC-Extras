@@ -15,14 +15,14 @@ public enum Locations {
     MEDITERRANEAN(-549, 395, -329, 670),
     CAPECOD(-197, -1296, 30, -1016),
     HAWAII(255, -1378, 526, -1122),
-    CARINS(172, 2187, 447, 2379);
+    CAIRNS(172, 2187, 448, 2380);
 
     public final int x1;
     public final int z1;
     public final int x2;
     public final int z2;
 
-    private Locations(int x1, int z1, int x2, int z2) {
+    Locations(int x1, int z1, int x2, int z2) {
         this.x1 = x1;
         this.z1 = z1;
         this.x2 = x2;

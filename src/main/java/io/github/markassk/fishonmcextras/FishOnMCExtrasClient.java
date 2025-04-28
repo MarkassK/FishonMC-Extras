@@ -4,6 +4,7 @@ import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
 import io.github.markassk.fishonmcextras.handler.LookTickHandler;
+import io.github.markassk.fishonmcextras.screens.main.MainScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -53,7 +54,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
             if (minecraftClient.player != null && minecraftClient.currentScreen == null)
                 while (openConfigKeybind.wasPressed()){
-                    minecraftClient.setScreen(AutoConfig.getConfigScreen(FishOnMCExtrasConfig.class, minecraftClient.currentScreen).get());
+                    minecraftClient.setScreen(new MainScreen(minecraftClient, minecraftClient.currentScreen));
                 }
         });
 
@@ -72,15 +73,19 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
 
     private void onEndClientTick(MinecraftClient minecraftClient) {
         if(minecraftClient.getCurrentServerEntry() != null ) {
-            if(Objects.equals(minecraftClient.getCurrentServerEntry().address, "play.fishonmc.net")) {
+            if(Objects.equals(minecraftClient.getCurrentServerEntry().address, "play.fishonmc.net") && LoadingHandler.instance().isOnServer) {
                 LoadingHandler.instance().tick(minecraftClient);
                 FishCatchHandler.instance().tick(minecraftClient);
                 PetEquipHandler.instance().tick(minecraftClient);
                 FullInventoryHandler.instance().tick(minecraftClient);
-                WarningHandler.instance().tick(minecraftClient);
+                NotificationSoundHandler.instance().tick(minecraftClient);
                 RayTracingHandler.instance().tick(minecraftClient);
                 LookTickHandler.instance().tick();
                 LocationHandler.instance().tick(minecraftClient);
+                ScoreboardHandler.instance().tick(minecraftClient);
+                ContestHandler.instance().tick();
+                TabHandler.instance().tick(minecraftClient);
+                BossBarHandler.instance().tick(minecraftClient);
                 QuestHandler.instance().tick(minecraftClient);
              }
         }
@@ -90,52 +95,66 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         LoadingHandler.instance().init();
         FishCatchHandler.instance().init();
         PetEquipHandler.instance().init();
-        WarningHandler.instance().init();
+        NotificationSoundHandler.instance().init();
 
         if(minecraftClient.getCurrentServerEntry() != null ) {
             if(Objects.equals(minecraftClient.getCurrentServerEntry().address, "play.fishonmc.net")) {
                 FishOnMCExtras.LOGGER.info("[FoE] Loading Start");
                 minecraftClient.execute(() -> {
                     assert minecraftClient.player != null;
-                    FishCatchHandler.instance().onJoinServer(minecraftClient.player);
+                    ProfileStatsHandler.instance().onJoinServer(minecraftClient.player);
+                    FishCatchHandler.instance().onJoinServer();
+                    LoadingHandler.instance().isOnServer = true;
                 });
+            } else {
+                LoadingHandler.instance().isOnServer = false;
             }
         }
     }
 
     private void receiveGameMessage(Text text, boolean b) {
-        PetEquipHandler.instance().onReceiveMessage(text);
+        if(LoadingHandler.instance().isOnServer) {
+            PetEquipHandler.instance().onReceiveMessage(text);
+            ContestHandler.instance().onReceiveMessage(text);
+        }
     }
 
     private Text modifyGameMessage(Text text, boolean b) {
-        return PetTooltipHandler.instance().appendTooltip(text);
+        if(LoadingHandler.instance().isOnServer) {
+            return PetTooltipHandler.instance().appendTooltip(text);
+        }
+        return text;
     }
 
     private void onLeave(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
         FishCatchHandler.instance().onLeaveServer();
+        LoadingHandler.instance().isOnServer = false;
+
     }
 
     private void onItemTooltipCallback(ItemStack itemStack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> textList) {
-        PetTooltipHandler.instance().appendTooltip(textList, itemStack);
+        if(LoadingHandler.instance().isOnServer) {
+            PetTooltipHandler.instance().appendTooltip(textList, itemStack);
+        }
     }
 
     private void afterScreenInit(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
-        // Pet Menu핑
-        if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
-            Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
-                        assert minecraftClient.player != null;
-                        minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
-                    })
-                    .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
-                    .tooltip(Tooltip.of(Text.literal("Open up the screen to calculate pet merging.")))
-                    .build());
-        } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4\uD539")) {
-            // Quest Menu : 픹
-            QuestHandler.setQuestMenuState(true);
-        }
-        else{
-            System.out.println(screen.getTitle().getString());
-            QuestHandler.setQuestMenuState(false);
+        if(LoadingHandler.instance().isOnServer) {// Pet Menu핑
+            if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
+                Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
+                            assert minecraftClient.player != null;
+                            minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
+                        })
+                        .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
+                        .tooltip(Tooltip.of(Text.literal("Open up the screen to calculate pet merging.")))
+                        .build());
+            } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4\uD539")) {
+                // Quest Menu : 픹
+                QuestHandler.setQuestMenuState(true);
+            }
+            else{
+                System.out.println(screen.getTitle().getString());
+                QuestHandler.setQuestMenuState(false);
         }
     }
 }

@@ -1,6 +1,6 @@
 package io.github.markassk.fishonmcextras.config;
 
-import io.github.markassk.fishonmcextras.handler.WarningHandler;
+import io.github.markassk.fishonmcextras.handler.NotificationSoundHandler;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 public class TrackerFullInventoryHUDConfig {
@@ -14,6 +14,6 @@ public class TrackerFullInventoryHUDConfig {
         public boolean useInventoryWarningSound = true;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
         public int timeInventoryWarningSound = 10;
-        public WarningHandler.WarningSound fullInventoryWarningSound = WarningHandler.WarningSound.DIDGERIDOO;
+        public NotificationSoundHandler.SoundType fullInventorySoundType = NotificationSoundHandler.SoundType.DIDGERIDOO;
     }
 }

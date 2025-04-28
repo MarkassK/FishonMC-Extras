@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundCategory;
@@ -8,21 +9,21 @@ import net.minecraft.sound.SoundEvents;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WarningHandler {
-    private static WarningHandler INSTANCE = new WarningHandler();
+public class NotificationSoundHandler {
+    private static NotificationSoundHandler INSTANCE = new NotificationSoundHandler();
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-    private final Map<WarningType, Long> lastPlayedWarningSoundTime = new HashMap<>();
+    private final Map<NotificationType, Long> lastPlayedSoundTime = new HashMap<>();
 
-    public static WarningHandler instance() {
+    public static NotificationSoundHandler instance() {
         if (INSTANCE == null) {
-            INSTANCE = new WarningHandler();
+            INSTANCE = new NotificationSoundHandler();
         }
         return INSTANCE;
     }
 
     public void init() {
-        lastPlayedWarningSoundTime.put(WarningType.PET_EQUIP, 0L);
-        lastPlayedWarningSoundTime.put(WarningType.INVENTORY_FULL, 0L);
+        lastPlayedSoundTime.put(NotificationType.PET_EQUIP, 0L);
+        lastPlayedSoundTime.put(NotificationType.INVENTORY_FULL, 0L);
     }
 
     public void tick(MinecraftClient minecraftClient) {
@@ -32,9 +33,9 @@ public class WarningHandler {
                     && config.petEquipTracker.warningOptions.usePetEquipWarningSound
                     && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
             ) {
-                if(System.currentTimeMillis() - lastPlayedWarningSoundTime.get(WarningType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
-                    playSoundWarning(config.petEquipTracker.warningOptions.petEquipWarningSound, minecraftClient);
-                    lastPlayedWarningSoundTime.put(WarningType.PET_EQUIP, System.currentTimeMillis());
+                if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
+                    playSoundWarning(config.petEquipTracker.warningOptions.petEquipSoundType, minecraftClient);
+                    lastPlayedSoundTime.put(NotificationType.PET_EQUIP, System.currentTimeMillis());
                 }
             }
 
@@ -42,18 +43,19 @@ public class WarningHandler {
             if(config.fullInventoryTracker.showFullInventoryWarningHUD
                     && config.fullInventoryTracker.useInventoryWarningSound
                     && FullInventoryHandler.instance().isOverThreshold
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
             ) {
-                if(System.currentTimeMillis() - lastPlayedWarningSoundTime.get(WarningType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
-                    playSoundWarning(config.fullInventoryTracker.fullInventoryWarningSound, minecraftClient);
-                    lastPlayedWarningSoundTime.put(WarningType.INVENTORY_FULL, System.currentTimeMillis());
+                if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
+                    playSoundWarning(config.fullInventoryTracker.fullInventorySoundType, minecraftClient);
+                    lastPlayedSoundTime.put(NotificationType.INVENTORY_FULL, System.currentTimeMillis());
                 }
             }
         }
     }
 
-    private void playSoundWarning(WarningSound warningSound, MinecraftClient client) {
+    private void playSoundWarning(SoundType soundType, MinecraftClient client) {
         if(client.player != null) {
-            switch (warningSound) {
+            switch (soundType) {
                 case PLING -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
                 case BASS -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASS.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
                 case BELL -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BELL.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
@@ -68,7 +70,7 @@ public class WarningHandler {
         }
     }
 
-    public enum WarningSound {
+    public enum SoundType {
         PLING, // Default Pet
         BASS, // Default Inventory
         BELL,
@@ -81,7 +83,7 @@ public class WarningHandler {
         HARP
     }
 
-    private enum WarningType {
+    private enum NotificationType {
         PET_EQUIP,
         INVENTORY_FULL
     }

@@ -265,13 +265,13 @@ public enum Constant {
             Text.literal("l").withColor(0xB6CDCE),
             Text.literal("a Pet ").withColor(0xB8D1CD)), Defaults.DEFAULT_COLOR),
 
-    DEFAULT(EMPTY_STRING, Text.empty(), Defaults.DEFAULT_COLOR);
+    DEFAULT("Default", Text.empty(), Defaults.DEFAULT_COLOR);
 
     public final String ID;
     public final Text TAG;
     public final int COLOR;
 
-    private Constant(String id, Text tag, int color) {
+    Constant(String id, Text tag, int color) {
         this.ID = id;
         this.TAG = tag;
         this.COLOR = color;
@@ -283,7 +283,16 @@ public enum Constant {
                 return c;
             }
         }
-        return null;
+        return DEFAULT;
+    }
+
+    public static Constant valueOfTag(String tag) {
+        for (Constant c : values()) {
+            if (c.TAG.getString().equals(tag)) {
+                return c;
+            }
+        }
+        return DEFAULT;
     }
 
     public static int colorOfId(String id) {
@@ -299,4 +308,6 @@ public enum Constant {
     public String toString() {
         return this.ID;
     }
+
+
 }

@@ -1,5 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.FOMC.FishStrings;
 import io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
@@ -61,9 +63,7 @@ public class FishCatchHandler  {
         ProfileStatsHandler.instance().tickTimer();
     }
 
-    public void onJoinServer(PlayerEntity player) {
-        ProfileStatsHandler.instance().playerUUID = player.getUuid();
-        ProfileStatsHandler.instance().loadStats();
+    public void onJoinServer() {
         trackedFishes.clear();
         trackedPets.clear();
         trackedShards = 0;
@@ -89,7 +89,7 @@ public class FishCatchHandler  {
                 if(!trackedFishes.contains(fish.id)) {
                     trackedFishes.add(fish.id);
                 }
-            } else if (Types.getFOMCItem(stack) instanceof  Types.Pet pet && pet.discoverer.equals(player.getUuid())) {
+            } else if (Types.getFOMCItem(stack) instanceof  Types.Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
                 }
@@ -129,7 +129,7 @@ public class FishCatchHandler  {
                     QuestHandler.instance().updateQuest(fish);
 
                 }
-            } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && pet.discoverer.equals(player.getUuid())) {
+            } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
                     ProfileStatsHandler.instance().updateStatsOnCatch();
@@ -148,8 +148,14 @@ public class FishCatchHandler  {
     private void sendToTitleHud(ItemStack stack, Types.Fish fish) {
         // Send to TitleHud
         List<Text> title = new ArrayList<>();
+        if(FishStrings.valueOfId(fish.fishId) != null) {
+            title.add(Text.literal(Objects.requireNonNull(FishStrings.valueOfId(fish.fishId)).CHARACTER).formatted(Formatting.WHITE));
+            title.add(Text.empty());
+        }
         assert fish.variant != null;
-        title.add(fish.variant.TAG);
+        if(fish.variant != Constant.NORMAL) {
+            title.add(fish.variant.TAG);
+        }
         assert fish.rarity != null;
         title.add(TextHelper.concat(
                 fish.rarity.TAG,

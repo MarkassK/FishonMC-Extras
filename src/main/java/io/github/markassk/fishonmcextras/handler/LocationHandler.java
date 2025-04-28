@@ -8,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
 public class LocationHandler {
     private static LocationHandler INSTANCE = new LocationHandler();
 
-    public Constant currentLocation = null;
+    public Constant currentLocation = Constant.DEFAULT;
 
     public static LocationHandler instance() {
         if (INSTANCE == null) {

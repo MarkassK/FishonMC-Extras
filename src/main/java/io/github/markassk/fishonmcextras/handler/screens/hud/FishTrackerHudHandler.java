@@ -112,7 +112,7 @@ public class FishTrackerHudHandler {
                 long minutes = TimeUnit.MILLISECONDS.toMinutes(timeSinceReset) % 60;
                 long seconds = TimeUnit.MILLISECONDS.toSeconds(timeSinceReset) % 60;
                 textList.add(TextHelper.concat(
-                        Text.literal("ᴛɪᴍᴇ ѕɪɴᴄᴇ ʀᴇѕᴇᴛ: ").formatted(Formatting.GRAY),
+                        Text.literal("ꜰɪѕʜ ᴛɪᴍᴇ: ").formatted(Formatting.GRAY),
                         Text.literal(String.format("%02d:%02d:%02d", hours, minutes, seconds))
                 ));
             }

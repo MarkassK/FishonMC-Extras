@@ -86,7 +86,7 @@ public class PetTooltipHandler {
                     petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 10), " (" + TextHelper.fmt((Float.parseFloat(petClimateScale) * 4 / multiplier)) + "%)").toString();
                     petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 13), " (" + TextHelper.fmt((Float.parseFloat(petLocationLuck) * 4 / multiplier)) + "%)").toString();
                     petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 14), " (" + TextHelper.fmt((Float.parseFloat(petLocationScale) * 4 / multiplier)) + "%)").toString();
-                    petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 14), " (" + TextHelper.fmt((total / multiplier)) + "%)").toString();
+                    petStrNew = builder.insert(ordinalIndexOf(petStrNew, "\\n", 16), " (" + TextHelper.fmt((total / multiplier)) + "%)").toString();
                 }
 
                 return TextHelper.jsonToText(json.replace(petStr, petStrNew));
