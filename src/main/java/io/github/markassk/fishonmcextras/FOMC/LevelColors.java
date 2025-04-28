@@ -27,8 +27,8 @@ public enum LevelColors {
     LEVEL24(270, 279, 0xEDD191),
     LEVEL25(280, 289, 0xEDDEBB),
     LEVEL26(290, 299, 0xEDE5D3),
-    LEVEL27(300, 10000, 0xFFFEFA),
-    DEFAULT(10000, 10000, 0xFFFFFF);
+    LEVEL27(300, Integer.MAX_VALUE, 0xFFFEFA),
+    DEFAULT(Integer.MAX_VALUE, Integer.MAX_VALUE, 0xFFFFFF);
 
     public final int startLvl;
     public final int endLvl;
