@@ -271,7 +271,7 @@ public enum Constant {
     public final Text TAG;
     public final int COLOR;
 
-    private Constant(String id, Text tag, int color) {
+    Constant(String id, Text tag, int color) {
         this.ID = id;
         this.TAG = tag;
         this.COLOR = color;

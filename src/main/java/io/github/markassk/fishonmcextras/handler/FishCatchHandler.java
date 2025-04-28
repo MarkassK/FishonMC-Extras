@@ -63,7 +63,7 @@ public class FishCatchHandler  {
         ProfileStatsHandler.instance().tickTimer();
     }
 
-    public void onJoinServer(PlayerEntity player) {
+    public void onJoinServer() {
         trackedFishes.clear();
         trackedPets.clear();
         trackedShards = 0;
@@ -89,7 +89,7 @@ public class FishCatchHandler  {
                 if(!trackedFishes.contains(fish.id)) {
                     trackedFishes.add(fish.id);
                 }
-            } else if (Types.getFOMCItem(stack) instanceof  Types.Pet pet && pet.discoverer.equals(player.getUuid())) {
+            } else if (Types.getFOMCItem(stack) instanceof  Types.Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
                 }
@@ -125,7 +125,7 @@ public class FishCatchHandler  {
                         sendToTitleHud(stack, fish);
                     }
                 }
-            } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && pet.discoverer.equals(player.getUuid())) {
+            } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
                     ProfileStatsHandler.instance().updateStatsOnCatch();

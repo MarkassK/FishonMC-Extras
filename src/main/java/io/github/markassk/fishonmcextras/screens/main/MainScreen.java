@@ -39,17 +39,13 @@ public class MainScreen extends Screen {
         List<ButtonWidget> buttonWidgets = new ArrayList<>();
         int translationDev = ConfigConstants.DEV ? 14 : 0;
 
-        buttonWidgets.add(ButtonWidget.builder(Text.literal("FoE Config"), button -> {
-                    minecraftClient.setScreen(AutoConfig.getConfigScreen(FishOnMCExtrasConfig.class, minecraftClient.currentScreen).get());
-                })
+        buttonWidgets.add(ButtonWidget.builder(Text.literal("FoE Config"), button -> minecraftClient.setScreen(AutoConfig.getConfigScreen(FishOnMCExtrasConfig.class, minecraftClient.currentScreen).get()))
                 .dimensions(width / 2 - 100, height / 2 - translationDev, 200, 20)
                 .tooltip(Tooltip.of(Text.literal("Configure FoE")))
                 .build());
 
         if(ConfigConstants.DEV) {
-            buttonWidgets.add(ButtonWidget.builder(Text.literal("FoE Debug"), button -> {
-                        minecraftClient.setScreen(new DebugScreen(minecraftClient, minecraftClient.currentScreen));
-                    })
+            buttonWidgets.add(ButtonWidget.builder(Text.literal("FoE Debug"), button -> minecraftClient.setScreen(new DebugScreen(minecraftClient, minecraftClient.currentScreen)))
                     .dimensions(width / 2 - 100, height / 2 + translationDev, 200, 20)
                     .tooltip(Tooltip.of(Text.literal("Open Debug Screen")))
                     .build());

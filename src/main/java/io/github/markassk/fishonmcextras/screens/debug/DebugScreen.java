@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras.screens.debug;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -11,7 +10,6 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DebugScreen extends Screen {
@@ -51,7 +49,7 @@ public class DebugScreen extends Screen {
             // Scaling setup
             int fontSize = 8;
             float scale = fontSize / 10.0f;
-            context.getMatrices().scale(scale, scale, 1f);;
+            context.getMatrices().scale(scale, scale, 1f);
 
             int lineSpacing = 2;
             int lineHeight = (int) (textRenderer.fontHeight + (lineSpacing / scale));
@@ -90,15 +88,13 @@ public class DebugScreen extends Screen {
 
             int heightHandlerList = DebugScreenHandler.HandlerType.values().length * lineHeight;
             AtomicInteger countHandler = new AtomicInteger(0);
-            Arrays.stream(DebugScreenHandler.HandlerType.values()).toList().forEach(handlerType -> {
-                context.drawText(
-                        textRenderer,
-                        handler == handlerType ? Text.literal(handlerType.name).formatted(Formatting.BOLD, Formatting.YELLOW) : Text.literal(handlerType.name),
-                        0,
-                        scaledY - heightHandlerList / 2 + (countHandler.getAndIncrement() * lineHeight),
-                        0xFFFFFF, true
-                );
-            });
+            Arrays.stream(DebugScreenHandler.HandlerType.values()).toList().forEach(handlerType -> context.drawText(
+                    textRenderer,
+                    handler == handlerType ? Text.literal(handlerType.name).formatted(Formatting.BOLD, Formatting.YELLOW) : Text.literal(handlerType.name),
+                    0,
+                    scaledY - heightHandlerList / 2 + (countHandler.getAndIncrement() * lineHeight),
+                    0xFFFFFF, true
+            ));
 
         } finally {
             context.getMatrices().pop();

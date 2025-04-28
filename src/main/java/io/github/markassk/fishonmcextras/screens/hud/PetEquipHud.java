@@ -77,9 +77,7 @@ public class PetEquipHud {
 
             // Draw Text
             int finalHeightClampTranslation = heightClampTranslation;
-            textList.forEach(text -> {
-                drawContext.drawText(textRenderer, text, rightAlignment ? scaledX - padding - 16 - padding - textRenderer.getWidth(text) : scaledX + padding + 16 + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding - finalHeightClampTranslation, 0xFFFFFF, true);
-            });
+            textList.forEach(text -> drawContext.drawText(textRenderer, text, rightAlignment ? scaledX - padding - 16 - padding - textRenderer.getWidth(text) : scaledX + padding + 16 + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding - finalHeightClampTranslation, 0xFFFFFF, true));
         } finally {
             drawContext.getMatrices().pop();
         }

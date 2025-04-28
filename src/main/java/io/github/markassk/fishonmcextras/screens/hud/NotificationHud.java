@@ -57,9 +57,7 @@ public class NotificationHud {
                 drawContext.fill(scaledX - maxLength / 2 - padding, scaledY - heightClampTranslation, scaledX + maxLength / 2 + padding, scaledY + ((textList.size() - 1) * lineHeight) + padding * 3 - heightClampTranslation, alphaInt);
 
                 int finalHeightClampTranslation = heightClampTranslation;
-                textList.forEach(text -> {
-                   drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY + padding + (count.getAndIncrement() * lineHeight) - finalHeightClampTranslation, 0xFFFFFF, true);
-                });
+                textList.forEach(text -> drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY + padding + (count.getAndIncrement() * lineHeight) - finalHeightClampTranslation, 0xFFFFFF, true));
             }
         } finally {
             drawContext.getMatrices().pop();

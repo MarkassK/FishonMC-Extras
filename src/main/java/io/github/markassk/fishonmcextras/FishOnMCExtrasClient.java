@@ -83,7 +83,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 LookTickHandler.instance().tick();
                 LocationHandler.instance().tick(minecraftClient);
                 ScoreboardHandler.instance().tick(minecraftClient);
-                ContestHandler.instance().tick(minecraftClient);
+                ContestHandler.instance().tick();
                 TabHandler.instance().tick(minecraftClient);
                 BossBarHandler.instance().tick(minecraftClient);
              }
@@ -102,7 +102,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 minecraftClient.execute(() -> {
                     assert minecraftClient.player != null;
                     ProfileStatsHandler.instance().onJoinServer(minecraftClient.player);
-                    FishCatchHandler.instance().onJoinServer(minecraftClient.player);
+                    FishCatchHandler.instance().onJoinServer();
                     LoadingHandler.instance().isOnServer = true;
                 });
             } else {

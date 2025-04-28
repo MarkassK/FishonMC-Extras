@@ -34,7 +34,7 @@ public enum LevelColors {
     public final int endLvl;
     public final int color;
 
-    private LevelColors(int startLvl, int endLvl, int color) {
+    LevelColors(int startLvl, int endLvl, int color) {
         this.startLvl = startLvl;
         this.endLvl = endLvl;
         this.color = color;

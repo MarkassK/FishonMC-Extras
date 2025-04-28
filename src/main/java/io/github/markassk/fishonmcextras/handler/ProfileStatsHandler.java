@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.adapter.FOMCConstantTypeAdapter;
 import io.github.markassk.fishonmcextras.adapter.LocalDateTypeAdapter;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
@@ -125,7 +126,7 @@ public class ProfileStatsHandler {
             String json = gson.toJson(this.profileStats);
             Files.writeString(filePath, json);
         } catch (IOException e) {
-            e.printStackTrace();
+            FishOnMCExtras.LOGGER.error(e.getMessage());
         }
     }
 
@@ -149,7 +150,7 @@ public class ProfileStatsHandler {
                 this.profileStats = gson.fromJson(json, ProfileStats.class);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            FishOnMCExtras.LOGGER.error(e.getMessage());
         }
     }
 

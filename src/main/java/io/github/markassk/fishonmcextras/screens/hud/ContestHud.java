@@ -62,9 +62,7 @@ public class ContestHud {
 
 
             int finalHeightClampTranslation = heightClampTranslation;
-            textList.forEach(text -> {
-                drawContext.drawText(textRenderer, text, rightAlignment ? scaledX - textRenderer.getWidth(text) - padding: scaledX + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding - finalHeightClampTranslation, 0xFFFFFF, true);
-            });
+            textList.forEach(text -> drawContext.drawText(textRenderer, text, rightAlignment ? scaledX - textRenderer.getWidth(text) - padding: scaledX + padding, scaledY + (count.getAndIncrement() * lineHeight) + padding - finalHeightClampTranslation, 0xFFFFFF, true));
             
         } finally {
             drawContext.getMatrices().pop();

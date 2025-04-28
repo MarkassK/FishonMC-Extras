@@ -26,9 +26,7 @@ public class DebugScreenHandler {
         textList.add(Text.literal(type.name).formatted(Formatting.YELLOW, Formatting.BOLD));
 
         switch (type) {
-            case EXAMPLE -> {
-                textList.add(assembleText("exampleField", "Example Field"));
-            }
+            case EXAMPLE -> textList.add(assembleText("exampleField", "Example Field"));
             case CONTEST -> {
                 ContestHandler contestHandler = ContestHandler.instance();
 

@@ -310,7 +310,7 @@ public enum FishStrings {
     public final String ID;
     public final String CHARACTER;
 
-    private FishStrings(String id, String character) {
+    FishStrings(String id, String character) {
         this.ID = id;
         this.CHARACTER = character;
     }

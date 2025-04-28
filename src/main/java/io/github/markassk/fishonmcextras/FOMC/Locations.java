@@ -22,7 +22,7 @@ public enum Locations {
     public final int x2;
     public final int z2;
 
-    private Locations(int x1, int z1, int x2, int z2) {
+    Locations(int x1, int z1, int x2, int z2) {
         this.x1 = x1;
         this.z1 = z1;
         this.x2 = x2;

@@ -1,9 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-
-import java.util.Objects;
 
 public class ContestHandler {
     private static ContestHandler INSTANCE = new ContestHandler();
@@ -32,7 +29,7 @@ public class ContestHandler {
         return INSTANCE;
     }
 
-    public void tick(MinecraftClient minecraftClient) {
+    public void tick() {
         long time = System.currentTimeMillis();
         long hourMs = time % (60L*60L*1000L);
 
