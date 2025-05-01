@@ -4,7 +4,7 @@ plugins {
 }
 
 
-version = "${project.mod_version}+${project.minecraft_version}"
+version = "${project.mod_version}+${project.minecraft_version}-${project.minecraft_version_max}"
 group = "io.github.markassk.fishonmcextras"
 
 base {

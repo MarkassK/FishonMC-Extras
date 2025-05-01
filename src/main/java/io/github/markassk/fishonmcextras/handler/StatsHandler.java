@@ -2,20 +2,29 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.util.TextHelper;
+import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class StatsHandler {
     private static StatsHandler INSTANCE = new StatsHandler();
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
     private ProfileDataHandler.ProfileData dummyProfileData = new ProfileDataHandler.ProfileData();
+
+    public boolean screenInit = false;
+    public boolean isOnScreen = false;
 
     public static StatsHandler instance() {
         if (INSTANCE == null) {
@@ -24,7 +33,26 @@ public class StatsHandler {
         return INSTANCE;
     }
 
+    public void tick(MinecraftClient minecraftClient) {
+        if(screenInit && isOwnPage(minecraftClient)) {
+            this.createButton(minecraftClient);
+            this.screenInit = false;
+        }
+
+        if(isOnScreen && minecraftClient.currentScreen != null && !Objects.equals(minecraftClient.currentScreen.getTitle().getString(), "\uEEE4픲")) {
+            Screens.getButtons(minecraftClient.currentScreen).forEach(clickableWidget -> {
+                if(Objects.equals(clickableWidget.getMessage().getString(), "Import Stats")) {
+                    clickableWidget.active = false;
+                    clickableWidget.visible = false;
+                    isOnScreen = false;
+                }
+            });
+        }
+    }
+
     private void getData(MinecraftClient minecraftClient) {
+
+
         ProfileDataHandler.ProfileData dummyProfileData = new ProfileDataHandler.ProfileData();
 
         AtomicInteger fishCaught = new AtomicInteger(-1);
@@ -32,7 +60,7 @@ public class StatsHandler {
         for (int i = 0; i < Objects.requireNonNull(minecraftClient.player).currentScreenHandler.slots.size(); i++) {
             ItemStack itemStack = minecraftClient.player.currentScreenHandler.getSlot(i).getStack();
 
-            if(minecraftClient.player.currentScreenHandler.getSlot(i).inventory != minecraftClient.player.getInventory() && itemStack.getItem() == Items.KNOWLEDGE_BOOK) {
+            if(minecraftClient.player.currentScreenHandler.getSlot(i).inventory != minecraftClient.player.getInventory() && itemStack.getItem() == Items.KNOWLEDGE_BOOK && isOwnPage(minecraftClient)) {
                 List<Text> loreLines = Objects.requireNonNull(itemStack.get(DataComponentTypes.LORE)).lines();
 
                 loreLines.forEach(lore -> {
@@ -79,6 +107,35 @@ public class StatsHandler {
         }
     }
 
+    private ButtonWidget getButton(MinecraftClient minecraftClient) {
+        return ButtonWidget.builder(Text.literal("Import Stats"), thisButton -> {
+                    assert minecraftClient.player != null;
+                    StatsHandler.instance().onButtonClick(minecraftClient);
+                })
+                .dimensions(minecraftClient.getWindow().getScaledWidth() / 2 - (130 / 2), minecraftClient.getWindow().getScaledHeight() / 2 + 120, 130, 20)
+                .tooltip(Tooltip.of(
+                        TextHelper.concat(
+                                Text.literal("Import your stats into ").formatted(Formatting.WHITE),
+                                Text.literal("FoE").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                                Text.literal(".\n").formatted(Formatting.WHITE),
+                                Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
+                                Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
+                        )))
+                .build();
+    }
+
+
+    private void createButton(MinecraftClient minecraftClient) {
+        assert minecraftClient.currentScreen != null;
+        Screens.getButtons(minecraftClient.currentScreen).add(getButton(minecraftClient));
+    }
+
+    public void removeButton(MinecraftClient minecraftClient) {
+
+        assert minecraftClient.currentScreen != null;
+        Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget.equals(getButton(minecraftClient)));
+    }
+
     private void saveStats() {
         ProfileDataHandler.instance().profileData.allRarityCounts = dummyProfileData.allRarityCounts;
         ProfileDataHandler.instance().profileData.allFishSizeCounts = dummyProfileData.allFishSizeCounts;
@@ -108,6 +165,21 @@ public class StatsHandler {
         } else {
             return Integer.parseInt(value);
         }
+    }
+
+    public boolean isOwnPage(MinecraftClient minecraftClient) {
+        AtomicBoolean isMe = new AtomicBoolean(false);
+        for (int i = 0; i < Objects.requireNonNull(minecraftClient.player).currentScreenHandler.slots.size(); i++) {
+            ItemStack itemStack = minecraftClient.player.currentScreenHandler.getSlot(i).getStack();
+            if (minecraftClient.player.currentScreenHandler.getSlot(i).inventory != minecraftClient.player.getInventory() && itemStack.getItem() == Items.PLAYER_HEAD && Objects.requireNonNull(itemStack.get(DataComponentTypes.PROFILE)).id().isPresent()) {
+
+                if(itemStack.get(DataComponentTypes.PROFILE).id().get().equals(minecraftClient.player.getUuid())) {
+
+                    isMe.set(true);
+                }
+            }
+        }
+        return isMe.get();
     }
 
     private int getValue(String line, Constant prefix) {

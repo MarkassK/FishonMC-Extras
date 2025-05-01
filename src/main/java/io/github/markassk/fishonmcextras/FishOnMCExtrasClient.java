@@ -31,7 +31,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -92,6 +91,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 ArmorHandler.instance().tick(minecraftClient);
                 FishingRodHandler.instance().tick(minecraftClient);
                 CrewHandler.instance().tick(minecraftClient);
+                StatsHandler.instance().tick(minecraftClient);
              }
         }
     }
@@ -146,7 +146,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
 
     private void afterScreenInit(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
         if(LoadingHandler.instance().isOnServer) {
-            System.out.println("Open: " + screen.getTitle().getString());
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
                 // Pet Menu핑
                 Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
@@ -164,21 +163,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 CrewHandler.instance().crewMenuState = true;
             } else if (Objects.equals(screen.getTitle().getString() , "\uEEE4픲")) {
                 // Stats Menu:
-                Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Import Stats"), button -> {
-                            assert minecraftClient.player != null;
-                            StatsHandler.instance().onButtonClick(minecraftClient);
-                        })
-                        .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
-                        .tooltip(Tooltip.of(
-                                TextHelper.concat(
-                                        Text.literal("Import your stats into ").formatted(Formatting.WHITE),
-                                        Text.literal("FoE").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                        Text.literal(".\n").formatted(Formatting.WHITE),
-                                        Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
-                                        Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
-                                )))
-                        .build());
-
+                StatsHandler.instance().screenInit = true;
+                StatsHandler.instance().isOnScreen = true;
             }
         }
         ScreenEvents.remove(screen).register(this::onRemoveScreen);
@@ -186,7 +172,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
 
     private void onRemoveScreen(Screen screen) {
         if(LoadingHandler.instance().isOnServer) {
-            System.out.println("Close: " + screen.getTitle().getString());
+/
             if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
                 // Quest Menu : 픹
                 QuestHandler.instance().questMenuState = false;
