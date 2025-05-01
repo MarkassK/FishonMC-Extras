@@ -2,7 +2,6 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.handler.FishingRodHandler;
-import io.github.markassk.fishonmcextras.handler.LoadingHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;

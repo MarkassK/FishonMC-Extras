@@ -49,7 +49,6 @@ public class BaitHud {
                 // Alpha
                 int alphaInt = (int) ((config.baitTracker.backgroundOpacity / 100f) * 255f) << 24;
 
-                int lineHeight = textRenderer.fontHeight;
                 int scaledX = (int) (baseX / scale);
                 int scaledY = (int) (baseY / scale);
                 int padding = 8;

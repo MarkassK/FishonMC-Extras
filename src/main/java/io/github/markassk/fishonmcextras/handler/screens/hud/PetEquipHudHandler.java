@@ -70,8 +70,4 @@ public class PetEquipHudHandler {
 
         return textList;
     }
-
-    public static class Field {
-        public static final String LEVEL = "level";
-    }
 }
