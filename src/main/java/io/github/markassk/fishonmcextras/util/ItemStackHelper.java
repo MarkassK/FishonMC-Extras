@@ -8,6 +8,8 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
+import java.util.Objects;
+
 public class ItemStackHelper {
     private static final Gson gson = new Gson();
 
@@ -25,5 +27,12 @@ public class ItemStackHelper {
                 .decode(JsonOps.INSTANCE, gson.fromJson(json, JsonElement.class))
                 .getOrThrow()
                 .getFirst();
+    }
+
+    public static int getCustomModelData(ItemStack stack) {
+        if(stack.get(DataComponentTypes.CUSTOM_MODEL_DATA) != null) {
+            return Objects.requireNonNull(stack.get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
+        }
+        return -1;
     }
 }

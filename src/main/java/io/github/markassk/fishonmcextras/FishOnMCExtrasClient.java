@@ -7,6 +7,7 @@ import io.github.markassk.fishonmcextras.handler.LookTickHandler;
 import io.github.markassk.fishonmcextras.screens.main.MainScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.util.TextHelper;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -30,6 +31,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -87,6 +89,9 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 TabHandler.instance().tick(minecraftClient);
                 BossBarHandler.instance().tick(minecraftClient);
                 QuestHandler.instance().tick(minecraftClient);
+                ArmorHandler.instance().tick(minecraftClient);
+                FishingRodHandler.instance().tick(minecraftClient);
+                CrewHandler.instance().tick(minecraftClient);
              }
         }
     }
@@ -102,7 +107,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 FishOnMCExtras.LOGGER.info("[FoE] Loading Start");
                 minecraftClient.execute(() -> {
                     assert minecraftClient.player != null;
-                    ProfileStatsHandler.instance().onJoinServer(minecraftClient.player);
+                    ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
                     FishCatchHandler.instance().onJoinServer();
                     LoadingHandler.instance().isOnServer = true;
                 });
@@ -116,6 +121,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         if(LoadingHandler.instance().isOnServer) {
             PetEquipHandler.instance().onReceiveMessage(text);
             ContestHandler.instance().onReceiveMessage(text);
+            CrewHandler.instance().onReceiveMessage(text);
         }
     }
 
@@ -139,8 +145,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
     }
 
     private void afterScreenInit(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
-        System.out.println("Open: " + screen.getTitle().getString());
         if(LoadingHandler.instance().isOnServer) {
+            System.out.println("Open: " + screen.getTitle().getString());
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
                 // Pet Menu핑
                 Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
@@ -153,17 +159,42 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
                 // Quest Menu : 픹
                 QuestHandler.instance().questMenuState = true;
+            } else if(Objects.equals(screen.getTitle().getString() , "\uEEE4핒")) {
+                // Crew Menu:
+                CrewHandler.instance().crewMenuState = true;
+            } else if (Objects.equals(screen.getTitle().getString() , "\uEEE4픲")) {
+                // Stats Menu:
+                Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Import Stats"), button -> {
+                            assert minecraftClient.player != null;
+                            StatsHandler.instance().onButtonClick(minecraftClient);
+                        })
+                        .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
+                        .tooltip(Tooltip.of(
+                                TextHelper.concat(
+                                        Text.literal("Import your stats into ").formatted(Formatting.WHITE),
+                                        Text.literal("FoE").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                                        Text.literal(".\n").formatted(Formatting.WHITE),
+                                        Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
+                                        Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
+                                )))
+                        .build());
+
             }
         }
         ScreenEvents.remove(screen).register(this::onRemoveScreen);
     }
 
     private void onRemoveScreen(Screen screen) {
-        System.out.println("Close: " + screen.getTitle().getString());
         if(LoadingHandler.instance().isOnServer) {
+            System.out.println("Close: " + screen.getTitle().getString());
             if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
                 // Quest Menu : 픹
                 QuestHandler.instance().questMenuState = false;
+                QuestHandler.instance().onScreenClose();
+            } else if(Objects.equals(screen.getTitle().getString() , "\uEEE4핒")) {
+                // Crew Menu:
+                CrewHandler.instance().crewMenuState = false;
+                CrewHandler.instance().onScreenClose();
             }
         }
     }

@@ -5,7 +5,6 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 public class TrackerFullInventoryHUDConfig {
     public static class FullInventoryTracker {
-        @ConfigEntry.Gui.Tooltip
         public boolean showFullInventoryWarningHUD = true;
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = 1, max = 35)

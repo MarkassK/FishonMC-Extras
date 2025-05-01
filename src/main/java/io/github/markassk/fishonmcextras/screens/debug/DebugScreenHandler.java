@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.screens.debug;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
@@ -110,71 +111,72 @@ public class DebugScreenHandler {
                 ));
             }
             case PROFILESTATS -> {
-                ProfileStatsHandler profileStatsHandler = ProfileStatsHandler.instance();
+                ProfileDataHandler profileDataHandler = ProfileDataHandler.instance();
 
                 textList.addAll(List.of(
-                        assembleText("lastUpdateTime", profileStatsHandler.lastUpdateTime),
-                        assembleText("playerUUID", profileStatsHandler.playerUUID.toString()),
-                        assembleText("profileStats.fishCaughtCount", profileStatsHandler.profileStats.fishCaughtCount),
-                        assembleText("profileStats.totalXP", profileStatsHandler.profileStats.totalXP),
-                        assembleText("profileStats.totalValue", profileStatsHandler.profileStats.totalValue),
-                        assembleText("profileStats.variantCounts[ALBINO]", profileStatsHandler.profileStats.variantCounts.getOrDefault(Constant.ALBINO, 0)),
-                        assembleText("profileStats.variantCounts[MELANISTIC]", profileStatsHandler.profileStats.variantCounts.getOrDefault(Constant.MELANISTIC, 0)),
-                        assembleText("profileStats.variantCounts[TROPHY]", profileStatsHandler.profileStats.variantCounts.getOrDefault(Constant.TROPHY, 0)),
-                        assembleText("profileStats.variantCounts[FABLED]", profileStatsHandler.profileStats.variantCounts.getOrDefault(Constant.FABLED, 0)),
-                        assembleText("profileStats.rarityCounts[COMMON]", profileStatsHandler.profileStats.rarityCounts.getOrDefault(Constant.COMMON, 0)),
-                        assembleText("profileStats.rarityCounts[RARE]", profileStatsHandler.profileStats.rarityCounts.getOrDefault(Constant.RARE, 0)),
-                        assembleText("profileStats.rarityCounts[EPIC]", profileStatsHandler.profileStats.rarityCounts.getOrDefault(Constant.EPIC, 0)),
-                        assembleText("profileStats.rarityCounts[LEGENDARY]", profileStatsHandler.profileStats.rarityCounts.getOrDefault(Constant.LEGENDARY, 0)),
-                        assembleText("profileStats.rarityCounts[MYTHICAL]", profileStatsHandler.profileStats.rarityCounts.getOrDefault(Constant.MYTHICAL, 0)),
-                        assembleText("profileStats.fishSizeCounts[BABY]", profileStatsHandler.profileStats.fishSizeCounts.getOrDefault(Constant.BABY, 0)),
-                        assembleText("profileStats.fishSizeCounts[JUVENILE]", profileStatsHandler.profileStats.fishSizeCounts.getOrDefault(Constant.JUVENILE, 0)),
-                        assembleText("profileStats.fishSizeCounts[ADULT]", profileStatsHandler.profileStats.fishSizeCounts.getOrDefault(Constant.ADULT, 0)),
-                        assembleText("profileStats.fishSizeCounts[LARGE]", profileStatsHandler.profileStats.fishSizeCounts.getOrDefault(Constant.LARGE, 0)),
-                        assembleText("profileStats.fishSizeCounts[GIGANTIC]", profileStatsHandler.profileStats.fishSizeCounts.getOrDefault(Constant.GIGANTIC, 0)),
-                        assembleText("profileStats.petCaughtCount", profileStatsHandler.profileStats.petCaughtCount),
-                        assembleText("profileStats.shardCaughtCount", profileStatsHandler.profileStats.shardCaughtCount),
-                        assembleText("profileStats.activeTime", profileStatsHandler.profileStats.activeTime),
-                        assembleText("profileStats.lastFishCaughtTime", profileStatsHandler.profileStats.lastFishCaughtTime),
-                        assembleText("profileStats.timerPaused", profileStatsHandler.profileStats.timerPaused),
-                        assembleText("profileStats.allFishCaughtCount", profileStatsHandler.profileStats.allFishCaughtCount),
-                        assembleText("profileStats.allTotalXP", profileStatsHandler.profileStats.allTotalXP),
-                        assembleText("profileStats.allTotalValue", profileStatsHandler.profileStats.allTotalValue),
-                        assembleText("profileStats.allVariantCounts[ALBINO]", profileStatsHandler.profileStats.allVariantCounts.getOrDefault(Constant.ALBINO, 0)),
-                        assembleText("profileStats.allVariantCounts[MELANISTIC]", profileStatsHandler.profileStats.allVariantCounts.getOrDefault(Constant.MELANISTIC, 0)),
-                        assembleText("profileStats.allVariantCounts[TROPHY]", profileStatsHandler.profileStats.allVariantCounts.getOrDefault(Constant.TROPHY, 0)),
-                        assembleText("profileStats.allVariantCounts[FABLED]", profileStatsHandler.profileStats.allVariantCounts.getOrDefault(Constant.FABLED, 0)),
-                        assembleText("profileStats.allRarityCounts[COMMON]", profileStatsHandler.profileStats.allRarityCounts.getOrDefault(Constant.COMMON, 0)),
-                        assembleText("profileStats.allRarityCounts[RARE]", profileStatsHandler.profileStats.allRarityCounts.getOrDefault(Constant.RARE, 0)),
-                        assembleText("profileStats.allRarityCounts[EPIC]", profileStatsHandler.profileStats.allRarityCounts.getOrDefault(Constant.EPIC, 0)),
-                        assembleText("profileStats.allRarityCounts[LEGENDARY]", profileStatsHandler.profileStats.allRarityCounts.getOrDefault(Constant.LEGENDARY, 0)),
-                        assembleText("profileStats.allRarityCounts[MYTHICAL]", profileStatsHandler.profileStats.allRarityCounts.getOrDefault(Constant.MYTHICAL, 0)),
-                        assembleText("profileStats.allFishSizeCounts[BABY]", profileStatsHandler.profileStats.allFishSizeCounts.getOrDefault(Constant.BABY, 0)),
-                        assembleText("profileStats.allFishSizeCounts[JUVENILE]", profileStatsHandler.profileStats.allFishSizeCounts.getOrDefault(Constant.JUVENILE, 0)),
-                        assembleText("profileStats.allFishSizeCounts[ADULT]", profileStatsHandler.profileStats.allFishSizeCounts.getOrDefault(Constant.ADULT, 0)),
-                        assembleText("profileStats.allFishSizeCounts[LARGE]", profileStatsHandler.profileStats.allFishSizeCounts.getOrDefault(Constant.LARGE, 0)),
-                        assembleText("profileStats.allFishSizeCounts[GIGANTIC]", profileStatsHandler.profileStats.allFishSizeCounts.getOrDefault(Constant.GIGANTIC, 0)),
-                        assembleText("profileStats.equippedPetSlot", profileStatsHandler.profileStats.equippedPetSlot),
-                        assembleText("profileStats.equippedPet", profileStatsHandler.profileStats.equippedPet != null ? Objects.requireNonNull(profileStatsHandler.profileStats.equippedPet.pet).ID : "null"),
-                        assembleText("profileStats.petDryStreak", profileStatsHandler.profileStats.petDryStreak),
-                        assembleText("profileStats.shardDryStreak", profileStatsHandler.profileStats.shardDryStreak),
+                        assembleText("lastUpdateTime", profileDataHandler.lastUpdateTime),
+                        assembleText("playerUUID", profileDataHandler.playerUUID.toString()),
+                        assembleText("profileStats.fishCaughtCount", profileDataHandler.profileData.fishCaughtCount),
+                        assembleText("profileStats.totalXP", profileDataHandler.profileData.totalXP),
+                        assembleText("profileStats.totalValue", profileDataHandler.profileData.totalValue),
+                        assembleText("profileStats.variantCounts[ALBINO]", profileDataHandler.profileData.variantCounts.getOrDefault(Constant.ALBINO, 0)),
+                        assembleText("profileStats.variantCounts[MELANISTIC]", profileDataHandler.profileData.variantCounts.getOrDefault(Constant.MELANISTIC, 0)),
+                        assembleText("profileStats.variantCounts[TROPHY]", profileDataHandler.profileData.variantCounts.getOrDefault(Constant.TROPHY, 0)),
+                        assembleText("profileStats.variantCounts[FABLED]", profileDataHandler.profileData.variantCounts.getOrDefault(Constant.FABLED, 0)),
+                        assembleText("profileStats.rarityCounts[COMMON]", profileDataHandler.profileData.rarityCounts.getOrDefault(Constant.COMMON, 0)),
+                        assembleText("profileStats.rarityCounts[RARE]", profileDataHandler.profileData.rarityCounts.getOrDefault(Constant.RARE, 0)),
+                        assembleText("profileStats.rarityCounts[EPIC]", profileDataHandler.profileData.rarityCounts.getOrDefault(Constant.EPIC, 0)),
+                        assembleText("profileStats.rarityCounts[LEGENDARY]", profileDataHandler.profileData.rarityCounts.getOrDefault(Constant.LEGENDARY, 0)),
+                        assembleText("profileStats.rarityCounts[MYTHICAL]", profileDataHandler.profileData.rarityCounts.getOrDefault(Constant.MYTHICAL, 0)),
+                        assembleText("profileStats.fishSizeCounts[BABY]", profileDataHandler.profileData.fishSizeCounts.getOrDefault(Constant.BABY, 0)),
+                        assembleText("profileStats.fishSizeCounts[JUVENILE]", profileDataHandler.profileData.fishSizeCounts.getOrDefault(Constant.JUVENILE, 0)),
+                        assembleText("profileStats.fishSizeCounts[ADULT]", profileDataHandler.profileData.fishSizeCounts.getOrDefault(Constant.ADULT, 0)),
+                        assembleText("profileStats.fishSizeCounts[LARGE]", profileDataHandler.profileData.fishSizeCounts.getOrDefault(Constant.LARGE, 0)),
+                        assembleText("profileStats.fishSizeCounts[GIGANTIC]", profileDataHandler.profileData.fishSizeCounts.getOrDefault(Constant.GIGANTIC, 0)),
+                        assembleText("profileStats.petCaughtCount", profileDataHandler.profileData.petCaughtCount),
+                        assembleText("profileStats.shardCaughtCount", profileDataHandler.profileData.shardCaughtCount),
+                        assembleText("profileStats.activeTime", profileDataHandler.profileData.activeTime),
+                        assembleText("profileStats.lastFishCaughtTime", profileDataHandler.profileData.lastFishCaughtTime),
+                        assembleText("profileStats.timerPaused", profileDataHandler.profileData.timerPaused),
+                        assembleText("profileStats.allFishCaughtCount", profileDataHandler.profileData.allFishCaughtCount),
+                        assembleText("profileStats.allTotalXP", profileDataHandler.profileData.allTotalXP),
+                        assembleText("profileStats.allTotalValue", profileDataHandler.profileData.allTotalValue),
+                        assembleText("profileStats.allVariantCounts[ALBINO]", profileDataHandler.profileData.allVariantCounts.getOrDefault(Constant.ALBINO, 0)),
+                        assembleText("profileStats.allVariantCounts[MELANISTIC]", profileDataHandler.profileData.allVariantCounts.getOrDefault(Constant.MELANISTIC, 0)),
+                        assembleText("profileStats.allVariantCounts[TROPHY]", profileDataHandler.profileData.allVariantCounts.getOrDefault(Constant.TROPHY, 0)),
+                        assembleText("profileStats.allVariantCounts[FABLED]", profileDataHandler.profileData.allVariantCounts.getOrDefault(Constant.FABLED, 0)),
+                        assembleText("profileStats.allRarityCounts[COMMON]", profileDataHandler.profileData.allRarityCounts.getOrDefault(Constant.COMMON, 0)),
+                        assembleText("profileStats.allRarityCounts[RARE]", profileDataHandler.profileData.allRarityCounts.getOrDefault(Constant.RARE, 0)),
+                        assembleText("profileStats.allRarityCounts[EPIC]", profileDataHandler.profileData.allRarityCounts.getOrDefault(Constant.EPIC, 0)),
+                        assembleText("profileStats.allRarityCounts[LEGENDARY]", profileDataHandler.profileData.allRarityCounts.getOrDefault(Constant.LEGENDARY, 0)),
+                        assembleText("profileStats.allRarityCounts[MYTHICAL]", profileDataHandler.profileData.allRarityCounts.getOrDefault(Constant.MYTHICAL, 0)),
+                        assembleText("profileStats.allFishSizeCounts[BABY]", profileDataHandler.profileData.allFishSizeCounts.getOrDefault(Constant.BABY, 0)),
+                        assembleText("profileStats.allFishSizeCounts[JUVENILE]", profileDataHandler.profileData.allFishSizeCounts.getOrDefault(Constant.JUVENILE, 0)),
+                        assembleText("profileStats.allFishSizeCounts[ADULT]", profileDataHandler.profileData.allFishSizeCounts.getOrDefault(Constant.ADULT, 0)),
+                        assembleText("profileStats.allFishSizeCounts[LARGE]", profileDataHandler.profileData.allFishSizeCounts.getOrDefault(Constant.LARGE, 0)),
+                        assembleText("profileStats.allFishSizeCounts[GIGANTIC]", profileDataHandler.profileData.allFishSizeCounts.getOrDefault(Constant.GIGANTIC, 0)),
+                        assembleText("profileData.timerFishCaughtCount", profileDataHandler.profileData.timerFishCaughtCount),
+                        assembleText("profileStats.equippedPetSlot", profileDataHandler.profileData.equippedPetSlot),
+                        assembleText("profileStats.equippedPet", profileDataHandler.profileData.equippedPet != null ? Objects.requireNonNull(profileDataHandler.profileData.equippedPet.pet).ID : "null"),
+                        assembleText("profileStats.petDryStreak", profileDataHandler.profileData.petDryStreak),
+                        assembleText("profileStats.shardDryStreak", profileDataHandler.profileData.shardDryStreak),
 
-                        assembleText("profileStats.variantDryStreak[ALBINO]", profileStatsHandler.profileStats.variantDryStreak.getOrDefault(Constant.ALBINO, 0)),
-                        assembleText("profileStats.variantDryStreak[MELANISTIC]", profileStatsHandler.profileStats.variantDryStreak.getOrDefault(Constant.MELANISTIC, 0)),
-                        assembleText("profileStats.variantDryStreak[TROPHY]", profileStatsHandler.profileStats.variantDryStreak.getOrDefault(Constant.TROPHY, 0)),
-                        assembleText("profileStats.variantDryStreak[FABLED]", profileStatsHandler.profileStats.variantDryStreak.getOrDefault(Constant.FABLED, 0)),
+                        assembleText("profileStats.variantDryStreak[ALBINO]", profileDataHandler.profileData.variantDryStreak.getOrDefault(Constant.ALBINO, 0)),
+                        assembleText("profileStats.variantDryStreak[MELANISTIC]", profileDataHandler.profileData.variantDryStreak.getOrDefault(Constant.MELANISTIC, 0)),
+                        assembleText("profileStats.variantDryStreak[TROPHY]", profileDataHandler.profileData.variantDryStreak.getOrDefault(Constant.TROPHY, 0)),
+                        assembleText("profileStats.variantDryStreak[FABLED]", profileDataHandler.profileData.variantDryStreak.getOrDefault(Constant.FABLED, 0)),
 
-                        assembleText("profileStats.rarityDryStreak[COMMON]", profileStatsHandler.profileStats.rarityDryStreak.getOrDefault(Constant.COMMON, 0)),
-                        assembleText("profileStats.rarityDryStreak[RARE]", profileStatsHandler.profileStats.rarityDryStreak.getOrDefault(Constant.RARE, 0)),
-                        assembleText("profileStats.rarityDryStreak[EPIC]", profileStatsHandler.profileStats.rarityDryStreak.getOrDefault(Constant.EPIC, 0)),
-                        assembleText("profileStats.rarityDryStreak[LEGENDARY]", profileStatsHandler.profileStats.rarityDryStreak.getOrDefault(Constant.LEGENDARY, 0)),
-                        assembleText("profileStats.rarityDryStreak[MYTHICAL]", profileStatsHandler.profileStats.rarityDryStreak.getOrDefault(Constant.MYTHICAL, 0)),
+                        assembleText("profileStats.rarityDryStreak[COMMON]", profileDataHandler.profileData.rarityDryStreak.getOrDefault(Constant.COMMON, 0)),
+                        assembleText("profileStats.rarityDryStreak[RARE]", profileDataHandler.profileData.rarityDryStreak.getOrDefault(Constant.RARE, 0)),
+                        assembleText("profileStats.rarityDryStreak[EPIC]", profileDataHandler.profileData.rarityDryStreak.getOrDefault(Constant.EPIC, 0)),
+                        assembleText("profileStats.rarityDryStreak[LEGENDARY]", profileDataHandler.profileData.rarityDryStreak.getOrDefault(Constant.LEGENDARY, 0)),
+                        assembleText("profileStats.rarityDryStreak[MYTHICAL]", profileDataHandler.profileData.rarityDryStreak.getOrDefault(Constant.MYTHICAL, 0)),
 
-                        assembleText("profileStats.fishSizeDryStreak[BABY]", profileStatsHandler.profileStats.fishSizeDryStreak.getOrDefault(Constant.BABY, 0)),
-                        assembleText("profileStats.fishSizeDryStreak[JUVENILE]", profileStatsHandler.profileStats.fishSizeDryStreak.getOrDefault(Constant.JUVENILE, 0)),
-                        assembleText("profileStats.fishSizeDryStreak[ADULT]", profileStatsHandler.profileStats.fishSizeDryStreak.getOrDefault(Constant.ADULT, 0)),
-                        assembleText("profileStats.fishSizeDryStreak[LARGE]", profileStatsHandler.profileStats.fishSizeDryStreak.getOrDefault(Constant.LARGE, 0)),
-                        assembleText("profileStats.fishSizeDryStreak[GIGANTIC]", profileStatsHandler.profileStats.fishSizeDryStreak.getOrDefault(Constant.GIGANTIC, 0))
+                        assembleText("profileStats.fishSizeDryStreak[BABY]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.BABY, 0)),
+                        assembleText("profileStats.fishSizeDryStreak[JUVENILE]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.JUVENILE, 0)),
+                        assembleText("profileStats.fishSizeDryStreak[ADULT]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.ADULT, 0)),
+                        assembleText("profileStats.fishSizeDryStreak[LARGE]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.LARGE, 0)),
+                        assembleText("profileStats.fishSizeDryStreak[GIGANTIC]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.GIGANTIC, 0))
                 ));
             }
             case RAYTRACING -> {
@@ -225,6 +227,64 @@ public class DebugScreenHandler {
                         assembleText("weather", bossBarHandler.weather),
                         assembleText("timeSuffix", bossBarHandler.timeSuffix),
                         assembleText("temps", bossBarHandler.temperature)
+                ));
+            }
+            case ARMOR -> {
+                ArmorHandler armorHandler = ArmorHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("currentChestplateItem", armorHandler.currentChestplateItem.getName().getString()),
+                        assembleText("currentChestplate", armorHandler.currentChestplate != null ? armorHandler.currentChestplate.climate.ID : ""),
+                        assembleText("currentLeggingsItem", armorHandler.currentLeggingsItem.getName().getString()),
+                        assembleText("currentLeggings", armorHandler.currentLeggings != null ? armorHandler.currentLeggings.climate.ID : ""),
+                        assembleText("currentBootsItem", armorHandler.currentBootsItem.getName().getString()),
+                        assembleText("currentBoots", armorHandler.currentBoots != null ? armorHandler.currentBoots.climate.ID : ""),
+                        assembleText("isWrongChestplateClimate", armorHandler.isWrongChestplateClimate),
+                        assembleText("isWrongLeggingsClimate", armorHandler.isWrongLeggingsClimate),
+                        assembleText("isWrongBootsClimate", armorHandler.isWrongBootsClimate)
+                ));
+            }
+            case FISHING_ROD -> {
+                FishingRodHandler fishingRodHandler = FishingRodHandler.instance();
+
+                assert fishingRodHandler.fishingRod.owner != null;
+                textList.addAll(List.of(
+                        assembleText("fishingRod.name", fishingRodHandler.fishingRod.name),
+                        assembleText("fishingRod.souldboundRod", fishingRodHandler.fishingRod.soulboundRod),
+                        assembleText("fishingRod.skin", fishingRodHandler.fishingRod.skin),
+                        assembleText("fishingRod.owner", fishingRodHandler.fishingRod.owner.toString())
+                ));
+
+                textList.add(assembleText("fishingRod.tacklebox.size()", fishingRodHandler.fishingRod.tacklebox.size()));
+                textList.addAll(fishingRodHandler.fishingRod.tacklebox.stream().map(fomcItem ->
+                        fomcItem instanceof Types.Bait bait ? Text.literal(bait.name).formatted(Formatting.WHITE) :
+                                fomcItem instanceof Types.Lure lure ? Text.literal(lure.name).formatted(Formatting.WHITE) : Text.empty()).toList());
+
+                textList.addAll(List.of(
+                        assembleText("fishingRod.line.name", fishingRodHandler.fishingRod.line != null ? fishingRodHandler.fishingRod.line.name : ""),
+                        assembleText("fishingRod.pole.name", fishingRodHandler.fishingRod.pole != null ? fishingRodHandler.fishingRod.pole.name : ""),
+                        assembleText("fishingRod.reel.name", fishingRodHandler.fishingRod.reel != null ? fishingRodHandler.fishingRod.reel.name : ""),
+                        assembleText("isWrongBait", fishingRodHandler.isWrongBait),
+                        assembleText("isWrongLure", fishingRodHandler.isWrongLure),
+                        assembleText("isWrongReel", fishingRodHandler.isWrongReel),
+                        assembleText("isWrongPole", fishingRodHandler.isWrongPole),
+                        assembleText("isWrongLine", fishingRodHandler.isWrongLine)
+                ));
+            }
+            case CREW -> {
+                CrewHandler crewHandler = CrewHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("crewMenuState", crewHandler.crewMenuState),
+                        assembleText("isCrewNearby", crewHandler.isCrewNearby),
+                        assembleText("isCrewInRenderDistance", crewHandler.isCrewInRenderDistance)
+                ));
+            }
+            case QUEST -> {
+                QuestHandler questHandler = QuestHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("isQuestInitialized", questHandler.isQuestInitialized())
                 ));
             }
         }
@@ -289,7 +349,11 @@ public class DebugScreenHandler {
         TAB(13, "TabHandler"),
         TITLE(14, "TitleHandler"),
         PETTOOLTIP(15, "PetTooltipHandler"),
-        BOSSBAR(16, "BossBarHandler")
+        BOSSBAR(16, "BossBarHandler"),
+        ARMOR(17, "ArmorHandler"),
+        FISHING_ROD(18, "FishingRodHandler"),
+        CREW(19, "CrewHandler"),
+        QUEST(20, "QuestHandler")
         ;
 
         public final int id;

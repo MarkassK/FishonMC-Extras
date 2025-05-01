@@ -60,7 +60,7 @@ public class FishCatchHandler  {
         }
 
         // Ticking while in server
-        ProfileStatsHandler.instance().tickTimer();
+        ProfileDataHandler.instance().tickTimer();
     }
 
     public void onJoinServer() {
@@ -70,7 +70,7 @@ public class FishCatchHandler  {
     }
 
     public void onLeaveServer() {
-        ProfileStatsHandler.instance().saveStats();
+        ProfileDataHandler.instance().saveStats();
     }
 
     public void reset() {
@@ -115,7 +115,7 @@ public class FishCatchHandler  {
             if(Types.getFOMCItem(stack) instanceof Types.Fish fish && fish.catcher.equals(player.getUuid())) {
                 if(!trackedFishes.contains(fish.id)) {
                     trackedFishes.add(fish.id);
-                    ProfileStatsHandler.instance().updateStatsOnCatch(fish);
+                    ProfileDataHandler.instance().updateStatsOnCatch(fish);
 
                     // Update stats on Equipped Pet
                     PetEquipHandler.instance().updatePet(player);
@@ -132,7 +132,7 @@ public class FishCatchHandler  {
             } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
-                    ProfileStatsHandler.instance().updateStatsOnCatch();
+                    ProfileDataHandler.instance().updateStatsOnCatch();
                 }
             } else if (Types.getFOMCItem(stack) instanceof Types.Shard) {
                 shardCount += stack.getCount();
@@ -140,7 +140,7 @@ public class FishCatchHandler  {
         }
 
         if(shardCount > trackedShards) {
-            ProfileStatsHandler.instance().updateStatsOnCatch(1);
+            ProfileDataHandler.instance().updateStatsOnCatch(1);
             trackedShards = shardCount;
         }
     }

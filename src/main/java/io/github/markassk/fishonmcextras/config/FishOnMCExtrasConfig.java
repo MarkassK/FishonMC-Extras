@@ -28,15 +28,23 @@ public class FishOnMCExtrasConfig implements ConfigData {
 
     @ConfigEntry.Category(value = TRACKERS)
     @ConfigEntry.Gui.CollapsibleObject
-    public TrackerScoreboardHUDConfig.ScoreboardTracker scoreboardTracker = new TrackerScoreboardHUDConfig.ScoreboardTracker();
-
-    @ConfigEntry.Category(value = TRACKERS)
-    @ConfigEntry.Gui.CollapsibleObject
-    public TrackerBossBarHUDConfig.BossBarTracker bossBarTracker = new TrackerBossBarHUDConfig.BossBarTracker();
-
-    @ConfigEntry.Category(value = TRACKERS)
-    @ConfigEntry.Gui.CollapsibleObject
     public TrackerContestHUDConfig.ContestTracker contestTracker = new TrackerContestHUDConfig.ContestTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerEquipmentHUDConfig.EquipmentTracker equipmentTracker = new TrackerEquipmentHUDConfig.EquipmentTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerBaitHUDConfig.BaitTracker baitTracker = new TrackerBaitHUDConfig.BaitTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerCrewHUDConfig.CrewTracker crewTracker = new TrackerCrewHUDConfig.CrewTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerQuestHUDConfig.QuestTracker questTracker = new TrackerQuestHUDConfig.QuestTracker();
 
     @ConfigEntry.Category(value = TOOLTIPS)
     @ConfigEntry.Gui.CollapsibleObject
@@ -57,5 +65,13 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public BarHUDConfig.BarHUD barHUD = new BarHUDConfig.BarHUD();
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerScoreboardHUDConfig.ScoreboardTracker scoreboardTracker = new TrackerScoreboardHUDConfig.ScoreboardTracker();
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TrackerBossBarHUDConfig.BossBarTracker bossBarTracker = new TrackerBossBarHUDConfig.BossBarTracker();
     //endregion
 }

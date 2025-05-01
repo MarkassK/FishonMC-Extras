@@ -1,7 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.FOMC.Locations;
+import io.github.markassk.fishonmcextras.FOMC.LocationBoundingBox;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.Vec3d;
 
@@ -39,7 +39,7 @@ public class LocationHandler {
 
     // pX, pY : Player
     private String findClosestLocation(int pX, int pZ) {
-        for (Locations location : Locations.values()){
+        for (LocationBoundingBox location : LocationBoundingBox.values()){
             if ((pX >= location.x1 && pX <= location.x2) && (pZ >= location.z1 && pZ <= location.z2)) {
                 return location.name().toLowerCase();
             }

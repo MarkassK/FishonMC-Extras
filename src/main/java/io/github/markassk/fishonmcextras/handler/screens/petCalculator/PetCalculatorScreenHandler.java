@@ -46,7 +46,7 @@ public class PetCalculatorScreenHandler {
         }
 
         // Calculated Pet
-        calculatedPet.add(Text.literal("ʟᴇꜰᴛ ᴘᴇᴛ").formatted(Formatting.YELLOW, Formatting.BOLD));
+        calculatedPet.add(Text.literal("ᴄᴀʟᴄᴜʟᴀᴛᴇᴅ ᴘᴇᴛ").formatted(Formatting.YELLOW, Formatting.BOLD));
         if(PetCalculatorHandler.instance().calculatedPet != null) {
             Types.Pet pet = PetCalculatorHandler.instance().calculatedPet;
             ItemStack petStack = PetCalculatorHandler.instance().selectedPetStacks[PetCalculatorHandler.PetList.RIGHT.id];

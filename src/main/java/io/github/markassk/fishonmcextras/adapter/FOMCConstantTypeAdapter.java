@@ -13,6 +13,6 @@ public class FOMCConstantTypeAdapter implements JsonSerializer<Constant>, JsonDe
 
     @Override
     public JsonElement serialize(Constant textTag, Type type, JsonSerializationContext jsonSerializationContext) {
-        return new JsonPrimitive(textTag.toString());
+        return new JsonPrimitive(textTag.ID);
     }
 }

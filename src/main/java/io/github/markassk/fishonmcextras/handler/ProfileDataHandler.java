@@ -16,30 +16,28 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class ProfileStatsHandler {
-    private static ProfileStatsHandler INSTANCE = new ProfileStatsHandler();
+public class ProfileDataHandler {
+    private static ProfileDataHandler INSTANCE = new ProfileDataHandler();
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
     private boolean isSavedAfterTimer = false;
 
-    public ProfileStats profileStats = new ProfileStats();
+    public ProfileData profileData = new ProfileData();
     public long lastUpdateTime = System.currentTimeMillis();
     public UUID playerUUID = UUID.randomUUID();
 
-    public static ProfileStatsHandler instance() {
+    public static ProfileDataHandler instance() {
         if (INSTANCE == null) {
-            INSTANCE = new ProfileStatsHandler();
+            INSTANCE = new ProfileDataHandler();
         }
         return INSTANCE;
     }
 
     public void onJoinServer(PlayerEntity player) {
-        ProfileStatsHandler.instance().playerUUID = player.getUuid();
-        ProfileStatsHandler.instance().loadStats();
+        ProfileDataHandler.instance().playerUUID = player.getUuid();
+        ProfileDataHandler.instance().loadStats();
     }
 
     /**
@@ -47,27 +45,28 @@ public class ProfileStatsHandler {
      */
     public void updateStatsOnCatch(Types.Fish fish) {
         // All-time stats
-        this.profileStats.allFishCaughtCount++;
-        this.profileStats.allTotalXP += fish.xp;
-        this.profileStats.allTotalValue += fish.value;
-        this.profileStats.allFishSizeCounts.put(fish.size, this.profileStats.allFishSizeCounts.getOrDefault(fish.size, 0) + 1);
-        this.profileStats.allVariantCounts.put(fish.variant, this.profileStats.allVariantCounts.getOrDefault(fish.variant, 0) + 1);
-        this.profileStats.allRarityCounts.put(fish.rarity, this.profileStats.allRarityCounts.getOrDefault(fish.rarity, 0) + 1);
+        this.profileData.allFishCaughtCount++;
+        this.profileData.timerFishCaughtCount++;
+        this.profileData.allTotalXP += fish.xp;
+        this.profileData.allTotalValue += fish.value;
+        this.profileData.allFishSizeCounts.put(fish.size, this.profileData.allFishSizeCounts.getOrDefault(fish.size, 0) + 1);
+        this.profileData.allVariantCounts.put(fish.variant, this.profileData.allVariantCounts.getOrDefault(fish.variant, 0) + 1);
+        this.profileData.allRarityCounts.put(fish.rarity, this.profileData.allRarityCounts.getOrDefault(fish.rarity, 0) + 1);
 
-        this.profileStats.lastFishCaughtTime = System.currentTimeMillis();
-        this.profileStats.timerPaused = false;
+        this.profileData.lastFishCaughtTime = System.currentTimeMillis();
+        this.profileData.timerPaused = false;
 
         // Session stats
-        this.profileStats.fishCaughtCount++;
-        this.profileStats.totalXP += fish.xp;
-        this.profileStats.totalValue += fish.value;
-        this.profileStats.fishSizeCounts.put(fish.size, this.profileStats.fishSizeCounts.getOrDefault(fish.size, 0) + 1);
-        this.profileStats.variantCounts.put(fish.variant, this.profileStats.variantCounts.getOrDefault(fish.variant, 0) + 1);
-        this.profileStats.rarityCounts.put(fish.rarity, this.profileStats.rarityCounts.getOrDefault(fish.rarity, 0) + 1);
+        this.profileData.fishCaughtCount++;
+        this.profileData.totalXP += fish.xp;
+        this.profileData.totalValue += fish.value;
+        this.profileData.fishSizeCounts.put(fish.size, this.profileData.fishSizeCounts.getOrDefault(fish.size, 0) + 1);
+        this.profileData.variantCounts.put(fish.variant, this.profileData.variantCounts.getOrDefault(fish.variant, 0) + 1);
+        this.profileData.rarityCounts.put(fish.rarity, this.profileData.rarityCounts.getOrDefault(fish.rarity, 0) + 1);
 
-        this.profileStats.fishSizeDryStreak.put(fish.size, this.profileStats.allFishCaughtCount);
-        this.profileStats.variantDryStreak.put(fish.variant, this.profileStats.allFishCaughtCount);
-        this.profileStats.rarityDryStreak.put(fish.rarity, this.profileStats.allFishCaughtCount);
+        this.profileData.fishSizeDryStreak.put(fish.size, this.profileData.allFishCaughtCount);
+        this.profileData.variantDryStreak.put(fish.variant, this.profileData.allFishCaughtCount);
+        this.profileData.rarityDryStreak.put(fish.rarity, this.profileData.allFishCaughtCount);
 
         this.isSavedAfterTimer = false;
         this.saveStats();
@@ -75,37 +74,37 @@ public class ProfileStatsHandler {
 
     public void updateStatsOnCatch() {
         // All-time stats
-        this.profileStats.allPetCaughtCount++;
+        this.profileData.allPetCaughtCount++;
 
         // Session stats
-        this.profileStats.petCaughtCount++;
+        this.profileData.petCaughtCount++;
 
-        this.profileStats.petDryStreak = this.profileStats.allFishCaughtCount;
+        this.profileData.petDryStreak = this.profileData.allFishCaughtCount;
 
         this.saveStats();
     }
 
     public void updateStatsOnCatch(int count) {
         // All-time stats
-        this.profileStats.allShardCaughtCount += count;
+        this.profileData.allShardCaughtCount += count;
 
         // Session stats
-        this.profileStats.shardCaughtCount += count;
+        this.profileData.shardCaughtCount += count;
 
-        this.profileStats.shardDryStreak = this.profileStats.allFishCaughtCount;
+        this.profileData.shardDryStreak = this.profileData.allFishCaughtCount;
 
         this.saveStats();
     }
 
     public void updatePet(Types.Pet pet, int slot) {
-        this.profileStats.equippedPet = pet;
-        this.profileStats.equippedPetSlot = slot;
+        this.profileData.equippedPet = pet;
+        this.profileData.equippedPetSlot = slot;
         this.saveStats();
     }
 
     public void resetPet() {
-        this.profileStats.equippedPet = null;
-        this.profileStats.equippedPetSlot = -1;
+        this.profileData.equippedPet = null;
+        this.profileData.equippedPetSlot = -1;
         this.saveStats();
     }
 
@@ -123,7 +122,7 @@ public class ProfileStatsHandler {
                     .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
                     .registerTypeAdapter(Constant.class, new FOMCConstantTypeAdapter())
                     .create();
-            String json = gson.toJson(this.profileStats);
+            String json = gson.toJson(this.profileData);
             Files.writeString(filePath, json);
         } catch (IOException e) {
             FishOnMCExtras.LOGGER.error(e.getMessage());
@@ -147,7 +146,7 @@ public class ProfileStatsHandler {
                         .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
                         .registerTypeAdapter(Constant.class, new FOMCConstantTypeAdapter())
                         .create();
-                this.profileStats = gson.fromJson(json, ProfileStats.class);
+                this.profileData = gson.fromJson(json, ProfileData.class);
             }
         } catch (IOException e) {
             FishOnMCExtras.LOGGER.error(e.getMessage());
@@ -158,49 +157,57 @@ public class ProfileStatsHandler {
      * Reset Stats, but not all-time stats
      */
     public void resetStats() {
-        this.profileStats.fishCaughtCount = 0;
-        this.profileStats.totalXP = 0.0f;
-        this.profileStats.totalValue = 0.0f;
-        this.profileStats.variantCounts.clear();
-        this.profileStats.rarityCounts.clear();
-        this.profileStats.fishSizeCounts.clear();
-        this.profileStats.petCaughtCount = 0;
-        this.profileStats.shardCaughtCount = 0;
+        this.profileData.fishCaughtCount = 0;
+        this.profileData.totalXP = 0.0f;
+        this.profileData.totalValue = 0.0f;
+        this.profileData.variantCounts.clear();
+        this.profileData.rarityCounts.clear();
+        this.profileData.fishSizeCounts.clear();
+        this.profileData.petCaughtCount = 0;
+        this.profileData.shardCaughtCount = 0;
 
-        this.profileStats.activeTime = 0;
-        this.profileStats.lastFishCaughtTime = 0;
-        this.profileStats.timerPaused = true;
+        this.profileData.timerFishCaughtCount = 0;
 
-        this.profileStats.rarityDryStreak.clear();
-        this.profileStats.fishSizeDryStreak.clear();
-        this.profileStats.variantDryStreak.clear();
+        this.profileData.activeTime = 0;
+        this.profileData.lastFishCaughtTime = 0;
+        this.profileData.timerPaused = true;
+
+        this.profileData.rarityDryStreak.clear();
+        this.profileData.fishSizeDryStreak.clear();
+        this.profileData.variantDryStreak.clear();
 
         FishCatchHandler.instance().reset();
+        this.saveStats();
+    }
+
+    public void resetTimer() {
+        this.profileData.timerFishCaughtCount = 0;
+        this.profileData.activeTime = 0;
         this.saveStats();
     }
 
     public void tickTimer() {
         long currentTime = System.currentTimeMillis();
         // Pause timer when not fishing after x seconds
-        long timeSinceLastFish = currentTime - ProfileStatsHandler.instance().profileStats.lastFishCaughtTime;
+        long timeSinceLastFish = currentTime - ProfileDataHandler.instance().profileData.lastFishCaughtTime;
         if (timeSinceLastFish >= TimeUnit.SECONDS.toMillis(config.fishTracker.autoPauseTimer)) {
-            ProfileStatsHandler.instance().profileStats.timerPaused = true;
+            ProfileDataHandler.instance().profileData.timerPaused = true;
             if(!isSavedAfterTimer) {
                 this.isSavedAfterTimer = true;
                 this.saveStats();
             }
         }
 
-        long delta = currentTime - ProfileStatsHandler.instance().lastUpdateTime;
-        ProfileStatsHandler.instance().lastUpdateTime = currentTime;
+        long delta = currentTime - ProfileDataHandler.instance().lastUpdateTime;
+        ProfileDataHandler.instance().lastUpdateTime = currentTime;
 
         // Track time when fishing
-        if(!ProfileStatsHandler.instance().profileStats.timerPaused) {
-            ProfileStatsHandler.instance().profileStats.activeTime += delta;
+        if(!ProfileDataHandler.instance().profileData.timerPaused) {
+            ProfileDataHandler.instance().profileData.activeTime += delta;
         }
     }
 
-    public static class ProfileStats {
+    public static class ProfileData {
         // Session stats
         public int fishCaughtCount = 0;
         public float totalXP = 0.0f;
@@ -226,6 +233,8 @@ public class ProfileStatsHandler {
         public int allPetCaughtCount = 0;
         public int allShardCaughtCount = 0;
 
+        public int timerFishCaughtCount = 0;
+
         // Equipped Pet
         public int equippedPetSlot = -1;
         public Types.Pet equippedPet = null;
@@ -236,5 +245,15 @@ public class ProfileStatsHandler {
         public Map<Constant, Integer> rarityDryStreak = new HashMap<>();
         public Map<Constant, Integer> variantDryStreak = new HashMap<>();
         public Map<Constant, Integer> fishSizeDryStreak = new HashMap<>();
+
+        // Crew Data
+        public List<UUID> crewMembers = new ArrayList<>();
+        public CrewHandler.CrewState crewState = CrewHandler.CrewState.NOTINITIALIZED;
+
+        // Quest Data
+        public Map<Constant, List<QuestHandler.Quest>> activeQuests = new HashMap<>();
+
+        // Stats Data
+        public boolean isStatsInitialized = false;
     }
 }

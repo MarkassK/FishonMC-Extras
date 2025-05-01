@@ -20,11 +20,15 @@ public class MainHudRenderer implements HudRenderCallback {
     ItemFrameTooltipHud itemFrameTooltipHud = new ItemFrameTooltipHud();
     BarHud barHud = new BarHud();
     ContestHud contestHud = new ContestHud();
+    BaitHud baitHud = new BaitHud();
+    EquipmentHud equipmentHud = new EquipmentHud();
+    CrewHud crewHud = new CrewHud();
+    QuestHud questHud = new QuestHud();
 
     @Override
     public void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-        if(!MinecraftClient.getInstance().options.hudHidden && LoadingHandler.instance().isOnServer) {
+        if(!MinecraftClient.getInstance().options.hudHidden && LoadingHandler.instance().isOnServer && LoadingHandler.instance().isLoadingDone) {
             if(config.notifications.showWarningHud) {
                 this.notificationHud.render(drawContext, MinecraftClient.getInstance());
             }
@@ -54,6 +58,22 @@ public class MainHudRenderer implements HudRenderCallback {
                 if(config.contestTracker.showContest) {
                     this.contestHud.render(drawContext, MinecraftClient.getInstance());
                 }
+
+                if(config.baitTracker.showBaitHud) {
+                    this.baitHud.render(drawContext, MinecraftClient.getInstance());
+                }
+
+                if(config.equipmentTracker.showEquipmentHud) {
+                    this.equipmentHud.render(drawContext, MinecraftClient.getInstance());
+                }
+
+                if(config.crewTracker.showCrewNearby) {
+                    this.crewHud.render(drawContext, MinecraftClient.getInstance());
+                }
+
+                if(config.questTracker.showQuestHud) {
+                    this.questHud.render(drawContext, MinecraftClient.getInstance());
+                }
             }
 
             // Dev
@@ -61,7 +81,7 @@ public class MainHudRenderer implements HudRenderCallback {
                 Text dev = Text.literal("Development version, do not distribute").formatted(Formatting.RED);
                 drawContext.drawText(
                         MinecraftClient.getInstance().textRenderer, dev,
-                        MinecraftClient.getInstance().getWindow().getScaledWidth() - MinecraftClient.getInstance().textRenderer.getWidth(dev),
+                        0,
                         MinecraftClient.getInstance().getWindow().getScaledHeight() - MinecraftClient.getInstance().textRenderer.fontHeight, 0xFFFFFF, true);
             }
         }

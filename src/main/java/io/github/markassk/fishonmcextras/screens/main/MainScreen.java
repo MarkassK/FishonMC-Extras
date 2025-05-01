@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,10 @@ public class MainScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
+        int translationDev = ConfigConstants.DEV ? 14 : 0;
+
+        context.drawText(textRenderer, Text.literal("Welcome to FishOnMC-Extras").formatted(Formatting.WHITE), width / 2 - textRenderer.getWidth(Text.literal("Welcome to FishOnMC-Extras")) / 2, height / 2 - translationDev - 16, 0xFFFFFF, true);
+        context.drawText(textRenderer, Text.literal("Version 0.2.0").formatted(Formatting.GRAY), width / 2 - textRenderer.getWidth(Text.literal("Version 0.2.0")) / 2, height / 2 + translationDev + 26, 0xFFFFFF, true);
     }
 
     private void renderWidgets() {

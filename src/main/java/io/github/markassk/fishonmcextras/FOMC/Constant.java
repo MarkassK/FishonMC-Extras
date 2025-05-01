@@ -5,6 +5,7 @@ import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import static io.github.markassk.fishonmcextras.FOMC.Defaults.DEFAULT_COLOR;
 import static io.github.markassk.fishonmcextras.FOMC.Defaults.EMPTY_STRING;
 
 public enum Constant {
@@ -25,13 +26,14 @@ public enum Constant {
     SPECIAL("special", Text.literal("\uF092").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
 
     // Location
+    SPAWNHUB("spawnhub", Text.literal("Cypress Lake").withColor(0x5CAE65), DEFAULT_COLOR),
     CYPRESS_LAKE("spawn", Text.literal("Cypress Lake").withColor(0x5CAE65), Defaults.DEFAULT_COLOR),
     KENAI_RIVER("kenai", Text.literal("Kenai River").withColor(0x68D499), Defaults.DEFAULT_COLOR),
     LAKE_BIWA("biwa", Text.literal("Lake Biwa").withColor(0xFBC0FA), Defaults.DEFAULT_COLOR),
     MURRAY_RIVER("murray", Text.literal("Murray River").withColor(0xCD5916), Defaults.DEFAULT_COLOR),
     EVERGLADES("everglades", Text.literal("Everglades").withColor(0x2EBB8D), Defaults.DEFAULT_COLOR),
     KEY_WEST("keywest", Text.literal("Key West").withColor(0xFBF17C), Defaults.DEFAULT_COLOR),
-    TOLEDO_BEND("toledobend", Text.literal("Toledo Bend Resevoir").withColor(0x99A7D0), Defaults.DEFAULT_COLOR),
+    TOLEDO_BEND("toledobend", Text.literal("Toledo Bend Reservoir").withColor(0x99A7D0), Defaults.DEFAULT_COLOR),
     GREAT_LAKES("greatlakes", Text.literal("Great Lakes").withColor(0x3CABF3), Defaults.DEFAULT_COLOR),
     DANUBE_RIVER("danube", Text.literal("Danube River").withColor(0xFBC598), Defaults.DEFAULT_COLOR),
     AMAZON_RIVER("amazon", Text.literal("Amazon River").withColor(0x3EA729), Defaults.DEFAULT_COLOR),
@@ -197,7 +199,8 @@ public enum Constant {
             Text.literal("a").withColor(0x928E71),
             Text.literal("r").withColor(0x8D8D70),
             Text.literal("s").withColor(0x898C6E),
-            Text.literal("h ").withColor(0x858B6D),
+            Text.literal("h").withColor(0x858B6D),
+            Text.literal(""),
             Text.literal("R").withColor(0x7C896A),
             Text.literal("a").withColor(0x788868),
             Text.literal("b").withColor(0x748767),
@@ -207,9 +210,10 @@ public enum Constant {
     SEA_TURTLE("seaturtle", TextHelper.concat(
             Text.literal("S").withColor(0x69BE7B),
             Text.literal("e").withColor(0x71C27E),
-            Text.literal("a ").withColor(0x79C781),
+            Text.literal("a").withColor(0x79C781),
+            Text.literal(""),
             Text.literal("T").withColor(0x89D087),
-            Text.literal("u ").withColor(0x92D48A),
+            Text.literal("u").withColor(0x92D48A),
             Text.literal("r").withColor(0x9AD98D),
             Text.literal("t").withColor(0xA2DD90),
             Text.literal("l").withColor(0xAAE293),
@@ -222,50 +226,55 @@ public enum Constant {
     EAGLE("eagle", TextHelper.concat(
             Text.literal("E").withColor(0xBEBEBE),
             Text.literal("a").withColor(0xBAB8B6),
-            Text.literal("g ").withColor(0xB5B3AE),
+            Text.literal("g").withColor(0xB5B3AE),
             Text.literal("l").withColor(0xB1ADA5),
             Text.literal("e Pet ").withColor(0xACA79D)), Defaults.DEFAULT_COLOR),
     WOLF("wolf", TextHelper.concat(
             Text.literal("W").withColor(0x84CA54),
             Text.literal("o").withColor(0x7C8083),
-            Text.literal("l ").withColor(0x787B7F),
+            Text.literal("l").withColor(0x787B7F),
             Text.literal("f Pet").withColor(0x73767B)), Defaults.DEFAULT_COLOR),
     CAPYBARA("capybara", TextHelper.concat(
             Text.literal("C").withColor(0x725E39),
             Text.literal("a").withColor(0x7F663F),
-            Text.literal("p ").withColor(0x8C6E45),
+            Text.literal("p").withColor(0x8C6E45),
             Text.literal("y").withColor(0x99764B),
-            Text.literal("b ").withColor(0xA77D51),
+            Text.literal("b").withColor(0xA77D51),
             Text.literal("a").withColor(0xB48557),
             Text.literal("r").withColor(0xC18D5D),
             Text.literal("a Pet").withColor(0xCE9563)), Defaults.DEFAULT_COLOR),
     LYNX("lynx", TextHelper.concat(
             Text.literal("L").withColor(0xA1A278),
             Text.literal("y").withColor(0xA4A571),
-            Text.literal("n ").withColor(0xA6A96A),
+            Text.literal("n").withColor(0xA6A96A),
             Text.literal("x Pet").withColor(0xA9AC63)), Defaults.DEFAULT_COLOR),
     SHARK("shark", TextHelper.concat(
             Text.literal("S").withColor(0x6C8BE4),
             Text.literal("h").withColor(0x7190DB),
-            Text.literal("a ").withColor(0x7694D2),
+            Text.literal("a").withColor(0x7694D2),
             Text.literal("r").withColor(0x7B99C9),
-            Text.literal("k Pet ").withColor(0x809DC0)), Defaults.DEFAULT_COLOR),
+            Text.literal("k Pet").withColor(0x809DC0)), Defaults.DEFAULT_COLOR),
     DOLPHIN("dolphin", TextHelper.concat(
             Text.literal("D").withColor(0xBAC7E4),
             Text.literal("o").withColor(0xB8C7DE),
-            Text.literal("l ").withColor(0xB6C6D8),
+            Text.literal("l").withColor(0xB6C6D8),
             Text.literal("p").withColor(0xB4C6D2),
-            Text.literal("h ").withColor(0xB1C6CB),
+            Text.literal("h").withColor(0xB1C6CB),
             Text.literal("i").withColor(0xAFC5C5),
             Text.literal("n Pet").withColor(0xADC5BF)), Defaults.DEFAULT_COLOR),
     KOALA("koala", TextHelper.concat(
             Text.literal("K").withColor(0xAEBFD1),
             Text.literal("o").withColor(0xB1C4D0),
-            Text.literal("a ").withColor(0xB3C8CF),
+            Text.literal("a").withColor(0xB3C8CF),
             Text.literal("l").withColor(0xB6CDCE),
-            Text.literal("a Pet ").withColor(0xB8D1CD)), Defaults.DEFAULT_COLOR),
+            Text.literal("a Pet").withColor(0xB8D1CD)), Defaults.DEFAULT_COLOR),
 
-    DEFAULT("Default", Text.empty(), Defaults.DEFAULT_COLOR);
+    FRESHWATER("freshwater", Text.literal("Freshwater").withColor(0x3F87EF), DEFAULT_COLOR),
+    SALTWATER("saltwater", Text.literal("Saltwater").withColor(0x86D9E6), DEFAULT_COLOR),
+    ANY_WATER("any", Text.literal("Any"), DEFAULT_COLOR),
+    GLOBAL_WATER("global", Text.literal("Anywhere"), DEFAULT_COLOR),
+
+    DEFAULT("default", Text.empty(), Defaults.DEFAULT_COLOR);
 
     public final String ID;
     public final Text TAG;
@@ -279,7 +288,7 @@ public enum Constant {
 
     public static Constant valueOfId(String id) {
         for (Constant c : values()) {
-            if (c.ID.equals(id)) {
+            if (c.ID.equals(id.toLowerCase())) {
                 return c;
             }
         }
@@ -297,7 +306,7 @@ public enum Constant {
 
     public static int colorOfId(String id) {
         for (Constant c : values()) {
-            if (c.ID.equals(id)) {
+            if (c.ID.equals(id.toLowerCase())) {
                 return c.COLOR;
             }
         }

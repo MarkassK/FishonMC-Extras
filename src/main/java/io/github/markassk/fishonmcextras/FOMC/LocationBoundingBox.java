@@ -1,7 +1,8 @@
 package io.github.markassk.fishonmcextras.FOMC;
 
 //MAKE SURE : Location 1 < Location 2
-public enum Locations {
+public enum LocationBoundingBox {
+    SPAWNHUB(103, -13, 137, 38),
     SPAWN(-53, -95, 294, 252),
     KENAI(298, -621, 661, -346),
     BIWA(1461, -785, 1640, -379),
@@ -22,7 +23,7 @@ public enum Locations {
     public final int x2;
     public final int z2;
 
-    Locations(int x1, int z1, int x2, int z2) {
+    LocationBoundingBox(int x1, int z1, int x2, int z2) {
         this.x1 = x1;
         this.z1 = z1;
         this.x2 = x2;

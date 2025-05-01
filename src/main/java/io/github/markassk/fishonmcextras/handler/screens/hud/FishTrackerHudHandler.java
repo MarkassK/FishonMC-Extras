@@ -2,7 +2,7 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
-import io.github.markassk.fishonmcextras.handler.ProfileStatsHandler;
+import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -24,36 +24,36 @@ public class FishTrackerHudHandler {
 
     public List<Text> assembleFishText() {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-        ProfileStatsHandler.ProfileStats profileStats = ProfileStatsHandler.instance().profileStats;
+        ProfileDataHandler.ProfileData profileData = ProfileDataHandler.instance().profileData;
         List<Text> textList = new ArrayList<>();
 
-        long timeSinceReset = ProfileStatsHandler.instance().profileStats.activeTime;
+        long timeSinceReset = ProfileDataHandler.instance().profileData.activeTime;
 
         // All-time or not display stat strings
         int displayFishCaughtCount = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.fishCaughtCount
-                : profileStats.allFishCaughtCount;
+                ? profileData.fishCaughtCount
+                : profileData.allFishCaughtCount;
         float displayTotalXp = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.totalXP
-                : profileStats.allTotalXP;
+                ? profileData.totalXP
+                : profileData.allTotalXP;
         float displayTotalValue = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.totalValue
-                : profileStats.allTotalValue;
+                ? profileData.totalValue
+                : profileData.allTotalValue;
         int displayPetCaughtCount = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.petCaughtCount
-                : profileStats.allPetCaughtCount;
+                ? profileData.petCaughtCount
+                : profileData.allPetCaughtCount;
         int displayShardCaughtCount = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.shardCaughtCount
-                : profileStats.allShardCaughtCount;
+                ? profileData.shardCaughtCount
+                : profileData.allShardCaughtCount;
         Map<Constant, Integer> displayRarityCounts = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.rarityCounts
-                : profileStats.allRarityCounts;
+                ? profileData.rarityCounts
+                : profileData.allRarityCounts;
         Map<Constant, Integer> displayFishSizeCounts = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.fishSizeCounts
-                : profileStats.allFishSizeCounts;
+                ? profileData.fishSizeCounts
+                : profileData.allFishSizeCounts;
         Map<Constant, Integer> displayVariantCounts = config.fishTracker.isFishTrackerOnTimer
-                ? profileStats.variantCounts
-                : profileStats.allVariantCounts;
+                ? profileData.variantCounts
+                : profileData.allVariantCounts;
         int displayCommonCount = displayRarityCounts.getOrDefault(Constant.COMMON, 0);
         int displayRareCount = displayRarityCounts.getOrDefault(Constant.RARE, 0);
         int displayEpicCount = displayRarityCounts.getOrDefault(Constant.EPIC, 0);
@@ -69,9 +69,9 @@ public class FishTrackerHudHandler {
         int displayTrophyCount = displayVariantCounts.getOrDefault(Constant.TROPHY, 0);
         int displayFabledCount = displayVariantCounts.getOrDefault(Constant.FABLED, 0);
 
-        Map<Constant, Integer> displayRarityDryStreak = profileStats.rarityDryStreak;
-        Map<Constant, Integer> displayFishSizeDryStreak = profileStats.fishSizeDryStreak;
-        Map<Constant, Integer> displayVariantDryStreak = profileStats.variantDryStreak;
+        Map<Constant, Integer> displayRarityDryStreak = profileData.rarityDryStreak;
+        Map<Constant, Integer> displayFishSizeDryStreak = profileData.fishSizeDryStreak;
+        Map<Constant, Integer> displayVariantDryStreak = profileData.variantDryStreak;
 
         int displayDryStreakCommonCount = displayRarityDryStreak.getOrDefault(Constant.COMMON, 0);
         int displayDryStreakRareCount = displayRarityDryStreak.getOrDefault(Constant.RARE, 0);
@@ -91,16 +91,30 @@ public class FishTrackerHudHandler {
         int displaySpecialCount = displayRarityCounts.getOrDefault(Constant.SPECIAL, 0);
         int displayDryStreakSpecialCount = displayRarityDryStreak.getOrDefault(Constant.SPECIAL, 0);
 
+        int displayTimerFishCaughtCount = profileData.timerFishCaughtCount;
+
+        if(config.fishTracker.rightAlignment) {
+            textList.add(TextHelper.concat(
+                    Text.literal("ꜰɪѕʜɪɴɢ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD),
+                    Text.literal(" --").formatted(Formatting.GRAY)
+            ));
+        } else {
+            textList.add(TextHelper.concat(
+                    Text.literal("-- ").formatted(Formatting.GRAY),
+                    Text.literal("ꜰɪѕʜɪɴɢ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD)
+            ));
+        }
+
         // Put into Texts if enabled in config
         if (config.fishTracker.fishTrackerToggles.generalToggles.showFishCaught) textList.add(TextHelper.concat(
                     Text.literal("ꜰɪѕʜ ᴄᴀᴜɢʜᴛ: ").formatted(Formatting.GRAY),
                     Text.literal(String.valueOf(displayFishCaughtCount)).formatted(Formatting.WHITE)
         ));
 
-        if (config.fishTracker.isFishTrackerOnTimer) {
+        if (config.fishTracker.isFishTrackerOnTimer || config.fishTracker.showTimerOnAllTime) {
 
             if (config.fishTracker.fishTrackerToggles.generalToggles.showFishPerHour) {
-                double fishPerHour = (displayFishCaughtCount / (timeSinceReset / 3600000.0));
+                double fishPerHour = (displayTimerFishCaughtCount / (timeSinceReset / 3600000.0));
                 textList.add(TextHelper.concat(
                         Text.literal("ꜰɪѕʜ/ʜᴏᴜʀ: ").formatted(Formatting.GRAY),
                         Text.literal(String.format("%.1f", fishPerHour))
@@ -136,7 +150,7 @@ public class FishTrackerHudHandler {
                     Text.literal(String.valueOf(displayPetCaughtCount)).formatted(Formatting.WHITE)
             ));
             if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showPet) {
-                textList.add(getDryStreak(profileStats.petDryStreak));
+                textList.add(getDryStreak(profileData.petDryStreak));
             }
 
             if (config.fishTracker.fishTrackerToggles.generalToggles.showPetPerHour && config.fishTracker.isFishTrackerOnTimer) {
@@ -154,7 +168,7 @@ public class FishTrackerHudHandler {
                     Text.literal(String.valueOf(displayShardCaughtCount)).formatted(Formatting.WHITE)
             ));
             if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showShard) {
-                textList.add(getDryStreak(profileStats.shardDryStreak));
+                textList.add(getDryStreak(profileData.shardDryStreak));
             }
 
             if (config.fishTracker.fishTrackerToggles.generalToggles.showShardPerHour && config.fishTracker.isFishTrackerOnTimer) {
@@ -368,18 +382,18 @@ public class FishTrackerHudHandler {
 
     private Text getDryStreak(int value) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-        ProfileStatsHandler.ProfileStats profileStats = ProfileStatsHandler.instance().profileStats;
+        ProfileDataHandler.ProfileData profileData = ProfileDataHandler.instance().profileData;
         if(config.fishTracker.rightAlignment) {
             return TextHelper.concat(
                     Text.literal("ᴅʀʏ ѕᴛʀᴇᴀᴋ: ").formatted(Formatting.GRAY),
-                    Text.literal(TextHelper.fmt(profileStats.allFishCaughtCount - value)).formatted(Formatting.WHITE),
+                    Text.literal(TextHelper.fmt(profileData.allFishCaughtCount - value)).formatted(Formatting.WHITE),
                     Text.literal(" ┘").formatted(Formatting.GRAY)
             );
         } else {
             return TextHelper.concat(
                     Text.literal("└ ").formatted(Formatting.GRAY),
                     Text.literal("ᴅʀʏ ѕᴛʀᴇᴀᴋ: ").formatted(Formatting.GRAY),
-                    Text.literal(TextHelper.fmt(profileStats.allFishCaughtCount - value)).formatted(Formatting.WHITE)
+                    Text.literal(TextHelper.fmt(profileData.allFishCaughtCount - value)).formatted(Formatting.WHITE)
             );
         }
     }

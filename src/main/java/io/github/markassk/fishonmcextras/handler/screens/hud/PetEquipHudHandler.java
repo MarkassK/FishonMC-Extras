@@ -1,8 +1,7 @@
 package io.github.markassk.fishonmcextras.handler.screens.hud;
 
-import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.PetEquipHandler;
-import io.github.markassk.fishonmcextras.handler.ProfileStatsHandler;
+import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -22,20 +21,20 @@ public class PetEquipHudHandler {
     }
 
     public List<Text> assemblePetText() {
-        ProfileStatsHandler.ProfileStats profileStats = ProfileStatsHandler.instance().profileStats;
+        ProfileDataHandler.ProfileData profileData = ProfileDataHandler.instance().profileData;
 
         List<Text> textList = new ArrayList<>();
 
         if (PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.HAS_PET) {
             Text namePet = PetEquipHandler.instance().currentPetItem.getName();
-            int level = profileStats.equippedPet.lvl;
-            float currentXp = profileStats.equippedPet.currentXp;
-            float neededXp = profileStats.equippedPet.neededXp;
+            int level = profileData.equippedPet.lvl;
+            float currentXp = profileData.equippedPet.currentXp;
+            float neededXp = profileData.equippedPet.neededXp;
             float percentXp = currentXp / neededXp * 100f;
 
-            assert profileStats.equippedPet.rarity != null;
+            assert profileData.equippedPet.rarity != null;
             textList.add(TextHelper.concat(
-                    profileStats.equippedPet.rarity.TAG,
+                    profileData.equippedPet.rarity.TAG,
                     Text.literal(" "),
                     namePet,
                     Text.literal(" (ʟᴠʟ " + level + ")").formatted(Formatting.GRAY)

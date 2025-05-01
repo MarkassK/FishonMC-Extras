@@ -6,5 +6,5 @@ public class ConfigConstants {
     public static final String TOOLTIPS = "tooltips";
     public static final String OTHER = "other";
 
-    public static final boolean DEV = true;
+    public static final boolean DEV = false;
 }

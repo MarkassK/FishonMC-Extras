@@ -2,12 +2,10 @@ package io.github.markassk.fishonmcextras.config;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-public class TrackerContestHUDConfig {
-    public static class ContestTracker {
-        public boolean showContest = true;
-        @ConfigEntry.Gui.Tooltip
-        public boolean showFullContest = true;
-        public boolean rightAlignment = false;
+public class TrackerQuestHUDConfig {
+    public static class QuestTracker {
+        public boolean showQuestHud = true;
+        public boolean rightAlignment = true;
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int backgroundOpacity = 40;
         @ConfigEntry.BoundedDiscrete(max = 20, min = 2)
@@ -15,6 +13,6 @@ public class TrackerContestHUDConfig {
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int hudX = 0;
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-        public int hudY = 0;
+        public int hudY = 100;
     }
 }

@@ -32,6 +32,8 @@ public class NotificationSoundHandler {
             if(config.petEquipTracker.warningOptions.showPetEquipWarningHUD
                     && config.petEquipTracker.warningOptions.usePetEquipWarningSound
                     && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
             ) {
                 if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
                     playSoundWarning(config.petEquipTracker.warningOptions.petEquipSoundType, minecraftClient);
@@ -44,6 +46,7 @@ public class NotificationSoundHandler {
                     && config.fullInventoryTracker.useInventoryWarningSound
                     && FullInventoryHandler.instance().isOverThreshold
                     && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
             ) {
                 if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
                     playSoundWarning(config.fullInventoryTracker.fullInventorySoundType, minecraftClient);

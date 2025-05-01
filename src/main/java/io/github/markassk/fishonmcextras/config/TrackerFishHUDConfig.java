@@ -6,7 +6,8 @@ public class TrackerFishHUDConfig {
     public static class FishTracker {
         public boolean showFishTrackerHUD = true;
         @ConfigEntry.Gui.Tooltip()
-        public boolean isFishTrackerOnTimer = true;
+        public boolean isFishTrackerOnTimer = false;
+        public boolean showTimerOnAllTime = true;
         @ConfigEntry.BoundedDiscrete(min = 30, max = 300)
         @ConfigEntry.Gui.Tooltip
         public int autoPauseTimer = 60;
@@ -21,12 +22,12 @@ public class TrackerFishHUDConfig {
                 @ConfigEntry.Gui.Tooltip
                 public boolean showTimer = true;
                 public boolean showFishPerHour = true;
-                public boolean showTotalXp = true;
-                public boolean showTotalValue = true;
+                public boolean showTotalXp = false;
+                public boolean showTotalValue = false;
                 public boolean showPetCaught = true;
-                public boolean showPetPerHour = true;
+                public boolean showPetPerHour = false;
                 public boolean showShardCaught = true;
-                public boolean showShardPerHour = true;
+                public boolean showShardPerHour = false;
             }
 
             @ConfigEntry.Gui.CollapsibleObject
@@ -46,7 +47,7 @@ public class TrackerFishHUDConfig {
             public FishSizeToggles fishSizeToggles = new FishSizeToggles();
             public static class FishSizeToggles {
                 @ConfigEntry.Gui.Tooltip
-                public boolean showFishSizes = true;
+                public boolean showFishSizes = false;
                 public boolean showBaby = true;
                 public boolean showJuvenile = true;
                 public boolean showAdult = true;
@@ -74,13 +75,13 @@ public class TrackerFishHUDConfig {
                 public boolean showEpic = false;
                 public boolean showLegendary = false;
                 public boolean showMythical = false;
+                public boolean showSpecial = true;
                 @ConfigEntry.Gui.PrefixText
                 public boolean showBaby = false;
                 public boolean showJuvenile = false;
                 public boolean showAdult = false;
                 public boolean showLarge = false;
                 public boolean showGigantic = true;
-                public boolean showSpecial = true;
                 @ConfigEntry.Gui.PrefixText
                 public boolean showAlbino = true;
                 public boolean showMelanistic = true;
@@ -95,10 +96,12 @@ public class TrackerFishHUDConfig {
             public OtherToggles otherToggles = new OtherToggles();
             public static class OtherToggles {
                 public boolean showPercentages = true;
+                @ConfigEntry.Gui.Tooltip
                 public boolean useNewTitle = true;
+                @ConfigEntry.Gui.Tooltip
                 public boolean showStatsOnCatch = true;
                 @ConfigEntry.BoundedDiscrete(min = 1, max = 10)
-                public int showStatsOnCatchTime = 6;
+                public int showStatsOnCatchTime = 5;
             }
         }
 
@@ -110,6 +113,6 @@ public class TrackerFishHUDConfig {
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int hudX = 0;
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-        public int hudY = 50;
+        public int hudY = 30;
     }
 }

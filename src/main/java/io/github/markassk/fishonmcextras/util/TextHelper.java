@@ -7,6 +7,8 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 
+import java.util.regex.Pattern;
+
 public class TextHelper {
     private static final Gson gson = new Gson();
 
@@ -51,7 +53,7 @@ public class TextHelper {
         }
     }
 
-    private static int ordinalIndexOf(String str, String substr, int n) {
+    public static int ordinalIndexOf(String str, String substr, int n) {
         int pos = str.indexOf(substr);
         while (--n > 0 && pos != -1)
             pos = str.indexOf(substr, pos + 1);
@@ -72,5 +74,12 @@ public class TextHelper {
                 .decode(JsonOps.INSTANCE, gson.fromJson(text, JsonElement.class))
                 .getOrThrow()
                 .getFirst();
+    }
+
+    public static String upperCaseAllFirstCharacter(String text) {
+        String regex = "\\b(.)(.*?)\\b";
+        return Pattern.compile(regex).matcher(text).replaceAll(
+                matched -> matched.group(1).toUpperCase() + matched.group(2)
+        );
     }
 }

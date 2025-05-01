@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import io.github.markassk.fishonmcextras.FOMC.Types;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -31,18 +32,7 @@ public class LookTickHandler {
 
                 // Only allow Items from FishOnMC
                 if (
-                        (itemStack.getItem() == Items.PLAYER_HEAD
-                                || itemStack.getItem() == Items.COD
-                                || itemStack.getItem() == Items.WHITE_DYE
-                                || itemStack.getItem() == Items.BLACK_DYE
-                                || itemStack.getItem() == Items.GOLD_INGOT
-                                || itemStack.getItem() == Items.ROTTEN_FLESH
-                                || itemStack.getItem() == Items.LEATHER_BOOTS
-                                || itemStack.getItem() == Items.LEATHER_LEGGINGS
-                                || itemStack.getItem() == Items.LEATHER_CHESTPLATE
-                                || itemStack.getItem() == Items.COOKED_COD
-                                || itemStack.getItem() == Items.SLIME_BALL) &&
-                                itemStack.contains(DataComponentTypes.CUSTOM_DATA)
+                        Types.getFOMCItem(itemStack) instanceof Types.FOMCItem
                 ) {
                     targetedItemInItemFrame = itemStack;
                 } else {

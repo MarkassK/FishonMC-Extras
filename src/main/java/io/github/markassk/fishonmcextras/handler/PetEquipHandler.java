@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
 import io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import net.minecraft.client.MinecraftClient;
@@ -38,16 +39,16 @@ public class PetEquipHandler  {
     }
 
     public void tick(MinecraftClient minecraftClient) {
-        if(ProfileStatsHandler.instance().profileStats.equippedPetSlot == -1) {
+        if(ProfileDataHandler.instance().profileData.equippedPetSlot == -1) {
             petStatus = PetStatus.NO_PET;
         } else if (System.currentTimeMillis() - startScanTime < 5000
                 && LoadingHandler.instance().isLoadingDone
                 && petStatus == PetStatus.LOADING
         ) {
             if(minecraftClient.player != null && !isInInventory) {
-                ItemStack itemInSlot = minecraftClient.player.getInventory().getStack(ProfileStatsHandler.instance().profileStats.equippedPetSlot);
+                ItemStack itemInSlot = minecraftClient.player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot);
 
-                if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileStatsHandler.instance().profileStats.equippedPet.id)) {
+                if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
                     isInInventory = true;
                     currentPetItem = itemInSlot.copy();
                 }
@@ -73,7 +74,7 @@ public class PetEquipHandler  {
                 if(Types.getFOMCItem(heldItem) instanceof Types.Pet pet) {
                     this.isEquipHandled = true;
                     this.currentPetItem = heldItem.copy();
-                    ProfileStatsHandler.instance().updatePet(pet, itemSlot);
+                    ProfileDataHandler.instance().updatePet(pet, itemSlot);
                     petStatus = PetStatus.HAS_PET;
 
                     FishOnMCExtras.LOGGER.info("[FoE] Equipped Pet");
@@ -84,8 +85,7 @@ public class PetEquipHandler  {
         if(!this.isUnequipHandled) {
             this.isUnequipHandled = true;
             this.currentPetItem = null;
-            petStatus = PetStatus.NO_PET;
-            ProfileStatsHandler.instance().resetPet();
+            ProfileDataHandler.instance().resetPet();
 
             FishOnMCExtras.LOGGER.info("[FoE] Unequipped Pet");
         }
@@ -109,17 +109,24 @@ public class PetEquipHandler  {
     }
 
     private void handlePetUnequip() {
+        this.petStatus = PetStatus.NO_PET;
         this.isUnequipHandled = false;
     }
 
     public void updatePet(PlayerEntity player) {
         if(petStatus == PetStatus.HAS_PET) {
-            ItemStack itemInSlot = player.getInventory().getStack(ProfileStatsHandler.instance().profileStats.equippedPetSlot);
+            ItemStack itemInSlot = player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot);
 
-            if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileStatsHandler.instance().profileStats.equippedPet.id)) {
-                ProfileStatsHandler.instance().updatePet(pet, ProfileStatsHandler.instance().profileStats.equippedPetSlot);
+            if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
+                ProfileDataHandler.instance().updatePet(pet, ProfileDataHandler.instance().profileData.equippedPetSlot);
             }
         }
+    }
+
+    public boolean isWrongPet() {
+        return PetEquipHandler.instance().petStatus == PetStatus.HAS_PET
+                && ProfileDataHandler.instance().profileData.equippedPet.location != LocationHandler.instance().currentLocation
+                && LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE != ProfileDataHandler.instance().profileData.equippedPet.climate;
     }
 
     public enum PetStatus {
