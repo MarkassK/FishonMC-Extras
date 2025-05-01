@@ -172,7 +172,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
 
     private void onRemoveScreen(Screen screen) {
         if(LoadingHandler.instance().isOnServer) {
-/
             if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
                 // Quest Menu : 픹
                 QuestHandler.instance().questMenuState = false;
