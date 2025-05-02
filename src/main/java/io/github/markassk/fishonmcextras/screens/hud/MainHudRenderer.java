@@ -29,9 +29,7 @@ public class MainHudRenderer implements HudRenderCallback {
     public void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         if(!MinecraftClient.getInstance().options.hudHidden && LoadingHandler.instance().isOnServer && LoadingHandler.instance().isLoadingDone) {
-            if(config.notifications.showWarningHud) {
-                this.notificationHud.render(drawContext, MinecraftClient.getInstance());
-            }
+            this.notificationHud.render(drawContext, MinecraftClient.getInstance());
 
             if(config.titlePopup.useNewTitleSystem) {
                 this.titleHud.render(drawContext, MinecraftClient.getInstance());

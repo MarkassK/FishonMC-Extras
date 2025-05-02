@@ -27,6 +27,171 @@ public class NotificationHudHandler {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         List<Text> textList = new ArrayList<>();
 
+        if (config.notifications.showWarningHud) {
+            // No Pet equipped Warning
+            if(config.petEquipTracker.warningOptions.showPetEquipWarningHUD
+                    && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
+            ) {
+                textList.add(Text.empty());
+                textList.add(Text.literal("No pet equipped.").formatted(Formatting.RED));
+            }
+
+            // Full Inventory Warning
+            if(config.fullInventoryTracker.showFullInventoryWarningHUD
+                    && FullInventoryHandler.instance().isOverThreshold
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("Inventory almost full. Slots left: ").formatted(Formatting.RED),
+                        Text.literal(String.valueOf(FullInventoryHandler.instance().slotsLeft)).formatted(Formatting.WHITE),
+                        Text.literal(".").formatted(Formatting.RED)
+                ));
+            }
+
+            // Wrong Armor Warning
+            if(config.equipmentTracker.showArmorWarningHUD
+                    && ArmorHandler.instance().isWrongChestplateClimate
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("You have equipped a ").formatted(Formatting.RED),
+                        ArmorHandler.instance().currentChestplateItem.getName(),
+                        Text.literal(" in a ").formatted(Formatting.RED),
+                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE.TAG,
+                        Text.literal(" location").formatted(Formatting.RED),
+                        Text.literal(".").formatted(Formatting.RED)
+
+                ));
+            }
+            if(config.equipmentTracker.showArmorWarningHUD
+                    && ArmorHandler.instance().isWrongLeggingsClimate
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("You have equipped a ").formatted(Formatting.RED),
+                        ArmorHandler.instance().currentLeggingsItem.getName(),
+                        Text.literal(" in a ").formatted(Formatting.RED),
+                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE.TAG,
+                        Text.literal(" location").formatted(Formatting.RED),
+                        Text.literal(".").formatted(Formatting.RED)
+
+                ));
+            }
+            if(config.equipmentTracker.showArmorWarningHUD
+                    && ArmorHandler.instance().isWrongBootsClimate
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("You have equipped a ").formatted(Formatting.RED),
+                        ArmorHandler.instance().currentBootsItem.getName(),
+                        Text.literal(" in a ").formatted(Formatting.RED),
+                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE.TAG,
+                        Text.literal(" location").formatted(Formatting.RED),
+                        Text.literal(".").formatted(Formatting.RED)
+
+                ));
+            }
+
+            // Wrong Bait Warning
+            if(config.baitTracker.showBaitWarningHUD
+                    && FishingRodHandler.instance().isWrongBait
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Bait bait) {
+                    textList.add(Text.empty());
+                    textList.add(TextHelper.concat(
+                            Text.literal("Your ").formatted(Formatting.RED),
+                            Text.literal(TextHelper.upperCaseAllFirstCharacter(bait.name)).formatted(Formatting.WHITE),
+                            Text.literal(" has no use in ").formatted(Formatting.RED),
+                            LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
+                            Text.literal(" here").formatted(Formatting.RED),
+                            Text.literal(".").formatted(Formatting.RED)
+                    ));
+                } else if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Lure lure) {
+                    textList.add(Text.empty());
+                    textList.add(TextHelper.concat(
+                            Text.literal("Your ").formatted(Formatting.RED),
+                            Text.literal(lure.name).formatted(Formatting.WHITE),
+                            Text.literal(" has no use in ").formatted(Formatting.RED),
+                            LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
+                            Text.literal(" here").formatted(Formatting.RED),
+                            Text.literal(".").formatted(Formatting.RED)
+                    ));
+                }
+            }
+
+            // Wrong Rod Parts Warning
+            if(config.equipmentTracker.showLineWarningHUD
+                    && FishingRodHandler.instance().isWrongLine
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("Your ").formatted(Formatting.RED),
+                        Text.literal(FishingRodHandler.instance().fishingRod.line.name).formatted(Formatting.WHITE),
+                        Text.literal(" has no use in ").formatted(Formatting.RED),
+                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
+                        Text.literal(" here").formatted(Formatting.RED),
+                        Text.literal(".").formatted(Formatting.RED)
+                ));
+            }
+            if(config.equipmentTracker.showPoleWarningHUD
+                    && FishingRodHandler.instance().isWrongPole
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("Your ").formatted(Formatting.RED),
+                        Text.literal(FishingRodHandler.instance().fishingRod.pole.name).formatted(Formatting.WHITE),
+                        Text.literal(" has no use in ").formatted(Formatting.RED),
+                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
+                        Text.literal(" here").formatted(Formatting.RED),
+                        Text.literal(".").formatted(Formatting.RED)
+                ));
+            }
+            if(config.equipmentTracker.showReelWarningHUD
+                    && FishingRodHandler.instance().isWrongReel
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("Your ").formatted(Formatting.RED),
+                        Text.literal(FishingRodHandler.instance().fishingRod.reel.name).formatted(Formatting.WHITE),
+                        Text.literal(" has no use in ").formatted(Formatting.RED),
+                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
+                        Text.literal(" here").formatted(Formatting.RED),
+                        Text.literal(".").formatted(Formatting.RED)
+                ));
+            }
+
+            if(config.petEquipTracker.warningOptions.showWrongPetWarningHUD
+                    && PetEquipHandler.instance().isWrongPet()
+                    && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.HAS_PET
+                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+            ) {
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("Your ").formatted(Formatting.RED),
+                        ProfileDataHandler.instance().profileData.equippedPet.pet.TAG,
+                        Text.literal(" has no use in ").formatted(Formatting.RED),
+                        LocationHandler.instance().currentLocation.TAG,
+                        Text.literal(".").formatted(Formatting.RED)
+                ));
+            }
+        }
+
         if(ScoreboardHandler.instance().noScoreBoard) {
             textList.add(Text.empty());
             textList.add(Text.literal("Turn on scoreboard in server settings.").formatted(Formatting.RED));
@@ -46,153 +211,6 @@ public class NotificationHudHandler {
                         Text.literal(".").formatted(Formatting.RED)
                 ));
             }
-        }
-
-        // No Pet equipped Warning
-        if(config.petEquipTracker.warningOptions.showPetEquipWarningHUD
-                && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
-        ) {
-            textList.add(Text.empty());
-            textList.add(Text.literal("No pet equipped.").formatted(Formatting.RED));
-        }
-
-        // Full Inventory Warning
-        if(config.fullInventoryTracker.showFullInventoryWarningHUD
-                && FullInventoryHandler.instance().isOverThreshold
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("Inventory almost full. Slots left: ").formatted(Formatting.RED),
-                    Text.literal(String.valueOf(FullInventoryHandler.instance().slotsLeft)).formatted(Formatting.WHITE),
-                    Text.literal(".").formatted(Formatting.RED)
-            ));
-        }
-
-        // Wrong Armor Warning
-        if(config.equipmentTracker.showArmorWarningHUD
-                && ArmorHandler.instance().isWrongChestplateClimate
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("You have equipped a ").formatted(Formatting.RED),
-                    ArmorHandler.instance().currentChestplateItem.getName(),
-                    Text.literal(" in a ").formatted(Formatting.RED),
-                    LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE.TAG,
-                    Text.literal(" location").formatted(Formatting.RED),
-                    Text.literal(".").formatted(Formatting.RED)
-
-            ));
-        }
-        if(config.equipmentTracker.showArmorWarningHUD
-                && ArmorHandler.instance().isWrongLeggingsClimate
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("You have equipped a ").formatted(Formatting.RED),
-                    ArmorHandler.instance().currentLeggingsItem.getName(),
-                    Text.literal(" in a ").formatted(Formatting.RED),
-                    LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE.TAG,
-                    Text.literal(" location").formatted(Formatting.RED),
-                    Text.literal(".").formatted(Formatting.RED)
-
-            ));
-        }
-        if(config.equipmentTracker.showArmorWarningHUD
-                && ArmorHandler.instance().isWrongBootsClimate
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("You have equipped a ").formatted(Formatting.RED),
-                    ArmorHandler.instance().currentBootsItem.getName(),
-                    Text.literal(" in a ").formatted(Formatting.RED),
-                    LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE.TAG,
-                    Text.literal(" location").formatted(Formatting.RED),
-                    Text.literal(".").formatted(Formatting.RED)
-
-            ));
-        }
-
-        // Wrong Bait Warning
-        if(config.baitTracker.showBaitWarningHUD
-                && FishingRodHandler.instance().isWrongBait
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Bait bait) {
-                textList.add(Text.empty());
-                textList.add(TextHelper.concat(
-                        Text.literal("Your ").formatted(Formatting.RED),
-                        Text.literal(TextHelper.upperCaseAllFirstCharacter(bait.name)).formatted(Formatting.WHITE),
-                        Text.literal(" has no use in ").formatted(Formatting.RED),
-                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
-                        Text.literal(" here").formatted(Formatting.RED),
-                        Text.literal(".").formatted(Formatting.RED)
-                ));
-            } else if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Lure lure) {
-                textList.add(Text.empty());
-                textList.add(TextHelper.concat(
-                        Text.literal("Your ").formatted(Formatting.RED),
-                        Text.literal(lure.name).formatted(Formatting.WHITE),
-                        Text.literal(" has no use in ").formatted(Formatting.RED),
-                        LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
-                        Text.literal(" here").formatted(Formatting.RED),
-                        Text.literal(".").formatted(Formatting.RED)
-                ));
-            }
-        }
-
-        // Wrong Rod Parts Warning
-        if(config.equipmentTracker.showLineWarningHUD
-                && FishingRodHandler.instance().isWrongLine
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("Your ").formatted(Formatting.RED),
-                    Text.literal(FishingRodHandler.instance().fishingRod.line.name).formatted(Formatting.WHITE),
-                    Text.literal(" has no use in ").formatted(Formatting.RED),
-                    LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
-                    Text.literal(" here").formatted(Formatting.RED),
-                    Text.literal(".").formatted(Formatting.RED)
-            ));
-        }
-        if(config.equipmentTracker.showPoleWarningHUD
-                && FishingRodHandler.instance().isWrongPole
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("Your ").formatted(Formatting.RED),
-                    Text.literal(FishingRodHandler.instance().fishingRod.pole.name).formatted(Formatting.WHITE),
-                    Text.literal(" has no use in ").formatted(Formatting.RED),
-                    LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
-                    Text.literal(" here").formatted(Formatting.RED),
-                    Text.literal(".").formatted(Formatting.RED)
-            ));
-        }
-        if(config.equipmentTracker.showReelWarningHUD
-                && FishingRodHandler.instance().isWrongReel
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("Your ").formatted(Formatting.RED),
-                    Text.literal(FishingRodHandler.instance().fishingRod.reel.name).formatted(Formatting.WHITE),
-                    Text.literal(" has no use in ").formatted(Formatting.RED),
-                    LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER.TAG,
-                    Text.literal(" here").formatted(Formatting.RED),
-                    Text.literal(".").formatted(Formatting.RED)
-            ));
         }
 
         if(ProfileDataHandler.instance().profileData.crewState == CrewHandler.CrewState.NOTINITIALIZED) {
@@ -242,21 +260,6 @@ public class NotificationHudHandler {
                     Text.literal("Do ").formatted(Formatting.RED),
                     Text.literal("/foe cancelimport ").formatted(Formatting.AQUA),
                     Text.literal("to dismiss this import stats notification.").formatted(Formatting.RED)
-            ));
-        }
-
-        if(PetEquipHandler.instance().isWrongPet()
-                && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.HAS_PET
-                && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-        ) {
-            textList.add(Text.empty());
-            textList.add(TextHelper.concat(
-                    Text.literal("Your ").formatted(Formatting.RED),
-                    ProfileDataHandler.instance().profileData.equippedPet.pet.TAG,
-                    Text.literal(" has no use in ").formatted(Formatting.RED),
-                    LocationHandler.instance().currentLocation.TAG,
-                    Text.literal(".").formatted(Formatting.RED)
             ));
         }
 

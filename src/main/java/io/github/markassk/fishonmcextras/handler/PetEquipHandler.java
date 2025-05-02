@@ -65,6 +65,14 @@ public class PetEquipHandler  {
             petStatus = PetStatus.NO_PET;
         }
 
+        if(!this.isUnequipHandled) {
+            this.currentPetItem = null;
+            ProfileDataHandler.instance().resetPet();
+
+            FishOnMCExtras.LOGGER.info("[FoE] Unequipped Pet");
+            this.isUnequipHandled = true;
+        }
+
         if(!this.isEquipHandled) {
             PlayerEntity player = MinecraftClient.getInstance().player;
             if(player != null) {
@@ -72,22 +80,14 @@ public class PetEquipHandler  {
                 ItemStack heldItem = player.getInventory().getStack(itemSlot);
 
                 if(Types.getFOMCItem(heldItem) instanceof Types.Pet pet) {
-                    this.isEquipHandled = true;
                     this.currentPetItem = heldItem.copy();
                     ProfileDataHandler.instance().updatePet(pet, itemSlot);
                     petStatus = PetStatus.HAS_PET;
 
                     FishOnMCExtras.LOGGER.info("[FoE] Equipped Pet");
+                    this.isEquipHandled = true;
                 }
             }
-        }
-
-        if(!this.isUnequipHandled) {
-            this.isUnequipHandled = true;
-            this.currentPetItem = null;
-            ProfileDataHandler.instance().resetPet();
-
-            FishOnMCExtras.LOGGER.info("[FoE] Unequipped Pet");
         }
     }
 
@@ -125,6 +125,8 @@ public class PetEquipHandler  {
 
     public boolean isWrongPet() {
         return PetEquipHandler.instance().petStatus == PetStatus.HAS_PET
+                && this.isUnequipHandled
+                && this.isEquipHandled
                 && ProfileDataHandler.instance().profileData.equippedPet.location != LocationHandler.instance().currentLocation
                 && LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE != ProfileDataHandler.instance().profileData.equippedPet.climate;
     }

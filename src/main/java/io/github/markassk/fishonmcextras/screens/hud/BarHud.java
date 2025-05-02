@@ -27,7 +27,7 @@ public class BarHud {
             int screenWidth = client.getWindow().getScaledWidth();
 
             // Scaling setup
-            int fontSize = 8;
+            int fontSize = config.barHUD.fontSize;
             float scale = fontSize / 10.0f;
             drawContext.getMatrices().scale(scale, scale, 1f);
 

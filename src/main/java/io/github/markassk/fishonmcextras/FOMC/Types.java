@@ -9,6 +9,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.text.Text;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -237,7 +238,7 @@ public class Types {
 
         public static Constant getConstantFromPercent(float value) {
             float ceilValue = Math.round(value * 100f);
-            if (ceilValue < 20) return Constant.SICKLY;
+            if (ceilValue <= 20) return Constant.SICKLY;
             else if (ceilValue < 30) return Constant.BAD;
             else if (ceilValue < 40) return Constant.BELOW_AVERAGE;
             else if (ceilValue < 50) return Constant.AVERAGE;
@@ -245,7 +246,20 @@ public class Types {
             else if (ceilValue < 80) return Constant.GREAT;
             else if (ceilValue < 90) return Constant.EXCELLENT;
             else if (ceilValue < 100) return Constant.AMAZING;
-            else if (ceilValue < 101) return Constant.PERFECT;
+            else if (ceilValue <= 101) return Constant.PERFECT;
+            return Constant.DEFAULT;
+        }
+
+        public static Constant getConstantFromLine(Text line) {
+            if(line.getString().contains(Constant.SICKLY.TAG.getString())) return Constant.SICKLY;
+            else if (line.getString().contains(Constant.BAD.TAG.getString())) return Constant.BAD;
+            else if (line.getString().contains(Constant.BELOW_AVERAGE.TAG.getString())) return Constant.BELOW_AVERAGE;
+            else if (line.getString().contains(Constant.AVERAGE.TAG.getString())) return Constant.AVERAGE;
+            else if (line.getString().contains(Constant.GOOD.TAG.getString())) return Constant.GOOD;
+            else if (line.getString().contains(Constant.GREAT.TAG.getString())) return Constant.GREAT;
+            else if (line.getString().contains(Constant.EXCELLENT.TAG.getString())) return Constant.EXCELLENT;
+            else if (line.getString().contains(Constant.AMAZING.TAG.getString())) return Constant.AMAZING;
+            else if (line.getString().contains(Constant.PERFECT.TAG.getString())) return Constant.PERFECT;
             return Constant.DEFAULT;
         }
     }

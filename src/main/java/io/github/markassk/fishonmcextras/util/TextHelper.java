@@ -42,14 +42,14 @@ public class TextHelper {
 
     // Format to number string
     public static String fmnt(float d) {
-        if(d > 10000 && d < 1000000) {
+        if(d > 1000 && d < 1000000) {
             return String.format("%.1fk", d / 1000);
         } else if (d > 1000000 && d < 1000000000 ){
             return String.format("%.1fM", d / 1000000);
         } else if (d > 1000000000) {
             return String.format("%.1fB", d / 1000000000);
         } else {
-            return String.format("%.2f", d);
+            return String.format("%.0f", d);
         }
     }
 

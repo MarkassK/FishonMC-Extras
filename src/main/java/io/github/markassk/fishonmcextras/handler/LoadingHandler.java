@@ -5,6 +5,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
+import java.util.Objects;
+
 public class LoadingHandler {
     private static LoadingHandler INSTANCE = new LoadingHandler();
 
@@ -35,5 +37,9 @@ public class LoadingHandler {
                 }
             }
         }
+    }
+
+    public boolean checkAddress(MinecraftClient minecraftClient) {
+        return Objects.requireNonNull(minecraftClient.getCurrentServerEntry()).address.equalsIgnoreCase("play.fishonmc.net") || Objects.requireNonNull(minecraftClient.getCurrentServerEntry()).address.equalsIgnoreCase("fishonmc.net");
     }
 }

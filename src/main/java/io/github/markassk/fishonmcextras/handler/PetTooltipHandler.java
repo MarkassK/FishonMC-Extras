@@ -48,7 +48,7 @@ public class PetTooltipHandler {
                 Text petRatingLine = TextHelper.concat(
                         textList.get(16),
                         getPercentage(pet.percentPetRating, config.petTooltip.decimalPlaces)
-                ).withColor(Types.Pet.getConstantFromPercent(pet.percentPetRating).COLOR);
+                ).withColor(Types.Pet.getConstantFromLine(textList.get(16)).COLOR);
 
                 textList.set(9, petClimateLuckLine);
                 textList.set(10, petClimateScaleLine);

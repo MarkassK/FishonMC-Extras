@@ -86,11 +86,13 @@ public class QuestHandler {
 
     public void updateQuest(Types.Fish fish) {
         List<Quest> currentLocationQuests = LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? this.activeQuests.get(Constant.CYPRESS_LAKE) : this.activeQuests.get(LocationHandler.instance().currentLocation);
-        currentLocationQuests.forEach(quest -> {
-            if(quest.goal == fish.rarity || quest.goal == fish.size) {
-                quest.incrementProgress();
-            }
-        });
+        if(currentLocationQuests != null) {
+            currentLocationQuests.forEach(quest -> {
+                if(quest.goal == fish.rarity || quest.goal == fish.size) {
+                    quest.incrementProgress();
+                }
+            });
+        }
         onScreenClose();
     }
 

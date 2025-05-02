@@ -156,7 +156,7 @@ public enum Constant {
     FABLED("fabled", Text.literal("\uF044").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
 
     // Pet Rating
-    SICKLY(EMPTY_STRING, Text.literal("ѕɪᴄᴋʟʏ").withColor(0xFF74403B), 0xFF74403B),
+    SICKLY(EMPTY_STRING, Text.literal("sɪᴄᴋʟʏ").withColor(0xFF74403B), 0xFF74403B),
     BAD(EMPTY_STRING, Text.literal("ʙᴀᴅ").withColor(0xFFFF5555), 0xFFFF5555),
     BELOW_AVERAGE(EMPTY_STRING, Text.literal("ʙᴇʟᴏᴡ ᴀᴠᴇʀᴀɢᴇ").withColor(0xFFFCFC54), 0xFFFCFC54),
     AVERAGE(EMPTY_STRING, Text.literal("ᴀᴠᴇʀᴀɢᴇ").withColor(0xFFFCA800), 0xFFFCA800),
