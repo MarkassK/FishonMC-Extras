@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class StatsHandler {
     private static StatsHandler INSTANCE = new StatsHandler();
-    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
     private ProfileDataHandler.ProfileData dummyProfileData = new ProfileDataHandler.ProfileData();
 
     public boolean screenInit = false;
@@ -41,10 +40,12 @@ public class StatsHandler {
 
         if(isOnScreen && minecraftClient.currentScreen != null && !Objects.equals(minecraftClient.currentScreen.getTitle().getString(), "\uEEE4픲")) {
             Screens.getButtons(minecraftClient.currentScreen).forEach(clickableWidget -> {
-                if(Objects.equals(clickableWidget.getMessage().getString(), "Import Stats")) {
-                    clickableWidget.active = false;
-                    clickableWidget.visible = false;
-                    isOnScreen = false;
+                if(clickableWidget.getMessage() != null) {
+                    if(Objects.equals(clickableWidget.getMessage().getString(), "Import Stats")) {
+                        clickableWidget.active = false;
+                        clickableWidget.visible = false;
+                        isOnScreen = false;
+                    }
                 }
             });
         }
@@ -130,12 +131,6 @@ public class StatsHandler {
         Screens.getButtons(minecraftClient.currentScreen).add(getButton(minecraftClient));
     }
 
-    public void removeButton(MinecraftClient minecraftClient) {
-
-        assert minecraftClient.currentScreen != null;
-        Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget.equals(getButton(minecraftClient)));
-    }
-
     private void saveStats() {
         ProfileDataHandler.instance().profileData.allRarityCounts = dummyProfileData.allRarityCounts;
         ProfileDataHandler.instance().profileData.allFishSizeCounts = dummyProfileData.allFishSizeCounts;
@@ -173,7 +168,7 @@ public class StatsHandler {
             ItemStack itemStack = minecraftClient.player.currentScreenHandler.getSlot(i).getStack();
             if (minecraftClient.player.currentScreenHandler.getSlot(i).inventory != minecraftClient.player.getInventory() && itemStack.getItem() == Items.PLAYER_HEAD && Objects.requireNonNull(itemStack.get(DataComponentTypes.PROFILE)).id().isPresent()) {
 
-                if(itemStack.get(DataComponentTypes.PROFILE).id().get().equals(minecraftClient.player.getUuid())) {
+                if(Objects.requireNonNull(itemStack.get(DataComponentTypes.PROFILE)).id().get().equals(minecraftClient.player.getUuid())) {
 
                     isMe.set(true);
                 }

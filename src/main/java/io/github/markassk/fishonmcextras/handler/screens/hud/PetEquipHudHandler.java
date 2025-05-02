@@ -52,9 +52,9 @@ public class PetEquipHudHandler {
             } else {
                 textList.add(TextHelper.concat(
                         Text.literal("(").formatted(Formatting.GRAY),
-                        Text.literal(TextHelper.fmt(currentXp)).formatted(Formatting.YELLOW),
+                        Text.literal(TextHelper.fmnt(currentXp)).formatted(Formatting.YELLOW),
                         Text.literal("/").formatted(Formatting.GRAY),
-                        Text.literal(TextHelper.fmt(neededXp)).formatted(Formatting.YELLOW),
+                        Text.literal(TextHelper.fmnt(neededXp)).formatted(Formatting.YELLOW),
                         Text.literal(") ").formatted(Formatting.GRAY),
                         Text.literal(TextHelper.fmt(percentXp, 1)).formatted(Formatting.YELLOW),
                         Text.literal("%").formatted(Formatting.GRAY)

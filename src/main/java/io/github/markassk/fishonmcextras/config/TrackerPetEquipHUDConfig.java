@@ -28,6 +28,7 @@ public class TrackerPetEquipHUDConfig {
         public static class WarningOptions {
             @ConfigEntry.Gui.Tooltip
             public boolean showPetEquipWarningHUD = false;
+            public boolean showWrongPetWarningHUD = true;
             @ConfigEntry.Gui.Tooltip
             public boolean usePetEquipWarningSound = false;
             @ConfigEntry.BoundedDiscrete(min = 1, max = 30)

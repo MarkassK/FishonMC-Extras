@@ -28,6 +28,11 @@ public class TitleHud {
             alpha = 1.0f - timeLeft / 1000f;
         }
 
+        if(System.currentTimeMillis() - showedAt < 3000L) {
+            client.inGameHud.setTitle(Text.empty());
+            client.inGameHud.setSubtitle(Text.empty());
+        }
+
         // Alpha
         int alphaInt = (int) (alpha * 255f) << 24;
 

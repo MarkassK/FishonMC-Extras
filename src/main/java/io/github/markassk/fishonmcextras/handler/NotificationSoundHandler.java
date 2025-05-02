@@ -28,29 +28,31 @@ public class NotificationSoundHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null) {
-            // Pet Equip Warning Sound
-            if(config.petEquipTracker.warningOptions.showPetEquipWarningHUD
-                    && config.petEquipTracker.warningOptions.usePetEquipWarningSound
-                    && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
-                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-            ) {
-                if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
-                    playSoundWarning(config.petEquipTracker.warningOptions.petEquipSoundType, minecraftClient);
-                    lastPlayedSoundTime.put(NotificationType.PET_EQUIP, System.currentTimeMillis());
+            if(config.notifications.showWarningHud) {
+                // Pet Equip Warning Sound
+                if(config.petEquipTracker.warningOptions.showPetEquipWarningHUD
+                        && config.petEquipTracker.warningOptions.usePetEquipWarningSound
+                        && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
+                        && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                        && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+                ) {
+                    if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
+                        playSoundWarning(config.petEquipTracker.warningOptions.petEquipSoundType, minecraftClient);
+                        lastPlayedSoundTime.put(NotificationType.PET_EQUIP, System.currentTimeMillis());
+                    }
                 }
-            }
 
-            // Full Inventory Warning Sound
-            if(config.fullInventoryTracker.showFullInventoryWarningHUD
-                    && config.fullInventoryTracker.useInventoryWarningSound
-                    && FullInventoryHandler.instance().isOverThreshold
-                    && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                    && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
-            ) {
-                if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
-                    playSoundWarning(config.fullInventoryTracker.fullInventorySoundType, minecraftClient);
-                    lastPlayedSoundTime.put(NotificationType.INVENTORY_FULL, System.currentTimeMillis());
+                // Full Inventory Warning Sound
+                if(config.fullInventoryTracker.showFullInventoryWarningHUD
+                        && config.fullInventoryTracker.useInventoryWarningSound
+                        && FullInventoryHandler.instance().isOverThreshold
+                        && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                        && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+                ) {
+                    if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
+                        playSoundWarning(config.fullInventoryTracker.fullInventorySoundType, minecraftClient);
+                        lastPlayedSoundTime.put(NotificationType.INVENTORY_FULL, System.currentTimeMillis());
+                    }
                 }
             }
         }

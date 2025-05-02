@@ -7,7 +7,6 @@ import io.github.markassk.fishonmcextras.handler.LookTickHandler;
 import io.github.markassk.fishonmcextras.screens.main.MainScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
-import io.github.markassk.fishonmcextras.util.TextHelper;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -74,7 +73,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
 
     private void onEndClientTick(MinecraftClient minecraftClient) {
         if(minecraftClient.getCurrentServerEntry() != null ) {
-            if(Objects.equals(minecraftClient.getCurrentServerEntry().address, "play.fishonmc.net") && LoadingHandler.instance().isOnServer) {
+            if(LoadingHandler.instance().checkAddress(minecraftClient) && LoadingHandler.instance().isOnServer) {
                 LoadingHandler.instance().tick(minecraftClient);
                 FishCatchHandler.instance().tick(minecraftClient);
                 PetEquipHandler.instance().tick(minecraftClient);
@@ -103,7 +102,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         NotificationSoundHandler.instance().init();
 
         if(minecraftClient.getCurrentServerEntry() != null ) {
-            if(Objects.equals(minecraftClient.getCurrentServerEntry().address, "play.fishonmc.net")) {
+            if(LoadingHandler.instance().checkAddress(minecraftClient)) {
+                FishOnMCExtras.LOGGER.info("[FoE] On server. (play.fishonmc.net)");
                 FishOnMCExtras.LOGGER.info("[FoE] Loading Start");
                 minecraftClient.execute(() -> {
                     assert minecraftClient.player != null;
@@ -112,6 +112,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     LoadingHandler.instance().isOnServer = true;
                 });
             } else {
+                FishOnMCExtras.LOGGER.info("[FoE] Not on server. (play.fishonmc.net)");
                 LoadingHandler.instance().isOnServer = false;
             }
         }

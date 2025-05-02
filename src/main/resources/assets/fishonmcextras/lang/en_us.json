@@ -98,6 +98,7 @@
   "text.autoconfig.fishonmcextras.option.petEquipTracker.warningOptions": "§f§lPet Warning HUD Options",
   "text.autoconfig.fishonmcextras.option.petEquipTracker.warningOptions.showPetEquipWarningHUD": "Not Equipped Pet Warning",
   "text.autoconfig.fishonmcextras.option.petEquipTracker.warningOptions.showPetEquipWarningHUD.@Tooltip": "Toggle to see warning when pet is not equipped.",
+  "text.autoconfig.fishonmcextras.option.petEquipTracker.warningOptions.showWrongPetWarningHUD": "Wrong Pet at Location Warning",
   "text.autoconfig.fishonmcextras.option.petEquipTracker.warningOptions.usePetEquipWarningSound": "Use warning sound",
   "text.autoconfig.fishonmcextras.option.petEquipTracker.warningOptions.usePetEquipWarningSound.@Tooltip": "§7If §aNot Equipped Pet Warning§7 is §cdisabled§7, this option will be ignored.",
   "text.autoconfig.fishonmcextras.option.petEquipTracker.warningOptions.timePetEquipWarningSound": "Timing of warning sound",
@@ -174,7 +175,7 @@
 
   "text.autoconfig.fishonmcextras.option.notifications": "§f§lNotification HUD Options",
   "text.autoconfig.fishonmcextras.option.notifications.showWarningHud": "Show Notification HUD",
-  "text.autoconfig.fishonmcextras.option.notifications.showWarningHud.@Tooltip": "§7This will §cdisable §4ALL §7notifications.\nPlease go to the respective feature config,\nif you want to disable only one type of notification",
+  "text.autoconfig.fishonmcextras.option.notifications.showWarningHud.@Tooltip": "§7This will §cdisable §4ALL §7non important notifications.\nPlease go to the respective feature config,\nif you want to disable only one type of notification",
   "text.autoconfig.fishonmcextras.option.notifications.fontSize": "Font size",
   "text.autoconfig.fishonmcextras.option.notifications.backgroundOpacity": "Background opacity",
   "text.autoconfig.fishonmcextras.option.notifications.hudY": "HUD §fY §7position",

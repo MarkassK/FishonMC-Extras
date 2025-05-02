@@ -165,16 +165,12 @@ public class ProfileDataHandler {
         this.profileData.fishSizeCounts.clear();
         this.profileData.petCaughtCount = 0;
         this.profileData.shardCaughtCount = 0;
-
-        this.profileData.timerFishCaughtCount = 0;
-
-        this.profileData.activeTime = 0;
+        if(config.fishTracker.isFishTrackerOnTimer) {
+            this.profileData.timerFishCaughtCount = 0;
+            this.profileData.activeTime = 0;
+        }
         this.profileData.lastFishCaughtTime = 0;
         this.profileData.timerPaused = true;
-
-        this.profileData.rarityDryStreak.clear();
-        this.profileData.fishSizeDryStreak.clear();
-        this.profileData.variantDryStreak.clear();
 
         FishCatchHandler.instance().reset();
         this.saveStats();

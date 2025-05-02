@@ -95,13 +95,13 @@ public class FishTrackerHudHandler {
 
         if(config.fishTracker.rightAlignment) {
             textList.add(TextHelper.concat(
-                    Text.literal("ꜰɪѕʜɪɴɢ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD),
-                    Text.literal(" --").formatted(Formatting.GRAY)
+                    config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD),
+                    Text.literal(" ◀").formatted(Formatting.GRAY)
             ));
         } else {
             textList.add(TextHelper.concat(
-                    Text.literal("-- ").formatted(Formatting.GRAY),
-                    Text.literal("ꜰɪѕʜɪɴɢ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD)
+                    Text.literal("▶ ").formatted(Formatting.GRAY),
+                    config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD)
             ));
         }
 
