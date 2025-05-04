@@ -84,15 +84,18 @@ public class CrewHandler {
     private void isCrewNearbyCheck(MinecraftClient minecraftClient) {
         if(ProfileDataHandler.instance().profileData.crewState == CrewState.HASCREW && !Objects.equals(ScoreboardHandler.instance().crewName, "")) {
             AtomicBoolean foundCrew = new AtomicBoolean(false);
+            AtomicBoolean isNearby = new AtomicBoolean(false);
 
             assert minecraftClient.world != null;
             minecraftClient.world.getEntities().forEach(entity -> {
                 if(entity instanceof PlayerEntity crewMember && ProfileDataHandler.instance().profileData.crewMembers.stream().anyMatch(uuid -> uuid.equals(crewMember.getUuid())) && !crewMember.getUuid().equals(minecraftClient.player.getUuid())) {
-                    this.isCrewNearby = crewMember.getPos().distanceTo(minecraftClient.player.getPos()) < 10;
+                    if(crewMember.getPos().distanceTo(minecraftClient.player.getPos()) < 10) {
+                        isNearby.set(true);
+                    }
                     foundCrew.set(true);
                 }
             });
-
+            this.isCrewNearby = isNearby.get();
             this.isCrewInRenderDistance = foundCrew.get();
         }
     }
