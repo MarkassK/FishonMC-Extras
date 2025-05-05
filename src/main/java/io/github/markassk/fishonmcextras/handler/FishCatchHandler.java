@@ -82,10 +82,10 @@ public class FishCatchHandler  {
 
     private void scanInventoryBackground(PlayerEntity player) {
         int shardCount = 0;
-        for (int slot = 0; slot < player.getInventory().size(); slot++) {
-            ItemStack stack = player.getInventory().getStack(slot);
+        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
+            ItemStack stack = player.getInventory().main.get(slot);
 
-            if(Types.getFOMCItem(stack) instanceof Types.Fish fish && fish.catcher.equals(player.getUuid())) {
+            if(Types.getFOMCItem(stack) instanceof Types.Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
                 if(!trackedFishes.contains(fish.id)) {
                     trackedFishes.add(fish.id);
                 }
@@ -109,10 +109,10 @@ public class FishCatchHandler  {
 
     private void scanInventory(PlayerEntity player) {
         int shardCount = 0;
-        for (int slot = 0; slot < player.getInventory().size(); slot++) {
-            ItemStack stack = player.getInventory().getStack(slot);
+        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
+            ItemStack stack = player.getInventory().main.get(slot);
 
-            if(Types.getFOMCItem(stack) instanceof Types.Fish fish && fish.catcher.equals(player.getUuid())) {
+            if(Types.getFOMCItem(stack) instanceof Types.Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
                 if(!trackedFishes.contains(fish.id)) {
                     trackedFishes.add(fish.id);
                     ProfileDataHandler.instance().updateStatsOnCatch(fish);
