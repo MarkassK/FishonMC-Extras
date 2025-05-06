@@ -55,22 +55,24 @@ public class ContestHandler {
             this.isContest = true;
         } // You → #7 (2.55lb) (out of 7)
         if(message.getString().contains("FISHING CONTEST RANKINGS (ENDED)")) this.hasEnded = true;
-        if(message.getString().contains("Type: ")) this.type = message.getString().substring(message.getString().indexOf(": ") + 2);
-        if(message.getString().contains("Location: ")) this.location = message.getString().substring(message.getString().indexOf(": ") + 2);
-        if(message.getString().contains("\uF060")) {
+        if(message.getString().startsWith("Type: ")) this.type = message.getString().substring(message.getString().indexOf(": ") + 2);
+        if(message.getString().startsWith("Location: ")) this.location = message.getString().substring(message.getString().indexOf(": ") + 2);
+        if(message.getString().startsWith("\uF060")) {
             this.firstName = message.getString().substring(message.getString().indexOf("\uF060 ") + 2, message.getString().indexOf(" →"));
             this.firstStat = message.getString().substring(message.getString().indexOf("→ ") + 2);
         }
-        if(message.getString().contains("\uF061")) {
+        if(message.getString().startsWith("\uF061")) {
             this.secondName = message.getString().substring(message.getString().indexOf("\uF061 ") + 2, message.getString().indexOf(" →"));
             this.secondStat = message.getString().substring(message.getString().indexOf("→ ") + 2);
         }
-        if(message.getString().contains("\uF062")) {
+        if(message.getString().startsWith("\uF062")) {
             this.thirdName = message.getString().substring(message.getString().indexOf("\uF062 ") + 2, message.getString().indexOf(" →"));
             this.thirdStat = message.getString().substring(message.getString().indexOf("→ ") + 2);
         }
-        if(message.getString().contains("You → ")) this.rank = message.getString().substring(message.getString().indexOf(" → ") + 3, message.getString().indexOf("(") - 1).trim();
-        if(message.getString().contains("You → ")) this.rankStat = this.rank.contains("Unranked") ? "" : message.getString().substring(message.getString().indexOf("(") + 1, message.getString().indexOf(")"));
+        if(message.getString().startsWith("You → ")) {
+            this.rank = message.getString().substring(message.getString().indexOf(" → ") + 3, message.getString().indexOf("(")).trim();
+            this.rankStat = this.rank.contains("Unranked") ? "" : message.getString().substring(message.getString().indexOf("(") + 1, message.getString().indexOf(")"));
+        }
     }
 
     private void reset() {

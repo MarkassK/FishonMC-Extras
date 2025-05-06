@@ -134,6 +134,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
     }
 
     private void onLeave(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
+        LoadingHandler.instance().init();
         FishCatchHandler.instance().onLeaveServer();
         LoadingHandler.instance().isOnServer = false;
 

@@ -64,9 +64,6 @@ public class FishCatchHandler  {
     }
 
     public void onJoinServer() {
-        trackedFishes.clear();
-        trackedPets.clear();
-        trackedShards = 0;
     }
 
     public void onLeaveServer() {
