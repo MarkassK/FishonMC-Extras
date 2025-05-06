@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "fishonmcextras",
-	"version": "0.2.0-hotfix.3",
+	"version": "0.2.0-hotfix.4",
 	"name": "FishOnMC-Extras",
 	"description": "A QOL mod for play.fishonmc.net.",
 	"authors": [

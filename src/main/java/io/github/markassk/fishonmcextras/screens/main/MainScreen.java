@@ -37,7 +37,7 @@ public class MainScreen extends Screen {
         int translationDev = ConfigConstants.DEV ? 14 : 0;
 
         context.drawText(textRenderer, Text.literal("Welcome to FishOnMC-Extras").formatted(Formatting.WHITE), width / 2 - textRenderer.getWidth(Text.literal("Welcome to FishOnMC-Extras")) / 2, height / 2 - translationDev - 16, 0xFFFFFF, true);
-        context.drawText(textRenderer, Text.literal("Version 0.2.0-hotfix.3").formatted(Formatting.GRAY), width / 2 - textRenderer.getWidth(Text.literal("Version 0.2.0-hotfix.3")) / 2, height / 2 + translationDev + 26, 0xFFFFFF, true);
+        context.drawText(textRenderer, Text.literal("Version 0.2.0-hotfix.4").formatted(Formatting.GRAY), width / 2 - textRenderer.getWidth(Text.literal("Version 0.2.0-hotfix.4")) / 2, height / 2 + translationDev + 26, 0xFFFFFF, true);
     }
 
     private void renderWidgets() {

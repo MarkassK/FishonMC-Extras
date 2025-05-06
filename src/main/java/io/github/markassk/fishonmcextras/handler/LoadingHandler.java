@@ -2,6 +2,7 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
@@ -26,10 +27,9 @@ public class LoadingHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null && !isLoadingDone) {
-            for (int slot = 0; slot < minecraftClient.player.getInventory().size(); slot++) {
-                ItemStack stack = minecraftClient.player.getInventory().getStack(slot);
-
-                if(stack.getItem() == Items.FISHING_ROD) {
+            for (int slot = 0; slot < minecraftClient.player.getInventory().main.size(); slot++) {
+                ItemStack stack = minecraftClient.player.getInventory().main.get(slot);
+                if(stack.get(DataComponentTypes.CUSTOM_DATA) != null && stack.getItem() == Items.FISHING_ROD) {
                     isLoadingDone = true;
                     FishOnMCExtras.LOGGER.info("[FoE] Loading Done");
 
