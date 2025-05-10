@@ -3,6 +3,7 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 import io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.handler.FishingRodHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
+import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -34,12 +35,12 @@ public class BaitHudHandler {
         ) : Text.literal("");
     }
 
-    public int getModelData() {
+    public CustomModelDataComponent getModelData() {
         return !FishingRodHandler.instance().fishingRod.tacklebox.isEmpty() ? FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Bait bait ?
                 bait.customModelData :
                     FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Lure lure ?
                             lure.customModelData :
-                            0
-                : 0;
+                            CustomModelDataComponent.DEFAULT
+                : CustomModelDataComponent.DEFAULT;
     }
 }

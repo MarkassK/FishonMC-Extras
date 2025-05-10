@@ -2,8 +2,10 @@ package io.github.markassk.fishonmcextras.FOMC;
 
 import io.github.markassk.fishonmcextras.util.ColorHelper;
 import io.github.markassk.fishonmcextras.util.ItemStackHelper;
+import io.github.markassk.fishonmcextras.util.NbtHelper;
 import io.github.markassk.fishonmcextras.util.UUIDHelper;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -20,43 +22,43 @@ import java.util.UUID;
 
 public class Types {
     public static Pet getPet(ItemStack itemStack, String type) {
-        return new Pet(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Pet(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static Fish getFish(ItemStack itemStack, String type, String name) {
-        return new Fish(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack), name);
+        return new Fish(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA), name);
     }
 
     public static Shard getShard(ItemStack itemStack, String type) {
-        return new Shard(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Shard(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static Armor getArmor(ItemStack itemStack, String type) {
-        return new Armor(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Armor(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static Bait getBait(ItemStack itemStack, String type) {
-        return new Bait(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Bait(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static Lure getLure(ItemStack itemStack, String type) {
-        return new Lure(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Lure(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static FishingRod getFishingRod(ItemStack itemStack, String type, String name) {
-        return new FishingRod(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack), name);
+        return new FishingRod(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA), name);
     }
 
     public static Line getLine(ItemStack itemStack, String type) {
-        return new Line(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Line(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static Pole getPole(ItemStack itemStack, String type) {
-        return new Pole(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Pole(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static Reel getReel(ItemStack itemStack, String type) {
-        return new Reel(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, ItemStackHelper.getCustomModelData(itemStack));
+        return new Reel(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
     public static FOMCItem getFOMCItem(ItemStack itemStack) {
@@ -111,7 +113,7 @@ public class Types {
 
         public final LocalDate date;
 
-        private Pet(NbtCompound nbtCompound, String type, int customModelData) {
+        private Pet(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
             this.pet = Constant.valueOfId(nbtCompound.getString("pet"));
@@ -142,7 +144,7 @@ public class Types {
                 float lPercentLuck,
                 float lPercentScale
         ) {
-            super("pet", -1, rarity);
+            super("pet", CustomModelDataComponent.DEFAULT, rarity);
             this.id = null;
             this.pet = pet;
             this.climate = Constant.DEFAULT;
@@ -286,7 +288,7 @@ public class Types {
         public final LocalDate date; // date
         public final String rodName; // rod
 
-        private Fish(NbtCompound nbtCompound, String type, int customModelData, String name) {
+        private Fish(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData, String name) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
             this.fishId = nbtCompound.getString("fish");
@@ -317,7 +319,7 @@ public class Types {
         public final String climateId;
         public final Constant rarity;
 
-        private Shard(NbtCompound nbtCompound, String type, int customModelData) {
+        private Shard(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.DEFAULT);
             this.climateId = nbtCompound.getString("name");
             this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
@@ -338,7 +340,7 @@ public class Types {
         public final ArmorStat scale;
         public final ArmorStat prospect;
 
-        private Armor(NbtCompound nbtCompound, String type, int customModelData) {
+        private Armor(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             List<ArmorBonus> tempArmorBonuses;
             NbtList nbtLineList = (NbtList) nbtCompound.get("fish_bonus");
@@ -401,7 +403,7 @@ public class Types {
         public final String intricacy;
         public final List<BaitStats> baitStats;
 
-        private Bait(NbtCompound nbtCompound, String type, int customModelData) {
+        private Bait(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.counter = nbtCompound.getInt("counter");
@@ -435,7 +437,7 @@ public class Types {
         public final List<LureStats> lureStats;
         public final String size;
 
-        private Lure(NbtCompound nbtCompound, String type, int customModelData) {
+        private Lure(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.counter = nbtCompound.getInt("counter");
@@ -468,7 +470,7 @@ public class Types {
         public final Constant water;
         public final List<LineStats> lineStats;
 
-        private Line(NbtCompound nbtCompound, String type, int customModelData) {
+        private Line(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
@@ -498,7 +500,7 @@ public class Types {
         public final Constant water;
         public final List<PoleStats> poleStats;
 
-        private Pole(NbtCompound nbtCompound, String type, int customModelData) {
+        private Pole(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
@@ -528,7 +530,7 @@ public class Types {
         public final Constant water;
         public final List<ReelStats> reelStats;
 
-        private Reel(NbtCompound nbtCompound, String type, int customModelData) {
+        private Reel(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
             super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
@@ -562,77 +564,60 @@ public class Types {
         public final Pole pole;
         public final Reel reel;
 
-        private FishingRod(NbtCompound nbtCompound, String type, int customModelData, String name) {
+        private FishingRod(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData, String name) {
             super(type, customModelData, Constant.DEFAULT);
             this.name = name;
             this.soulboundRod = nbtCompound.getBoolean("soulbound_rod");
             this.skin = nbtCompound.getString("skin");
             this.owner = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));
             NbtList nbtBaitList = (NbtList) nbtCompound.get("tacklebox");
-            List<NbtCompound> nbtCompoundBaitList = new ArrayList<>();
+            List<Types.FOMCItem> baitList = new ArrayList<>();
             if(nbtBaitList != null) {
                 for (int i = 0; i < nbtBaitList.size(); i++) {
-                    nbtCompoundBaitList.add(nbtBaitList.getCompound(i));
+                    ItemStack baitStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(nbtBaitList.getCompound(i)));
+                    if(getFOMCItem(baitStack) instanceof Lure lureType) baitList.add(lureType);
+                    if(getFOMCItem(baitStack) instanceof Bait baitType) baitList.add(baitType);
                 }
             }
-            this.tacklebox = nbtCompoundBaitList.stream().map(nbtCompound1 -> {
-                if(Objects.equals(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data").getString("type"), Defaults.ItemTypes.BAIT)) {
-                    return new Bait(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data"), Defaults.ItemTypes.BAIT, nbtCompound1.getCompound("components").getInt("minecraft:custom_model_data"));
-                } else if (Objects.equals(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data").getString("type"), Defaults.ItemTypes.LURE)) {
-                    return new Lure(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data"), Defaults.ItemTypes.LURE, nbtCompound1.getCompound("components").getInt("minecraft:custom_model_data"));
-                }
-                return null;
-            }).toList();
+            this.tacklebox = baitList;
+
             NbtList nbtLineList = (NbtList) nbtCompound.get("line");
-            List<NbtCompound> nbtCompoundLineList = new ArrayList<>();
+            List<Types.Line> lineList = new ArrayList<>();
             if(nbtLineList != null) {
                 for (int i = 0; i < nbtLineList.size(); i++) {
-                    nbtCompoundLineList.add(nbtLineList.getCompound(i));
+                    ItemStack lineStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(nbtLineList.getCompound(i)));
+                    if(getFOMCItem(lineStack) instanceof Line lineType) lineList.add(lineType);
                 }
             }
-            List<Types.Line> lineList = nbtCompoundLineList.stream().map(nbtCompound1 -> {
-                if(Objects.equals(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data").getString("type"), Defaults.ItemTypes.LINE)) {
-                    return new Line(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data"), Defaults.ItemTypes.LINE, nbtCompound1.getCompound("components").getInt("minecraft:custom_model_data"));
-                }
-                return null;
-            }).toList();
             this.line = lineList.size() == 1 ? lineList.getFirst() : null;
+
             NbtList nbtPoleList = (NbtList) nbtCompound.get("pole");
-            List<NbtCompound> nbtCompoundPoleList = new ArrayList<>();
+            List<Types.Pole> poleList = new ArrayList<>();
             if(nbtPoleList != null) {
                 for (int i = 0; i < nbtPoleList.size(); i++) {
-                    nbtCompoundPoleList.add(nbtPoleList.getCompound(i));
+                    ItemStack poleStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(nbtPoleList.getCompound(i)));
+                    if(getFOMCItem(poleStack) instanceof Pole poleType) poleList.add(poleType);
                 }
             }
-            List<Types.Pole> poleList = nbtCompoundPoleList.stream().map(nbtCompound1 -> {
-                if(Objects.equals(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data").getString("type"), Defaults.ItemTypes.POLE)) {
-                    return new Pole(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data"), Defaults.ItemTypes.POLE, nbtCompound1.getCompound("components").getInt("minecraft:custom_model_data"));
-                }
-                return null;
-            }).toList();
             this.pole = poleList.size() == 1 ? poleList.getFirst() : null;
+
             NbtList nbtReelList = (NbtList) nbtCompound.get("reel");
-            List<NbtCompound> nbtCompoundReelList = new ArrayList<>();
+            List<Types.Reel> reelList = new ArrayList<>();
             if(nbtReelList != null) {
                 for (int i = 0; i < nbtReelList.size(); i++) {
-                    nbtCompoundReelList.add(nbtReelList.getCompound(i));
+                    ItemStack reelStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(nbtReelList.getCompound(i)));
+                    if(getFOMCItem(reelStack) instanceof Reel reelType) reelList.add(reelType);
                 }
             }
-            List<Types.Reel> reelList = nbtCompoundReelList.stream().map(nbtCompound1 -> {
-                if(Objects.equals(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data").getString("type"), Defaults.ItemTypes.REEL)) {
-                    return new Reel(nbtCompound1.getCompound("components").getCompound("minecraft:custom_data"), Defaults.ItemTypes.REEL, nbtCompound1.getCompound("components").getInt("minecraft:custom_model_data"));
-                }
-                return null;
-            }).toList();
             this.reel = reelList.size() == 1 ? reelList.getFirst() : null;
         }
     }
 
     public static class FOMCItem {
         public final String type;
-        public final int customModelData;
+        public final CustomModelDataComponent customModelData;
         public final Constant rarity;
-        private FOMCItem(String type, int customModelData, Constant rarity) {
+        private FOMCItem(String type, CustomModelDataComponent customModelData, Constant rarity) {
             this.type = type;
             this.customModelData = customModelData;
             this.rarity = rarity;

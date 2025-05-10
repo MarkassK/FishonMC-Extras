@@ -20,9 +20,9 @@ public class BaitHud {
 
         // Assemble all text lines
         Text baitText = BaitHudHandler.instance().assembleBaitText();
-        int modelData = BaitHudHandler.instance().getModelData();
+        CustomModelDataComponent modelData = BaitHudHandler.instance().getModelData();
         ItemStack baitStack = Items.COOKED_COD.getDefaultStack().copy();
-        baitStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, new CustomModelDataComponent(modelData));
+        baitStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, modelData);
 
         drawContext.getMatrices().push();
         try {
