@@ -41,7 +41,7 @@ public class QuestTrackerHudHandler {
             List<QuestHandler.Quest> activeQuests = LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? QuestHandler.instance().activeQuests.get(Constant.CYPRESS_LAKE) : QuestHandler.instance().activeQuests.get(LocationHandler.instance().currentLocation);
 
             textList.add(TextHelper.concat(
-                    Text.literal("ʟᴏᴄᴀᴛɪᴏɴ: ").formatted(Formatting.GRAY),
+                    Text.literal("ʟᴏᴄ.: ").formatted(Formatting.GRAY),
                     LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.TAG : LocationHandler.instance().currentLocation.TAG
             ));
 
