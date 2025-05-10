@@ -27,20 +27,23 @@ public class QuestTrackerHudHandler {
 
         if(config.questTracker.rightAlignment) {
             textList.add(TextHelper.concat(
-                    Text.literal("ǫᴜᴇѕᴛѕ for ").formatted(Formatting.GRAY, Formatting.BOLD),
-                    LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.TAG : LocationHandler.instance().currentLocation.TAG,
-                    Text.literal(" --").formatted(Formatting.GRAY)
+                    Text.literal("ǫᴜᴇѕᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD),
+                    Text.literal(" ◀").formatted(Formatting.GRAY)
             ));
         } else {
             textList.add(TextHelper.concat(
-                    Text.literal("-- ").formatted(Formatting.GRAY),
-                    Text.literal("ǫᴜᴇѕᴛѕ for ").formatted(Formatting.GRAY, Formatting.BOLD),
-                    LocationHandler.instance().currentLocation.TAG
+                    Text.literal("▶ ").formatted(Formatting.GRAY),
+                    Text.literal("ǫᴜᴇѕᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD)
             ));
         }
 
         if(QuestHandler.instance().isQuestInitialized()) {
             List<QuestHandler.Quest> activeQuests = LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? QuestHandler.instance().activeQuests.get(Constant.CYPRESS_LAKE) : QuestHandler.instance().activeQuests.get(LocationHandler.instance().currentLocation);
+
+            textList.add(TextHelper.concat(
+                    Text.literal("ʟᴏᴄᴀᴛɪᴏɴ: ").formatted(Formatting.GRAY),
+                    LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.TAG : LocationHandler.instance().currentLocation.TAG
+            ));
 
             if(activeQuests != null) {
                 activeQuests.forEach(quest -> {

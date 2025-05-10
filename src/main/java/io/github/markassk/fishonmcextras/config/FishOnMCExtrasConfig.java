@@ -54,6 +54,14 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public TooltipItemFrameConfig.ItemFrameTooltip itemFrameTooltip = new TooltipItemFrameConfig.ItemFrameTooltip();
 
+    @ConfigEntry.Category(value = TOOLTIPS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TooltipArmorStatsConfig.ArmorStatsTooltip armorStatsTooltip = new TooltipArmorStatsConfig.ArmorStatsTooltip();
+
+    @ConfigEntry.Category(value = TOOLTIPS)
+    @ConfigEntry.Gui.CollapsibleObject
+    public TooltipFishStatsConfig.FishStatsTooltip fishStatsTooltip = new TooltipFishStatsConfig.FishStatsTooltip();
+
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public NotificationsConfig.Notifications notifications = new NotificationsConfig.Notifications();
@@ -73,5 +81,9 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public TrackerBossBarHUDConfig.BossBarTracker bossBarTracker = new TrackerBossBarHUDConfig.BossBarTracker();
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public DiscordIPCConfig.DiscordIPC discordIPC = new DiscordIPCConfig.DiscordIPC();
     //endregion
 }

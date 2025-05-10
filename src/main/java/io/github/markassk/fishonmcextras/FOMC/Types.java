@@ -93,7 +93,6 @@ public class Types {
     public static class Pet extends FOMCItem {
         public final UUID id;
         public final Constant pet;
-        public final Constant rarity;
         public final Constant climate;
         public final Constant location;
 
@@ -113,10 +112,9 @@ public class Types {
         public final LocalDate date;
 
         private Pet(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
             this.pet = Constant.valueOfId(nbtCompound.getString("pet"));
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
             this.climate = Constant.valueOfId(nbtCompound.getString("climate"));
             this.location = Constant.valueOfId(nbtCompound.getString("location"));
             this.lvl = nbtCompound.getInt("level");
@@ -144,10 +142,9 @@ public class Types {
                 float lPercentLuck,
                 float lPercentScale
         ) {
-            super("pet", -1);
+            super("pet", -1, rarity);
             this.id = null;
             this.pet = pet;
-            this.rarity = rarity;
             this.climate = Constant.DEFAULT;
             this.location = Constant.DEFAULT;
             this.lvl = 100;
@@ -267,7 +264,6 @@ public class Types {
     public static class Fish extends FOMCItem {
         public final UUID id; // id
         public final String fishId; // fish
-        public final Constant rarity; // rarity
         public final String scientific; // scientific
         public final Constant variant; // variant
 
@@ -291,10 +287,9 @@ public class Types {
         public final String rodName; // rod
 
         private Fish(NbtCompound nbtCompound, String type, int customModelData, String name) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
             this.fishId = nbtCompound.getString("fish");
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
             this.scientific = nbtCompound.getString("scientific");
             this.variant = Constant.valueOfId(nbtCompound.getString("variant"));
             this.value = nbtCompound.getFloat("value");
@@ -323,7 +318,7 @@ public class Types {
         public final Constant rarity;
 
         private Shard(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.DEFAULT);
             this.climateId = nbtCompound.getString("name");
             this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
         }
@@ -336,7 +331,6 @@ public class Types {
         public final int color;
         public final int quality;
         public final boolean identified;
-        public final Constant rarity;
         public final String armorPiece;
         public final Constant climate;
         public final UUID crafter;
@@ -345,19 +339,24 @@ public class Types {
         public final ArmorStat prospect;
 
         private Armor(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
-            this.armorBonuses = List.of(
-                    new ArmorBonus(nbtCompound.getList("fish_bonus", NbtElement.LIST_TYPE).getCompound(0)),
-                    new ArmorBonus(nbtCompound.getList("fish_bonus", NbtElement.LIST_TYPE).getCompound(1)),
-                    new ArmorBonus(nbtCompound.getList("fish_bonus", NbtElement.LIST_TYPE).getCompound(2)),
-                    new ArmorBonus(nbtCompound.getList("fish_bonus", NbtElement.LIST_TYPE).getCompound(3)),
-                    new ArmorBonus(nbtCompound.getList("fish_bonus", NbtElement.LIST_TYPE).getCompound(4))
-            );
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
+            List<ArmorBonus> tempArmorBonuses;
+            NbtList nbtLineList = (NbtList) nbtCompound.get("fish_bonus");
+            tempArmorBonuses = new ArrayList<>();
+            if(nbtLineList != null) {
+                tempArmorBonuses = List.of(
+                        new ArmorBonus(nbtLineList.getCompound(0)),
+                        new ArmorBonus(nbtLineList.getCompound(1)),
+                        new ArmorBonus(nbtLineList.getCompound(2)),
+                        new ArmorBonus(nbtLineList.getCompound(3)),
+                        new ArmorBonus(nbtLineList.getCompound(4))
+                );
+            }
+            this.armorBonuses = tempArmorBonuses;
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("itemUUID"));
             this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb"));
             this.quality = nbtCompound.getInt("quality");
             this.identified = nbtCompound.getBoolean("identified");
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
             this.armorPiece = nbtCompound.getString("piece");
             this.climate = Constant.valueOfId(nbtCompound.getString("name"));
             this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));
@@ -401,10 +400,9 @@ public class Types {
         public final Constant water;
         public final String intricacy;
         public final List<BaitStats> baitStats;
-        public final Constant rarity;
 
         private Bait(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.counter = nbtCompound.getInt("counter");
             this.water = Constant.valueOfId(nbtCompound.getString("water"));
@@ -415,7 +413,6 @@ public class Types {
                 nbtCompoundList.add(nbtList.getCompound(i));
             }
             this.baitStats = nbtCompoundList.stream().map(BaitStats::new).toList();
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
         }
 
         public static class BaitStats {
@@ -436,11 +433,10 @@ public class Types {
         public final Constant water;
         public final String intricacy;
         public final List<LureStats> lureStats;
-        public final Constant rarity;
         public final String size;
 
         private Lure(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.counter = nbtCompound.getInt("counter");
             this.water = Constant.valueOfId(nbtCompound.getString("water"));
@@ -451,7 +447,6 @@ public class Types {
                 nbtCompoundList.add(nbtList.getCompound(i));
             }
             this.lureStats = nbtCompoundList.stream().map(LureStats::new).toList();
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
             this.totalUses = nbtCompound.getInt("totalUses");
             this.size = nbtCompound.getString("size");
         }
@@ -472,10 +467,9 @@ public class Types {
         public final UUID id;
         public final Constant water;
         public final List<LineStats> lineStats;
-        public final Constant rarity; // is capitalized
 
         private Line(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
             this.water = Constant.valueOfId(nbtCompound.getString("water"));
@@ -485,7 +479,6 @@ public class Types {
                 nbtCompoundList.add(nbtList.getCompound(i));
             }
             this.lineStats = nbtCompoundList.stream().map(LineStats::new).toList();
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
         }
 
         public static class LineStats {
@@ -504,10 +497,9 @@ public class Types {
         public final UUID id;
         public final Constant water;
         public final List<PoleStats> poleStats;
-        public final Constant rarity; // is capitalized
 
         private Pole(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
             this.water = Constant.valueOfId(nbtCompound.getString("water"));
@@ -517,7 +509,6 @@ public class Types {
                 nbtCompoundList.add(nbtList.getCompound(i));
             }
             this.poleStats = nbtCompoundList.stream().map(PoleStats::new).toList();
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
         }
 
         public static class PoleStats {
@@ -536,10 +527,9 @@ public class Types {
         public final UUID id;
         public final Constant water;
         public final List<ReelStats> reelStats;
-        public final Constant rarity; // is capitalized
 
         private Reel(NbtCompound nbtCompound, String type, int customModelData) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
             this.name = nbtCompound.getString("name");
             this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
             this.water = Constant.valueOfId(nbtCompound.getString("water"));
@@ -549,7 +539,6 @@ public class Types {
                 nbtCompoundList.add(nbtList.getCompound(i));
             }
             this.reelStats = nbtCompoundList.stream().map(ReelStats::new).toList();
-            this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
         }
 
         public static class ReelStats {
@@ -574,7 +563,7 @@ public class Types {
         public final Reel reel;
 
         private FishingRod(NbtCompound nbtCompound, String type, int customModelData, String name) {
-            super(type, customModelData);
+            super(type, customModelData, Constant.DEFAULT);
             this.name = name;
             this.soulboundRod = nbtCompound.getBoolean("soulbound_rod");
             this.skin = nbtCompound.getString("skin");
@@ -642,9 +631,11 @@ public class Types {
     public static class FOMCItem {
         public final String type;
         public final int customModelData;
-        private FOMCItem(String type, int customModelData) {
+        public final Constant rarity;
+        private FOMCItem(String type, int customModelData, Constant rarity) {
             this.type = type;
             this.customModelData = customModelData;
+            this.rarity = rarity;
         }
     }
 }

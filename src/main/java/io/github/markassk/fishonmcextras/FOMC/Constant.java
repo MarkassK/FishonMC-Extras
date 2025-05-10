@@ -274,7 +274,16 @@ public enum Constant {
     ANY_WATER("any", Text.literal("Any"), DEFAULT_COLOR),
     GLOBAL_WATER("global", Text.literal("Anywhere"), DEFAULT_COLOR),
 
-    DEFAULT("default", Text.empty(), Defaults.DEFAULT_COLOR);
+    TEXTCOMMON("textcommon", Text.literal("\uEEE4\uEEE1 퀃 \uEEE8\uEEE7\uEEE5\uEEE2 "), DEFAULT_COLOR),
+    TEXTRARE("textrare", Text.literal("\uEEE4\uEEE1 퀇 \uEEE8\uEEE7\uEEE5\uEEE2 "), DEFAULT_COLOR),
+    TEXTEPIC("textepic", Text.literal("\uEEE4\uEEE1 퀑 \uEEE8\uEEE7\uEEE5\uEEE2 "), DEFAULT_COLOR),
+    TEXTLEGENDARY("textlegendary", Text.literal("\uEEE4\uEEE1 퀕 \uEEE8\uEEE7\uEEE5\uEEE2 "), DEFAULT_COLOR),
+    TEXTMYTHICAL("textmythical", Text.literal("\uEEE4\uEEE1 퀙 \uEEE8\uEEE7\uEEE5\uEEE2 "), DEFAULT_COLOR),
+    TEXTSPECIAL("textspecial", Text.literal("\uEEE4\uEEE1 퀃 \uEEE8\uEEE7\uEEE5\uEEE2 ").withColor(0xC746B4), DEFAULT_COLOR),
+    TEXTDEFAULT("textdefault", Text.literal("\uEEE4\uEEE1 퀃 \uEEE8\uEEE7\uEEE5\uEEE2 ").withColor(0x5C4B34), DEFAULT_COLOR),
+
+    DEFAULT("default", Text.empty(), Defaults.DEFAULT_COLOR)
+    ;
 
     public final String ID;
     public final Text TAG;
