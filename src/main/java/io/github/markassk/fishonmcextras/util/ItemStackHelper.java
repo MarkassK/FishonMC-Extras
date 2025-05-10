@@ -28,11 +28,4 @@ public class ItemStackHelper {
                 .getOrThrow()
                 .getFirst();
     }
-
-    public static int getCustomModelData(ItemStack stack) {
-        if(stack.get(DataComponentTypes.CUSTOM_MODEL_DATA) != null) {
-            return Objects.requireNonNull(stack.get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
-        }
-        return -1;
-    }
 }
