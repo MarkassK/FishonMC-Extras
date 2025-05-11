@@ -107,7 +107,6 @@ public class StatsImportHandler {
 
     private ButtonWidget getButton(MinecraftClient minecraftClient) {
         return ButtonWidget.builder(Text.literal("Import Stats"), thisButton -> {
-                    assert minecraftClient.player != null;
                     StatsImportHandler.instance().onButtonClick(minecraftClient);
                 })
                 .dimensions(minecraftClient.getWindow().getScaledWidth() / 2 - (130 / 2), minecraftClient.getWindow().getScaledHeight() / 2 + 120, 130, 20)
@@ -124,8 +123,9 @@ public class StatsImportHandler {
 
 
     private void createButton(MinecraftClient minecraftClient) {
-        assert minecraftClient.currentScreen != null;
-        Screens.getButtons(minecraftClient.currentScreen).add(getButton(minecraftClient));
+        if (minecraftClient.currentScreen != null) {
+            Screens.getButtons(minecraftClient.currentScreen).add(getButton(minecraftClient));
+        }
     }
 
     private void saveStats() {

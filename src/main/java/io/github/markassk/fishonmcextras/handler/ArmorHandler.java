@@ -2,7 +2,8 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.Armor;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
@@ -22,9 +23,9 @@ public class ArmorHandler {
     public ItemStack currentChestplateItem = Items.AIR.getDefaultStack();
     public ItemStack currentLeggingsItem = Items.AIR.getDefaultStack();
     public ItemStack currentBootsItem = Items.AIR.getDefaultStack();
-    public Types.Armor currentChestplate = null;
-    public Types.Armor currentLeggings = null;
-    public Types.Armor currentBoots = null;
+    public Armor currentChestplate = null;
+    public Armor currentLeggings = null;
+    public Armor currentBoots = null;
     public boolean isWrongChestplateClimate = false;
     public boolean isWrongLeggingsClimate = false;
     public boolean isWrongBootsClimate = false;
@@ -37,8 +38,11 @@ public class ArmorHandler {
     }
 
     public void tick(MinecraftClient minecraftClient) {
-        assert minecraftClient.player != null;
-        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId()).getItem() == Items.LEATHER_BOOTS && Types.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId())) instanceof Types.Armor armor) {
+        if(minecraftClient.player  == null ) {
+            return;
+        }
+
+        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId()).getItem() == Items.LEATHER_BOOTS && FOMCItem.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId())) instanceof Armor armor) {
             this.currentBootsItem = minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId());
             this.currentBoots = armor;
         } else {
@@ -46,7 +50,7 @@ public class ArmorHandler {
             this.currentBoots = null;
         }
 
-        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId()).getItem() == Items.LEATHER_LEGGINGS && Types.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId())) instanceof Types.Armor armor) {
+        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId()).getItem() == Items.LEATHER_LEGGINGS && FOMCItem.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId())) instanceof Armor armor) {
             this.currentLeggingsItem = minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId());
             this.currentLeggings = armor;
         } else {
@@ -54,7 +58,7 @@ public class ArmorHandler {
             this.currentLeggings = null;
         }
 
-        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId()).getItem() == Items.LEATHER_CHESTPLATE && Types.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId())) instanceof Types.Armor armor) {
+        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId()).getItem() == Items.LEATHER_CHESTPLATE && FOMCItem.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId())) instanceof Armor armor) {
             this.currentChestplateItem = minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId());
             this.currentChestplate = armor;
         } else {
@@ -76,7 +80,7 @@ public class ArmorHandler {
     }
 
     private void appendTooltipArmorRoll(List<Text> textList, ItemStack itemStack) {
-        if(KeybindHandler.instance().showExtraInfo && Types.getFOMCItem(itemStack) instanceof Types.Armor armor && armor.identified) {
+        if(KeybindHandler.instance().showExtraInfo && FOMCItem.getFOMCItem(itemStack) instanceof Armor armor && armor.identified) {
             Text emptyLine = textList.get(16).copy();
             if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(textList, 4, armor, emptyLine);
             if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(textList, 3, armor, emptyLine);
@@ -86,7 +90,7 @@ public class ArmorHandler {
         }
     }
 
-    private void insertArmorRollTooltip(List<Text> textList, int index, Types.Armor armor, Text prefix) {
+    private void insertArmorRollTooltip(List<Text> textList, int index, Armor armor, Text prefix) {
         if(armor.armorBonuses.get(index).rolled) {
             int slot = index + 12;
             int amount = calculateMoneyRolls(armor.armorBonuses.get(index).rolls, armor.armorBonuses.get(index).tier);
@@ -110,7 +114,7 @@ public class ArmorHandler {
         boolean isEye = false;
         boolean isArmor = false;
         int slot = -1;
-        Types.Armor armor = null;
+        Armor armor = null;
 
         for (int i = 0; i < (minecraftClient.player != null ? minecraftClient.player.currentScreenHandler.slots.size() : 0); i++) {
             ItemStack itemStackFromInv = minecraftClient.player.currentScreenHandler.getSlot(i).getStack();
@@ -122,7 +126,7 @@ public class ArmorHandler {
             }
 
             if(minecraftClient.player.currentScreenHandler.getSlot(31).inventory != minecraftClient.player.getInventory()
-                    && Types.getFOMCItem(minecraftClient.player.currentScreenHandler.getSlot(31).getStack()) instanceof Types.Armor a
+                    && FOMCItem.getFOMCItem(minecraftClient.player.currentScreenHandler.getSlot(31).getStack()) instanceof Armor a
                     && isEye) {
                 isArmor = true;
                 armor = a;

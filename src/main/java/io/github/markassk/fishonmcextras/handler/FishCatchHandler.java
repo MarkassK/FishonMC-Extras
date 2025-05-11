@@ -2,7 +2,10 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.FishStrings;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
+import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
+import io.github.markassk.fishonmcextras.FOMC.Types.Shard;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
@@ -37,10 +40,9 @@ public class FishCatchHandler  {
     }
 
     public void tick(MinecraftClient minecraftClient) {
-        assert minecraftClient.player != null;
-        if(minecraftClient.player.fishHook != null && !hasUsedRod) {
+        if(minecraftClient.player != null && minecraftClient.player.fishHook != null && !hasUsedRod) {
             hasUsedRod = true;
-        } else if (hasUsedRod && minecraftClient.player.fishHook == null) {
+        } else if (minecraftClient.player != null && hasUsedRod && minecraftClient.player.fishHook == null) {
             hasUsedRod = false;
             this.lastTimeUsedRod = System.currentTimeMillis();
         }
@@ -82,15 +84,15 @@ public class FishCatchHandler  {
         for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
             ItemStack stack = player.getInventory().main.get(slot);
 
-            if(Types.getFOMCItem(stack) instanceof Types.Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
+            if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
                 if(!trackedFishes.contains(fish.id)) {
                     trackedFishes.add(fish.id);
                 }
-            } else if (Types.getFOMCItem(stack) instanceof  Types.Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
+            } else if (FOMCItem.getFOMCItem(stack) instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
                 }
-            } else if (Types.getFOMCItem(stack) instanceof Types.Shard) {
+            } else if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
                 shardCount += stack.getCount();
             }
         }
@@ -109,7 +111,7 @@ public class FishCatchHandler  {
         for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
             ItemStack stack = player.getInventory().main.get(slot);
 
-            if(Types.getFOMCItem(stack) instanceof Types.Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
+            if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
                 if(!trackedFishes.contains(fish.id)) {
                     trackedFishes.add(fish.id);
                     ProfileDataHandler.instance().updateStatsOnCatch(fish);
@@ -126,12 +128,12 @@ public class FishCatchHandler  {
                     QuestHandler.instance().updateQuest(fish);
 
                 }
-            } else if (Types.getFOMCItem(stack) instanceof Types.Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
+            } else if (FOMCItem.getFOMCItem(stack) instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
                 if(!trackedPets.contains(pet.id)) {
                     trackedPets.add(pet.id);
                     ProfileDataHandler.instance().updateStatsOnCatch();
                 }
-            } else if (Types.getFOMCItem(stack) instanceof Types.Shard) {
+            } else if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
                 shardCount += stack.getCount();
             }
         }
@@ -142,24 +144,21 @@ public class FishCatchHandler  {
         }
     }
 
-    private void sendToTitleHud(ItemStack stack, Types.Fish fish) {
+    private void sendToTitleHud(ItemStack stack, Fish fish) {
         // Send to TitleHud
         List<Text> title = new ArrayList<>();
         if(FishStrings.valueOfId(fish.fishId) != null) {
             title.add(Text.literal(Objects.requireNonNull(FishStrings.valueOfId(fish.fishId)).CHARACTER).formatted(Formatting.WHITE));
             title.add(Text.empty());
         }
-        assert fish.variant != null;
         if(fish.variant != Constant.NORMAL) {
             title.add(fish.variant.TAG);
         }
-        assert fish.rarity != null;
         title.add(TextHelper.concat(
                 fish.rarity.TAG,
                 Text.literal(" "),
                 stack.getName()
         ));
-        assert fish.size != null;
         title.add(fish.size.TAG);
         List<Text> subtitle = new ArrayList<>();
         if(config.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch) {

@@ -1,6 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
@@ -30,7 +30,7 @@ public class LookTickHandler {
 
                 // Only allow Items from FishOnMC
                 if (
-                        Types.getFOMCItem(itemStack) instanceof Types.FOMCItem
+                        FOMCItem.getFOMCItem(itemStack) instanceof FOMCItem
                 ) {
                     targetedItemInItemFrame = itemStack;
                 } else {

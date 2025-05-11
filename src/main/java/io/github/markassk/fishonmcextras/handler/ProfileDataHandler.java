@@ -3,7 +3,8 @@ package io.github.markassk.fishonmcextras.handler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.adapter.FOMCConstantTypeAdapter;
 import io.github.markassk.fishonmcextras.adapter.LocalDateTypeAdapter;
@@ -43,7 +44,7 @@ public class ProfileDataHandler {
     /**
      * Update stats from new Fish
      */
-    public void updateStatsOnCatch(Types.Fish fish) {
+    public void updateStatsOnCatch(Fish fish) {
         // All-time stats
         this.profileData.allFishCaughtCount++;
         this.profileData.timerFishCaughtCount++;
@@ -96,7 +97,7 @@ public class ProfileDataHandler {
         this.saveStats();
     }
 
-    public void updatePet(Types.Pet pet, int slot) {
+    public void updatePet(Pet pet, int slot) {
         this.profileData.equippedPet = pet;
         this.profileData.equippedPetSlot = slot;
         this.saveStats();
@@ -233,7 +234,7 @@ public class ProfileDataHandler {
 
         // Equipped Pet
         public int equippedPetSlot = -1;
-        public Types.Pet equippedPet = null;
+        public Pet equippedPet = null;
 
         // Dry streak count
         public int petDryStreak;

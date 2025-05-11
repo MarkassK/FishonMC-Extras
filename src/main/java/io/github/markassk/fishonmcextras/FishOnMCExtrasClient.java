@@ -119,11 +119,12 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 FishOnMCExtras.LOGGER.info("[FoE] On server. (play.fishonmc.net)");
                 FishOnMCExtras.LOGGER.info("[FoE] Loading Start");
                 minecraftClient.execute(() -> {
-                    assert minecraftClient.player != null;
-                    ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
-                    FishCatchHandler.instance().onJoinServer();
-                    DiscordHandler.instance().connect();
-                    LoadingHandler.instance().isOnServer = true;
+                    if (minecraftClient.player != null) {
+                        ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
+                        FishCatchHandler.instance().onJoinServer();
+                        DiscordHandler.instance().connect();
+                        LoadingHandler.instance().isOnServer = true;
+                    }
                 });
             } else {
                 FishOnMCExtras.LOGGER.info("[FoE] Not on server. (play.fishonmc.net)");
@@ -167,7 +168,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
                 // Pet Menu핑
                 Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
-                            assert minecraftClient.player != null;
                             minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
                         })
                         .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)

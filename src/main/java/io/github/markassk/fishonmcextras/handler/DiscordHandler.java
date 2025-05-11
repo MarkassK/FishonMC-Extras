@@ -11,6 +11,8 @@ import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.ExtendedRichPresence;
 import net.minecraft.client.MinecraftClient;
 
+import java.util.Objects;
+
 public class DiscordHandler {
     private static DiscordHandler INSTANCE = new DiscordHandler();
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
@@ -115,7 +117,6 @@ public class DiscordHandler {
     }
 
     private RichPresence buildPresence() {
-        assert MinecraftClient.getInstance().player != null;
         String state = TabHandler.instance().isInstance ? "Fishing at: " + LocationHandler.instance().currentLocation.TAG.getString() + " (i" + TabHandler.instance().instance + ")" : "At: " + LocationHandler.instance().currentLocation.TAG.getString();
         ExtendedRichPresence.ExtendedBuilder presence = new ExtendedRichPresence.ExtendedBuilder()
                 .setActivity(ActivityType.Playing)
@@ -123,7 +124,7 @@ public class DiscordHandler {
                 .setStartTimestamp(offsetTime)
                 .setLargeImage("small_logo")
                 .setDetails(
-                        MinecraftClient.getInstance().player.getName().getString()
+                        Objects.requireNonNull(MinecraftClient.getInstance().player).getName().getString()
                                 + " [" + ScoreboardHandler.instance().level + "]");
         return presence.build();
     }

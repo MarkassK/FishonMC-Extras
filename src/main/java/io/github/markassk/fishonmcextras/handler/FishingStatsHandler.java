@@ -1,7 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ public class FishingStatsHandler {
     }
 
     public void appendTooltip(List<Text> textList, ItemStack itemStack) {
-        if(config.fishStatsTooltip.showStats && KeybindHandler.instance().showExtraInfo && Types.getFOMCItem(itemStack) instanceof Types.FOMCItem item) {
+        if(config.fishStatsTooltip.showStats && KeybindHandler.instance().showExtraInfo && FOMCItem.getFOMCItem(itemStack) instanceof FOMCItem item) {
             Constant textRarityWindow = getTextRarity(item.rarity);
             for (int i = textList.size() - 1; i >= 0; i--) {
                 if(textList.get(i).getString().contains("ʟᴜᴄᴋ")) addLine(textList, i, "ᴄʜᴀɴᴄᴇ ꜰᴏʀ ʜɪɢʜᴇʀ ʀᴀʀɪᴛʏ ꜰɪѕʜ", textRarityWindow);

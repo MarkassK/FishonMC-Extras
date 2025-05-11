@@ -1,12 +1,13 @@
 package io.github.markassk.fishonmcextras.FOMC;
 
 
+import io.github.markassk.fishonmcextras.FOMC.Types.Defaults;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import static io.github.markassk.fishonmcextras.FOMC.Defaults.DEFAULT_COLOR;
-import static io.github.markassk.fishonmcextras.FOMC.Defaults.EMPTY_STRING;
+import static io.github.markassk.fishonmcextras.FOMC.Types.Defaults.DEFAULT_COLOR;
+import static io.github.markassk.fishonmcextras.FOMC.Types.Defaults.EMPTY_STRING;
 
 public enum Constant {
     // Fish Size
