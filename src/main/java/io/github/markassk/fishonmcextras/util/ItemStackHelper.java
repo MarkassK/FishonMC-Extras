@@ -8,8 +8,6 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
-import java.util.Objects;
-
 public class ItemStackHelper {
     private static final Gson gson = new Gson();
 

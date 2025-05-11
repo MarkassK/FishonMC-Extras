@@ -65,9 +65,6 @@ public class FishCatchHandler  {
         ProfileDataHandler.instance().tickTimer();
     }
 
-    public void onJoinServer() {
-    }
-
     public void onLeaveServer() {
         ProfileDataHandler.instance().saveStats();
     }

@@ -68,7 +68,7 @@ public class Pet extends FOMCItem {
             float lPercentScale
     ) {
         super("pet", CustomModelDataComponent.DEFAULT, rarity);
-        this.id = null;
+        this.id = UUID.randomUUID();
         this.pet = pet;
         this.climate = Constant.DEFAULT;
         this.location = Constant.DEFAULT;

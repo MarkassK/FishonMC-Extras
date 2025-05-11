@@ -209,9 +209,9 @@ public class ProfileDataHandler {
         public int fishCaughtCount = 0;
         public float totalXP = 0.0f;
         public float totalValue = 0.0f;
-        public Map<Constant, Integer> variantCounts = new HashMap<>();
-        public Map<Constant, Integer> rarityCounts = new HashMap<>();
-        public Map<Constant, Integer> fishSizeCounts = new HashMap<>();
+        public final Map<Constant, Integer> variantCounts = new HashMap<>();
+        public final Map<Constant, Integer> rarityCounts = new HashMap<>();
+        public final Map<Constant, Integer> fishSizeCounts = new HashMap<>();
         public int petCaughtCount = 0;
         public int shardCaughtCount = 0;
 

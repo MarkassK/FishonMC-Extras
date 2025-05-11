@@ -13,17 +13,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class MainHudRenderer implements HudRenderCallback {
-    FishTrackerHud fishTrackerHud = new FishTrackerHud();
-    PetEquipHud petEquipHud = new PetEquipHud();
-    NotificationHud notificationHud = new NotificationHud();
-    TitleHud titleHud = new TitleHud();
-    ItemFrameTooltipHud itemFrameTooltipHud = new ItemFrameTooltipHud();
-    BarHud barHud = new BarHud();
-    ContestHud contestHud = new ContestHud();
-    BaitHud baitHud = new BaitHud();
-    EquipmentHud equipmentHud = new EquipmentHud();
-    CrewHud crewHud = new CrewHud();
-    QuestHud questHud = new QuestHud();
+    final FishTrackerHud fishTrackerHud = new FishTrackerHud();
+    final PetEquipHud petEquipHud = new PetEquipHud();
+    final NotificationHud notificationHud = new NotificationHud();
+    final TitleHud titleHud = new TitleHud();
+    final ItemFrameTooltipHud itemFrameTooltipHud = new ItemFrameTooltipHud();
+    final BarHud barHud = new BarHud();
+    final ContestHud contestHud = new ContestHud();
+    final BaitHud baitHud = new BaitHud();
+    final EquipmentHud equipmentHud = new EquipmentHud();
+    final CrewHud crewHud = new CrewHud();
+    final QuestHud questHud = new QuestHud();
 
     @Override
     public void onHudRender(DrawContext drawContext, RenderTickCounter renderTickCounter) {

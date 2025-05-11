@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Lure extends FOMCItem {
     public final String name;
     public final int totalUses;
-    public int counter;
+    public final int counter;
     public final Constant water;
     public final String intricacy;
     public final List<LureStats> lureStats;

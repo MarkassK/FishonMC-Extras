@@ -111,9 +111,7 @@ public class DiscordHandler {
         }
 
 
-        this.ipcClient.sendRichPresence(currentRichPresence, new Callback((success) -> {}, (error) -> {
-            FishOnMCExtras.LOGGER.error("Failed to send state to discord: {}", error);
-        }));
+        this.ipcClient.sendRichPresence(currentRichPresence, new Callback((success) -> {}, (error) -> FishOnMCExtras.LOGGER.error("Failed to send state to discord: {}", error)));
     }
 
     private RichPresence buildPresence() {

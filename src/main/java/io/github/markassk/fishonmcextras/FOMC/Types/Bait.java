@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class Bait extends FOMCItem {
     public final String name;
-    public int counter;
+    public final int counter;
     public final Constant water;
     public final String intricacy;
     public final List<BaitStats> baitStats;

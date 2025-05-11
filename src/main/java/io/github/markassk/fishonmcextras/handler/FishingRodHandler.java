@@ -6,13 +6,11 @@ import io.github.markassk.fishonmcextras.FOMC.Types.Bait;
 import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.FishingRod;
 import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
-import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Items;
 
 public class FishingRodHandler {
     private static FishingRodHandler INSTANCE = new FishingRodHandler();
-    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     public FishingRod fishingRod = null;
     public boolean isWrongBait = false;
@@ -31,8 +29,8 @@ public class FishingRodHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null && minecraftClient.player.getInventory().main.getFirst().getItem() == Items.FISHING_ROD) {
-            if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().main.getFirst()) instanceof FishingRod fishingRod) {
-                this.fishingRod = fishingRod;
+            if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().main.getFirst()) instanceof FishingRod rod) {
+                this.fishingRod = rod;
             }
         }
 

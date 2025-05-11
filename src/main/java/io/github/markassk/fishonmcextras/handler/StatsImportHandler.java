@@ -77,7 +77,7 @@ public class StatsImportHandler {
                     else if (loreLine.contains(Constant.MELANISTIC.TAG.getString())) dummyProfileData.allVariantCounts.put(Constant.MELANISTIC, getValue(loreLine, Constant.MELANISTIC));
                     else if (loreLine.contains(Constant.TROPHY.TAG.getString())) dummyProfileData.allVariantCounts.put(Constant.TROPHY, getValue(loreLine, Constant.TROPHY));
                     else if (loreLine.contains(Constant.FABLED.TAG.getString())) dummyProfileData.allVariantCounts.put(Constant.FABLED, getValue(loreLine, Constant.FABLED));
-                    else if (loreLine.contains("ꜰɪꜱʜ ᴄᴀᴜɢʜᴛ")) fishCaught.set(getValue(loreLine, ":"));
+                    else if (loreLine.contains("ꜰɪꜱʜ ᴄᴀᴜɢʜᴛ")) fishCaught.set(getValue(loreLine));
                 });
             }
         }
@@ -178,7 +178,7 @@ public class StatsImportHandler {
         return toIntFromString(line.substring(line.indexOf(prefix.TAG.getString()) + prefix.TAG.getString().length()));
     }
 
-    private int getValue(String line, String prefix) {
-        return toIntFromString(line.substring(line.indexOf(prefix) + 1));
+    private int getValue(String line) {
+        return toIntFromString(line.substring(line.indexOf(":") + 1));
     }
 }

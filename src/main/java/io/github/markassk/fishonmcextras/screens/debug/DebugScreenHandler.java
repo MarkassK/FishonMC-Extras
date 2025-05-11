@@ -250,7 +250,7 @@ public class DebugScreenHandler {
 
                 textList.addAll(List.of(
                         assembleText("fishingRod.name", fishingRodHandler.fishingRod.name),
-                        assembleText("fishingRod.souldboundRod", fishingRodHandler.fishingRod.soulboundRod),
+                        assembleText("fishingRod.soulboundRod", fishingRodHandler.fishingRod.soulboundRod),
                         assembleText("fishingRod.skin", fishingRodHandler.fishingRod.skin),
                         assembleText("fishingRod.owner", fishingRodHandler.fishingRod.owner != null ? fishingRodHandler.fishingRod.owner.toString() : "")
                 ));
@@ -283,9 +283,9 @@ public class DebugScreenHandler {
             case QUEST -> {
                 QuestHandler questHandler = QuestHandler.instance();
 
-                textList.addAll(List.of(
+                textList.add(
                         assembleText("isQuestInitialized", questHandler.isQuestInitialized())
-                ));
+                );
             }
         }
 

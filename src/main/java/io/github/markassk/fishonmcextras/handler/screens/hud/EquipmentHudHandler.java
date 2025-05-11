@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 import io.github.markassk.fishonmcextras.handler.ArmorHandler;
 import io.github.markassk.fishonmcextras.handler.FishingRodHandler;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 

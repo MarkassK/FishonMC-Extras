@@ -1,6 +1,6 @@
 {
   "key.fishonmcextras.openconfig": "Open Config",
-  "key.fishonmcextras.openconfig": "Show Extra Details",
+  "key.fishonmcextras.openextrainfo": "Show Extra Details",
   "category.fishonmcextras.general": "FishOnMC Extras",
 
   "text.autoconfig.fishonmcextras.title": "Fish on MC Extras",
@@ -174,6 +174,13 @@
   "text.autoconfig.fishonmcextras.option.itemFrameTooltip": "§f§lItem Frame Tooltip Options",
   "text.autoconfig.fishonmcextras.option.itemFrameTooltip.showTooltip": "Show tooltip on hovering item frames",
 
+  "text.autoconfig.fishonmcextras.option.armorStatsTooltip": "§f§lArmor Roll Stats Tooltip Options",
+  "text.autoconfig.fishonmcextras.option.armorStatsTooltip.showOnRerollScreen": "Show reroll stats on reroll screen",
+  "text.autoconfig.fishonmcextras.option.armorStatsTooltip.showOnPressingKeybind": "Show reroll stats on armor when pressing keybind",
+
+  "text.autoconfig.fishonmcextras.option.fishStatsTooltip": "§f§lFishing Stats on Items Options",
+  "text.autoconfig.fishonmcextras.option.fishStatsTooltip.showStats": "Show fishing stats descriptions on items when pressing keybind",
+
   "text.autoconfig.fishonmcextras.option.notifications": "§f§lNotification HUD Options",
   "text.autoconfig.fishonmcextras.option.notifications.showWarningHud": "Show Notification HUD",
   "text.autoconfig.fishonmcextras.option.notifications.showWarningHud.@Tooltip": "§7This will §cdisable §4ALL §7non important notifications.\nPlease go to the respective feature config,\nif you want to disable only one type of notification",
@@ -189,5 +196,9 @@
   "text.autoconfig.fishonmcextras.option.barHUD": "§f§lTop Bar Options",
   "text.autoconfig.fishonmcextras.option.barHUD.showBar": "Show Top Bar",
   "text.autoconfig.fishonmcextras.option.barHUD.backgroundOpacity": "Background opacity",
-  "text.autoconfig.fishonmcextras.option.barHUD.fontSize": "Font size"
+  "text.autoconfig.fishonmcextras.option.barHUD.fontSize": "Font size",
+
+  "text.autoconfig.fishonmcextras.option.discordIPC": "§f§lDiscord Rich Presence Options",
+  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled": "Enable Discord Rich Presence",
+  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this options"
 }

@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras;
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
-import io.github.markassk.fishonmcextras.handler.LookTickHandler;
 import io.github.markassk.fishonmcextras.screens.main.MainScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
@@ -121,7 +120,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 minecraftClient.execute(() -> {
                     if (minecraftClient.player != null) {
                         ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
-                        FishCatchHandler.instance().onJoinServer();
                         DiscordHandler.instance().connect();
                         LoadingHandler.instance().isOnServer = true;
                     }
@@ -129,6 +127,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             } else {
                 FishOnMCExtras.LOGGER.info("[FoE] Not on server. (play.fishonmc.net)");
                 LoadingHandler.instance().isOnServer = false;
+                DiscordHandler.instance().disconnect();
             }
         }
     }

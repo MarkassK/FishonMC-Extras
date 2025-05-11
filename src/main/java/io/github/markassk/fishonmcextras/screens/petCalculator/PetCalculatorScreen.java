@@ -72,12 +72,8 @@ public class PetCalculatorScreen extends Screen {
 
         final int translation = padding + (16 + padding) * columns + boxWidth;
         switch (petList) {
-            case LEFT -> {
-                translate -= translation;
-            }
-            case RIGHT -> {
-                translate += translation;
-            }
+            case LEFT -> translate -= translation;
+            case RIGHT -> translate += translation;
             default -> {
             }
         }
@@ -93,20 +89,14 @@ public class PetCalculatorScreen extends Screen {
 
         final int translation = padding + (16 + padding) * columns + boxWidth;
         switch (petList) {
-            case LEFT -> {
-                translate -= translation;
-            }
-            case RIGHT -> {
-                translate += translation;
-            }
+            case LEFT -> translate -= translation;
+            case RIGHT -> translate += translation;
             default -> {
             }
         }
 
         int finalTranslate = translate;
-        textList.forEach(text -> {
-            context.drawText(textRenderer, text, width / 2 + finalTranslate - textRenderer.getWidth(text) / 2, height / 2 - boxHeight / 2 + padding + (count.getAndIncrement() * (textRenderer.fontHeight + lineHeight)), 0xFFFFFF, true);
-        });
+        textList.forEach(text -> context.drawText(textRenderer, text, width / 2 + finalTranslate - textRenderer.getWidth(text) / 2, height / 2 - boxHeight / 2 + padding + (count.getAndIncrement() * (textRenderer.fontHeight + lineHeight)), 0xFFFFFF, true));
     }
 
     private void renderWidgets() {
