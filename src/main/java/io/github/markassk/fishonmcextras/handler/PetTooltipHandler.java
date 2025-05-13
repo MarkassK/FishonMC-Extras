@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ public class PetTooltipHandler {
 
     public void appendTooltip(List<Text> textList, ItemStack itemStack) {
         if(config.petTooltip.showPetPercentages) {
-            if(Types.getFOMCItem(itemStack) instanceof Types.Pet pet) {
+            if(FOMCItem.getFOMCItem(itemStack) instanceof Pet pet) {
                 Text petClimateLuckLine = TextHelper.concat(
                         textList.get(9),
                         getPercentage(pet.climateStat.percentLuck, config.petTooltip.decimalPlaces)
@@ -48,7 +49,7 @@ public class PetTooltipHandler {
                 Text petRatingLine = TextHelper.concat(
                         textList.get(16),
                         getPercentage(pet.percentPetRating, config.petTooltip.decimalPlaces)
-                ).withColor(Types.Pet.getConstantFromLine(textList.get(16)).COLOR);
+                ).withColor(Pet.getConstantFromLine(textList.get(16)).COLOR);
 
                 textList.set(9, petClimateLuckLine);
                 textList.set(10, petClimateScaleLine);

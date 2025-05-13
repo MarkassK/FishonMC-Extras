@@ -1,7 +1,8 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,7 +49,7 @@ public class PetEquipHandler  {
             if(minecraftClient.player != null && !isInInventory) {
                 ItemStack itemInSlot = minecraftClient.player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot);
 
-                if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
+                if(FOMCItem.getFOMCItem(itemInSlot) instanceof Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
                     isInInventory = true;
                     currentPetItem = itemInSlot.copy();
                 }
@@ -79,7 +80,7 @@ public class PetEquipHandler  {
                 int itemSlot = player.getInventory().selectedSlot;
                 ItemStack heldItem = player.getInventory().getStack(itemSlot);
 
-                if(Types.getFOMCItem(heldItem) instanceof Types.Pet pet) {
+                if(FOMCItem.getFOMCItem(heldItem) instanceof Pet pet) {
                     this.currentPetItem = heldItem.copy();
                     ProfileDataHandler.instance().updatePet(pet, itemSlot);
                     petStatus = PetStatus.HAS_PET;
@@ -117,7 +118,7 @@ public class PetEquipHandler  {
         if(petStatus == PetStatus.HAS_PET) {
             ItemStack itemInSlot = player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot);
 
-            if(Types.getFOMCItem(itemInSlot) instanceof Types.Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
+            if(FOMCItem.getFOMCItem(itemInSlot) instanceof Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
                 ProfileDataHandler.instance().updatePet(pet, ProfileDataHandler.instance().profileData.equippedPetSlot);
             }
         }

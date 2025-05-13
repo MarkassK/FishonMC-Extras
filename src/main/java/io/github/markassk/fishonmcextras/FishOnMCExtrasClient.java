@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras;
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
-import io.github.markassk.fishonmcextras.handler.LookTickHandler;
 import io.github.markassk.fishonmcextras.screens.main.MainScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
@@ -38,6 +37,7 @@ import java.util.Objects;
 public class FishOnMCExtrasClient implements ClientModInitializer {
     public static FishOnMCExtrasConfig CONFIG;
     public static KeyBinding openConfigKeybind;
+    public static KeyBinding openExtraInfoKeybind;
 
     public static final MainHudRenderer MAIN_HUD_RENDERER = new MainHudRenderer();
 
@@ -48,14 +48,24 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         CONFIG = AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).getConfig();
         // Setup keybind to open config
         openConfigKeybind = new KeyBinding("key.fishonmcextras.openconfig", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, "category.fishonmcextras.general");
+        openExtraInfoKeybind = new KeyBinding("key.fishonmcextras.openextrainfo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_SHIFT, "category.fishonmcextras.general");
         KeyBindingHelper.registerKeyBinding(openConfigKeybind);
+        KeyBindingHelper.registerKeyBinding(openExtraInfoKeybind);
 
         //TODO Change screen to new FoE Menu
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
-            if (minecraftClient.player != null && minecraftClient.currentScreen == null)
+            if (minecraftClient.player != null && minecraftClient.currentScreen == null) {
                 while (openConfigKeybind.wasPressed()){
                     minecraftClient.setScreen(new MainScreen(minecraftClient, minecraftClient.currentScreen));
                 }
+            }
+
+            if(minecraftClient.player != null) {
+                if(openExtraInfoKeybind.isPressed() && !KeybindHandler.instance().showExtraInfo)
+                    KeybindHandler.instance().showExtraInfo = true;
+                else if(!openExtraInfoKeybind.isPressed() && KeybindHandler.instance().showExtraInfo)
+                    KeybindHandler.instance().showExtraInfo = false;
+            }
         });
 
         CommandRegistry.initialize();
@@ -90,7 +100,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 ArmorHandler.instance().tick(minecraftClient);
                 FishingRodHandler.instance().tick(minecraftClient);
                 CrewHandler.instance().tick(minecraftClient);
-                StatsHandler.instance().tick(minecraftClient);
+                StatsImportHandler.instance().tick(minecraftClient);
+                DiscordHandler.instance().tick();
              }
         }
     }
@@ -100,20 +111,23 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         FishCatchHandler.instance().init();
         PetEquipHandler.instance().init();
         NotificationSoundHandler.instance().init();
+        DiscordHandler.instance().init();
 
         if(minecraftClient.getCurrentServerEntry() != null ) {
             if(LoadingHandler.instance().checkAddress(minecraftClient)) {
                 FishOnMCExtras.LOGGER.info("[FoE] On server. (play.fishonmc.net)");
                 FishOnMCExtras.LOGGER.info("[FoE] Loading Start");
                 minecraftClient.execute(() -> {
-                    assert minecraftClient.player != null;
-                    ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
-                    FishCatchHandler.instance().onJoinServer();
-                    LoadingHandler.instance().isOnServer = true;
+                    if (minecraftClient.player != null) {
+                        ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
+                        DiscordHandler.instance().connect();
+                        LoadingHandler.instance().isOnServer = true;
+                    }
                 });
             } else {
                 FishOnMCExtras.LOGGER.info("[FoE] Not on server. (play.fishonmc.net)");
                 LoadingHandler.instance().isOnServer = false;
+                DiscordHandler.instance().disconnect();
             }
         }
     }
@@ -143,6 +157,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
     private void onItemTooltipCallback(ItemStack itemStack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> textList) {
         if(LoadingHandler.instance().isOnServer) {
             PetTooltipHandler.instance().appendTooltip(textList, itemStack);
+            ArmorHandler.instance().appendTooltip(textList, itemStack);
+            FishingStatsHandler.instance().appendTooltip(textList, itemStack);
         }
     }
 
@@ -151,7 +167,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
                 // Pet Menu핑
                 Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
-                            assert minecraftClient.player != null;
                             minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
                         })
                         .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
@@ -161,12 +176,12 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 // Quest Menu : 픹
                 QuestHandler.instance().questMenuState = true;
             } else if(Objects.equals(screen.getTitle().getString() , "\uEEE4핒")) {
-                // Crew Menu:
+                // Crew Menu: 핒
                 CrewHandler.instance().crewMenuState = true;
             } else if (Objects.equals(screen.getTitle().getString() , "\uEEE4픲")) {
-                // Stats Menu:
-                StatsHandler.instance().screenInit = true;
-                StatsHandler.instance().isOnScreen = true;
+                // Stats Menu: 픲
+                StatsImportHandler.instance().screenInit = true;
+                StatsImportHandler.instance().isOnScreen = true;
             }
         }
         ScreenEvents.remove(screen).register(this::onRemoveScreen);

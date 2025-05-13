@@ -1,6 +1,6 @@
 package io.github.markassk.fishonmcextras.handler.screens.petCalculator;
 
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.PetCalculatorHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
@@ -32,7 +32,7 @@ public class PetCalculatorScreenHandler {
         // Left Pet
         leftPet.add(Text.literal("ʟᴇꜰᴛ ᴘᴇᴛ").formatted(Formatting.YELLOW, Formatting.BOLD));
         if(PetCalculatorHandler.instance().selectedPet[PetCalculatorHandler.PetList.LEFT.id] != null) {
-            Types.Pet pet = PetCalculatorHandler.instance().selectedPet[PetCalculatorHandler.PetList.LEFT.id];
+            Pet pet = PetCalculatorHandler.instance().selectedPet[PetCalculatorHandler.PetList.LEFT.id];
             ItemStack petStack = PetCalculatorHandler.instance().selectedPetStacks[PetCalculatorHandler.PetList.LEFT.id];
             leftPet.addAll(assembleColumn(pet, petStack));
         }
@@ -40,7 +40,7 @@ public class PetCalculatorScreenHandler {
         // Right pet
         rightPet.add(Text.literal("ʀɪɢʜᴛ ᴘᴇᴛ").formatted(Formatting.YELLOW, Formatting.BOLD));
         if(PetCalculatorHandler.instance().selectedPet[PetCalculatorHandler.PetList.RIGHT.id] != null) {
-            Types.Pet pet = PetCalculatorHandler.instance().selectedPet[PetCalculatorHandler.PetList.RIGHT.id];
+            Pet pet = PetCalculatorHandler.instance().selectedPet[PetCalculatorHandler.PetList.RIGHT.id];
             ItemStack petStack = PetCalculatorHandler.instance().selectedPetStacks[PetCalculatorHandler.PetList.RIGHT.id];
             rightPet.addAll(assembleColumn(pet, petStack));
         }
@@ -48,7 +48,7 @@ public class PetCalculatorScreenHandler {
         // Calculated Pet
         calculatedPet.add(Text.literal("ᴄᴀʟᴄᴜʟᴀᴛᴇᴅ ᴘᴇᴛ").formatted(Formatting.YELLOW, Formatting.BOLD));
         if(PetCalculatorHandler.instance().calculatedPet != null) {
-            Types.Pet pet = PetCalculatorHandler.instance().calculatedPet;
+            Pet pet = PetCalculatorHandler.instance().calculatedPet;
             ItemStack petStack = PetCalculatorHandler.instance().selectedPetStacks[PetCalculatorHandler.PetList.RIGHT.id];
             calculatedPet.addAll(assembleColumn(pet, petStack));
         }
@@ -59,11 +59,10 @@ public class PetCalculatorScreenHandler {
         return assembledTextLists;
     }
 
-    private List<Text> assembleColumn(Types.Pet pet, ItemStack petStack) {
+    private List<Text> assembleColumn(Pet pet, ItemStack petStack) {
         List<Text> textPet = new ArrayList<>();
 
         textPet.add(petStack.getName());
-        assert pet.rarity != null;
         textPet.add(pet.rarity.TAG);
         textPet.add(Text.empty());
         textPet.add(Text.literal("ᴄʟɪᴍᴀᴛᴇ ѕᴛᴀᴛ").formatted(Formatting.GRAY, Formatting.BOLD));
@@ -100,11 +99,11 @@ public class PetCalculatorScreenHandler {
         textPet.add(Text.empty());
         textPet.add(Text.literal("ᴘᴇᴛ ʀᴀᴛɪɴɢ").formatted(Formatting.GRAY, Formatting.BOLD));
         textPet.add(TextHelper.concat(
-                Types.Pet.getConstantFromPercent(pet.percentPetRating).TAG,
+                Pet.getConstantFromPercent(pet.percentPetRating).TAG,
                 Text.literal(" ("),
                 Text.literal(TextHelper.fmt(pet.percentPetRating * 100, config.petTooltip.decimalPlaces)),
                 Text.literal("%)")
-        ).withColor(Types.Pet.getConstantFromPercent(pet.percentPetRating).COLOR));
+        ).withColor(Pet.getConstantFromPercent(pet.percentPetRating).COLOR));
 
         return textPet;
     }

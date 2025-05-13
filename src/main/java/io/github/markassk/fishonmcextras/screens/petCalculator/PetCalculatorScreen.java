@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.screens.petCalculator;
 
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.handler.PetCalculatorHandler;
 import io.github.markassk.fishonmcextras.handler.screens.petCalculator.PetCalculatorScreenHandler;
 import io.github.markassk.fishonmcextras.screens.petCalculator.widget.ClickablePetWidget;
@@ -39,7 +40,7 @@ public class PetCalculatorScreen extends Screen {
 
         petListStack = new ArrayList<>();
         this.player.getInventory().main.forEach(stack -> {
-            if(Types.getFOMCItem(stack) instanceof Types.Pet) {
+            if(FOMCItem.getFOMCItem(stack) instanceof Pet) {
                 this.petListStack.add(stack);
             }
         }) ;
@@ -71,12 +72,8 @@ public class PetCalculatorScreen extends Screen {
 
         final int translation = padding + (16 + padding) * columns + boxWidth;
         switch (petList) {
-            case LEFT -> {
-                translate -= translation;
-            }
-            case RIGHT -> {
-                translate += translation;
-            }
+            case LEFT -> translate -= translation;
+            case RIGHT -> translate += translation;
             default -> {
             }
         }
@@ -92,20 +89,14 @@ public class PetCalculatorScreen extends Screen {
 
         final int translation = padding + (16 + padding) * columns + boxWidth;
         switch (petList) {
-            case LEFT -> {
-                translate -= translation;
-            }
-            case RIGHT -> {
-                translate += translation;
-            }
+            case LEFT -> translate -= translation;
+            case RIGHT -> translate += translation;
             default -> {
             }
         }
 
         int finalTranslate = translate;
-        textList.forEach(text -> {
-            context.drawText(textRenderer, text, width / 2 + finalTranslate - textRenderer.getWidth(text) / 2, height / 2 - boxHeight / 2 + padding + (count.getAndIncrement() * (textRenderer.fontHeight + lineHeight)), 0xFFFFFF, true);
-        });
+        textList.forEach(text -> context.drawText(textRenderer, text, width / 2 + finalTranslate - textRenderer.getWidth(text) / 2, height / 2 - boxHeight / 2 + padding + (count.getAndIncrement() * (textRenderer.fontHeight + lineHeight)), 0xFFFFFF, true));
     }
 
     private void renderWidgets() {
@@ -132,8 +123,10 @@ public class PetCalculatorScreen extends Screen {
 
     @Override
     public void close() {
-        assert this.client != null;
-        this.client.setScreen(this.parent);
+
+        if (this.client != null) {
+            this.client.setScreen(this.parent);
+        }
         PetCalculatorHandler.instance().reset();
     }
 }

@@ -1,7 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
@@ -84,7 +84,7 @@ public class QuestHandler {
         }
     }
 
-    public void updateQuest(Types.Fish fish) {
+    public void updateQuest(Fish fish) {
         List<Quest> currentLocationQuests = LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? this.activeQuests.get(Constant.CYPRESS_LAKE) : this.activeQuests.get(LocationHandler.instance().currentLocation);
         if(currentLocationQuests != null) {
             currentLocationQuests.forEach(quest -> {

@@ -2,7 +2,8 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.Bait;
+import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
 import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.*;
@@ -105,7 +106,7 @@ public class NotificationHudHandler {
                     && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
                     && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
             ) {
-                if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Bait bait) {
+                if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Bait bait) {
                     textList.add(Text.empty());
                     textList.add(TextHelper.concat(
                             Text.literal("Your ").formatted(Formatting.RED),
@@ -115,7 +116,7 @@ public class NotificationHudHandler {
                             Text.literal(" here").formatted(Formatting.RED),
                             Text.literal(".").formatted(Formatting.RED)
                     ));
-                } else if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Types.Lure lure) {
+                } else if(FishingRodHandler.instance().fishingRod.tacklebox.getFirst() instanceof Lure lure) {
                     textList.add(Text.empty());
                     textList.add(TextHelper.concat(
                             Text.literal("Your ").formatted(Formatting.RED),

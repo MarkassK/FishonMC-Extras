@@ -37,7 +37,8 @@ public class MainScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
 
         context.drawText(textRenderer, Text.literal("Welcome to FishOnMC-Extras").formatted(Formatting.WHITE), width / 2 - textRenderer.getWidth(Text.literal("Welcome to FishOnMC-Extras")) / 2, height / 2 - 30, 0xFFFFFF, true);
-        context.drawText(textRenderer, Text.literal("Version 0.2.0-hotfix.4").formatted(Formatting.GRAY), width / 2 - textRenderer.getWidth(Text.literal("Version 0.2.0-hotfix.4")) / 2, height / 2 + 40, 0xFFFFFF, true);
+        context.drawText(textRenderer, Text.literal("Version 0.2.1").formatted(Formatting.GRAY), width / 2 - textRenderer.getWidth(Text.literal("Version 0.2.1")) / 2, height / 2 + 40, 0xFFFFFF, true);
+
     }
 
     private void renderWidgets() {
@@ -66,7 +67,8 @@ public class MainScreen extends Screen {
 
     @Override
     public void close() {
-        assert this.client != null;
-        this.client.setScreen(this.parent);
+        if (this.client != null) {
+            this.client.setScreen(this.parent);
+        }
     }
 }

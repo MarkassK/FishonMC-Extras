@@ -32,7 +32,6 @@ public class PetEquipHudHandler {
             float neededXp = profileData.equippedPet.neededXp;
             float percentXp = currentXp / neededXp * 100f;
 
-            assert profileData.equippedPet.rarity != null;
             textList.add(TextHelper.concat(
                     profileData.equippedPet.rarity.TAG,
                     Text.literal(" "),
