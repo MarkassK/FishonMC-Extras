@@ -18,13 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoveHudScreen extends Screen {
-    private final MinecraftClient minecraftClient;
     private final Screen parent;
     FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     public MoveHudScreen(MinecraftClient minecraftClient, Screen parent) {
         super(Text.literal("Move Hud Elements"));
-        this.minecraftClient = minecraftClient;
         this.parent = parent;
     }
 
@@ -44,7 +42,7 @@ public class MoveHudScreen extends Screen {
         boolean fishTrackerRightAlignment = config.fishTracker.rightAlignment;
         int fishTrackerFontSize = config.fishTracker.fontSize;
         int fishTrackerMaxLength = fishTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
-        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, fishTrackerX, fishTrackerY, fishTrackerRightAlignment, "Fish Tracker", fishTrackerFontSize, fishTrackerTextList.size(), fishTrackerMaxLength, (xPercent, yPercent) -> {
+        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, fishTrackerX, fishTrackerY, fishTrackerRightAlignment, Text.literal("Fish Tracker"), fishTrackerFontSize, fishTrackerTextList.size(), fishTrackerMaxLength, (xPercent, yPercent) -> {
             config.fishTracker.hudX = xPercent;
             config.fishTracker.hudY = yPercent;
             AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
@@ -57,7 +55,7 @@ public class MoveHudScreen extends Screen {
         boolean contestTrackerRightAlignment = config.contestTracker.rightAlignment;
         int contestTrackerFontSize = config.contestTracker.fontSize;
         int contestTrackerMaxLength = contestTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
-        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, contestTrackerX, contestTrackerY, contestTrackerRightAlignment, "Contest Tracker", contestTrackerFontSize, contestTrackerTextList.size(), contestTrackerMaxLength, (xPercent, yPercent) -> {
+        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, contestTrackerX, contestTrackerY, contestTrackerRightAlignment, Text.literal("Contest Tracker"), contestTrackerFontSize, contestTrackerTextList.size(), contestTrackerMaxLength, (xPercent, yPercent) -> {
             config.contestTracker.hudX = xPercent;
             config.contestTracker.hudY = yPercent;
             AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
@@ -70,7 +68,7 @@ public class MoveHudScreen extends Screen {
         boolean petTrackerRightAlignment = config.petEquipTracker.activePetHUDOptions.rightAlignment;
         int petTrackerFontSize = config.petEquipTracker.activePetHUDOptions.fontSize;
         int petTrackerMaxLength = petTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
-        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, petTrackerX, petTrackerY, petTrackerRightAlignment, "Pet Tracker", petTrackerFontSize, petTrackerTextList.size(), petTrackerMaxLength + 16 + 8, (xPercent, yPercent) -> {
+        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, petTrackerX, petTrackerY, petTrackerRightAlignment, Text.literal("Pet Tracker"), petTrackerFontSize, petTrackerTextList.size(), petTrackerMaxLength + 16 + 8, (xPercent, yPercent) -> {
             config.petEquipTracker.activePetHUDOptions.hudX = xPercent;
             config.petEquipTracker.activePetHUDOptions.hudY = yPercent;
             AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
@@ -83,7 +81,7 @@ public class MoveHudScreen extends Screen {
         boolean questTrackerRightAlignment = config.questTracker.rightAlignment;
         int questTrackerFontSize = config.questTracker.fontSize;
         int questTrackerMaxLength = questTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
-        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, questTrackerX, questTrackerY, questTrackerRightAlignment, "Quest Tracker", questTrackerFontSize, questTrackerTextList.size(), questTrackerMaxLength, (xPercent, yPercent) -> {
+        movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, questTrackerX, questTrackerY, questTrackerRightAlignment, Text.literal("Quest Tracker"), questTrackerFontSize, questTrackerTextList.size(), questTrackerMaxLength, (xPercent, yPercent) -> {
             config.questTracker.hudX = xPercent;
             config.questTracker.hudY = yPercent;
             AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
