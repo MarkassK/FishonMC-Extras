@@ -3,6 +3,7 @@ package io.github.markassk.fishonmcextras.screens.main;
 import io.github.markassk.fishonmcextras.config.ConfigConstants;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.screens.debug.DebugScreen;
+import io.github.markassk.fishonmcextras.screens.movehud.MoveHudScreen;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -34,24 +35,29 @@ public class MainScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        int translationDev = ConfigConstants.DEV ? 14 : 0;
 
-        context.drawText(textRenderer, Text.literal("Welcome to FishOnMC-Extras").formatted(Formatting.WHITE), width / 2 - textRenderer.getWidth(Text.literal("Welcome to FishOnMC-Extras")) / 2, height / 2 - translationDev - 16, 0xFFFFFF, true);
-        context.drawText(textRenderer, Text.literal("Version 0.2.1").formatted(Formatting.GRAY), width / 2 - textRenderer.getWidth(Text.literal("Version 0.2.1")) / 2, height / 2 + translationDev + 26, 0xFFFFFF, true);
+        context.drawText(textRenderer, Text.literal("Welcome to FishOnMC-Extras").formatted(Formatting.WHITE), width / 2 - textRenderer.getWidth(Text.literal("Welcome to FishOnMC-Extras")) / 2, height / 2 - 30, 0xFFFFFF, true);
+        context.drawText(textRenderer, Text.literal("Version 0.2.1").formatted(Formatting.GRAY), width / 2 - textRenderer.getWidth(Text.literal("Version 0.2.1")) / 2, height / 2 + 40, 0xFFFFFF, true);
+
     }
 
     private void renderWidgets() {
         List<ButtonWidget> buttonWidgets = new ArrayList<>();
-        int translationDev = ConfigConstants.DEV ? 14 : 0;
 
         buttonWidgets.add(ButtonWidget.builder(Text.literal("FoE Config"), button -> minecraftClient.setScreen(AutoConfig.getConfigScreen(FishOnMCExtrasConfig.class, minecraftClient.currentScreen).get()))
-                .dimensions(width / 2 - 100, height / 2 - translationDev, 200, 20)
+                .dimensions(width / 2 - 100, height / 2 - 14, 200, 20)
                 .tooltip(Tooltip.of(Text.literal("Configure FoE")))
+                .build());
+
+
+
+        buttonWidgets.add(ButtonWidget.builder(Text.literal("Move HUD Elements"), button -> minecraftClient.setScreen(new MoveHudScreen(minecraftClient, minecraftClient.currentScreen)))
+                .dimensions(width / 2 - 100, height /2 + 14, 200, 20)
                 .build());
 
         if(ConfigConstants.DEV) {
             buttonWidgets.add(ButtonWidget.builder(Text.literal("FoE Debug"), button -> minecraftClient.setScreen(new DebugScreen(minecraftClient, minecraftClient.currentScreen)))
-                    .dimensions(width / 2 - 100, height / 2 + translationDev, 200, 20)
+                    .dimensions(width / 2 - 100, height - 20 - 8, 200, 20)
                     .tooltip(Tooltip.of(Text.literal("Open Debug Screen")))
                     .build());
         }
