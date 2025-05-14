@@ -4,7 +4,7 @@ import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.handler.PetCalculatorHandler;
 import io.github.markassk.fishonmcextras.handler.screens.petCalculator.PetCalculatorScreenHandler;
-import io.github.markassk.fishonmcextras.screens.petCalculator.widget.ClickablePetWidget;
+import io.github.markassk.fishonmcextras.screens.widget.ClickablePetWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;

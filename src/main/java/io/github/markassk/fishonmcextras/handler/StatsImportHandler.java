@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.screens.widget.CustomButtonWidget;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
@@ -105,11 +106,25 @@ public class StatsImportHandler {
         }
     }
 
-    private ButtonWidget getButton(MinecraftClient minecraftClient) {
-        return ButtonWidget.builder(Text.literal("Import Stats"), thisButton -> {
+    private CustomButtonWidget getButton(MinecraftClient minecraftClient) {
+//        return ButtonWidget.builder(Text.literal("Import Stats"), thisButton -> {
+//                    StatsImportHandler.instance().onButtonClick(minecraftClient);
+//                })
+//                .dimensions(minecraftClient.getWindow().getScaledWidth() / 2 - (130 / 2), minecraftClient.getWindow().getScaledHeight() / 2 + 120, 130, 20)
+//                .tooltip(Tooltip.of(
+//                        TextHelper.concat(
+//                                Text.literal("Import your stats into ").formatted(Formatting.WHITE),
+//                                Text.literal("FoE").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+//                                Text.literal(".\n").formatted(Formatting.WHITE),
+//                                Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
+//                                Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
+//                        )))
+//                .build();
+
+        return CustomButtonWidget.builder(Text.literal("Import Stats"), button -> {
                     StatsImportHandler.instance().onButtonClick(minecraftClient);
                 })
-                .dimensions(minecraftClient.getWindow().getScaledWidth() / 2 - (130 / 2), minecraftClient.getWindow().getScaledHeight() / 2 + 120, 130, 20)
+                .position(minecraftClient.getWindow().getScaledWidth() / 2 + 100, minecraftClient.getWindow().getScaledHeight() / 2 - 100)
                 .tooltip(Tooltip.of(
                         TextHelper.concat(
                                 Text.literal("Import your stats into ").formatted(Formatting.WHITE),
@@ -118,6 +133,7 @@ public class StatsImportHandler {
                                 Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
                                 Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
                         )))
+                .icon(Items.COMMAND_BLOCK.getDefaultStack())
                 .build();
     }
 

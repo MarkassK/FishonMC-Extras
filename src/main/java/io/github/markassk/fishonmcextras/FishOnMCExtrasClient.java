@@ -1,11 +1,14 @@
 package io.github.markassk.fishonmcextras;
 
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
 import io.github.markassk.fishonmcextras.screens.main.MainScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.screens.widget.CustomButtonWidget;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -20,19 +23,21 @@ import net.minecraft.client.MinecraftClient;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FishOnMCExtrasClient implements ClientModInitializer {
     public static FishOnMCExtrasConfig CONFIG;
@@ -52,19 +57,20 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         KeyBindingHelper.registerKeyBinding(openConfigKeybind);
         KeyBindingHelper.registerKeyBinding(openExtraInfoKeybind);
 
-        //TODO Change screen to new FoE Menu
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
-            if (minecraftClient.player != null && minecraftClient.currentScreen == null) {
-                while (openConfigKeybind.wasPressed()){
-                    minecraftClient.setScreen(new MainScreen(minecraftClient, minecraftClient.currentScreen));
+            if(LoadingHandler.instance().isOnServer) {
+                if (minecraftClient.player != null && minecraftClient.currentScreen == null) {
+                    while (openConfigKeybind.wasPressed()){
+                        minecraftClient.setScreen(new MainScreen(minecraftClient, minecraftClient.currentScreen));
+                    }
                 }
-            }
 
-            if(minecraftClient.player != null) {
-                if(openExtraInfoKeybind.isPressed() && !KeybindHandler.instance().showExtraInfo)
-                    KeybindHandler.instance().showExtraInfo = true;
-                else if(!openExtraInfoKeybind.isPressed() && KeybindHandler.instance().showExtraInfo)
-                    KeybindHandler.instance().showExtraInfo = false;
+                if(minecraftClient.player != null) {
+                    if(openExtraInfoKeybind.isPressed() && !KeybindHandler.instance().showExtraInfo)
+                        KeybindHandler.instance().showExtraInfo = true;
+                    else if(!openExtraInfoKeybind.isPressed() && KeybindHandler.instance().showExtraInfo)
+                        KeybindHandler.instance().showExtraInfo = false;
+                }
             }
         });
 
@@ -165,12 +171,13 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
     private void afterScreenInit(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
         if(LoadingHandler.instance().isOnServer) {
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
-                // Pet Menu핑
-                Screens.getButtons(screen).add(ButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
+//                 Pet Menu핑
+                Screens.getButtons(screen).add(CustomButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
                             minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
                         })
-                        .dimensions(scaledWidth / 2 - (130 / 2), scaledHeight / 2 + 120, 130, 20)
+                        .position(scaledWidth / 2 + 100, scaledHeight / 2 - 100)
                         .tooltip(Tooltip.of(Text.literal("Open up the screen to calculate pet merging.")))
+                        .icon(Items.TURTLE_EGG.getDefaultStack())
                         .build());
             } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
                 // Quest Menu : 픹
@@ -182,6 +189,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 // Stats Menu: 픲
                 StatsImportHandler.instance().screenInit = true;
                 StatsImportHandler.instance().isOnScreen = true;
+            } else if (screen instanceof InventoryScreen) {
+
             }
         }
         ScreenEvents.remove(screen).register(this::onRemoveScreen);
