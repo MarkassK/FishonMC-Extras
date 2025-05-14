@@ -387,11 +387,11 @@ public class FishTrackerHudHandler {
             return TextHelper.concat(
                     Text.literal("ᴅʀʏ ѕᴛʀᴇᴀᴋ: ").formatted(Formatting.GRAY),
                     Text.literal(TextHelper.fmt(profileData.allFishCaughtCount - value)).formatted(Formatting.WHITE),
-                    Text.literal(" ┘").formatted(Formatting.GRAY)
+                    Text.literal(" ┘ ").formatted(Formatting.GRAY)
             );
         } else {
             return TextHelper.concat(
-                    Text.literal("└ ").formatted(Formatting.GRAY),
+                    Text.literal(" └ ").formatted(Formatting.GRAY),
                     Text.literal("ᴅʀʏ ѕᴛʀᴇᴀᴋ: ").formatted(Formatting.GRAY),
                     Text.literal(TextHelper.fmt(profileData.allFishCaughtCount - value)).formatted(Formatting.WHITE)
             );

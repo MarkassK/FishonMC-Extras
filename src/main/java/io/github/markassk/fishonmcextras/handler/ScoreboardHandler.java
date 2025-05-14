@@ -36,8 +36,7 @@ public class ScoreboardHandler {
         try {
             List<Text> textList = new ArrayList<>();
 
-            assert client.player != null;
-            Scoreboard scoreboard = client.player.getScoreboard();
+            Scoreboard scoreboard = Objects.requireNonNull(client.player).getScoreboard();
             ScoreboardObjective objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
 
             if(objective != null) {

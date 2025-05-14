@@ -10,6 +10,7 @@
   "client": [
     "BossBarHudAccessor",
     "BossBarHudMixin",
-    "InGameHudMixin"
+    "InGameHudMixin",
+    "PlayerListHudAccessor"
   ]
 }

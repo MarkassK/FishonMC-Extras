@@ -1,6 +1,6 @@
-package io.github.markassk.fishonmcextras.FOMC;
+package io.github.markassk.fishonmcextras.FOMC.Types;
 
-class Defaults {
+public class Defaults {
     public static final String EMPTY_STRING = "";
     public static final int DEFAULT_COLOR = 0xFFFFFFFF;
 

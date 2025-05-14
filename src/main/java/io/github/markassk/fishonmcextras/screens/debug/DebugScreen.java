@@ -118,7 +118,8 @@ public class DebugScreen extends Screen {
 
     @Override
     public void close() {
-        assert this.client != null;
-        this.client.setScreen(this.parent);
+        if (this.client != null) {
+            this.client.setScreen(this.parent);
+        }
     }
 }

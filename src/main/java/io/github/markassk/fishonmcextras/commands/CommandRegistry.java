@@ -34,7 +34,6 @@ public class CommandRegistry {
                         .executes(context -> {
                             ProfileDataHandler.instance().loadStats();
                             AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).load();
-                            QuestHandler.instance().onScreenClose();
                             context.getSource().sendFeedback(
                                     TextHelper.concat(
                                             Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),

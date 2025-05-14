@@ -2,16 +2,17 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
-import io.github.markassk.fishonmcextras.FOMC.Types;
-import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.FOMC.Types.Bait;
+import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
+import io.github.markassk.fishonmcextras.FOMC.Types.FishingRod;
+import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Items;
 
 public class FishingRodHandler {
     private static FishingRodHandler INSTANCE = new FishingRodHandler();
-    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
-    public Types.FishingRod fishingRod = null;
+    public FishingRod fishingRod = null;
     public boolean isWrongBait = false;
     public boolean isWrongLure = false;
     public boolean isWrongPole = false;
@@ -28,17 +29,17 @@ public class FishingRodHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null && minecraftClient.player.getInventory().main.getFirst().getItem() == Items.FISHING_ROD) {
-            if(Types.getFOMCItem(minecraftClient.player.getInventory().main.getFirst()) instanceof Types.FishingRod fishingRod) {
-                this.fishingRod = fishingRod;
+            if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().main.getFirst()) instanceof FishingRod rod) {
+                this.fishingRod = rod;
             }
         }
 
         if(this.fishingRod != null) {
             if(!this.fishingRod.tacklebox.isEmpty()) {
                 // Bait
-                if(this.fishingRod.tacklebox.getFirst() instanceof Types.Bait bait && bait.water != Constant.ANY_WATER) {
+                if(this.fishingRod.tacklebox.getFirst() instanceof Bait bait && bait.water != Constant.ANY_WATER) {
                     this.isWrongBait = bait.water != LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER;
-                } else if (this.fishingRod.tacklebox.getFirst() instanceof Types.Lure lure && lure.water != Constant.ANY_WATER) {
+                } else if (this.fishingRod.tacklebox.getFirst() instanceof Lure lure && lure.water != Constant.ANY_WATER) {
                     this.isWrongLure = lure.water != LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER;
                 }
             } else {

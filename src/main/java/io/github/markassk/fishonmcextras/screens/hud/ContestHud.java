@@ -28,7 +28,7 @@ public class ContestHud {
             boolean rightAlignment = config.contestTracker.rightAlignment;
 
             // Convert percentage config values to screen coordinates
-            float xPercent = rightAlignment ?  1f - (config.contestTracker.hudX / 100f) : config.fishTracker.hudX / 100f;
+            float xPercent = rightAlignment ?  1f - (config.contestTracker.hudX / 100f) : config.contestTracker.hudX / 100f;
             float yPercent = config.contestTracker.hudY / 100f;
 
             // Calculate base positions relative to screen size

@@ -47,7 +47,6 @@ public class EquipmentHud {
 
             int scaledX = (int) (baseX / scale);
             int scaledY = (int) (baseY / scale);
-            int padding = 8;
 
 
             int offsetMiddleArmor = config.equipmentTracker.armorHUDOptions.offsetFromMiddle;

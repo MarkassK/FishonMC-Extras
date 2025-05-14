@@ -9,6 +9,6 @@ public class UUIDHelper {
             long leastSigBits = ((long) idArray[2] << 32) | (idArray[3] & 0xFFFFFFFFL);
             return new UUID(mostSigBits, leastSigBits);
         }
-        return null;
+        return UUID.randomUUID();
     }
 }

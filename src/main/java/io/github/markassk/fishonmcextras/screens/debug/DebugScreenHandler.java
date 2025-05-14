@@ -1,7 +1,8 @@
 package io.github.markassk.fishonmcextras.screens.debug;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.FOMC.Types;
+import io.github.markassk.fishonmcextras.FOMC.Types.Bait;
+import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
@@ -247,18 +248,17 @@ public class DebugScreenHandler {
             case FISHING_ROD -> {
                 FishingRodHandler fishingRodHandler = FishingRodHandler.instance();
 
-                assert fishingRodHandler.fishingRod.owner != null;
                 textList.addAll(List.of(
                         assembleText("fishingRod.name", fishingRodHandler.fishingRod.name),
-                        assembleText("fishingRod.souldboundRod", fishingRodHandler.fishingRod.soulboundRod),
+                        assembleText("fishingRod.soulboundRod", fishingRodHandler.fishingRod.soulboundRod),
                         assembleText("fishingRod.skin", fishingRodHandler.fishingRod.skin),
-                        assembleText("fishingRod.owner", fishingRodHandler.fishingRod.owner.toString())
+                        assembleText("fishingRod.owner", fishingRodHandler.fishingRod.owner != null ? fishingRodHandler.fishingRod.owner.toString() : "")
                 ));
 
                 textList.add(assembleText("fishingRod.tacklebox.size()", fishingRodHandler.fishingRod.tacklebox.size()));
                 textList.addAll(fishingRodHandler.fishingRod.tacklebox.stream().map(fomcItem ->
-                        fomcItem instanceof Types.Bait bait ? Text.literal(bait.name).formatted(Formatting.WHITE) :
-                                fomcItem instanceof Types.Lure lure ? Text.literal(lure.name).formatted(Formatting.WHITE) : Text.empty()).toList());
+                        fomcItem instanceof Bait bait ? Text.literal(bait.name).formatted(Formatting.WHITE) :
+                                fomcItem instanceof Lure lure ? Text.literal(lure.name).formatted(Formatting.WHITE) : Text.empty()).toList());
 
                 textList.addAll(List.of(
                         assembleText("fishingRod.line.name", fishingRodHandler.fishingRod.line != null ? fishingRodHandler.fishingRod.line.name : ""),
@@ -283,9 +283,9 @@ public class DebugScreenHandler {
             case QUEST -> {
                 QuestHandler questHandler = QuestHandler.instance();
 
-                textList.addAll(List.of(
+                textList.add(
                         assembleText("isQuestInitialized", questHandler.isQuestInitialized())
-                ));
+                );
             }
         }
 
