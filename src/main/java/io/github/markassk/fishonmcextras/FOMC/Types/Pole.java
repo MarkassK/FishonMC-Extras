@@ -17,13 +17,15 @@ import java.util.UUID;
 
 public class Pole extends FOMCItem {
     public final String name;
+    public final CustomModelDataComponent customModelData;
     public final UUID id;
     public final Constant water;
     public final List<PoleStats> poleStats;
 
     private Pole(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
         this.name = nbtCompound.getString("name");
+        this.customModelData = customModelData;
         this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
         this.water = Constant.valueOfId(nbtCompound.getString("water"));
         NbtList nbtList = nbtCompound.getList("base", NbtElement.LIST_TYPE);
