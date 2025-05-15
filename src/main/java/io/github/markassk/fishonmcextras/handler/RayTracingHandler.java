@@ -84,10 +84,13 @@ public class RayTracingHandler {
             if (target.isInvisibleTo(player)) {
                 return false;
             }
-            assert client.interactionManager != null;
-            return !client.interactionManager.isBreakingBlock() || target.getType() != EntityType.ITEM;
+
+            if (client.interactionManager != null) {
+                return !client.interactionManager.isBreakingBlock() || target.getType() != EntityType.ITEM;
+            }
         } else {
             return !target.isInvisible();
         }
+        return false;
     }
 }

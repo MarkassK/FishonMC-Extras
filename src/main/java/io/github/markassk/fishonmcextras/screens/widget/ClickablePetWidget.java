@@ -1,7 +1,6 @@
-package io.github.markassk.fishonmcextras.screens.petCalculator.widget;
+package io.github.markassk.fishonmcextras.screens.widget;
 
 import io.github.markassk.fishonmcextras.handler.PetCalculatorHandler;
-import io.github.markassk.fishonmcextras.screens.widget.ClickableItemWidget;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;

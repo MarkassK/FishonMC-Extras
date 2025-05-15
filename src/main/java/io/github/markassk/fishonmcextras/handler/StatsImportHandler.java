@@ -1,7 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.screens.widget.CustomButtonWidget;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
@@ -18,16 +18,16 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class StatsHandler {
-    private static StatsHandler INSTANCE = new StatsHandler();
+public class StatsImportHandler {
+    private static StatsImportHandler INSTANCE = new StatsImportHandler();
     private ProfileDataHandler.ProfileData dummyProfileData = new ProfileDataHandler.ProfileData();
 
     public boolean screenInit = false;
     public boolean isOnScreen = false;
 
-    public static StatsHandler instance() {
+    public static StatsImportHandler instance() {
         if (INSTANCE == null) {
-            INSTANCE = new StatsHandler();
+            INSTANCE = new StatsImportHandler();
         }
         return INSTANCE;
     }
@@ -52,8 +52,6 @@ public class StatsHandler {
     }
 
     private void getData(MinecraftClient minecraftClient) {
-
-
         ProfileDataHandler.ProfileData dummyProfileData = new ProfileDataHandler.ProfileData();
 
         AtomicInteger fishCaught = new AtomicInteger(-1);
@@ -80,7 +78,7 @@ public class StatsHandler {
                     else if (loreLine.contains(Constant.MELANISTIC.TAG.getString())) dummyProfileData.allVariantCounts.put(Constant.MELANISTIC, getValue(loreLine, Constant.MELANISTIC));
                     else if (loreLine.contains(Constant.TROPHY.TAG.getString())) dummyProfileData.allVariantCounts.put(Constant.TROPHY, getValue(loreLine, Constant.TROPHY));
                     else if (loreLine.contains(Constant.FABLED.TAG.getString())) dummyProfileData.allVariantCounts.put(Constant.FABLED, getValue(loreLine, Constant.FABLED));
-                    else if (loreLine.contains("ꜰɪꜱʜ ᴄᴀᴜɢʜᴛ")) fishCaught.set(getValue(loreLine, ":"));
+                    else if (loreLine.contains("ꜰɪꜱʜ ᴄᴀᴜɢʜᴛ")) fishCaught.set(getValue(loreLine));
                 });
             }
         }
@@ -108,12 +106,25 @@ public class StatsHandler {
         }
     }
 
-    private ButtonWidget getButton(MinecraftClient minecraftClient) {
-        return ButtonWidget.builder(Text.literal("Import Stats"), thisButton -> {
-                    assert minecraftClient.player != null;
-                    StatsHandler.instance().onButtonClick(minecraftClient);
+    private CustomButtonWidget getButton(MinecraftClient minecraftClient) {
+//        return ButtonWidget.builder(Text.literal("Import Stats"), thisButton -> {
+//                    StatsImportHandler.instance().onButtonClick(minecraftClient);
+//                })
+//                .dimensions(minecraftClient.getWindow().getScaledWidth() / 2 - (130 / 2), minecraftClient.getWindow().getScaledHeight() / 2 + 120, 130, 20)
+//                .tooltip(Tooltip.of(
+//                        TextHelper.concat(
+//                                Text.literal("Import your stats into ").formatted(Formatting.WHITE),
+//                                Text.literal("FoE").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+//                                Text.literal(".\n").formatted(Formatting.WHITE),
+//                                Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
+//                                Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
+//                        )))
+//                .build();
+
+        return CustomButtonWidget.builder(Text.literal("Import Stats"), button -> {
+                    StatsImportHandler.instance().onButtonClick(minecraftClient);
                 })
-                .dimensions(minecraftClient.getWindow().getScaledWidth() / 2 - (130 / 2), minecraftClient.getWindow().getScaledHeight() / 2 + 120, 130, 20)
+                .position(minecraftClient.getWindow().getScaledWidth() / 2 + 100, minecraftClient.getWindow().getScaledHeight() / 2 - 100)
                 .tooltip(Tooltip.of(
                         TextHelper.concat(
                                 Text.literal("Import your stats into ").formatted(Formatting.WHITE),
@@ -122,13 +133,15 @@ public class StatsHandler {
                                 Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
                                 Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
                         )))
+                .icon(Items.COMMAND_BLOCK.getDefaultStack())
                 .build();
     }
 
 
     private void createButton(MinecraftClient minecraftClient) {
-        assert minecraftClient.currentScreen != null;
-        Screens.getButtons(minecraftClient.currentScreen).add(getButton(minecraftClient));
+        if (minecraftClient.currentScreen != null) {
+            Screens.getButtons(minecraftClient.currentScreen).add(getButton(minecraftClient));
+        }
     }
 
     private void saveStats() {
@@ -181,7 +194,7 @@ public class StatsHandler {
         return toIntFromString(line.substring(line.indexOf(prefix.TAG.getString()) + prefix.TAG.getString().length()));
     }
 
-    private int getValue(String line, String prefix) {
-        return toIntFromString(line.substring(line.indexOf(prefix) + 1));
+    private int getValue(String line) {
+        return toIntFromString(line.substring(line.indexOf(":") + 1));
     }
 }

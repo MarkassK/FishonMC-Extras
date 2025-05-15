@@ -91,12 +91,13 @@ public class ContestHudHandler {
                         ));
                     }
                     if(!Objects.equals(ContestHandler.instance().firstName, "")) {
-                        assert MinecraftClient.getInstance().player != null;
-                        textList.add(TextHelper.concat(
-                                Text.literal(ContestHandler.instance().rank).formatted(Formatting.GRAY),
-                                Text.literal(" " + MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.YELLOW),
-                                !Objects.equals(ContestHandler.instance().rankStat, "") ? Text.literal(" (").formatted(Formatting.DARK_GRAY).append(Text.literal(ContestHandler.instance().rankStat).formatted(Formatting.GRAY)).append(Text.literal(")").formatted(Formatting.DARK_GRAY)) : Text.empty()
-                        ));
+                        if (MinecraftClient.getInstance().player != null) {
+                            textList.add(TextHelper.concat(
+                                    Text.literal(ContestHandler.instance().rank).formatted(Formatting.GRAY),
+                                    Text.literal(" " + MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.YELLOW),
+                                    !Objects.equals(ContestHandler.instance().rankStat, "") ? Text.literal(" (").formatted(Formatting.DARK_GRAY).append(Text.literal(ContestHandler.instance().rankStat).formatted(Formatting.GRAY)).append(Text.literal(")").formatted(Formatting.DARK_GRAY)) : Text.empty()
+                            ));
+                        }
                         textList.add(Text.empty());
                     }
                     if(ContestHandler.instance().isContest) {

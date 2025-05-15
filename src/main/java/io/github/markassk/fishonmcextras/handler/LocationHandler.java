@@ -18,9 +18,7 @@ public class LocationHandler {
     }
 
     public void tick(MinecraftClient minecraftClient) {
-        assert minecraftClient.player != null;
-
-        String dimensionName = minecraftClient.player.getWorld().getRegistryKey().getValue().toString();
+        String dimensionName = minecraftClient.player != null ? minecraftClient.player.getWorld().getRegistryKey().getValue().toString() : "";
         if (!dimensionName.isEmpty()) {
             if (dimensionName.contains("crew")){
                 currentLocation = Constant.CREW_ISLAND;
@@ -28,13 +26,17 @@ public class LocationHandler {
             }
         }
 
-        Vec3d position = minecraftClient.player.getPos();
-        int playerX = (int) position.x;
-        int playerZ = (int) position.z;
+        if (minecraftClient.player != null) {
+            Vec3d position = minecraftClient.player.getPos();
 
-        String location = findClosestLocation(playerX, playerZ);
+            int playerX = (int) position.x;
+            int playerZ = (int) position.z;
 
-        currentLocation = Constant.valueOfId(location);
+            String location = findClosestLocation(playerX, playerZ);
+
+            currentLocation = Constant.valueOfId(location);
+        }
+
     }
 
     // pX, pY : Player

@@ -26,11 +26,7 @@ public class FullInventoryHandler {
                 }
             }
 
-            if (emptySlots <= config.fullInventoryTracker.fullInventoryWarningThreshold) {
-                isOverThreshold = true;
-            } else {
-                isOverThreshold = false;
-            }
+            isOverThreshold = emptySlots <= config.fullInventoryTracker.fullInventoryWarningThreshold;
 
             slotsLeft = emptySlots;
         }
