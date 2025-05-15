@@ -34,10 +34,10 @@ public class Pet extends FOMCItem {
     public final String discovererName;
     public final UUID discoverer;
 
-    public final LocalDate date;
+    public final String date;
 
-    private Pet(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
+    private Pet(NbtCompound nbtCompound, String type) {
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
         this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
         this.pet = Constant.valueOfId(nbtCompound.getString("pet"));
         this.climate = Constant.valueOfId(nbtCompound.getString("climate"));
@@ -51,8 +51,7 @@ public class Pet extends FOMCItem {
         this.discovererName = nbtCompound.getString("username");
         this.discoverer = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        this.date = LocalDate.parse(nbtCompound.getString("date"), formatter);
+        this.date = nbtCompound.getString("date");
     }
 
     public Pet(
@@ -67,7 +66,7 @@ public class Pet extends FOMCItem {
             float lPercentLuck,
             float lPercentScale
     ) {
-        super("pet", CustomModelDataComponent.DEFAULT, rarity);
+        super("pet", rarity);
         this.id = UUID.randomUUID();
         this.pet = pet;
         this.climate = Constant.DEFAULT;
@@ -92,7 +91,7 @@ public class Pet extends FOMCItem {
         this.percentPetRating = getPercentPetRating(climateStat.percentLuck, climateStat.percentScale, locationStat.percentLuck, locationStat.percentScale);
         this.discovererName = "";
         this.discoverer = null;
-        this.date = LocalDate.now();
+        this.date = LocalDate.now().toString();
 
     }
 
@@ -186,6 +185,6 @@ public class Pet extends FOMCItem {
     }
 
     public static Pet getPet(ItemStack itemStack, String type) {
-        return new Pet(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
+        return new Pet(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type);
     }
 }

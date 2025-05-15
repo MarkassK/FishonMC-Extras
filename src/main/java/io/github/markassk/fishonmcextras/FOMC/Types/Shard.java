@@ -11,11 +11,13 @@ import java.util.Objects;
 
 public class Shard extends FOMCItem {
     public final String climateId;
+    public final CustomModelDataComponent customModelData;
     public final Constant rarity;
 
     private Shard(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, customModelData, Constant.DEFAULT);
+        super(type, Constant.DEFAULT);
         this.climateId = nbtCompound.getString("name");
+        this.customModelData = customModelData;
         this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
     }
 

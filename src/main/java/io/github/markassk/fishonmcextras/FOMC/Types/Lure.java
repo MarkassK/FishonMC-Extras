@@ -15,6 +15,7 @@ import java.util.Objects;
 
 public class Lure extends FOMCItem {
     public final String name;
+    public final CustomModelDataComponent customModelData;
     public final int totalUses;
     public final int counter;
     public final Constant water;
@@ -23,8 +24,9 @@ public class Lure extends FOMCItem {
     public final String size;
 
     private Lure(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
         this.name = nbtCompound.getString("name");
+        this.customModelData = customModelData;
         this.counter = nbtCompound.getInt("counter");
         this.water = Constant.valueOfId(nbtCompound.getString("water"));
         this.intricacy = nbtCompound.getString("intricacy");
