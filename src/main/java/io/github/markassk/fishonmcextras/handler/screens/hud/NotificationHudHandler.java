@@ -201,7 +201,7 @@ public class NotificationHudHandler {
                         Text.literal("And instead, turn off scoreboard in ").formatted(Formatting.RED),
                         Text.literal("FoE config ").formatted(Formatting.AQUA),
                         Text.literal("(").formatted(Formatting.DARK_GRAY),
-                        FishOnMCExtrasClient.openConfigKeybind.getBoundKeyLocalizedText().copy().formatted(Formatting.YELLOW),
+                        KeybindHandler.instance().openConfigKeybind.getBoundKeyLocalizedText().copy().formatted(Formatting.YELLOW),
                         Text.literal(" Key").formatted(Formatting.YELLOW),
                         Text.literal(")").formatted(Formatting.DARK_GRAY),
                         Text.literal(".").formatted(Formatting.RED)
