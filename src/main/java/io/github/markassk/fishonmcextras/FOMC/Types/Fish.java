@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public class Fish extends FOMCItem {
     public final UUID id; // id
+    public final CustomModelDataComponent customModelData;
     public final String fishId; // fish
     public final String scientific; // scientific
     public final Constant variant; // variant
@@ -39,8 +40,9 @@ public class Fish extends FOMCItem {
     public final String rodName; // rod
 
     private Fish(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData, String name) {
-        super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
         this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
+        this.customModelData = customModelData;
         this.fishId = nbtCompound.getString("fish");
         this.scientific = nbtCompound.getString("scientific");
         this.variant = Constant.valueOfId(nbtCompound.getString("variant"));

@@ -19,6 +19,7 @@ import java.util.UUID;
 public class Armor extends FOMCItem {
     public final List<ArmorBonus> armorBonuses;
     public final UUID id;
+    public final CustomModelDataComponent customModelData;
     public final int color;
     public final int quality;
     public final boolean identified;
@@ -30,7 +31,7 @@ public class Armor extends FOMCItem {
     public final ArmorStat prospect;
 
     private Armor(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, customModelData, Constant.valueOfId(nbtCompound.getString("rarity")));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
         List<ArmorBonus> tempArmorBonuses;
         NbtList nbtLineList = (NbtList) nbtCompound.get("fish_bonus");
         tempArmorBonuses = new ArrayList<>();
@@ -45,6 +46,7 @@ public class Armor extends FOMCItem {
         }
         this.armorBonuses = tempArmorBonuses;
         this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("itemUUID"));
+        this.customModelData = customModelData;
         this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb"));
         this.quality = nbtCompound.getInt("quality");
         this.identified = nbtCompound.getBoolean("identified");

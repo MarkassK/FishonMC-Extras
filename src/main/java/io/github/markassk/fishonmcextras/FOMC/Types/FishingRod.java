@@ -17,6 +17,7 @@ import java.util.UUID;
 
 public class FishingRod extends FOMCItem {
     public final String name;
+    public final CustomModelDataComponent customModelData;
     public final boolean soulboundRod;
     public final String skin;
     public final UUID owner;
@@ -26,8 +27,9 @@ public class FishingRod extends FOMCItem {
     public final Reel reel;
 
     private FishingRod(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData, String name) {
-        super(type, customModelData, Constant.DEFAULT);
+        super(type, Constant.DEFAULT);
         this.name = name;
+        this.customModelData = customModelData;
         this.soulboundRod = nbtCompound.getBoolean("soulbound_rod");
         this.skin = nbtCompound.getString("skin");
         this.owner = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));

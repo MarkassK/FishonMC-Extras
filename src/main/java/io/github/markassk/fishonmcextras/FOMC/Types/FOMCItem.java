@@ -12,12 +12,10 @@ import java.util.Objects;
 
 public class FOMCItem {
     public final String type;
-    public final CustomModelDataComponent customModelData;
     public final Constant rarity;
 
-    public FOMCItem(String type, CustomModelDataComponent customModelData, Constant rarity) {
+    public FOMCItem(String type, Constant rarity) {
         this.type = type;
-        this.customModelData = customModelData;
         this.rarity = rarity;
     }
 
