@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public class Armor extends FOMCItem {
     public final List<ArmorBonus> armorBonuses;
-    public final UUID id;
     public final CustomModelDataComponent customModelData;
     public final int color;
     public final int quality;
@@ -45,7 +44,6 @@ public class Armor extends FOMCItem {
             );
         }
         this.armorBonuses = tempArmorBonuses;
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("itemUUID"));
         this.customModelData = customModelData;
         this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb"));
         this.quality = nbtCompound.getInt("quality");
