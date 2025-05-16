@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.FOMC.Types;
 
+import io.github.markassk.fishonmcextras.FOMC.ClimateConstant;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.util.ColorHelper;
 import io.github.markassk.fishonmcextras.util.ItemStackHelper;
@@ -23,7 +24,7 @@ public class Armor extends FOMCItem {
     public final int quality;
     public final boolean identified;
     public final String armorPiece;
-    public final Constant climate;
+    public final ClimateConstant climate;
     public final UUID crafter;
     public final ArmorStat luck;
     public final ArmorStat scale;
@@ -49,7 +50,7 @@ public class Armor extends FOMCItem {
         this.quality = nbtCompound.getInt("quality");
         this.identified = nbtCompound.getBoolean("identified");
         this.armorPiece = nbtCompound.getString("piece");
-        this.climate = Constant.valueOfId(nbtCompound.getString("name"));
+        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name"));
         this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));
         this.luck = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(0));
         this.scale = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(1));
