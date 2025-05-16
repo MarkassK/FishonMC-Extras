@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public class Armor extends FOMCItem {
     public final List<ArmorBonus> armorBonuses;
-    public final UUID id;
     public final CustomModelDataComponent customModelData;
     public final int color;
     public final int quality;
@@ -45,7 +44,6 @@ public class Armor extends FOMCItem {
             );
         }
         this.armorBonuses = tempArmorBonuses;
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("itemUUID").get());
         this.customModelData = customModelData;
         this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb").get());
         this.quality = nbtCompound.getInt("quality").get();
@@ -53,9 +51,18 @@ public class Armor extends FOMCItem {
         this.armorPiece = nbtCompound.getString("piece").get();
         this.climate = Constant.valueOfId(nbtCompound.getString("name").get());
         this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").get());
-        this.luck = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base").get()).get().getCompound(0).get());
-        this.scale = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base").get()).get().getCompound(1).get());
-        this.prospect = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base").get()).get().getCompound(2).get());
+        this.luck = new ArmorStat(nbtCompound.getList(
+                "base"
+        ).get()
+                .getCompound(0).get());
+        this.scale = new ArmorStat(nbtCompound.getList(
+                "base"
+        ).get()
+                .getCompound(1).get());
+        this.prospect = new ArmorStat(nbtCompound.getList(
+                "base"
+        ).get()
+                .getCompound(2).get());
     }
 
     public static class ArmorBonus {
