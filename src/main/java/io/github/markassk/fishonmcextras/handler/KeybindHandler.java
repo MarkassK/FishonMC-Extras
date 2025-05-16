@@ -15,7 +15,7 @@ public class KeybindHandler {
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     public final AdvancedKeyBinding openConfigKeybind = new AdvancedKeyBinding("key.fishonmcextras.openconfig", GLFW.GLFW_KEY_O, "category.fishonmcextras.general");
-    public final AdvancedKeyBinding openExtraInfoKeybind = new AdvancedKeyBinding("key.fishonmcextras.openextrainfo", GLFW.GLFW_KEY_LEFT_SHIFT, "category.fishonmcextras.general");
+    public final AdvancedKeyBinding openExtraInfoKeybind = new AdvancedKeyBinding("key.fishonmcextras.openextrainfo", GLFW.GLFW_KEY_Z, "category.fishonmcextras.general");
 
     public boolean showExtraInfo = false;
 
