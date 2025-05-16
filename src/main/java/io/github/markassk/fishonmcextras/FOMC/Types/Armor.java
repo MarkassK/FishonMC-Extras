@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.FOMC.Types;
 
+import io.github.markassk.fishonmcextras.FOMC.ClimateConstant;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.util.ColorHelper;
 import io.github.markassk.fishonmcextras.util.ItemStackHelper;
@@ -46,23 +47,14 @@ public class Armor extends FOMCItem {
         this.armorBonuses = tempArmorBonuses;
         this.customModelData = customModelData;
         this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb").get());
-        this.quality = nbtCompound.getInt("quality").get();
+        this.quality = nbtCompound.getInt("quality").orElse(0);
         this.identified = nbtCompound.getBoolean("identified").get();
         this.armorPiece = nbtCompound.getString("piece").get();
-        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name").get());
-        this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").get());
-        this.luck = new ArmorStat(nbtCompound.getList(
-                "base"
-        ).get()
-                .getCompound(0).get());
-        this.scale = new ArmorStat(nbtCompound.getList(
-                "base"
-        ).get()
-                .getCompound(1).get());
-        this.prospect = new ArmorStat(nbtCompound.getList(
-                "base"
-        ).get()
-                .getCompound(2).get());
+        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name").orElse(""));
+        this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").orElse(new int[]{}));
+        this.luck =  nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(0).get()) : null;
+        this.scale = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(1).get()) : null;
+        this.prospect = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(2).get()) : null;
     }
 
     public static class ArmorBonus {
@@ -78,8 +70,8 @@ public class Armor extends FOMCItem {
             this.rolled = nbtCompound.getBoolean("rolled").get();
             this.rolls = nbtCompound.getInt("rolls").get();
             this.unlocked = nbtCompound.getBoolean("unlocked").get();
-            this.cur = nbtCompound.getFloat("cur").get();
-            this.id = nbtCompound.getString("id").get();
+            this.cur = nbtCompound.getFloat("cur").orElse(0f);
+            this.id = nbtCompound.getString("id").orElse(null);
         }
     }
 
@@ -88,8 +80,8 @@ public class Armor extends FOMCItem {
         public final float max;
 
         private ArmorStat(NbtCompound nbtCompound) {
-            this.amount = nbtCompound.getInt("cur").get();
-            this.max = nbtCompound.getFloat("max").get();
+            this.amount = nbtCompound.getInt("cur").orElse(0);
+            this.max = nbtCompound.getFloat("max").orElse(0f);
         }
     }
 
