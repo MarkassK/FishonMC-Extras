@@ -20,11 +20,11 @@ public class FOMCItem {
     }
 
     public static FOMCItem getFOMCItem(ItemStack itemStack) {
-        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null && ItemStackHelper.getNbt(itemStack) != null && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem").orElse(false)) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")) {
                 // Check for types
-                return switch (nbtCompound.getString("type")) {
+                return switch (nbtCompound.getString("type").orElse("null")) {
                     case Defaults.ItemTypes.PET -> Pet.getPet(itemStack, Defaults.ItemTypes.PET);
                     case Defaults.ItemTypes.SHARD -> Shard.getShard(itemStack, Defaults.ItemTypes.SHARD);
                     case Defaults.ItemTypes.ARMOR -> Armor.getArmor(itemStack, Defaults.ItemTypes.ARMOR);

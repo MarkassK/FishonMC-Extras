@@ -28,8 +28,8 @@ public class FishingRodHandler {
     }
 
     public void tick(MinecraftClient minecraftClient) {
-        if(minecraftClient.player != null && minecraftClient.player.getInventory().main.getFirst().getItem() == Items.FISHING_ROD) {
-            if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().main.getFirst()) instanceof FishingRod rod) {
+        if(minecraftClient.player != null && minecraftClient.player.getInventory().getMainStacks().getFirst().getItem() == Items.FISHING_ROD) {
+            if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().getMainStacks().getFirst()) instanceof FishingRod rod) {
                 this.fishingRod = rod;
             }
         }

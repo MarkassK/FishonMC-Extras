@@ -31,31 +31,31 @@ public class Armor extends FOMCItem {
     public final ArmorStat prospect;
 
     private Armor(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
         List<ArmorBonus> tempArmorBonuses;
         NbtList nbtLineList = (NbtList) nbtCompound.get("fish_bonus");
         tempArmorBonuses = new ArrayList<>();
         if(nbtLineList != null) {
             tempArmorBonuses = List.of(
-                    new ArmorBonus(nbtLineList.getCompound(0)),
-                    new ArmorBonus(nbtLineList.getCompound(1)),
-                    new ArmorBonus(nbtLineList.getCompound(2)),
-                    new ArmorBonus(nbtLineList.getCompound(3)),
-                    new ArmorBonus(nbtLineList.getCompound(4))
+                    new ArmorBonus(nbtLineList.getCompound(0).get()),
+                    new ArmorBonus(nbtLineList.getCompound(1).get()),
+                    new ArmorBonus(nbtLineList.getCompound(2).get()),
+                    new ArmorBonus(nbtLineList.getCompound(3).get()),
+                    new ArmorBonus(nbtLineList.getCompound(4).get())
             );
         }
         this.armorBonuses = tempArmorBonuses;
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("itemUUID"));
+        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("itemUUID").get());
         this.customModelData = customModelData;
-        this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb"));
-        this.quality = nbtCompound.getInt("quality");
-        this.identified = nbtCompound.getBoolean("identified");
-        this.armorPiece = nbtCompound.getString("piece");
-        this.climate = Constant.valueOfId(nbtCompound.getString("name"));
-        this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));
-        this.luck = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(0));
-        this.scale = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(1));
-        this.prospect = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(2));
+        this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb").get());
+        this.quality = nbtCompound.getInt("quality").get();
+        this.identified = nbtCompound.getBoolean("identified").get();
+        this.armorPiece = nbtCompound.getString("piece").get();
+        this.climate = Constant.valueOfId(nbtCompound.getString("name").get());
+        this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").get());
+        this.luck = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base").get()).get().getCompound(0).get());
+        this.scale = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base").get()).get().getCompound(1).get());
+        this.prospect = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base").get()).get().getCompound(2).get());
     }
 
     public static class ArmorBonus {
@@ -67,12 +67,12 @@ public class Armor extends FOMCItem {
         public final String id;
 
         private ArmorBonus(NbtCompound nbtCompound) {
-            this.tier = nbtCompound.getInt("tier");
-            this.rolled = nbtCompound.getBoolean("rolled");
-            this.rolls = nbtCompound.getInt("rolls");
-            this.unlocked = nbtCompound.getBoolean("unlocked");
-            this.cur = nbtCompound.getFloat("cur");
-            this.id = nbtCompound.getString("id");
+            this.tier = nbtCompound.getInt("tier").get();
+            this.rolled = nbtCompound.getBoolean("rolled").get();
+            this.rolls = nbtCompound.getInt("rolls").get();
+            this.unlocked = nbtCompound.getBoolean("unlocked").get();
+            this.cur = nbtCompound.getFloat("cur").get();
+            this.id = nbtCompound.getString("id").get();
         }
     }
 
@@ -81,8 +81,8 @@ public class Armor extends FOMCItem {
         public final float max;
 
         private ArmorStat(NbtCompound nbtCompound) {
-            this.amount = nbtCompound.getInt("cur");
-            this.max = nbtCompound.getFloat("max");
+            this.amount = nbtCompound.getInt("cur").get();
+            this.max = nbtCompound.getFloat("max").get();
         }
     }
 

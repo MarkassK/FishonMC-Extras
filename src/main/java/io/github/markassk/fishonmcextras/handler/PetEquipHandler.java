@@ -77,7 +77,7 @@ public class PetEquipHandler  {
         if(!this.isEquipHandled) {
             PlayerEntity player = MinecraftClient.getInstance().player;
             if(player != null) {
-                int itemSlot = player.getInventory().selectedSlot;
+                int itemSlot = player.getInventory().getSelectedSlot();
                 ItemStack heldItem = player.getInventory().getStack(itemSlot);
 
                 if(FOMCItem.getFOMCItem(heldItem) instanceof Pet pet) {

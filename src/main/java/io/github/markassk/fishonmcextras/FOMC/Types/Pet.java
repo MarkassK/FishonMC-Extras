@@ -37,21 +37,21 @@ public class Pet extends FOMCItem {
     public final String date;
 
     private Pet(NbtCompound nbtCompound, String type) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
-        this.pet = Constant.valueOfId(nbtCompound.getString("pet"));
-        this.climate = Constant.valueOfId(nbtCompound.getString("climate"));
-        this.location = Constant.valueOfId(nbtCompound.getString("location"));
-        this.lvl = nbtCompound.getInt("level");
-        this.currentXp = nbtCompound.getFloat("xp_cur");
-        this.neededXp = nbtCompound.getFloat("xp_need");
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
+        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id").get());
+        this.pet = Constant.valueOfId(nbtCompound.getString("pet").get());
+        this.climate = Constant.valueOfId(nbtCompound.getString("climate").get());
+        this.location = Constant.valueOfId(nbtCompound.getString("location").get());
+        this.lvl = nbtCompound.getInt("level").get();
+        this.currentXp = nbtCompound.getFloat("xp_cur").get();
+        this.neededXp = nbtCompound.getFloat("xp_need").get();
         this.climateStat = new Stat(nbtCompound, Constant.CLIMATE_BASE);
         this.locationStat = new Stat(nbtCompound, Constant.LOCATION_BASE);
         this.percentPetRating = getPercentPetRating(this.climateStat.percentLuck, this.climateStat.percentScale, this.locationStat.percentLuck, this.locationStat.percentScale);
-        this.discovererName = nbtCompound.getString("username");
-        this.discoverer = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));
+        this.discovererName = nbtCompound.getString("username").get();
+        this.discoverer = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").get());
 
-        this.date = nbtCompound.getString("date");
+        this.date = nbtCompound.getString("date").get();
     }
 
     public Pet(
@@ -107,22 +107,22 @@ public class Pet extends FOMCItem {
         private Stat(NbtCompound nbtCompound, Constant base) {
             switch (base) {
                 case Constant.CLIMATE_BASE -> {
-                    this.id = nbtCompound.getString("climate");
-                    this.currentLuck = nbtCompound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur");
-                    this.currentScale = nbtCompound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur");
-                    this.maxLuck = nbtCompound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max");
-                    this.maxScale = nbtCompound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max");
-                    this.percentLuck = nbtCompound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(0).getFloat("percent_max");
-                    this.percentScale = nbtCompound.getList("cbase", NbtElement.COMPOUND_TYPE).getCompound(1).getFloat("percent_max");
+                    this.id = nbtCompound.getString("climate").get();
+                    this.currentLuck = nbtCompound.getList("cbase").get().getCompound(0).get().getInt("cur").get();
+                    this.currentScale = nbtCompound.getList("cbase").get().getCompound(1).get().getInt("cur").get();
+                    this.maxLuck = nbtCompound.getList("cbase").get().getCompound(0).get().getInt("cur_max").get();
+                    this.maxScale = nbtCompound.getList("cbase").get().getCompound(1).get().getInt("cur_max").get();
+                    this.percentLuck = nbtCompound.getList("cbase").get().getCompound(0).get().getFloat("percent_max").get();
+                    this.percentScale = nbtCompound.getList("cbase").get().getCompound(1).get().getFloat("percent_max").get();
                 }
                 case Constant.LOCATION_BASE -> {
-                    this.id = nbtCompound.getString("location");
-                    this.currentLuck = nbtCompound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur");
-                    this.currentScale = nbtCompound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur");
-                    this.maxLuck = nbtCompound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getInt("cur_max");
-                    this.maxScale = nbtCompound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getInt("cur_max");
-                    this.percentLuck = nbtCompound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(0).getFloat("percent_max");
-                    this.percentScale = nbtCompound.getList("lbase", NbtElement.COMPOUND_TYPE).getCompound(1).getFloat("percent_max");
+                    this.id = nbtCompound.getString("location").get();
+                    this.currentLuck = nbtCompound.getList("lbase").get().getCompound(0).get().getInt("cur").get();
+                    this.currentScale = nbtCompound.getList("lbase").get().getCompound(1).get().getInt("cur").get();
+                    this.maxLuck = nbtCompound.getList("lbase").get().getCompound(0).get().getInt("cur_max").get();
+                    this.maxScale = nbtCompound.getList("lbase").get().getCompound(1).get().getInt("cur_max").get();
+                    this.percentLuck = nbtCompound.getList("lbase").get().getCompound(0).get().getFloat("percent_max").get();
+                    this.percentScale = nbtCompound.getList("lbase").get().getCompound(1).get().getFloat("percent_max").get();
                 }
                 default -> {
                     this.id = Defaults.EMPTY_STRING;

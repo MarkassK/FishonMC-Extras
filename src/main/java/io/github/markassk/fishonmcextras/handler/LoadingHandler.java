@@ -27,8 +27,8 @@ public class LoadingHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null && !isLoadingDone) {
-            for (int slot = 0; slot < minecraftClient.player.getInventory().main.size(); slot++) {
-                ItemStack stack = minecraftClient.player.getInventory().main.get(slot);
+            for (int slot = 0; slot < minecraftClient.player.getInventory().getMainStacks().size(); slot++) {
+                ItemStack stack = minecraftClient.player.getInventory().getMainStacks().get(slot);
                 if(stack.get(DataComponentTypes.CUSTOM_DATA) != null && stack.getItem() == Items.FISHING_ROD) {
                     isLoadingDone = true;
                     FishOnMCExtras.LOGGER.info("[FoE] Loading Done");

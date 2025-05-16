@@ -24,20 +24,20 @@ public class Lure extends FOMCItem {
     public final String size;
 
     private Lure(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
-        this.name = nbtCompound.getString("name");
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
+        this.name = nbtCompound.getString("name").get();
         this.customModelData = customModelData;
-        this.counter = nbtCompound.getInt("counter");
-        this.water = Constant.valueOfId(nbtCompound.getString("water"));
-        this.intricacy = nbtCompound.getString("intricacy");
-        NbtList nbtList = nbtCompound.getList("base", NbtElement.LIST_TYPE);
+        this.counter = nbtCompound.getInt("counter").get();
+        this.water = Constant.valueOfId(nbtCompound.getString("water").get());
+        this.intricacy = nbtCompound.getString("intricacy").get();
+        NbtList nbtList = nbtCompound.getList("base").get();
         List<NbtCompound> nbtCompoundList = new ArrayList<>();
         for (int i = 0; i < nbtList.size(); i++) {
-            nbtCompoundList.add(nbtList.getCompound(i));
+            nbtCompoundList.add(nbtList.getCompound(i).get());
         }
         this.lureStats = nbtCompoundList.stream().map(LureStats::new).toList();
-        this.totalUses = nbtCompound.getInt("totalUses");
-        this.size = nbtCompound.getString("size");
+        this.totalUses = nbtCompound.getInt("totalUses").get();
+        this.size = nbtCompound.getString("size").get();
     }
 
     public static class LureStats {
@@ -45,8 +45,8 @@ public class Lure extends FOMCItem {
         public final String id;
 
         private LureStats(NbtCompound nbtCompound) {
-            this.cur = nbtCompound.getInt("cur");
-            this.id = nbtCompound.getString("id");
+            this.cur = nbtCompound.getInt("cur").get();
+            this.id = nbtCompound.getString("id").get();
         }
     }
 

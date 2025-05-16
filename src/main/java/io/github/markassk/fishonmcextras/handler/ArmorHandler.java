@@ -42,24 +42,24 @@ public class ArmorHandler {
             return;
         }
 
-        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId()).getItem() == Items.LEATHER_BOOTS && FOMCItem.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId())) instanceof Armor armor) {
-            this.currentBootsItem = minecraftClient.player.getInventory().armor.get(EquipmentSlot.FEET.getEntitySlotId());
+        if(minecraftClient.player.getEquippedStack(EquipmentSlot.FEET).getItem() == Items.LEATHER_BOOTS && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.FEET)) instanceof Armor armor) {
+            this.currentBootsItem = minecraftClient.player.getEquippedStack(EquipmentSlot.FEET);
             this.currentBoots = armor;
         } else {
             this.currentBootsItem = Items.AIR.getDefaultStack();
             this.currentBoots = null;
         }
 
-        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId()).getItem() == Items.LEATHER_LEGGINGS && FOMCItem.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId())) instanceof Armor armor) {
-            this.currentLeggingsItem = minecraftClient.player.getInventory().armor.get(EquipmentSlot.LEGS.getEntitySlotId());
+        if(minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS).getItem() == Items.LEATHER_LEGGINGS && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS)) instanceof Armor armor) {
+            this.currentLeggingsItem = minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS);
             this.currentLeggings = armor;
         } else {
             this.currentLeggingsItem = Items.AIR.getDefaultStack();
             this.currentLeggings = null;
         }
 
-        if(minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId()).getItem() == Items.LEATHER_CHESTPLATE && FOMCItem.getFOMCItem(minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId())) instanceof Armor armor) {
-            this.currentChestplateItem = minecraftClient.player.getInventory().armor.get(EquipmentSlot.CHEST.getEntitySlotId());
+        if(minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.LEATHER_CHESTPLATE && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST)) instanceof Armor armor) {
+            this.currentChestplateItem = minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST);
             this.currentChestplate = armor;
         } else {
             this.currentChestplateItem = Items.AIR.getDefaultStack();

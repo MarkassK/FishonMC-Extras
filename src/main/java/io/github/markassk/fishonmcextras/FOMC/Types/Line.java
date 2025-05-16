@@ -23,15 +23,15 @@ public class Line extends FOMCItem {
     public final List<LineStats> lineStats;
 
     private Line(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
-        this.name = nbtCompound.getString("name");
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
+        this.name = nbtCompound.getString("name").get();
         this.customModelData = customModelData;
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
-        this.water = Constant.valueOfId(nbtCompound.getString("water"));
-        NbtList nbtList = nbtCompound.getList("base", NbtElement.LIST_TYPE);
+        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id").get());
+        this.water = Constant.valueOfId(nbtCompound.getString("water").get());
+        NbtList nbtList = nbtCompound.getList("base").get();
         List<NbtCompound> nbtCompoundList = new ArrayList<>();
         for (int i = 0; i < nbtList.size(); i++) {
-            nbtCompoundList.add(nbtList.getCompound(i));
+            nbtCompoundList.add(nbtList.getCompound(i).get());
         }
         this.lineStats = nbtCompoundList.stream().map(LineStats::new).toList();
     }
@@ -41,8 +41,8 @@ public class Line extends FOMCItem {
         public final String id;
 
         private LineStats(NbtCompound nbtCompound) {
-            this.cur = nbtCompound.getInt("cur");
-            this.id = nbtCompound.getString("id");
+            this.cur = nbtCompound.getInt("cur").get();
+            this.id = nbtCompound.getString("id").get();
         }
     }
 

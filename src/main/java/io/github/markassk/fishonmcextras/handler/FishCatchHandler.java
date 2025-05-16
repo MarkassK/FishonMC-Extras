@@ -78,8 +78,8 @@ public class FishCatchHandler  {
 
     private void scanInventoryBackground(PlayerEntity player) {
         int shardCount = 0;
-        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-            ItemStack stack = player.getInventory().main.get(slot);
+        for (int slot = 0; slot < player.getInventory().getMainStacks().size(); slot++) {
+            ItemStack stack = player.getInventory().getMainStacks().get(slot);
 
             if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
                 if(!trackedFishes.contains(fish.id)) {
@@ -105,8 +105,8 @@ public class FishCatchHandler  {
 
     private void scanInventory(PlayerEntity player) {
         int shardCount = 0;
-        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-            ItemStack stack = player.getInventory().main.get(slot);
+        for (int slot = 0; slot < player.getInventory().getMainStacks().size(); slot++) {
+            ItemStack stack = player.getInventory().getMainStacks().get(slot);
 
             if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
                 if(!trackedFishes.contains(fish.id)) {

@@ -40,30 +40,30 @@ public class Fish extends FOMCItem {
     public final String rodName; // rod
 
     private Fish(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData, String name) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
+        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id").get());
         this.customModelData = customModelData;
-        this.fishId = nbtCompound.getString("fish");
-        this.scientific = nbtCompound.getString("scientific");
-        this.variant = Constant.valueOfId(nbtCompound.getString("variant"));
-        this.value = nbtCompound.getFloat("value");
-        this.xp = nbtCompound.getFloat("xp");
-        this.natureId = nbtCompound.getString("nature");
-        this.location = Constant.valueOfId(nbtCompound.getString("location"));
-        this.size = Constant.valueOfId(nbtCompound.getString("size"));
-        this.sex = nbtCompound.getString("sex");
-        this.weight = nbtCompound.getFloat("weight");
-        this.length = nbtCompound.getFloat("length");
-        this.groupId = nbtCompound.getString("group");
-        this.lifestyleId = nbtCompound.getString("lifestyle");
-        this.ecosystem = nbtCompound.getString("native");
-        this.migrationId = nbtCompound.getString("migration");
+        this.fishId = nbtCompound.getString("fish").get();
+        this.scientific = nbtCompound.getString("scientific").get();
+        this.variant = Constant.valueOfId(nbtCompound.getString("variant").get());
+        this.value = nbtCompound.getFloat("value").get();
+        this.xp = nbtCompound.getFloat("xp").get();
+        this.natureId = nbtCompound.getString("nature").get();
+        this.location = Constant.valueOfId(nbtCompound.getString("location").get());
+        this.size = Constant.valueOfId(nbtCompound.getString("size").get());
+        this.sex = nbtCompound.getString("sex").get();
+        this.weight = nbtCompound.getFloat("weight").get();
+        this.length = nbtCompound.getFloat("length").get();
+        this.groupId = nbtCompound.getString("group").get();
+        this.lifestyleId = nbtCompound.getString("lifestyle").get();
+        this.ecosystem = nbtCompound.getString("native").get();
+        this.migrationId = nbtCompound.getString("migration").get();
         this.catcherName = name;
-        this.catcher = UUIDHelper.getUUID(nbtCompound.getIntArray("catcher"));
+        this.catcher = UUIDHelper.getUUID(nbtCompound.getIntArray("catcher").get());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        this.date = LocalDate.parse(nbtCompound.getString("date"), formatter);
-        this.rodName = nbtCompound.getString("rod");
+        this.date = LocalDate.parse(nbtCompound.getString("date").get(), formatter);
+        this.rodName = nbtCompound.getString("rod").get();
     }
 
     public static Fish getFish(ItemStack itemStack, String type, String name) {
