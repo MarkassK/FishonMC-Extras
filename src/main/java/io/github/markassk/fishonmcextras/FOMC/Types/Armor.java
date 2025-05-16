@@ -23,7 +23,7 @@ public class Armor extends FOMCItem {
     public final int quality;
     public final boolean identified;
     public final String armorPiece;
-    public final Constant climate;
+    public final ClimateConstant climate;
     public final UUID crafter;
     public final ArmorStat luck;
     public final ArmorStat scale;
@@ -49,7 +49,7 @@ public class Armor extends FOMCItem {
         this.quality = nbtCompound.getInt("quality").get();
         this.identified = nbtCompound.getBoolean("identified").get();
         this.armorPiece = nbtCompound.getString("piece").get();
-        this.climate = Constant.valueOfId(nbtCompound.getString("name").get());
+        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name").get());
         this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").get());
         this.luck = new ArmorStat(nbtCompound.getList(
                 "base"
