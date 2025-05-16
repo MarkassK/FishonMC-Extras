@@ -168,7 +168,6 @@ public class StatsImportHandler {
     private int toIntFromString(String value) {
         value = value.trim();
         if(value.contains("K")) {
-            System.out.println(value);
             return (int) (Float.parseFloat(value.substring(0, value.indexOf("K"))) * 1000f);
         } else {
             return Integer.parseInt(value);
