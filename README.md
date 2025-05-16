@@ -5,7 +5,7 @@
 [![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric-orange)](https://fabricmc.net)
 
 A Minecraft mod that enhances your experience on FishOnMC with advanced tracking, HUD displays, and statistics.  
-**Supports Minecraft 1.21, 1.21.1, 1.21.2, and 1.21.3**.
+**Supports Minecraft 1.21.4 and 1.21.5**.
 
 ---
 
@@ -29,7 +29,7 @@ A Minecraft mod that enhances your experience on FishOnMC with advanced tracking
     - [Fabric API](https://modrinth.com/mod/fabric-api)
     - [Cloth Config](https://modrinth.com/mod/cloth-config)
     - [ModMenu](https://modrinth.com/mod/modmenu)
-3. Place `fishonmc-extras-0.x.x+1.21-1.21.3.jar` in your `mods` folder
+3. Place `fishonmc-extras-0.x.x+1.21.4-1.21.5.jar` in your `mods` folder
 
 ### Mod Managers
 - **Modrinth App**: [![Modrinth](https://cdn.modrinth.com/img/modrinth-badge.png)](https://modrinth.com/mod/fishonmc-extras)
@@ -38,21 +38,6 @@ A Minecraft mod that enhances your experience on FishOnMC with advanced tracking
 Access config screen via:
 1. Mod Menu (`Esc` → `Mods` → `FishonMC-Extras`)
 2. `O` Default Key
-
-
-## 🏗️ Future Features (NO ORDER)
-- Tracking of specific fish types in fish HUD
-- Make Fish HUD stats groups moveable individually
-- More toggles
-- Shards tracking (with hourly rate)
-- Quest HUD (Tracker for rewards & completions, No quest Warning)
-- Crew Quest HUD (Maybe)
-- Event timer
-- /foe drystreak (shows fish since variant)
-- popup screen for variants
-- pet level and xp tracker
-- Moveable scoreboard replacement
-- Right Allignmnet
 
 
 ## License

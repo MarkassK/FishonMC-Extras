@@ -1,11 +1,8 @@
 package io.github.markassk.fishonmcextras;
 
-import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
-import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
-import io.github.markassk.fishonmcextras.screens.main.MainScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.screens.widget.CustomButtonWidget;
@@ -13,7 +10,6 @@ import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -26,23 +22,17 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class FishOnMCExtrasClient implements ClientModInitializer {
     public static FishOnMCExtrasConfig CONFIG;
-    public static KeyBinding openConfigKeybind;
-    public static KeyBinding openExtraInfoKeybind;
 
     public static final MainHudRenderer MAIN_HUD_RENDERER = new MainHudRenderer();
 
@@ -51,30 +41,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         // Setup config screen, reads correct data to load IMPORTANT MUST BE FIRST
         AutoConfig.register(FishOnMCExtrasConfig.class, GsonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).getConfig();
-        // Setup keybind to open config
-        openConfigKeybind = new KeyBinding("key.fishonmcextras.openconfig", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, "category.fishonmcextras.general");
-        openExtraInfoKeybind = new KeyBinding("key.fishonmcextras.openextrainfo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_SHIFT, "category.fishonmcextras.general");
-        KeyBindingHelper.registerKeyBinding(openConfigKeybind);
-        KeyBindingHelper.registerKeyBinding(openExtraInfoKeybind);
-
-        ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
-            if(LoadingHandler.instance().isOnServer) {
-                if (minecraftClient.player != null && minecraftClient.currentScreen == null) {
-                    while (openConfigKeybind.wasPressed()){
-                        minecraftClient.setScreen(new MainScreen(minecraftClient, minecraftClient.currentScreen));
-                    }
-                }
-
-                if(minecraftClient.player != null) {
-                    if(openExtraInfoKeybind.isPressed() && !KeybindHandler.instance().showExtraInfo)
-                        KeybindHandler.instance().showExtraInfo = true;
-                    else if(!openExtraInfoKeybind.isPressed() && KeybindHandler.instance().showExtraInfo)
-                        KeybindHandler.instance().showExtraInfo = false;
-                }
-            }
-        });
-
         CommandRegistry.initialize();
+        KeybindHandler.instance().init();
 
         ClientPlayConnectionEvents.JOIN.register(this::onJoin);
         ClientPlayConnectionEvents.DISCONNECT.register(this::onLeave);
@@ -108,6 +76,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 CrewHandler.instance().tick(minecraftClient);
                 StatsImportHandler.instance().tick(minecraftClient);
                 DiscordHandler.instance().tick();
+                KeybindHandler.instance().tick(minecraftClient);
              }
         }
     }

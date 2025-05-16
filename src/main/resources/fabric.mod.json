@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "fishonmcextras",
-	"version": "0.2.1",
+	"version": "0.2.1-hotfix.1",
 	"name": "FishOnMC-Extras",
 	"description": "A QOL mod for play.fishonmc.net.",
 	"authors": [
@@ -36,10 +36,10 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.15.7",
-		"minecraft": ">=1.21 <=1.21.3",
+		"minecraft": ">=1.21.4 <=1.21.5",
 		"java": ">=21",
 		"fabric-api": "*",
-		"cloth-config": ">=15.0.127",
-		"modmenu" : ">=11.0.0"
+		"cloth-config": ">=17.0.142",
+		"modmenu" : ">=13.0.0"
 	}
 }

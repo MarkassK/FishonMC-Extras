@@ -11,6 +11,7 @@
     "BossBarHudAccessor",
     "BossBarHudMixin",
     "InGameHudMixin",
+    "KeyBindingAccessor",
     "PlayerListHudAccessor"
   ]
 }
