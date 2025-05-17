@@ -24,11 +24,11 @@ public class TabHandler {
     public void tick(MinecraftClient minecraftClient) {
         if(LoadingHandler.instance().isLoadingDone) {
             PlayerListHud playerListHud = minecraftClient.inGameHud.getPlayerListHud();
-            if (minecraftClient.player != null) {
+            if (minecraftClient.player != null && playerListHud != null) {
                 this.player = playerListHud.getPlayerName(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getPlayerListEntry(minecraftClient.player.getUuid()));
             }
 
-            if(((PlayerListHudAccessor) playerListHud).getFooter() != null) {
+            if(playerListHud != null && ((PlayerListHudAccessor) playerListHud).getFooter() != null) {
                 if(((PlayerListHudAccessor) playerListHud).getFooter().getString().contains("ɪɴꜱᴛᴀɴᴄᴇ")) {
                     this.isInstance = true;
                     String footer = ((PlayerListHudAccessor) playerListHud).getFooter().getString();
