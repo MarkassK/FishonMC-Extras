@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.util.ItemStackHelper;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -43,7 +42,7 @@ public class FOMCItem {
             ) {
                 String line = Objects.requireNonNull(itemStack.getComponents().get(DataComponentTypes.LORE)).lines().get(15).getString();
                 return Fish.getFish(itemStack, Defaults.ItemTypes.FISH, line.substring(line.lastIndexOf(" ") + 1));
-            } else if (itemStack.getItem() == Items.FISHING_ROD) {
+            } else if (itemStack.getItem() == Items.FISHING_ROD && ItemStackHelper.getNbt(itemStack).getBoolean("soulbound_rod").isPresent()) {
                 return FishingRod.getFishingRod(itemStack, Defaults.ItemTypes.FISHINGROD, itemStack.getName().getString());
             }
         }
