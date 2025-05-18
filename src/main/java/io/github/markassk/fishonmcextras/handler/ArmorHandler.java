@@ -42,26 +42,29 @@ public class ArmorHandler {
             return;
         }
 
-        if(minecraftClient.player.getEquippedStack(EquipmentSlot.FEET).getItem() == Items.LEATHER_BOOTS && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.FEET)) instanceof Armor armor) {
+        if(!currentBootsItem.equals(minecraftClient.player.getEquippedStack(EquipmentSlot.FEET)) &&
+                minecraftClient.player.getEquippedStack(EquipmentSlot.FEET).getItem() == Items.LEATHER_BOOTS && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.FEET)) instanceof Armor armor) {
             this.currentBootsItem = minecraftClient.player.getEquippedStack(EquipmentSlot.FEET);
             this.currentBoots = armor;
-        } else {
+        } else if (minecraftClient.player.getEquippedStack(EquipmentSlot.FEET).isEmpty()) {
             this.currentBootsItem = Items.AIR.getDefaultStack();
             this.currentBoots = null;
         }
 
-        if(minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS).getItem() == Items.LEATHER_LEGGINGS && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS)) instanceof Armor armor) {
+        if(!currentLeggingsItem.equals(minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS)) &&
+                minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS).getItem() == Items.LEATHER_LEGGINGS && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS)) instanceof Armor armor) {
             this.currentLeggingsItem = minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS);
             this.currentLeggings = armor;
-        } else {
+        } else if (minecraftClient.player.getEquippedStack(EquipmentSlot.LEGS).isEmpty()) {
             this.currentLeggingsItem = Items.AIR.getDefaultStack();
             this.currentLeggings = null;
         }
 
-        if(minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.LEATHER_CHESTPLATE && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST)) instanceof Armor armor) {
+        if(!currentChestplateItem.equals(minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST)) &&
+                minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.LEATHER_CHESTPLATE && FOMCItem.getFOMCItem(minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST)) instanceof Armor armor) {
             this.currentChestplateItem = minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST);
             this.currentChestplate = armor;
-        } else {
+        } else if (minecraftClient.player.getEquippedStack(EquipmentSlot.CHEST).isEmpty()) {
             this.currentChestplateItem = Items.AIR.getDefaultStack();
             this.currentChestplate = null;
         }
@@ -80,13 +83,15 @@ public class ArmorHandler {
     }
 
     private void appendTooltipArmorRoll(List<Text> textList, ItemStack itemStack) {
-        if(KeybindHandler.instance().showExtraInfo && FOMCItem.getFOMCItem(itemStack) instanceof Armor armor && armor.identified) {
-            Text emptyLine = textList.get(16).copy();
-            if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(textList, 4, armor, emptyLine);
-            if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(textList, 3, armor, emptyLine);
-            if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(textList, 2, armor, emptyLine);
-            if(armor.armorBonuses.get(1).rolled) insertArmorRollTooltip(textList, 1, armor, emptyLine);
-            if(armor.armorBonuses.get(0).rolled) insertArmorRollTooltip(textList, 0, armor, emptyLine);
+        if(itemStack.getItem() == Items.LEATHER_CHESTPLATE || itemStack.getItem() == Items.LEATHER_BOOTS || itemStack.getItem() == Items.LEATHER_LEGGINGS) {
+            if(KeybindHandler.instance().showExtraInfo && FOMCItem.getFOMCItem(itemStack) instanceof Armor armor && armor.identified) {
+                Text emptyLine = textList.get(16).copy();
+                if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(textList, 4, armor, emptyLine);
+                if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(textList, 3, armor, emptyLine);
+                if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(textList, 2, armor, emptyLine);
+                if(armor.armorBonuses.get(1).rolled) insertArmorRollTooltip(textList, 1, armor, emptyLine);
+                if(armor.armorBonuses.get(0).rolled) insertArmorRollTooltip(textList, 0, armor, emptyLine);
+            }
         }
     }
 

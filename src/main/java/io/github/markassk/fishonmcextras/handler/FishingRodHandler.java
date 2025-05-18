@@ -7,10 +7,14 @@ import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.FishingRod;
 import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class FishingRodHandler {
     private static FishingRodHandler INSTANCE = new FishingRodHandler();
+
+    private ItemStack fishingRodStack = null;
+    private boolean isNewRod = false;
 
     public FishingRod fishingRod = null;
     public boolean isWrongBait = false;
@@ -29,12 +33,17 @@ public class FishingRodHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null && minecraftClient.player.getInventory().getMainStacks().getFirst().getItem() == Items.FISHING_ROD) {
-            if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().getMainStacks().getFirst()) instanceof FishingRod rod) {
-                this.fishingRod = rod;
+            if(this.fishingRodStack == null || !this.fishingRodStack.equals(minecraftClient.player.getInventory().getMainStacks().getFirst())) {
+                if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().getMainStacks().getFirst()) instanceof FishingRod rod) {
+                    this.fishingRodStack = minecraftClient.player.getInventory().getMainStacks().getFirst();
+                    this.fishingRod = rod;
+                    this.isNewRod = true;
+                }
             }
         }
 
-        if(this.fishingRod != null) {
+        if(this.isNewRod && this.fishingRod != null) {
+            this.isNewRod = false;
             if(!this.fishingRod.tacklebox.isEmpty()) {
                 // Bait
                 if(this.fishingRod.tacklebox.getFirst() instanceof Bait bait && bait.water != Constant.ANY_WATER) {

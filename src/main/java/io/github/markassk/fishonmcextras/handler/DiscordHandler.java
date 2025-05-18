@@ -19,6 +19,7 @@ public class DiscordHandler {
     private IPCClient ipcClient;
     private RichPresence currentRichPresence;
     private long offsetTime;
+    private boolean shouldConnect = true;
 
     public static DiscordHandler instance() {
         if (INSTANCE == null) {
@@ -28,17 +29,19 @@ public class DiscordHandler {
     }
 
     public void tick() {
-        RichPresence richPresence = buildPresence();
+        if(shouldConnect) {
+            RichPresence richPresence = buildPresence();
 
-        if(currentRichPresence != richPresence) {
-            currentRichPresence = richPresence;
+            if(currentRichPresence != richPresence) {
+                currentRichPresence = richPresence;
 
-            this.processState();
+                this.processState();
+            }
         }
     }
 
     public void init() {
-        if(this.ipcClient == null) {
+        if(this.ipcClient == null && shouldConnect) {
             this.ipcClient = new IPCClient(config.discordIPC.clientId);
 
             this.offsetTime = System.currentTimeMillis();
@@ -92,17 +95,20 @@ public class DiscordHandler {
     }
 
     public void connect() {
-        if(this.ipcClient.getStatus() != PipeStatus.CONNECTED && config.discordIPC.isEnabled) {
+        if(this.ipcClient.getStatus() != PipeStatus.CONNECTED && config.discordIPC.isEnabled && shouldConnect) {
             try {
                 this.ipcClient.connect();
             } catch (NoDiscordClientException e) {
                 FishOnMCExtras.LOGGER.error("Unable to connect to the discord client", e);
+            } catch (NoClassDefFoundError e) {
+                FishOnMCExtras.LOGGER.error("Could not find class", e);
+                shouldConnect = false;
             }
         }
     }
 
     public void disconnect() {
-        ipcClient.close();
+        if(shouldConnect) ipcClient.close();
     }
 
     private void processState() {
