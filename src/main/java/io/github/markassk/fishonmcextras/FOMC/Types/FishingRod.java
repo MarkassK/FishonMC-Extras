@@ -38,8 +38,9 @@ public class FishingRod extends FOMCItem {
             this.tacklebox = nbtList.stream().map(nbtElement -> {
                 if (nbtElement instanceof NbtCompound compound) {
                     ItemStack baitStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
-                    if (getFOMCItem(baitStack) instanceof Lure lureType) return lureType;
-                    if (getFOMCItem(baitStack) instanceof Bait baitType) return baitType;
+                    FOMCItem fomcItem = getFOMCItem(baitStack);
+                    if (fomcItem instanceof Lure lureType) return lureType;
+                    if (fomcItem instanceof Bait baitType) return baitType;
                 } return null;
             }).filter(Objects::nonNull).toList();
         } else this.tacklebox = new ArrayList<>();
@@ -50,7 +51,7 @@ public class FishingRod extends FOMCItem {
                     ItemStack lineStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
                     if(getFOMCItem(lineStack) instanceof Line lineType) return lineType;
                 } return null;
-            }).filter(Objects::nonNull).toList().getFirst();
+            }).filter(Objects::nonNull).findFirst().orElse(null);
         } else this.line = null;
 
         if(nbtCompound.get("pole") instanceof NbtList nbtList) {
@@ -59,7 +60,7 @@ public class FishingRod extends FOMCItem {
                     ItemStack poleStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
                     if(getFOMCItem(poleStack) instanceof Pole poleType) return poleType;
                 } return null;
-            }).filter(Objects::nonNull).toList().getFirst();
+            }).filter(Objects::nonNull).findFirst().orElse(null);
         } else this.pole = null;
 
         if(nbtCompound.get("reel") instanceof NbtList nbtList) {
@@ -68,7 +69,7 @@ public class FishingRod extends FOMCItem {
                     ItemStack reelStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
                     if(getFOMCItem(reelStack) instanceof Reel reelType) return reelType;
                 } return null;
-            }).filter(Objects::nonNull).toList().getFirst();
+            }).filter(Objects::nonNull).findFirst().orElse(null);
         } else this.reel = null;
     }
 

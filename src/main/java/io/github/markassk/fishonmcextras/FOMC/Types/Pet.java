@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.FOMC.Types;
 
+import io.github.markassk.fishonmcextras.FOMC.ClimateConstant;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.util.ItemStackHelper;
 import io.github.markassk.fishonmcextras.util.UUIDHelper;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class Pet extends FOMCItem {
     public final UUID id;
     public final Constant pet;
-    public final Constant climate;
+    public final ClimateConstant climate;
     public final Constant location;
 
     public final int lvl;
@@ -40,7 +41,7 @@ public class Pet extends FOMCItem {
         super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
         this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
         this.pet = Constant.valueOfId(nbtCompound.getString("pet"));
-        this.climate = Constant.valueOfId(nbtCompound.getString("climate"));
+        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("climate"));
         this.location = Constant.valueOfId(nbtCompound.getString("location"));
         this.lvl = nbtCompound.getInt("level");
         this.currentXp = nbtCompound.getFloat("xp_cur");
@@ -69,7 +70,7 @@ public class Pet extends FOMCItem {
         super("pet", rarity);
         this.id = UUID.randomUUID();
         this.pet = pet;
-        this.climate = Constant.DEFAULT;
+        this.climate = ClimateConstant.DEFAULT;
         this.location = Constant.DEFAULT;
         this.lvl = 100;
         this.currentXp = 0;

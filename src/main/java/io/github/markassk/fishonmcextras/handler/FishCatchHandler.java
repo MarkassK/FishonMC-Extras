@@ -11,6 +11,7 @@ import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -25,6 +26,7 @@ public class FishCatchHandler  {
     private int trackedShards = 0;
     private boolean hasUsedRod = false;
     private boolean isDone = false;
+    private int prevEmptySlots = 0;
 
     public long lastTimeUsedRod = 0;
 
@@ -78,18 +80,40 @@ public class FishCatchHandler  {
 
     private void scanInventoryBackground(PlayerEntity player) {
         int shardCount = 0;
+        int emptySlots = 0;
+        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
+            if(player.getInventory().main.get(slot).isEmpty()) emptySlots++;
+        }
+
+        if(this.prevEmptySlots != emptySlots) {
+            this.prevEmptySlots = emptySlots;
+            for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
+                ItemStack stack = player.getInventory().main.get(slot);
+
+                if(stack.isEmpty()) {
+                    continue;
+                }
+
+                if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
+                    if(!trackedFishes.contains(fish.id)) {
+                        trackedFishes.add(fish.id);
+                    }
+                } else if (FOMCItem.getFOMCItem(stack) instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
+                    if(!trackedPets.contains(pet.id)) {
+                        trackedPets.add(pet.id);
+                    }
+                }
+            }
+        }
+
         for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
             ItemStack stack = player.getInventory().main.get(slot);
 
-            if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
-                if(!trackedFishes.contains(fish.id)) {
-                    trackedFishes.add(fish.id);
-                }
-            } else if (FOMCItem.getFOMCItem(stack) instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
-                if(!trackedPets.contains(pet.id)) {
-                    trackedPets.add(pet.id);
-                }
-            } else if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
+            if(stack.isEmpty()) {
+                continue;
+            }
+
+            if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
                 shardCount += stack.getCount();
             }
         }
@@ -105,32 +129,56 @@ public class FishCatchHandler  {
 
     private void scanInventory(PlayerEntity player) {
         int shardCount = 0;
+        int emptySlots = 0;
+        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
+            if(player.getInventory().main.get(slot).isEmpty()) emptySlots++;
+        }
+
+        if(this.prevEmptySlots != emptySlots) {
+            this.prevEmptySlots = emptySlots;
+            for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
+                ItemStack stack = player.getInventory().main.get(slot);
+
+                if(stack.isEmpty()) {
+                    continue;
+                }
+
+                FOMCItem fomcItem = FOMCItem.getFOMCItem(stack);
+
+                if(fomcItem instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
+                    if(!trackedFishes.contains(fish.id)) {
+                        trackedFishes.add(fish.id);
+                        ProfileDataHandler.instance().updateStatsOnCatch(fish);
+
+                        // Update stats on Equipped Pet
+                        PetEquipHandler.instance().updatePet(player);
+
+                        // Send to TitleHud
+                        if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
+                            sendToTitleHud(stack, fish);
+                        }
+
+                        // Send to quest tracker
+                        QuestHandler.instance().updateQuest(fish);
+
+                    }
+                } else if (fomcItem instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
+                    if(!trackedPets.contains(pet.id)) {
+                        trackedPets.add(pet.id);
+                        ProfileDataHandler.instance().updateStatsOnCatch();
+                    }
+                }
+            }
+        }
+
         for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
             ItemStack stack = player.getInventory().main.get(slot);
 
-            if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
-                if(!trackedFishes.contains(fish.id)) {
-                    trackedFishes.add(fish.id);
-                    ProfileDataHandler.instance().updateStatsOnCatch(fish);
+            if(stack.isEmpty()) {
+                continue;
+            }
 
-                    // Update stats on Equipped Pet
-                    PetEquipHandler.instance().updatePet(player);
-
-                    // Send to TitleHud
-                    if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
-                        sendToTitleHud(stack, fish);
-                    }
-
-                    // Send to quest tracker
-                    QuestHandler.instance().updateQuest(fish);
-
-                }
-            } else if (FOMCItem.getFOMCItem(stack) instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
-                if(!trackedPets.contains(pet.id)) {
-                    trackedPets.add(pet.id);
-                    ProfileDataHandler.instance().updateStatsOnCatch();
-                }
-            } else if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
+            if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
                 shardCount += stack.getCount();
             }
         }

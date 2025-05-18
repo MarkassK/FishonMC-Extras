@@ -25,6 +25,8 @@ public class ScoreboardHandler {
     public boolean isCrewNearby = false;
     public boolean noScoreBoard = false;
 
+    private List<Text> prevList = new ArrayList<>();
+
     public static ScoreboardHandler instance() {
         if (INSTANCE == null) {
             INSTANCE = new ScoreboardHandler();
@@ -48,8 +50,10 @@ public class ScoreboardHandler {
             }
 
             noScoreBoard = textList.isEmpty();
-
-            extractData(textList, client.player);
+            if(!noScoreBoard && !prevList.equals(textList)) {
+                prevList = textList;
+                extractData(textList, client.player);
+            }
         } catch (NullPointerException e) {
             FishOnMCExtras.LOGGER.error(e.getMessage());
         }
