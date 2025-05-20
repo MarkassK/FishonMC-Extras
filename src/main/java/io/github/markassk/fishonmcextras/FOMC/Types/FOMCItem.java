@@ -49,4 +49,9 @@ public class FOMCItem {
         }
         return null;
     }
+
+    public static FOMCItem getFOMCItem(ItemStack itemStack, boolean ignoreFishingRod) {
+        if(ignoreFishingRod && itemStack.getItem() == Items.FISHING_ROD) return null;
+        return getFOMCItem(itemStack);
+    }
 }

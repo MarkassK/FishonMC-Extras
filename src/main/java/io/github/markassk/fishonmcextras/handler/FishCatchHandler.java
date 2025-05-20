@@ -113,7 +113,7 @@ public class FishCatchHandler  {
                 continue;
             }
 
-            if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
+            if (FOMCItem.getFOMCItem(stack, true) instanceof Shard) {
                 shardCount += stack.getCount();
             }
         }
@@ -178,7 +178,7 @@ public class FishCatchHandler  {
                 continue;
             }
 
-            if (FOMCItem.getFOMCItem(stack) instanceof Shard) {
+            if (FOMCItem.getFOMCItem(stack, true) instanceof Shard) {
                 shardCount += stack.getCount();
             }
         }
