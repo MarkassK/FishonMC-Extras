@@ -77,6 +77,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 StatsImportHandler.instance().tick(minecraftClient);
                 DiscordHandler.instance().tick();
                 KeybindHandler.instance().tick(minecraftClient);
+                InventoryButtonHandler.instance().tick(minecraftClient);
              }
         }
     }
@@ -146,7 +147,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                         })
                         .position(scaledWidth / 2 + 100, scaledHeight / 2 - 100)
                         .tooltip(Tooltip.of(Text.literal("Open up the screen to calculate pet merging.")))
-                        .icon(Items.TURTLE_EGG.getDefaultStack())
+                        .itemIcon(Items.TURTLE_EGG.getDefaultStack())
                         .build());
             } else if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
                 // Quest Menu : 픹
@@ -159,7 +160,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 StatsImportHandler.instance().screenInit = true;
                 StatsImportHandler.instance().isOnScreen = true;
             } else if (screen instanceof InventoryScreen) {
-
+                InventoryButtonHandler.instance().screenInit = true;
             }
         }
         ScreenEvents.remove(screen).register(this::onRemoveScreen);

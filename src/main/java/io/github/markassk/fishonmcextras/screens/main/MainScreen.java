@@ -47,7 +47,7 @@ public class MainScreen extends Screen {
         textList.add(Text.literal("Welcome to FishOnMC-Extras").formatted(Formatting.WHITE));
         textList.add(TabHandler.instance().player);
         textList.add(Text.empty());
-        textList.add(Text.literal("Version 0.2.1-hotfix.6").formatted(Formatting.GRAY));
+        textList.add(Text.literal("Version 0.2.2-beta.1").formatted(Formatting.GRAY));
 
         textList.forEach(text -> {
             context.drawText(textRenderer, text, width / 2 - 4 - textRenderer.getWidth(text), height / 2 - (textList.size() * (textRenderer.fontHeight + 1)) / 2 + count.getAndIncrement() * (textRenderer.fontHeight + 1), 0xFFFFFF, true);
@@ -59,13 +59,13 @@ public class MainScreen extends Screen {
 
         widgets.add(CustomButtonWidget.builder(Text.literal("FoE Config"), button -> minecraftClient.setScreen(AutoConfig.getConfigScreen(FishOnMCExtrasConfig.class, minecraftClient.currentScreen).get()))
                 .position(width / 2 + 4, height / 2 - 24 - 4)
-                .icon(Items.COMMAND_BLOCK.getDefaultStack())
+                .itemIcon(Items.COMMAND_BLOCK.getDefaultStack())
                 .width(130)
                 .build());
 
         widgets.add(CustomButtonWidget.builder(Text.literal("Move HUD Elements"), button -> minecraftClient.setScreen(new MoveHudScreen(minecraftClient, minecraftClient.currentScreen)))
                 .position(width / 2 + 4, height / 2 + 4)
-                .icon(Items.STRUCTURE_VOID.getDefaultStack())
+                .itemIcon(Items.STRUCTURE_VOID.getDefaultStack())
                 .width(130)
                 .build());
 

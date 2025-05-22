@@ -10,11 +10,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class CustomButtonWidget extends ClickableWidget {
     private final int padding = 4;
     private final int iconSize = 16;
     private final Text text;
     private final ItemStack itemIcon;
+    private final String stringIcon;
     private final TextRenderer textRenderer;
     private final ClickCallback clickCallback;
 
@@ -22,12 +25,13 @@ public class CustomButtonWidget extends ClickableWidget {
         return new CustomButtonWidget.Builder(text, onClick);
     }
 
-    public CustomButtonWidget(TextRenderer textRenderer, int x, int y, int width, int height, Text text, ItemStack itemIcon, ClickCallback clickCallback) {
+    private CustomButtonWidget(TextRenderer textRenderer, int x, int y, int width, int height, Text text, ItemStack itemIcon, String stringIcon, ClickCallback clickCallback) {
         super(x, y, 0, height, text);
         this.textRenderer = textRenderer;
         this.clickCallback = clickCallback;
         this.text = text;
         this.itemIcon = itemIcon;
+        this.stringIcon = stringIcon;
         this.setWidth(width == -1 ? padding * 3 + iconSize + textRenderer.getWidth(text) : width);
     }
 
@@ -40,13 +44,17 @@ public class CustomButtonWidget extends ClickableWidget {
 
         // Button Text
         context.drawText(textRenderer, this.text,
-                itemIcon == null ? this.getX() + padding : this.getX() + padding * 2 + iconSize,
+                itemIcon == null && Objects.equals(stringIcon, "") ? this.getX() + padding : this.getX() + padding * 2 + iconSize,
                  this.getY() + this.height / 2 - textRenderer.fontHeight / 2, 0xFFFFFF, true);
 
         // Icon
-        if(itemIcon != null) {
+        if(itemIcon != null || !Objects.equals(stringIcon, "")) {
             context.drawBorder(this.getX() + padding - 1, this.getY() + (padding * 2 + iconSize) / 2 - iconSize / 2 - 1, iconSize + 2, iconSize + 2, 0xFFFFFFFF);
-            context.drawItem(itemIcon, this.getX() + padding, this.getY() + (padding * 2 + iconSize) / 2 - iconSize / 2);
+            if(itemIcon != null) {
+                context.drawItem(itemIcon, this.getX() + padding, this.getY() + (padding * 2 + iconSize) / 2 - iconSize / 2);
+            } else if (!Objects.equals(stringIcon, "")) {
+                context.drawText(textRenderer, this.stringIcon, this.getX() + iconSize / 2 + padding - textRenderer.getWidth(this.stringIcon) / 2, this.getY() + iconSize / 2 + padding - textRenderer.fontHeight / 2, 0xFFFFFF, true);
+            }
         }
     }
 
@@ -73,6 +81,7 @@ public class CustomButtonWidget extends ClickableWidget {
         private int y;
         private int width = -1;
         private int height = 24;
+        private String stringIcon = "";
 
         public Builder(Text text, ClickCallback clickCallback) {
             this.text = text;
@@ -106,13 +115,18 @@ public class CustomButtonWidget extends ClickableWidget {
             return this;
         }
 
-        public Builder icon(@Nullable ItemStack itemIcon) {
+        public Builder itemIcon(@Nullable ItemStack itemIcon) {
             this.itemIcon = itemIcon;
             return this;
         }
 
+        public Builder stringIcon(String stringIcon) {
+            this.stringIcon = stringIcon;
+            return this;
+        }
+
         public CustomButtonWidget build() {
-            CustomButtonWidget customButtonWidget = new CustomButtonWidget(MinecraftClient.getInstance().textRenderer, this.x, this.y, this.width, this.height, this.text, this.itemIcon, this.clickCallback);
+            CustomButtonWidget customButtonWidget = new CustomButtonWidget(MinecraftClient.getInstance().textRenderer, this.x, this.y, this.width, this.height, this.text, this.itemIcon, this.stringIcon, this.clickCallback);
             customButtonWidget.setTooltip(this.tooltip);
             return customButtonWidget;
         }
