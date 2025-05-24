@@ -2,6 +2,7 @@ package io.github.markassk.fishonmcextras;
 
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
+import io.github.markassk.fishonmcextras.screens.hud.FishTrackerHud;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
@@ -84,7 +85,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
 
     private void onJoin(ClientPlayNetworkHandler clientPlayNetworkHandler, PacketSender packetSender, MinecraftClient minecraftClient) {
         LoadingHandler.instance().init();
-        FishCatchHandler.instance().init();
         PetEquipHandler.instance().init();
         NotificationSoundHandler.instance().init();
         DiscordHandler.instance().init();
@@ -96,6 +96,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 minecraftClient.execute(() -> {
                     if (minecraftClient.player != null) {
                         ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
+                        FishCatchHandler.instance().onJoinServer();
                         DiscordHandler.instance().connect();
                         LoadingHandler.instance().isOnServer = true;
                     }
@@ -113,6 +114,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             PetEquipHandler.instance().onReceiveMessage(text);
             ContestHandler.instance().onReceiveMessage(text);
             CrewHandler.instance().onReceiveMessage(text);
+            FishCatchHandler.instance().onReceiveMessage(text);
         }
     }
 
@@ -126,6 +128,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
     private void onLeave(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
         LoadingHandler.instance().init();
         FishCatchHandler.instance().onLeaveServer();
+        ContestHandler.instance().onLeaveServer();
         LoadingHandler.instance().isOnServer = false;
 
     }

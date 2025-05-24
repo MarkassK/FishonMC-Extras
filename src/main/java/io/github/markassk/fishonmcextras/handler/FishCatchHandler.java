@@ -4,31 +4,30 @@ import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.FishStrings;
 import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
-import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
-import io.github.markassk.fishonmcextras.FOMC.Types.Shard;
+import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FishCatchHandler  {
     private static FishCatchHandler INSTANCE = new FishCatchHandler();
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
-    private final List<UUID> trackedFishes = new ArrayList<>();
-    private final List<UUID> trackedPets = new ArrayList<>();
-    private int trackedShards = 0;
-    private boolean hasUsedRod = false;
-    private boolean isDone = false;
-    private int prevEmptySlots = 0;
-
-    public long lastTimeUsedRod = 0;
+    private Text title = Text.empty();
+    private Text subtitle = Text.empty();
+    private final List<UUID> trackFishList = new ArrayList<>();
+    private boolean fishFound = false;
+    private boolean preCheck = false;
+    private boolean isFull = false;
+    private long fishCaughtTime = 0L;
 
     public static FishCatchHandler instance() {
         if (INSTANCE == null) {
@@ -37,174 +36,168 @@ public class FishCatchHandler  {
         return INSTANCE;
     }
 
-    public void init() {
-        isDone = false;
-    }
-
     public void tick(MinecraftClient minecraftClient) {
-        if(minecraftClient.player != null && minecraftClient.player.fishHook != null && !hasUsedRod) {
-            hasUsedRod = true;
-        } else if (minecraftClient.player != null && hasUsedRod && minecraftClient.player.fishHook == null) {
-            hasUsedRod = false;
-            this.lastTimeUsedRod = System.currentTimeMillis();
+        if(minecraftClient.player == null || !LoadingHandler.instance().isLoadingDone || minecraftClient.world == null) {
+            return;
         }
 
+        if(this.preCheck) {
+            this.updateTrackedFish(minecraftClient.player);
+            this.preCheck = false;
+            FishOnMCExtras.LOGGER.info("[FoE] Tracked Fish: {}", this.trackFishList.size());
+        }
 
-        if(!LoadingHandler.instance().isLoadingDone || !isDone) {
-            // Pre scan inventory for old fishes
-            scanInventoryBackground(minecraftClient.player);
-        } else {
-            if(System.currentTimeMillis() - lastTimeUsedRod < 2000) {
-                // Scan Inventory for new fishes
-                scanInventory(minecraftClient.player);
+        if(this.fishFound) {
+            if (System.currentTimeMillis() - this.fishCaughtTime < 2000L) {
+                if (!this.isFull) {
+                    for (int i = minecraftClient.player.getInventory().main.size() - 1; i >= 0; i--) {
+                        ItemStack stack = minecraftClient.player.getInventory().main.get(i);
+                        if(stack.isEmpty()) {
+                            continue;
+                        }
+                        this.processStack(stack, minecraftClient);
+                    }
+                }
+
+                if(FullInventoryHandler.instance().slotsLeft == 0) {
+                    this.isFull = true;
+
+                    minecraftClient.world.getEntities().forEach(entity -> {
+                        if(entity instanceof ItemEntity itemEntity) {
+                            ItemStack stack =  itemEntity.getStack();
+                            if(stack.isEmpty()) {
+                                return;
+                            }
+                            this.processStack(stack, minecraftClient);
+                        }
+                    });
+                }
+
             } else {
-                // Scan Inventory in the background for changes when not fishing
-                scanInventoryBackground(minecraftClient.player);
+                this.fishFound = false;
+                this.isFull = false;
+                this.updateTrackedFish(minecraftClient.player);
+                FishOnMCExtras.LOGGER.error("[FoE] Fish not found");
             }
         }
 
-        // Ticking while in server
         ProfileDataHandler.instance().tickTimer();
+    }
+
+    public void onJoinServer() {
+        this.preCheck = true;
     }
 
     public void onLeaveServer() {
         ProfileDataHandler.instance().saveStats();
+        this.fishFound = false;
+    }
+
+    public void catchTitle(Text title) {
+        if(title.getString().length() != 1 || title.equals(Text.empty())) {
+            return;
+        }
+
+        if(isFish(title.getString().charAt(0))) {
+            this.title = title;
+            this.fishFound = true;
+            this.fishCaughtTime = System.currentTimeMillis();
+
+            if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
+                MinecraftClient.getInstance().inGameHud.setSubtitle(Text.empty());
+                MinecraftClient.getInstance().inGameHud.setTitle(Text.empty());
+            }
+        }
+    }
+
+    public void catchSubtitle(Text title) {
+        if(title.getString().contains(Constant.COMMON.TAG.getString())
+                || title.getString().contains(Constant.RARE.TAG.getString())
+                || title.getString().contains(Constant.EPIC.TAG.getString())
+                || title.getString().contains(Constant.LEGENDARY.TAG.getString())
+                || title.getString().contains(Constant.MYTHICAL.TAG.getString())
+        ) {
+            this.subtitle = title;
+        }
     }
 
     public void reset() {
         LoadingHandler.instance().isLoadingDone = false;
-        trackedFishes.clear();
-        trackedPets.clear();
-        trackedShards = 0;
+        if(MinecraftClient.getInstance().player != null) {
+            this.updateTrackedFish(MinecraftClient.getInstance().player);
+        }
     }
 
-    private void scanInventoryBackground(PlayerEntity player) {
-        int shardCount = 0;
-        int emptySlots = 0;
-        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-            if(player.getInventory().main.get(slot).isEmpty()) emptySlots++;
+    public void onReceiveMessage(Text text) {
+        if(text.getString().startsWith("PET DROP! You pulled a")) {
+            ProfileDataHandler.instance().updatePetCaughtStatsOnCatch();
+            FishOnMCExtras.LOGGER.info("[FoE] Tracking Pet");
         }
 
-        if(this.prevEmptySlots != emptySlots) {
-            this.prevEmptySlots = emptySlots;
-            for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-                ItemStack stack = player.getInventory().main.get(slot);
+        if(text.getString().startsWith("RARE DROP! You pulled a") && text.getString().contains("Shard")) {
+            ProfileDataHandler.instance().updateShardCaughtStatsOnCatch(1);
+            FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
+        }
+    }
 
-                if(stack.isEmpty()) {
-                    continue;
-                }
+    private boolean isFish(char character) {
+        return (int) character > 0xE000 && (int) character < 0xE999;
+    }
 
-                if(FOMCItem.getFOMCItem(stack) instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
-                    if(!trackedFishes.contains(fish.id)) {
-                        trackedFishes.add(fish.id);
-                    }
-                } else if (FOMCItem.getFOMCItem(stack) instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
-                    if(!trackedPets.contains(pet.id)) {
-                        trackedPets.add(pet.id);
-                    }
-                }
+    private void processStack(ItemStack stack, MinecraftClient minecraftClient) {
+        if (FOMCItem.getFOMCItem(stack, true) instanceof Fish fish
+                && Objects.equals(fish.catcher, minecraftClient.player.getUuid())
+                && !trackFishList.contains(fish.id)
+                && this.subtitle.getString().contains(stack.getName().getString())) {
+            FishOnMCExtras.LOGGER.info("[FoE] Tracking {}", stack.getName().getString());
+
+            if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
+                this.sendToTitleHud(fish, this.title, this.subtitle);
             }
-        }
 
-        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-            ItemStack stack = player.getInventory().main.get(slot);
+            ProfileDataHandler.instance().updateStatsOnCatch(fish);
+            QuestHandler.instance().updateQuest(fish);
+
+            this.fishFound = false;
+            this.isFull = false;
+            this.updateTrackedFish(minecraftClient.player);
+            this.title = Text.empty();
+            this.subtitle = Text.empty();
+        }
+    }
+
+    private void updateTrackedFish(PlayerEntity player) {
+        trackFishList.clear();
+        for (int i = player.getInventory().main.size() - 1; i >= 0; i--) {
+            ItemStack stack = player.getInventory().main.get(i);
 
             if(stack.isEmpty()) {
                 continue;
             }
 
-            if (FOMCItem.getFOMCItem(stack, true) instanceof Shard) {
-                shardCount += stack.getCount();
+            if (FOMCItem.getFOMCItem(stack, true) instanceof Fish fish
+                    && Objects.equals(fish.catcher, player.getUuid())
+                    && !trackFishList.contains(fish.id)) {
+                trackFishList.add(fish.id);
             }
-        }
-
-        if(trackedShards != shardCount) {
-            trackedShards = shardCount;
-        }
-
-        if(LoadingHandler.instance().isLoadingDone) {
-            isDone = true;
         }
     }
 
-    private void scanInventory(PlayerEntity player) {
-        int shardCount = 0;
-        int emptySlots = 0;
-        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-            if(player.getInventory().main.get(slot).isEmpty()) emptySlots++;
-        }
-
-        if(this.prevEmptySlots != emptySlots) {
-            this.prevEmptySlots = emptySlots;
-            for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-                ItemStack stack = player.getInventory().main.get(slot);
-
-                if(stack.isEmpty()) {
-                    continue;
-                }
-
-                FOMCItem fomcItem = FOMCItem.getFOMCItem(stack);
-
-                if(fomcItem instanceof Fish fish && Objects.equals(fish.catcher, player.getUuid())) {
-                    if(!trackedFishes.contains(fish.id)) {
-                        trackedFishes.add(fish.id);
-                        ProfileDataHandler.instance().updateStatsOnCatch(fish);
-
-                        // Update stats on Equipped Pet
-                        PetEquipHandler.instance().updatePet(player);
-
-                        // Send to TitleHud
-                        if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
-                            sendToTitleHud(stack, fish);
-                        }
-
-                        // Send to quest tracker
-                        QuestHandler.instance().updateQuest(fish);
-
-                    }
-                } else if (fomcItem instanceof Pet pet && Objects.equals(pet.discoverer, player.getUuid())) {
-                    if(!trackedPets.contains(pet.id)) {
-                        trackedPets.add(pet.id);
-                        ProfileDataHandler.instance().updateStatsOnCatch();
-                    }
-                }
-            }
-        }
-
-        for (int slot = 0; slot < player.getInventory().main.size(); slot++) {
-            ItemStack stack = player.getInventory().main.get(slot);
-
-            if(stack.isEmpty()) {
-                continue;
-            }
-
-            if (FOMCItem.getFOMCItem(stack, true) instanceof Shard) {
-                shardCount += stack.getCount();
-            }
-        }
-
-        if(shardCount > trackedShards) {
-            ProfileDataHandler.instance().updateStatsOnCatch(1);
-            trackedShards = shardCount;
-        }
-    }
-
-    private void sendToTitleHud(ItemStack stack, Fish fish) {
+    private void sendToTitleHud(Fish fish, Text icon, Text name) {
         // Send to TitleHud
         List<Text> title = new ArrayList<>();
         if(FishStrings.valueOfId(fish.fishId) != null) {
-            title.add(Text.literal(Objects.requireNonNull(FishStrings.valueOfId(fish.fishId)).CHARACTER).formatted(Formatting.WHITE));
+            title.add(icon.copy().formatted(Formatting.WHITE));
             title.add(Text.empty());
         }
         if(fish.variant != Constant.NORMAL) {
             title.add(fish.variant.TAG);
         }
-        title.add(TextHelper.concat(
-                fish.rarity.TAG,
-                Text.literal(" "),
-                stack.getName()
-        ));
+        title.add(name);
         title.add(fish.size.TAG);
+        if(FullInventoryHandler.instance().slotsLeft == 0) {
+            title.add(Text.literal("Inventory Full!").formatted(Formatting.RED));
+        }
         List<Text> subtitle = new ArrayList<>();
         if(config.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch) {
             subtitle.add(Text.literal("ᴡᴇɪɢʜᴛ").formatted(Formatting.BOLD).withColor(0xFFFFFF));
