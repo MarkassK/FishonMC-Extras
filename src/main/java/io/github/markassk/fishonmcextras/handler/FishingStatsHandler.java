@@ -22,18 +22,21 @@ public class FishingStatsHandler {
     }
 
     public void appendTooltip(List<Text> textList, ItemStack itemStack) {
-        if(config.fishStatsTooltip.showStats && KeybindHandler.instance().showExtraInfo && FOMCItem.getFOMCItem(itemStack) instanceof FOMCItem item) {
-            Constant textRarityWindow = getTextRarity(item.rarity);
-            for (int i = textList.size() - 1; i >= 0; i--) {
-                if(textList.get(i).getString().contains("ʟᴜᴄᴋ")) addLine(textList, i, "ᴄʜᴀɴᴄᴇ ꜰᴏʀ ʜɪɢʜᴇʀ ʀᴀʀɪᴛʏ ꜰɪѕʜ", textRarityWindow);
-                if(textList.get(i).getString().contains("sᴄᴀʟᴇ")) addLine(textList, i, "ᴄʜᴀɴᴄᴇ ꜰᴏʀ ʙɪɢɢᴇʀ ꜰɪѕʜ ɢʀᴏᴜᴘѕ", textRarityWindow);
-                if(textList.get(i).getString().contains("ᴘʀᴏsᴘᴇᴄᴛ")) addLine(textList, i, "ᴄʜᴀɴᴄᴇ ꜰᴏʀ ѕʜᴀʀᴅѕ", textRarityWindow);
-                if(textList.get(i).getString().contains("ʀᴇᴇʟ sᴘᴇᴇᴅ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ѕᴘᴇᴇᴅ ᴏꜰ ʀᴇᴇʟɪɴɢ ꜰɪѕʜ", textRarityWindow);
-                if(textList.get(i).getString().contains("ʟɪɴᴇ sᴛʀᴇɴɢᴛʜ")) addLine(textList, i, "ʟᴏᴡᴇʀѕ ᴛɪᴍᴇ ᴏꜰ ʀᴇᴇʟɪɴɢ ꜰɪѕʜ", textRarityWindow);
-                if(textList.get(i).getString().contains("ʙɪᴛᴇ sᴘᴇᴇᴅ")) addLine(textList, i, "ʟᴏᴡᴇʀѕ ᴛɪᴍᴇ ᴛɪʟʟ ꜰɪѕʜᴇѕ ʙɪᴛᴇ", textRarityWindow);
-                if(textList.get(i).getString().contains("ᴀʟʙɪɴᴏ ᴄʜᴀɴᴄᴇ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ᴀʟʙɪɴᴏ ᴄʜᴀɴᴄᴇ", textRarityWindow);
-                if(textList.get(i).getString().contains("ᴍᴇʟᴀɴɪsᴛɪᴄ ᴄʜᴀɴᴄᴇ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ᴍᴇʟᴀɴɪѕᴛɪᴄ ᴄʜᴀɴᴄᴇ", textRarityWindow);
-                if(textList.get(i).getString().contains("ᴛʀᴏᴘʜʏ ᴄʜᴀɴᴄᴇ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ᴛʀᴏᴘʜʏ ᴄʜᴀɴᴄᴇ", textRarityWindow);
+        if(config.fishStatsTooltip.showStats && KeybindHandler.instance().showExtraInfo && FOMCItem.isFOMCItem(itemStack)) {
+            FOMCItem item = FOMCItem.getFOMCItem(itemStack);
+            if (item != null) {
+                Constant textRarityWindow = getTextRarity(item.rarity);
+                for (int i = textList.size() - 1; i >= 0; i--) {
+                    if(textList.get(i).getString().contains("ʟᴜᴄᴋ")) addLine(textList, i, "ᴄʜᴀɴᴄᴇ ꜰᴏʀ ʜɪɢʜᴇʀ ʀᴀʀɪᴛʏ ꜰɪѕʜ", textRarityWindow);
+                    if(textList.get(i).getString().contains("sᴄᴀʟᴇ")) addLine(textList, i, "ᴄʜᴀɴᴄᴇ ꜰᴏʀ ʙɪɢɢᴇʀ ꜰɪѕʜ ɢʀᴏᴜᴘѕ", textRarityWindow);
+                    if(textList.get(i).getString().contains("ᴘʀᴏsᴘᴇᴄᴛ")) addLine(textList, i, "ᴄʜᴀɴᴄᴇ ꜰᴏʀ ѕʜᴀʀᴅѕ", textRarityWindow);
+                    if(textList.get(i).getString().contains("ʀᴇᴇʟ sᴘᴇᴇᴅ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ѕᴘᴇᴇᴅ ᴡʜᴇɴ ʀᴇᴇʟɪɴɢ", textRarityWindow);
+                    if(textList.get(i).getString().contains("ʟɪɴᴇ sᴛʀᴇɴɢᴛʜ")) addLine(textList, i, "ʟᴏᴡᴇʀѕ ᴛɪᴍᴇ ᴡʜᴇɴ ʀᴇᴇʟɪɴɢ", textRarityWindow);
+                    if(textList.get(i).getString().contains("ʙɪᴛᴇ sᴘᴇᴇᴅ")) addLine(textList, i, "ʟᴏᴡᴇʀѕ ᴛɪᴍᴇ ᴛɪʟʟ ꜰɪѕʜᴇѕ ʙɪᴛᴇ", textRarityWindow);
+                    if(textList.get(i).getString().contains("ᴀʟʙɪɴᴏ ᴄʜᴀɴᴄᴇ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ᴀʟʙɪɴᴏ ᴄʜᴀɴᴄᴇ", textRarityWindow);
+                    if(textList.get(i).getString().contains("ᴍᴇʟᴀɴɪsᴛɪᴄ ᴄʜᴀɴᴄᴇ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ᴍᴇʟᴀɴɪѕᴛɪᴄ ᴄʜᴀɴᴄᴇ", textRarityWindow);
+                    if(textList.get(i).getString().contains("ᴛʀᴏᴘʜʏ ᴄʜᴀɴᴄᴇ")) addLine(textList, i, "ɪɴᴄʀᴇᴀѕᴇѕ ᴛʀᴏᴘʜʏ ᴄʜᴀɴᴄᴇ", textRarityWindow);
+                }
             }
         }
     }

@@ -60,25 +60,28 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         if(minecraftClient.getCurrentServerEntry() != null ) {
             if(LoadingHandler.instance().checkAddress(minecraftClient) && LoadingHandler.instance().isOnServer) {
                 LoadingHandler.instance().tick(minecraftClient);
-                FishCatchHandler.instance().tick(minecraftClient);
-                PetEquipHandler.instance().tick(minecraftClient);
-                FullInventoryHandler.instance().tick(minecraftClient);
-                NotificationSoundHandler.instance().tick(minecraftClient);
-                RayTracingHandler.instance().tick(minecraftClient);
-                LookTickHandler.instance().tick();
-                LocationHandler.instance().tick(minecraftClient);
-                ScoreboardHandler.instance().tick(minecraftClient);
-                ContestHandler.instance().tick();
-                TabHandler.instance().tick(minecraftClient);
-                BossBarHandler.instance().tick(minecraftClient);
-                QuestHandler.instance().tick(minecraftClient);
-                ArmorHandler.instance().tick(minecraftClient);
-                FishingRodHandler.instance().tick(minecraftClient);
-                CrewHandler.instance().tick(minecraftClient);
-                StatsImportHandler.instance().tick(minecraftClient);
-                DiscordHandler.instance().tick();
-                KeybindHandler.instance().tick(minecraftClient);
-                InventoryButtonHandler.instance().tick(minecraftClient);
+                if(LoadingHandler.instance().isLoadingDone) {
+                    FishCatchHandler.instance().tick(minecraftClient);
+                    PetEquipHandler.instance().tick(minecraftClient);
+                    FullInventoryHandler.instance().tick(minecraftClient);
+                    NotificationSoundHandler.instance().tick(minecraftClient);
+                    RayTracingHandler.instance().tick(minecraftClient);
+                    LookTickHandler.instance().tick();
+                    LocationHandler.instance().tick(minecraftClient);
+                    ScoreboardHandler.instance().tick(minecraftClient);
+                    ContestHandler.instance().tick();
+                    TabHandler.instance().tick(minecraftClient);
+                    BossBarHandler.instance().tick(minecraftClient);
+                    QuestHandler.instance().tick(minecraftClient);
+                    ArmorHandler.instance().tick(minecraftClient);
+                    FishingRodHandler.instance().tick(minecraftClient);
+                    CrewHandler.instance().tick(minecraftClient);
+                    StatsImportHandler.instance().tick(minecraftClient);
+                    DiscordHandler.instance().tick();
+                    KeybindHandler.instance().tick(minecraftClient);
+                    InventoryButtonHandler.instance().tick(minecraftClient);
+                    ThemingHandler.instance().tick();
+                }
              }
         }
     }

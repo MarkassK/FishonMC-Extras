@@ -1,11 +1,14 @@
 package io.github.markassk.fishonmcextras.screens.widget;
 
+import io.github.markassk.fishonmcextras.common.Theming;
+import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +43,9 @@ public class CustomButtonWidget extends ClickableWidget {
         int alphaInt = (int) ((60 / 100f) * 255f) << 24;
         // Box
         context.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, this.isHovered() ? alphaInt | 0xFFFFFF : alphaInt);
-        context.drawBorder(this.getX(), this.getY(), this.width, this.height, this.hovered ? 0xFFFFAA00 : 0xFFFFFFFF);
+        if(ThemingHandler.instance().currentThemeType == Theming.ThemeType.OFF) {
+            context.drawBorder(this.getX(), this.getY(), this.width, this.height, this.hovered ? 0xFFFFAA00 : 0xFFFFFFFF);
+        }
 
         // Button Text
         context.drawText(textRenderer, this.text,
@@ -55,6 +60,22 @@ public class CustomButtonWidget extends ClickableWidget {
             } else if (!Objects.equals(stringIcon, "")) {
                 context.drawText(textRenderer, this.stringIcon, this.getX() + iconSize / 2 + padding - textRenderer.getWidth(this.stringIcon) / 2, this.getY() + iconSize / 2 + padding - textRenderer.fontHeight / 2, 0xFFFFFF, true);
             }
+        }
+
+        if(ThemingHandler.instance().currentThemeType != Theming.ThemeType.OFF) {
+            Theming theme = ThemingHandler.instance().currentTheme;
+
+            // Corners
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, this.getX() - 8, this.getY() - 8, 16, 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, this.getX() + this.width - 8, this.getY() - 8, 16, 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, this.getX() - 8, this.getY() + this.height - 8, 16, 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, this.getX() + this.width - 8, this.getY() + this.height - 8, 16, 16);
+
+            // Sides
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, this.getX() - 8, this.getY() + 8, 16, this.height - 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, this.getX() + this.width - 8, this.getY() + 8, 16, this.height - 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, this.getX() + 8, this.getY() - 8, this.width - 16, 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, this.getX() + 8, this.getY() + this.height - 8, this.width - 16, 16);
         }
     }
 

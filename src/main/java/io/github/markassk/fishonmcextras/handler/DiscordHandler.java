@@ -103,6 +103,8 @@ public class DiscordHandler {
             } catch (NoClassDefFoundError e) {
                 FishOnMCExtras.LOGGER.error("Could not find class", e);
                 shouldConnect = false;
+            } catch (Throwable e) {
+                FishOnMCExtras.LOGGER.error("Other issue: ", e);
             }
         }
     }

@@ -188,4 +188,16 @@ public class Pet extends FOMCItem {
     public static Pet getPet(ItemStack itemStack, String type) {
         return new Pet(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type);
     }
+
+    public static Pet getPet(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")
+                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.PET)) {
+                return Pet.getPet(itemStack, Defaults.ItemTypes.PET);
+            }
+        }
+        return null;
+    }
 }

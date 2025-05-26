@@ -145,7 +145,8 @@ public class FishCatchHandler  {
     }
 
     private void processStack(ItemStack stack, MinecraftClient minecraftClient) {
-        if (FOMCItem.getFOMCItem(stack, true) instanceof Fish fish
+        Fish fish = Fish.getFish(stack);
+        if (fish != null
                 && Objects.equals(fish.catcher, minecraftClient.player.getUuid())
                 && !trackFishList.contains(fish.id)
                 && this.subtitle.getString().contains(stack.getName().getString())) {
@@ -175,7 +176,8 @@ public class FishCatchHandler  {
                 continue;
             }
 
-            if (FOMCItem.getFOMCItem(stack, true) instanceof Fish fish
+            Fish fish = Fish.getFish(stack);
+            if (fish != null
                     && Objects.equals(fish.catcher, player.getUuid())
                     && !trackFishList.contains(fish.id)) {
                 trackFishList.add(fish.id);
