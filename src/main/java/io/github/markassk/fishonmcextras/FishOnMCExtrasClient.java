@@ -148,9 +148,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         if(LoadingHandler.instance().isOnServer) {
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
 //                 Pet Menu핑
-                Screens.getButtons(screen).add(IconButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
-                            minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
-                        })
+                Screens.getButtons(screen).add(IconButtonWidget.builder(Text.literal("Pet Merge Calculator"), button ->
+                                minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen)))
                         .position(scaledWidth / 2 + 100, scaledHeight / 2 - 100)
                         .tooltip(Tooltip.of(Text.literal("Open up the screen to calculate pet merging.")))
                         .itemIcon(Items.TURTLE_EGG.getDefaultStack())

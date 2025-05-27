@@ -4,7 +4,6 @@ import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
 import io.github.markassk.fishonmcextras.FOMC.Types.Bait;
 import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
-import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
 import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.*;

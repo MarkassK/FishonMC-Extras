@@ -106,9 +106,8 @@ public class StatsImportHandler {
     }
 
     private IconButtonWidget getButton(MinecraftClient minecraftClient) {
-        return IconButtonWidget.builder(Text.literal("Import Stats"), button -> {
-                    StatsImportHandler.instance().onButtonClick(minecraftClient);
-                })
+        return IconButtonWidget.builder(Text.literal("Import Stats"), button ->
+                        StatsImportHandler.instance().onButtonClick(minecraftClient))
                 .position(minecraftClient.getWindow().getScaledWidth() / 2 + 100, minecraftClient.getWindow().getScaledHeight() / 2 - 100)
                 .tooltip(Tooltip.of(
                         TextHelper.concat(

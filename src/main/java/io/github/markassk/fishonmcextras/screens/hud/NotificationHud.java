@@ -5,7 +5,6 @@ import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.handler.screens.hud.NotificationHudHandler;
-import io.github.markassk.fishonmcextras.handler.screens.hud.QuestTrackerHudHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
