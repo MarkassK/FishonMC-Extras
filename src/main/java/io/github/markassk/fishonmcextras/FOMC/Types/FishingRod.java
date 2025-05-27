@@ -81,8 +81,8 @@ public class FishingRod extends FOMCItem {
 
     public static FishingRod getFishingRod(ItemStack itemStack) {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
-                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
-            if (itemStack.getItem() == Items.FISHING_ROD) {
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem").orElse(false)) {
+            if (itemStack.getItem() == Items.FISHING_ROD && Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("soulbound_rod").isPresent()) {
                 return FishingRod.getFishingRod(itemStack, Defaults.ItemTypes.FISHINGROD, itemStack.getName().getString());
             }
         }

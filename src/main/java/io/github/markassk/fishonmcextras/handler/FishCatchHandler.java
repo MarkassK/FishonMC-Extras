@@ -2,7 +2,6 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.FishStrings;
-import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
@@ -15,7 +14,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FishCatchHandler  {
     private static FishCatchHandler INSTANCE = new FishCatchHandler();
@@ -50,8 +48,8 @@ public class FishCatchHandler  {
         if(this.fishFound) {
             if (System.currentTimeMillis() - this.fishCaughtTime < 2000L) {
                 if (!this.isFull) {
-                    for (int i = minecraftClient.player.getInventory().main.size() - 1; i >= 0; i--) {
-                        ItemStack stack = minecraftClient.player.getInventory().main.get(i);
+                    for (int i = minecraftClient.player.getInventory().getMainStacks().size() - 1; i >= 0; i--) {
+                        ItemStack stack = minecraftClient.player.getInventory().getMainStacks().get(i);
                         if(stack.isEmpty()) {
                             continue;
                         }
@@ -146,6 +144,10 @@ public class FishCatchHandler  {
 
     private void processStack(ItemStack stack, MinecraftClient minecraftClient) {
         Fish fish = Fish.getFish(stack);
+        if(minecraftClient.player == null) {
+            return;
+        }
+
         if (fish != null
                 && Objects.equals(fish.catcher, minecraftClient.player.getUuid())
                 && !trackFishList.contains(fish.id)
@@ -169,8 +171,8 @@ public class FishCatchHandler  {
 
     private void updateTrackedFish(PlayerEntity player) {
         trackFishList.clear();
-        for (int i = player.getInventory().main.size() - 1; i >= 0; i--) {
-            ItemStack stack = player.getInventory().main.get(i);
+        for (int i = player.getInventory().getMainStacks().size() - 1; i >= 0; i--) {
+            ItemStack stack = player.getInventory().getMainStacks().get(i);
 
             if(stack.isEmpty()) {
                 continue;
