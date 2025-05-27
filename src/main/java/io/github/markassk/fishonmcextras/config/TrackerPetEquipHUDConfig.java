@@ -33,6 +33,7 @@ public class TrackerPetEquipHUDConfig {
             public boolean usePetEquipWarningSound = false;
             @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
             public int timePetEquipWarningSound = 10;
+            @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
             public NotificationSoundHandler.SoundType petEquipSoundType = NotificationSoundHandler.SoundType.DIDGERIDOO;
         }
     }

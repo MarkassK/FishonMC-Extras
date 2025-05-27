@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.screens.widget;
 
 import io.github.markassk.fishonmcextras.common.Theming;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -11,24 +12,27 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class CustomButtonWidget extends ClickableWidget {
+public class IconButtonWidget extends ClickableWidget {
+    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
     private final int padding = 4;
     private final int iconSize = 16;
-    private final Text text;
+    private Text text;
     private final ItemStack itemIcon;
     private final String stringIcon;
     private final TextRenderer textRenderer;
+    private final boolean isLoader;
     private final ClickCallback clickCallback;
 
-    public static CustomButtonWidget.Builder builder(Text text, ClickCallback onClick) {
-        return new CustomButtonWidget.Builder(text, onClick);
+    public static IconButtonWidget.Builder builder(Text text, ClickCallback onClick) {
+        return new IconButtonWidget.Builder(text, onClick);
     }
 
-    private CustomButtonWidget(TextRenderer textRenderer, int x, int y, int width, int height, Text text, ItemStack itemIcon, String stringIcon, ClickCallback clickCallback) {
+    private IconButtonWidget(TextRenderer textRenderer, int x, int y, int width, int height, Text text, ItemStack itemIcon, String stringIcon, boolean isLoader, ClickCallback clickCallback) {
         super(x, y, 0, height, text);
         this.textRenderer = textRenderer;
         this.clickCallback = clickCallback;
@@ -36,6 +40,7 @@ public class CustomButtonWidget extends ClickableWidget {
         this.itemIcon = itemIcon;
         this.stringIcon = stringIcon;
         this.setWidth(width == -1 ? padding * 3 + iconSize + textRenderer.getWidth(text) : width);
+        this.isLoader = isLoader;
     }
 
     @Override
@@ -64,18 +69,19 @@ public class CustomButtonWidget extends ClickableWidget {
 
         if(ThemingHandler.instance().currentThemeType != Theming.ThemeType.OFF) {
             Theming theme = ThemingHandler.instance().currentTheme;
+            int colorOverlay = config.theme.colorOverlay;
 
             // Corners
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, this.getX() - 8, this.getY() - 8, 16, 16);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, this.getX() + this.width - 8, this.getY() - 8, 16, 16);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, this.getX() - 8, this.getY() + this.height - 8, 16, 16);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, this.getX() + this.width - 8, this.getY() + this.height - 8, 16, 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, this.getX() - 8, this.getY() - 8, 16, 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, this.getX() + this.width - 8, this.getY() - 8, 16, 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, this.getX() - 8, this.getY() + this.height - 8, 16, 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, this.getX() + this.width - 8, this.getY() + this.height - 8, 16, 16, colorOverlay);
 
             // Sides
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, this.getX() - 8, this.getY() + 8, 16, this.height - 16);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, this.getX() + this.width - 8, this.getY() + 8, 16, this.height - 16);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, this.getX() + 8, this.getY() - 8, this.width - 16, 16);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, this.getX() + 8, this.getY() + this.height - 8, this.width - 16, 16);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, this.getX() - 8, this.getY() + 8, 16, this.height - 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, this.getX() + this.width - 8, this.getY() + 8, 16, this.height - 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, this.getX() + 8, this.getY() - 8, this.width - 16, 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, this.getX() + 8, this.getY() + this.height - 8, this.width - 16, 16, colorOverlay);
         }
     }
 
@@ -83,6 +89,7 @@ public class CustomButtonWidget extends ClickableWidget {
     public void onClick(double mouseX, double mouseY) {
         super.onClick(mouseX, mouseY);
         this.clickCallback.onClick(this);
+        if(isLoader) this.text = Text.literal("Loading...").formatted(Formatting.GRAY);
     }
 
     @Override
@@ -103,6 +110,7 @@ public class CustomButtonWidget extends ClickableWidget {
         private int width = -1;
         private int height = 24;
         private String stringIcon = "";
+        private boolean isLoader = false;
 
         public Builder(Text text, ClickCallback clickCallback) {
             this.text = text;
@@ -146,14 +154,19 @@ public class CustomButtonWidget extends ClickableWidget {
             return this;
         }
 
-        public CustomButtonWidget build() {
-            CustomButtonWidget customButtonWidget = new CustomButtonWidget(MinecraftClient.getInstance().textRenderer, this.x, this.y, this.width, this.height, this.text, this.itemIcon, this.stringIcon, this.clickCallback);
-            customButtonWidget.setTooltip(this.tooltip);
-            return customButtonWidget;
+        public Builder isLoader(boolean isLoader) {
+            this.isLoader = isLoader;
+            return this;
+        }
+
+        public IconButtonWidget build() {
+            IconButtonWidget iconButtonWidget = new IconButtonWidget(MinecraftClient.getInstance().textRenderer, this.x, this.y, this.width, this.height, this.text, this.itemIcon, this.stringIcon, this.isLoader ,this.clickCallback);
+            iconButtonWidget.setTooltip(this.tooltip);
+            return iconButtonWidget;
         }
     }
 
     public interface ClickCallback {
-        void onClick(CustomButtonWidget customButtonWidget);
+        void onClick(IconButtonWidget iconButtonWidget);
     }
 }

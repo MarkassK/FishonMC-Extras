@@ -5,6 +5,7 @@ public class ConfigConstants {
     public static final String TRACKERS = "trackers";
     public static final String TOOLTIPS = "tooltips";
     public static final String OTHER = "other";
+    public static final String COSMETIC = "cosmetic";
 
     public static final boolean DEV = false;
 }

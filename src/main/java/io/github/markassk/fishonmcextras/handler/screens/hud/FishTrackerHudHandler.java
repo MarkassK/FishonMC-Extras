@@ -1,8 +1,10 @@
 package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
+import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -93,16 +95,18 @@ public class FishTrackerHudHandler {
 
         int displayTimerFishCaughtCount = profileData.timerFishCaughtCount;
 
-        if(config.fishTracker.rightAlignment) {
-            textList.add(TextHelper.concat(
-                    config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD),
-                    Text.literal(" ◀").formatted(Formatting.GRAY)
-            ));
-        } else {
-            textList.add(TextHelper.concat(
-                    Text.literal("▶ ").formatted(Formatting.GRAY),
-                    config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD)
-            ));
+        if (ThemingHandler.instance().currentThemeType == Theming.ThemeType.OFF) {
+            if(config.fishTracker.rightAlignment) {
+                textList.add(TextHelper.concat(
+                        this.getTitle().copy().formatted(Formatting.GRAY),
+                        Text.literal(" ◀").formatted(Formatting.GRAY)
+                ));
+            } else {
+                textList.add(TextHelper.concat(
+                        Text.literal("▶ ").formatted(Formatting.GRAY),
+                        this.getTitle().copy().formatted(Formatting.GRAY)
+                ));
+            }
         }
 
         // Put into Texts if enabled in config
@@ -368,6 +372,11 @@ public class FishTrackerHudHandler {
         }
 
         return textList;
+    }
+
+    public Text getTitle() {
+        FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+        return config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.BOLD);
     }
 
     private Text getPercentage(int count, int totalCount) {

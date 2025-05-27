@@ -13,6 +13,7 @@ public class TrackerFullInventoryHUDConfig {
         public boolean useInventoryWarningSound = true;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
         public int timeInventoryWarningSound = 10;
+        @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public NotificationSoundHandler.SoundType fullInventorySoundType = NotificationSoundHandler.SoundType.DIDGERIDOO;
     }
 }

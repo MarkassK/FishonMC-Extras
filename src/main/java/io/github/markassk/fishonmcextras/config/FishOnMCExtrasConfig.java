@@ -85,5 +85,13 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public DiscordIPCConfig.DiscordIPC discordIPC = new DiscordIPCConfig.DiscordIPC();
+
+    @ConfigEntry.Category(value = COSMETIC)
+    @ConfigEntry.Gui.CollapsibleObject
+    public ThemingConfig.Theme theme = new ThemingConfig.Theme();
+
+    @ConfigEntry.Category(value = COSMETIC)
+    @ConfigEntry.Gui.CollapsibleObject
+    public ThemingConfig.Flair flair = new ThemingConfig.Flair();
     //endregion
 }

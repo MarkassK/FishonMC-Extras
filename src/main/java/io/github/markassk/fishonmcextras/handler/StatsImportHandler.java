@@ -1,7 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.screens.widget.CustomButtonWidget;
+import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
@@ -105,8 +105,8 @@ public class StatsImportHandler {
         }
     }
 
-    private CustomButtonWidget getButton(MinecraftClient minecraftClient) {
-        return CustomButtonWidget.builder(Text.literal("Import Stats"), button -> {
+    private IconButtonWidget getButton(MinecraftClient minecraftClient) {
+        return IconButtonWidget.builder(Text.literal("Import Stats"), button -> {
                     StatsImportHandler.instance().onButtonClick(minecraftClient);
                 })
                 .position(minecraftClient.getWindow().getScaledWidth() / 2 + 100, minecraftClient.getWindow().getScaledHeight() / 2 - 100)

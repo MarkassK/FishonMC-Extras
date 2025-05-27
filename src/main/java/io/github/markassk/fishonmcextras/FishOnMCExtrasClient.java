@@ -2,11 +2,10 @@ package io.github.markassk.fishonmcextras;
 
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
-import io.github.markassk.fishonmcextras.screens.hud.FishTrackerHud;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
-import io.github.markassk.fishonmcextras.screens.widget.CustomButtonWidget;
+import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -149,7 +148,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         if(LoadingHandler.instance().isOnServer) {
             if(Objects.equals(screen.getTitle().getString(), "Pet Menu\uEEE6\uEEE5\uEEE3핑")) {
 //                 Pet Menu핑
-                Screens.getButtons(screen).add(CustomButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
+                Screens.getButtons(screen).add(IconButtonWidget.builder(Text.literal("Pet Merge Calculator"), button -> {
                             minecraftClient.setScreen(new PetCalculatorScreen(minecraftClient.player, minecraftClient.currentScreen));
                         })
                         .position(scaledWidth / 2 + 100, scaledHeight / 2 - 100)
