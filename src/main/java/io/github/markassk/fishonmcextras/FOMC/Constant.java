@@ -188,6 +188,19 @@ public enum Constant {
     TEXTSPECIAL("textspecial", Text.literal("\uEEE4\uEEE1 퀃 \uEEE8\uEEE7\uEEE5\uEEE2 ").withColor(0xC746B4), DEFAULT_COLOR),
     TEXTDEFAULT("textdefault", Text.literal("\uEEE4\uEEE1 퀃 \uEEE8\uEEE7\uEEE5\uEEE2 ").withColor(0x5C4B34), DEFAULT_COLOR),
 
+    ANGLER("angler", Text.literal("\uF032"), DEFAULT_COLOR),
+    SAILOR("sailor", Text.literal("\uF031"), DEFAULT_COLOR),
+    MARINER("mariner", Text.literal("\uF030"), DEFAULT_COLOR),
+    CAPTAIN("captain", Text.literal("\uF029"), DEFAULT_COLOR),
+    ADMIRAL("admiral", Text.literal("\uF028"), DEFAULT_COLOR),
+    STAFF("staff", Text.literal("\uF024"), DEFAULT_COLOR),
+    DESIGNER("designer", Text.literal("\uF026"), DEFAULT_COLOR),
+    BUILDER("builder", Text.literal("\uF027"), DEFAULT_COLOR),
+    MANAGER("manager", Text.literal("\uF023"), DEFAULT_COLOR),
+    ADMIN("admin", Text.literal("\uF022"), DEFAULT_COLOR),
+    OWNER("owner", Text.literal("\uF021"), DEFAULT_COLOR),
+    COMMUNITYMANAGER("communitymanager", Text.literal("\uF088"), DEFAULT_COLOR),
+
     DEFAULT("default", Text.empty(), Defaults.DEFAULT_COLOR)
     ;
 

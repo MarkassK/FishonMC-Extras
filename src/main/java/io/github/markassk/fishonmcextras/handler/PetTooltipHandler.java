@@ -29,7 +29,9 @@ public class PetTooltipHandler {
 
     public void appendTooltip(List<Text> textList, ItemStack itemStack) {
         if(config.petTooltip.showPetPercentages) {
-            if(FOMCItem.getFOMCItem(itemStack) instanceof Pet pet) {
+            Pet pet = Pet.getPet(itemStack);
+
+            if(pet != null) {
                 Text petClimateLuckLine = TextHelper.concat(
                         textList.get(9),
                         getPercentage(pet.climateStat.percentLuck, config.petTooltip.decimalPlaces)

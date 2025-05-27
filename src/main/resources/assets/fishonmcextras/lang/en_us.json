@@ -8,6 +8,7 @@
   "text.autoconfig.fishonmcextras.category.trackers": "Trackers",
   "text.autoconfig.fishonmcextras.category.tooltips": "Tooltips",
   "text.autoconfig.fishonmcextras.category.other": "Miscellaneous",
+  "text.autoconfig.fishonmcextras.category.cosmetic": "Cosmetics",
 
   "text.autoconfig.fishonmcextras.option.fishTracker": "§f§lFish Tracker Options",
   "text.autoconfig.fishonmcextras.option.fishTracker.showFishTrackerHUD": "Fish Tracker HUD",
@@ -81,6 +82,7 @@
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch": "Show extra stats on catch.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch.@Tooltip": "§7If §aShow extra stats on catch§7 is §cdisabled§7, this option will be ignored.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatchTime": "Time for title to stay on screen.",
+  "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.abbreviateNumbers": "Shorten long numbers",
   "text.autoconfig.fishonmcextras.option.fishTracker.rightAlignment": "Right alignment",
   "text.autoconfig.fishonmcextras.option.fishTracker.backgroundOpacity": "Background opacity",
   "text.autoconfig.fishonmcextras.option.fishTracker.fontSize": "Font size",
@@ -200,5 +202,10 @@
 
   "text.autoconfig.fishonmcextras.option.discordIPC": "§f§lDiscord Rich Presence Options",
   "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled": "Enable Discord Rich Presence",
-  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this options"
+  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this options",
+
+  "text.autoconfig.fishonmcextras.option.theme": "§f§lTheme Options",
+  "text.autoconfig.fishonmcextras.option.theme.themeType": "Change Theme",
+  "text.autoconfig.fishonmcextras.option.theme.colorOverlay": "Change color overlay",
+  "text.autoconfig.fishonmcextras.option.theme.colorOverlay.@Tooltip": "§7This will only work properly on §aCLEAN §7themes."
 }

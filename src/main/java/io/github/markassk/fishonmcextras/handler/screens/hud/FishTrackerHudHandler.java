@@ -1,8 +1,10 @@
 package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
+import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -93,22 +95,24 @@ public class FishTrackerHudHandler {
 
         int displayTimerFishCaughtCount = profileData.timerFishCaughtCount;
 
-        if(config.fishTracker.rightAlignment) {
-            textList.add(TextHelper.concat(
-                    config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD),
-                    Text.literal(" ◀").formatted(Formatting.GRAY)
-            ));
-        } else {
-            textList.add(TextHelper.concat(
-                    Text.literal("▶ ").formatted(Formatting.GRAY),
-                    config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD)
-            ));
+        if (ThemingHandler.instance().currentThemeType == Theming.ThemeType.OFF) {
+            if(config.fishTracker.rightAlignment) {
+                textList.add(TextHelper.concat(
+                        this.getTitle().copy().formatted(Formatting.GRAY),
+                        Text.literal(" ◀").formatted(Formatting.GRAY)
+                ));
+            } else {
+                textList.add(TextHelper.concat(
+                        Text.literal("▶ ").formatted(Formatting.GRAY),
+                        this.getTitle().copy().formatted(Formatting.GRAY)
+                ));
+            }
         }
 
         // Put into Texts if enabled in config
         if (config.fishTracker.fishTrackerToggles.generalToggles.showFishCaught) textList.add(TextHelper.concat(
                     Text.literal("ꜰɪѕʜ ᴄᴀᴜɢʜᴛ: ").formatted(Formatting.GRAY),
-                    Text.literal(String.valueOf(displayFishCaughtCount)).formatted(Formatting.WHITE)
+                    Text.literal(getNumber(displayFishCaughtCount)).formatted(Formatting.WHITE)
         ));
 
         if (config.fishTracker.isFishTrackerOnTimer || config.fishTracker.showTimerOnAllTime) {
@@ -187,7 +191,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.COMMON.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayCommonCount)),
+                        Text.literal(getNumber(displayCommonCount)),
                         getPercentage(displayCommonCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showCommon) {
@@ -198,7 +202,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.RARE.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayRareCount)),
+                        Text.literal(getNumber(displayRareCount)),
                         getPercentage(displayRareCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showRare) {
@@ -209,7 +213,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.EPIC.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayEpicCount)),
+                        Text.literal(getNumber(displayEpicCount)),
                         getPercentage(displayEpicCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showEpic) {
@@ -220,7 +224,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.LEGENDARY.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayLegendaryCount)),
+                        Text.literal(getNumber(displayLegendaryCount)),
                         getPercentage(displayLegendaryCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showLegendary) {
@@ -231,7 +235,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.MYTHICAL.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayMythicalCount)),
+                        Text.literal(getNumber(displayMythicalCount)),
                         getPercentage(displayMythicalCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showMythical) {
@@ -245,7 +249,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.SPECIAL.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displaySpecialCount)),
+                        Text.literal(getNumber(displaySpecialCount)),
                         getPercentage(displaySpecialCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showSpecial){
@@ -265,7 +269,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.BABY.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayBabyCount)),
+                        Text.literal(getNumber(displayBabyCount)),
                         getPercentage(displayBabyCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showBaby) {
@@ -276,7 +280,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.JUVENILE.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayJuvenileCount)),
+                        Text.literal(getNumber(displayJuvenileCount)),
                         getPercentage(displayJuvenileCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showJuvenile) {
@@ -287,7 +291,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.ADULT.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayAdultCount)),
+                        Text.literal(getNumber(displayAdultCount)),
                         getPercentage(displayAdultCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showAdult) {
@@ -298,7 +302,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.LARGE.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayLargeCount)),
+                        Text.literal(getNumber(displayLargeCount)),
                         getPercentage(displayLargeCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showLarge) {
@@ -309,7 +313,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.GIGANTIC.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayGiganticCount)),
+                        Text.literal(getNumber(displayGiganticCount)),
                         getPercentage(displayGiganticCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showGigantic) {
@@ -325,7 +329,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.ALBINO.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayAlbinoCount)),
+                        Text.literal(getNumber(displayAlbinoCount)),
                         getPercentage(displayAlbinoCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showAlbino) {
@@ -336,7 +340,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.MELANISTIC.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayMelanisticCount)),
+                        Text.literal(getNumber(displayMelanisticCount)),
                         getPercentage(displayMelanisticCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showMelanistic) {
@@ -347,7 +351,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.TROPHY.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayTrophyCount)),
+                        Text.literal(getNumber(displayTrophyCount)),
                         getPercentage(displayTrophyCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showTrophy) {
@@ -358,7 +362,7 @@ public class FishTrackerHudHandler {
                 textList.add(TextHelper.concat(
                         Constant.FABLED.TAG,
                         Text.literal(" "),
-                        Text.literal(String.valueOf(displayFabledCount)),
+                        Text.literal(getNumber(displayFabledCount)),
                         getPercentage(displayFabledCount, displayFishCaughtCount)
                 ));
                 if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showFabled) {
@@ -368,6 +372,11 @@ public class FishTrackerHudHandler {
         }
 
         return textList;
+    }
+
+    public Text getTitle() {
+        FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+        return config.fishTracker.isFishTrackerOnTimer ? Text.literal("ѕᴇѕѕɪᴏɴ ѕᴛᴀᴛѕ").formatted(Formatting.BOLD) : Text.literal("ᴀʟʟ-ᴛɪᴍᴇ ѕᴛᴀᴛѕ").formatted(Formatting.BOLD);
     }
 
     private Text getPercentage(int count, int totalCount) {
@@ -396,5 +405,10 @@ public class FishTrackerHudHandler {
                     Text.literal(TextHelper.fmt(profileData.allFishCaughtCount - value)).formatted(Formatting.WHITE)
             );
         }
+    }
+
+    private String getNumber(int value) {
+        FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+        return config.fishTracker.fishTrackerToggles.otherToggles.abbreviateNumbers ? TextHelper.fmnt(value) : String.valueOf(value);
     }
 }

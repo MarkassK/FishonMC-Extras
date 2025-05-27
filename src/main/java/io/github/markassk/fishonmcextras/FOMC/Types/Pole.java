@@ -49,4 +49,16 @@ public class Pole extends FOMCItem {
     public static Pole getPole(ItemStack itemStack, String type) {
         return new Pole(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
+
+    public static Pole getPole(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")
+                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.POLE)) {
+                return Pole.getPole(itemStack, Defaults.ItemTypes.POLE);
+            }
+        }
+        return null;
+    }
 }

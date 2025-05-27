@@ -6,8 +6,6 @@ import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
 import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
-import io.github.markassk.fishonmcextras.adapter.FOMCConstantTypeAdapter;
-import io.github.markassk.fishonmcextras.adapter.LocalDateTypeAdapter;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +14,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -73,7 +70,7 @@ public class ProfileDataHandler {
         this.saveStats();
     }
 
-    public void updateStatsOnCatch() {
+    public void updatePetCaughtStatsOnCatch() {
         // All-time stats
         this.profileData.allPetCaughtCount++;
 
@@ -85,7 +82,7 @@ public class ProfileDataHandler {
         this.saveStats();
     }
 
-    public void updateStatsOnCatch(int count) {
+    public void updateShardCaughtStatsOnCatch(int count) {
         // All-time stats
         this.profileData.allShardCaughtCount += count;
 

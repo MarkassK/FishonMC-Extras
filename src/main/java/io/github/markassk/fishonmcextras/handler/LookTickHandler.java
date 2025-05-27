@@ -30,7 +30,7 @@ public class LookTickHandler {
 
                 // Only allow Items from FishOnMC
                 if (
-                        FOMCItem.getFOMCItem(itemStack) instanceof FOMCItem
+                        FOMCItem.isFOMCItem(itemStack)
                 ) {
                     targetedItemInItemFrame = itemStack;
                 } else {
