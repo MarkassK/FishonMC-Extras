@@ -1,9 +1,11 @@
 package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.LocationHandler;
 import io.github.markassk.fishonmcextras.handler.QuestHandler;
+import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -25,16 +27,18 @@ public class QuestTrackerHudHandler {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         List<Text> textList = new ArrayList<>();
 
-        if(config.questTracker.rightAlignment) {
-            textList.add(TextHelper.concat(
-                    Text.literal("ǫᴜᴇѕᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD),
-                    Text.literal(" ◀").formatted(Formatting.GRAY)
-            ));
-        } else {
-            textList.add(TextHelper.concat(
-                    Text.literal("▶ ").formatted(Formatting.GRAY),
-                    Text.literal("ǫᴜᴇѕᴛѕ").formatted(Formatting.GRAY, Formatting.BOLD)
-            ));
+        if (ThemingHandler.instance().currentThemeType == Theming.ThemeType.OFF) {
+            if(config.questTracker.rightAlignment) {
+                textList.add(TextHelper.concat(
+                        this.getTitle().copy().formatted(Formatting.GRAY),
+                        Text.literal(" ◀").formatted(Formatting.GRAY)
+                ));
+            } else {
+                textList.add(TextHelper.concat(
+                        Text.literal("▶ ").formatted(Formatting.GRAY),
+                        this.getTitle().copy().formatted(Formatting.GRAY)
+                ));
+            }
         }
 
         if(QuestHandler.instance().isQuestInitialized()) {
@@ -79,5 +83,9 @@ public class QuestTrackerHudHandler {
         }
 
         return textList;
+    }
+
+    public Text getTitle() {
+        return Text.literal("ǫᴜᴇѕᴛѕ").formatted(Formatting.BOLD);
     }
 }

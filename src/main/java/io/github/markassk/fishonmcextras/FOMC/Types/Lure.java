@@ -53,4 +53,16 @@ public class Lure extends FOMCItem {
     public static Lure getLure(ItemStack itemStack, String type) {
         return new Lure(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
+
+    public static Lure getLure(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")
+                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.LURE)) {
+                return Lure.getLure(itemStack, Defaults.ItemTypes.LURE);
+            }
+        }
+        return null;
+    }
 }

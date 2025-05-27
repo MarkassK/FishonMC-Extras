@@ -48,8 +48,9 @@ public class PetEquipHandler  {
         ) {
             if(minecraftClient.player != null && !isInInventory) {
                 ItemStack itemInSlot = minecraftClient.player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot);
+                Pet pet = Pet.getPet(itemInSlot);
 
-                if(FOMCItem.getFOMCItem(itemInSlot) instanceof Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
+                if(pet != null && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
                     isInInventory = true;
                     currentPetItem = itemInSlot.copy();
                 }
@@ -63,6 +64,7 @@ public class PetEquipHandler  {
                 });
             }
         } else if (LoadingHandler.instance().isLoadingDone && petStatus == PetStatus.LOADING) {
+            FishOnMCExtras.LOGGER.warn("[FoE] Did not find Pet");
             petStatus = PetStatus.NO_PET;
         }
 
@@ -79,8 +81,9 @@ public class PetEquipHandler  {
             if(player != null) {
                 int itemSlot = player.getInventory().getSelectedSlot();
                 ItemStack heldItem = player.getInventory().getStack(itemSlot);
+                Pet pet = Pet.getPet(heldItem);
 
-                if(FOMCItem.getFOMCItem(heldItem) instanceof Pet pet) {
+                if(pet != null) {
                     this.currentPetItem = heldItem.copy();
                     ProfileDataHandler.instance().updatePet(pet, itemSlot);
                     petStatus = PetStatus.HAS_PET;
@@ -117,8 +120,9 @@ public class PetEquipHandler  {
     public void updatePet(PlayerEntity player) {
         if(petStatus == PetStatus.HAS_PET) {
             ItemStack itemInSlot = player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot);
+            Pet pet = Pet.getPet(itemInSlot);
 
-            if(FOMCItem.getFOMCItem(itemInSlot) instanceof Pet pet && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
+            if(pet != null && pet.id.equals(ProfileDataHandler.instance().profileData.equippedPet.id)) {
                 ProfileDataHandler.instance().updatePet(pet, ProfileDataHandler.instance().profileData.equippedPetSlot);
             }
         }

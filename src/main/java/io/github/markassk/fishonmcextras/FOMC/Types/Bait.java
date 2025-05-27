@@ -49,4 +49,16 @@ public class Bait extends FOMCItem {
     public static Bait getBait(ItemStack itemStack, String type) {
         return new Bait(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
+
+    public static Bait getBait(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")
+                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.BAIT)) {
+                return Bait.getBait(itemStack, Defaults.ItemTypes.BAIT);
+            }
+        }
+        return null;
+    }
 }

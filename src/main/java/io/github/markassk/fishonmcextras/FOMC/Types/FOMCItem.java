@@ -48,4 +48,27 @@ public class FOMCItem {
         }
         return null;
     }
+
+    public static boolean isFOMCItem(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")) {
+                // Check for types
+                return switch (nbtCompound.getString("type")) {
+                    case Defaults.ItemTypes.PET, Defaults.ItemTypes.REEL, Defaults.ItemTypes.POLE,
+                         Defaults.ItemTypes.LINE, Defaults.ItemTypes.LURE, Defaults.ItemTypes.BAIT,
+                         Defaults.ItemTypes.ARMOR, Defaults.ItemTypes.SHARD -> true;
+                    default -> false;
+                };
+                // Fish
+            } else {
+                return itemStack.getItem() == Items.COD
+                        || itemStack.getItem() == Items.WHITE_DYE
+                        || itemStack.getItem() == Items.BLACK_DYE
+                        || itemStack.getItem() == Items.GOLD_INGOT
+                        || itemStack.getItem() == Items.FISHING_ROD;
+            }
+        }
+        return false;
+    }
 }

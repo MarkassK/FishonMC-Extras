@@ -24,4 +24,16 @@ public class Shard extends FOMCItem {
     public static Shard getShard(ItemStack itemStack, String type) {
         return new Shard(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
+
+    public static Shard getShard(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")
+                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.SHARD)) {
+                return Shard.getShard(itemStack, Defaults.ItemTypes.SHARD);
+            }
+        }
+        return null;
+    }
 }

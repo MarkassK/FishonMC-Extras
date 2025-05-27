@@ -88,4 +88,16 @@ public class Armor extends FOMCItem {
     public static Armor getArmor(ItemStack itemStack, String type) {
         return new Armor(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
+
+    public static Armor getArmor(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")
+                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.ARMOR)) {
+                return Armor.getArmor(itemStack, Defaults.ItemTypes.ARMOR);
+            }
+        }
+        return null;
+    }
 }

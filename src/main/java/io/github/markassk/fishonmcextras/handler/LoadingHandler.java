@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import io.github.markassk.fishonmcextras.FOMC.Types.FishingRod;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
@@ -27,14 +28,12 @@ public class LoadingHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null && !isLoadingDone) {
-            for (int slot = 0; slot < minecraftClient.player.getInventory().getMainStacks().size(); slot++) {
-                ItemStack stack = minecraftClient.player.getInventory().getMainStacks().get(slot);
-                if(stack.get(DataComponentTypes.CUSTOM_DATA) != null && stack.getItem() == Items.FISHING_ROD) {
-                    isLoadingDone = true;
-                    FishOnMCExtras.LOGGER.info("[FoE] Loading Done");
+            ItemStack stack = minecraftClient.player.getInventory().getMainStacks().getFirst();
+            if(!stack.isEmpty() && stack.get(DataComponentTypes.CUSTOM_DATA) != null && stack.getItem() == Items.FISHING_ROD) {
+                isLoadingDone = true;
+                FishOnMCExtras.LOGGER.info("[FoE] Loading Done");
 
-                    PetEquipHandler.instance().startScanTime = System.currentTimeMillis();
-                }
+                PetEquipHandler.instance().startScanTime = System.currentTimeMillis();
             }
         }
     }

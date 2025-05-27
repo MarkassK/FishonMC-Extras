@@ -40,7 +40,8 @@ public class PetCalculatorScreen extends Screen {
 
         petListStack = new ArrayList<>();
         this.player.getInventory().getMainStacks().forEach(stack -> {
-            if(FOMCItem.getFOMCItem(stack) instanceof Pet) {
+            Pet pet = Pet.getPet(stack);
+            if(pet != null) {
                 this.petListStack.add(stack);
             }
         }) ;
