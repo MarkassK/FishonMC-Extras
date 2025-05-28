@@ -14,7 +14,6 @@ public class FishingRodHandler {
     private static FishingRodHandler INSTANCE = new FishingRodHandler();
 
     private ItemStack fishingRodStack = null;
-    private boolean isNewRod = false;
 
     public FishingRod fishingRod = null;
     public boolean isWrongBait = false;
@@ -35,15 +34,14 @@ public class FishingRodHandler {
         if(minecraftClient.player != null && minecraftClient.player.getInventory().main.getFirst().getItem() == Items.FISHING_ROD) {
             if(this.fishingRodStack == null || !this.fishingRodStack.equals(minecraftClient.player.getInventory().main.getFirst())) {
                 this.fishingRodStack = minecraftClient.player.getInventory().main.getFirst();
-                if(FOMCItem.getFOMCItem(minecraftClient.player.getInventory().main.getFirst()) instanceof FishingRod rod) {
-                    this.fishingRod = rod;
-                    this.isNewRod = true;
+                FishingRod fishingRod = FishingRod.getFishingRod(minecraftClient.player.getInventory().main.getFirst());
+                if(fishingRod != null) {
+                    this.fishingRod = fishingRod;
                 }
             }
         }
 
-        if(this.isNewRod && this.fishingRod != null) {
-            this.isNewRod = false;
+        if(this.fishingRod != null) {
             if(!this.fishingRod.tacklebox.isEmpty()) {
                 // Bait
                 if(this.fishingRod.tacklebox.getFirst() instanceof Bait bait && bait.water != Constant.ANY_WATER) {

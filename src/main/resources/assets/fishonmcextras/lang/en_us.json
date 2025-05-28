@@ -8,6 +8,7 @@
   "text.autoconfig.fishonmcextras.category.trackers": "Trackers",
   "text.autoconfig.fishonmcextras.category.tooltips": "Tooltips",
   "text.autoconfig.fishonmcextras.category.other": "Miscellaneous",
+  "text.autoconfig.fishonmcextras.category.cosmetic": "Cosmetics",
 
   "text.autoconfig.fishonmcextras.option.fishTracker": "§f§lFish Tracker Options",
   "text.autoconfig.fishonmcextras.option.fishTracker.showFishTrackerHUD": "Fish Tracker HUD",
@@ -81,6 +82,7 @@
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch": "Show extra stats on catch.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch.@Tooltip": "§7If §aShow extra stats on catch§7 is §cdisabled§7, this option will be ignored.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatchTime": "Time for title to stay on screen.",
+  "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.abbreviateNumbers": "Shorten long numbers",
   "text.autoconfig.fishonmcextras.option.fishTracker.rightAlignment": "Right alignment",
   "text.autoconfig.fishonmcextras.option.fishTracker.backgroundOpacity": "Background opacity",
   "text.autoconfig.fishonmcextras.option.fishTracker.fontSize": "Font size",
@@ -158,6 +160,7 @@
   "text.autoconfig.fishonmcextras.option.crewTracker.showCrewNearby": "Show when crew is nearby",
   "text.autoconfig.fishonmcextras.option.crewTracker.fontSize": "Font size",
   "text.autoconfig.fishonmcextras.option.crewTracker.backgroundOpacity": "Background opacity",
+  "text.autoconfig.fishonmcextras.option.crewTracker.crewChatLocation": "Crew Chat Marker Location",
 
   "text.autoconfig.fishonmcextras.option.questTracker": "§f§lQuest Tracker Options",
   "text.autoconfig.fishonmcextras.option.questTracker.showQuestHud": "Show Quest HUD",
@@ -200,5 +203,43 @@
 
   "text.autoconfig.fishonmcextras.option.discordIPC": "§f§lDiscord Rich Presence Options",
   "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled": "Enable Discord Rich Presence",
-  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this options"
+  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this options",
+
+  "text.autoconfig.fishonmcextras.option.rarityMarker": "§f§lRarity Marker Options",
+  "text.autoconfig.fishonmcextras.option.rarityMarker.showRarityMarker": "Show Rarity Marker",
+  "text.autoconfig.fishonmcextras.option.rarityMarker.showFishRarityMarker": "Show Rarity Marker on fishes",
+  "text.autoconfig.fishonmcextras.option.rarityMarker.showOtherRarityMarker": "Show Rarity Marker on other items",
+
+  "text.autoconfig.fishonmcextras.option.theme": "§f§lTheme Options",
+  "text.autoconfig.fishonmcextras.option.theme.themeType": "Change Theme",
+  "text.autoconfig.fishonmcextras.option.theme.colorOverlay": "Change color overlay",
+  "text.autoconfig.fishonmcextras.option.theme.colorOverlay.@Tooltip": "§7This will only work properly on §aCLEAN §7themes.",
+  "text.autoconfig.fishonmcextras.option.theme.opacity": "Opacity of the theme",
+
+  "text.autoconfig.fishonmcextras.option.flair": "§f§lFlair Options",
+  "text.autoconfig.fishonmcextras.option.flair.contestFlair": "§f§lContest Hud Flair Options",
+  "text.autoconfig.fishonmcextras.option.flair.contestFlair.flairTopLeft": "Choose Top Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.contestFlair.flairTopRight": "Choose Top Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.contestFlair.flairBottomLeft": "Choose Bottom Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.contestFlair.flairBottomRight": "Choose Bottom Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.fishTrackerFlair": "§f§lFish Tracker Hud Flair Options",
+  "text.autoconfig.fishonmcextras.option.flair.fishTrackerFlair.flairTopLeft": "Choose Top Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.fishTrackerFlair.flairTopRight": "Choose Top Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.fishTrackerFlair.flairBottomLeft": "Choose Bottom Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.fishTrackerFlair.flairBottomRight": "Choose Bottom Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.notificationFlair": "§f§lNotification Hud Flair Options",
+  "text.autoconfig.fishonmcextras.option.flair.notificationFlair.flairTopLeft": "Choose Top Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.notificationFlair.flairTopRight": "Choose Top Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.notificationFlair.flairBottomLeft": "Choose Bottom Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.notificationFlair.flairBottomRight": "Choose Bottom Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.petEquipFlair": "§f§lPet Equip Hud Flair Options",
+  "text.autoconfig.fishonmcextras.option.flair.petEquipFlair.flairTopLeft": "Choose Top Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.petEquipFlair.flairTopRight": "Choose Top Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.petEquipFlair.flairBottomLeft": "Choose Bottom Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.petEquipFlair.flairBottomRight": "Choose Bottom Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.questFlair": "§f§lQuest Hud Flair Options",
+  "text.autoconfig.fishonmcextras.option.flair.questFlair.flairTopLeft": "Choose Top Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.questFlair.flairTopRight": "Choose Top Right Flair",
+  "text.autoconfig.fishonmcextras.option.flair.questFlair.flairBottomLeft": "Choose Bottom Left Flair",
+  "text.autoconfig.fishonmcextras.option.flair.questFlair.flairBottomRight": "Choose Bottom Right Flair"
 }

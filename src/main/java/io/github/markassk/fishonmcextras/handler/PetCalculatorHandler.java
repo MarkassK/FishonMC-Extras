@@ -27,7 +27,7 @@ public class PetCalculatorHandler {
     public void setPet(ItemStack pet, PetList side) {
         selectedPetStacks[side.id] = pet;
 
-        selectedPet[side.id] = (Pet) FOMCItem.getFOMCItem(pet);
+        selectedPet[side.id] = Pet.getPet(pet);
         this.update();
     }
 

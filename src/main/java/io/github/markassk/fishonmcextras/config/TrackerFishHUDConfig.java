@@ -102,6 +102,7 @@ public class TrackerFishHUDConfig {
                 public boolean showStatsOnCatch = true;
                 @ConfigEntry.BoundedDiscrete(min = 1, max = 10)
                 public int showStatsOnCatchTime = 5;
+                public boolean abbreviateNumbers = false;
             }
         }
 

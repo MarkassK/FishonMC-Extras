@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras.FOMC.Types;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.util.ItemStackHelper;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -48,5 +47,48 @@ public class FOMCItem {
             }
         }
         return null;
+    }
+
+    public static boolean isFOMCItem(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")) {
+                // Check for types
+                return switch (nbtCompound.getString("type")) {
+                    case Defaults.ItemTypes.PET, Defaults.ItemTypes.REEL, Defaults.ItemTypes.POLE,
+                         Defaults.ItemTypes.LINE, Defaults.ItemTypes.LURE, Defaults.ItemTypes.BAIT,
+                         Defaults.ItemTypes.ARMOR, Defaults.ItemTypes.SHARD -> true;
+                    default -> false;
+                };
+                // Fish
+            } else {
+                return itemStack.getItem() == Items.COD
+                        || itemStack.getItem() == Items.WHITE_DYE
+                        || itemStack.getItem() == Items.BLACK_DYE
+                        || itemStack.getItem() == Items.GOLD_INGOT
+                        || itemStack.getItem() == Items.FISHING_ROD;
+            }
+        }
+        return false;
+    }
+
+    public static Constant getRarity(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null && itemStack.getItem() != Items.FISHING_ROD) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if(nbtCompound != null) {
+                return Constant.valueOfId(nbtCompound.getString("rarity"));
+            }
+        }
+        return Constant.DEFAULT;
+    }
+
+    public static boolean isFish(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
+            return itemStack.getItem() == Items.COD
+                    || itemStack.getItem() == Items.WHITE_DYE
+                    || itemStack.getItem() == Items.BLACK_DYE
+                    || itemStack.getItem() == Items.GOLD_INGOT;
+        }
+        return false;
     }
 }

@@ -51,10 +51,6 @@ public class DebugScreenHandler {
             }
             case FISHCATCH -> {
                 FishCatchHandler fishCatchHandler = FishCatchHandler.instance();
-
-                textList.add(
-                        assembleText("lastTimeUsedRod", fishCatchHandler.lastTimeUsedRod)
-                );
             }
             case FULLINVENTORY -> {
                 FullInventoryHandler fullInventoryHandler = FullInventoryHandler.instance();

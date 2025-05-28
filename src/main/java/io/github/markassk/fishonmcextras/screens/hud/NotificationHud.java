@@ -1,10 +1,14 @@
 package io.github.markassk.fishonmcextras.screens.hud;
 
+import io.github.markassk.fishonmcextras.common.FlairDecor;
+import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.handler.screens.hud.NotificationHudHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 
 import java.util.List;
@@ -55,6 +59,41 @@ public class NotificationHud {
 
                 // Draw Background
                 drawContext.fill(scaledX - maxLength / 2 - padding, scaledY - heightClampTranslation, scaledX + maxLength / 2 + padding, scaledY + ((textList.size() - 1) * lineHeight) + padding * 3 - heightClampTranslation, alphaInt);
+
+                // Theming
+                FlairDecor flairDecor = ThemingHandler.instance().flairDecorNotification;
+
+                if(config.theme.themeType != Theming.ThemeType.OFF) {
+                    Theming theme = ThemingHandler.instance().currentTheme;
+                    int colorOverlay = config.theme.colorOverlay;
+                    int themeTextColor = ThemingHandler.instance().currentThemeType.TEXT_COLOR;
+                    int alphaOverlay = (int) ((config.theme.opacity / 100f) * 255f) << 24;
+
+                    // Corners
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, scaledX + maxLength / 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, scaledX + maxLength / 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+
+                    // Sides
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, scaledX + maxLength / 2, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, scaledX - maxLength / 2, scaledY - padding - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, scaledX - maxLength / 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
+
+                    // Title
+                    Text title = NotificationHudHandler.instance().getTitle().copy().withColor(ThemingHandler.instance().currentThemeType.TEXT_COLOR);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_LEFT, scaledX - textRenderer.getWidth(title) / 2 - 16, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_MIDDLE, scaledX  - textRenderer.getWidth(title) / 2, scaledY - padding - heightClampTranslation, textRenderer.getWidth(title), 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_RIGHT, scaledX + textRenderer.getWidth(title) / 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawText(textRenderer, title, scaledX - textRenderer.getWidth(title) / 2, scaledY - textRenderer.fontHeight / 2 - heightClampTranslation - 1, themeTextColor, false);
+                }
+
+                // Flair
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_TOP_LEFT, scaledX - maxLength / 2 - padding * 2 - 24, scaledY - padding - heightClampTranslation - 24, 64, 64);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_TOP_RIGHT, scaledX + maxLength / 2 - 24, scaledY - padding - heightClampTranslation - 24, 64, 64);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_BOTTOM_LEFT, scaledX - maxLength / 2 - padding * 2 - 24, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation - 24, 64, 64);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_BOTTOM_RIGHT, scaledX + maxLength / 2 - 24, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation - 24, 64, 64);
 
                 int finalHeightClampTranslation = heightClampTranslation;
                 textList.forEach(text -> drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY + padding + (count.getAndIncrement() * lineHeight) - finalHeightClampTranslation, 0xFFFFFF, true));

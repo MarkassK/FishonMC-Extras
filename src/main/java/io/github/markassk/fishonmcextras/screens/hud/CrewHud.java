@@ -1,14 +1,17 @@
 package io.github.markassk.fishonmcextras.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.CrewHandler;
 import io.github.markassk.fishonmcextras.handler.LocationHandler;
 import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
+import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.handler.screens.hud.CrewHudHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 
 public class CrewHud {
@@ -54,6 +57,26 @@ public class CrewHud {
                 heightClampTranslation -= (int) ((padding * 3) * (1 - yPercent));
 
                 drawContext.fill(scaledX - maxLength / 2 - padding, scaledY - heightClampTranslation, scaledX + maxLength / 2 + padding, scaledY + paddingHeight * 2 + lineHeight - heightClampTranslation, alphaInt);
+
+                // Theming
+                if(config.theme.themeType != Theming.ThemeType.OFF) {
+                    Theming theme = ThemingHandler.instance().currentTheme;
+                    int colorOverlay = config.theme.colorOverlay;
+                    int alphaOverlay = (int) ((config.theme.opacity / 100f) * 255f) << 24;
+
+                    // Corners
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, scaledX + maxLength / 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + lineHeight - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, scaledX + maxLength / 2, scaledY + lineHeight - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+
+                    // Sides
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + paddingHeight - heightClampTranslation, 16, lineHeight, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, scaledX + maxLength / 2, scaledY + paddingHeight - heightClampTranslation, 16, lineHeight, alphaOverlay | colorOverlay);
+
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, scaledX - maxLength / 2, scaledY - padding - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, scaledX - maxLength / 2, scaledY + lineHeight - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
+                }
 
                 drawContext.drawText(textRenderer, text, scaledX - maxLength / 2, scaledY + paddingHeight - heightClampTranslation, 0xFFFFFF, true);
             }

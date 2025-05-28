@@ -10,8 +10,11 @@
   "client": [
     "BossBarHudAccessor",
     "BossBarHudMixin",
+    "HandledScreenMixin",
     "InGameHudMixin",
     "KeyBindingAccessor",
-    "PlayerListHudAccessor"
+    "PlayerListHudAccessor",
+    "RecipeBookScreenAccessor",
+    "TextFieldWidgetMixin"
   ]
 }

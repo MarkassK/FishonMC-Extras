@@ -7,6 +7,7 @@ import io.github.markassk.fishonmcextras.util.UUIDHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
@@ -38,9 +39,10 @@ public class FishingRod extends FOMCItem {
             this.tacklebox = nbtList.stream().map(nbtElement -> {
                 if (nbtElement instanceof NbtCompound compound) {
                     ItemStack baitStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
-                    FOMCItem fomcItem = getFOMCItem(baitStack);
-                    if (fomcItem instanceof Lure lureType) return lureType;
-                    if (fomcItem instanceof Bait baitType) return baitType;
+                    Lure lure = Lure.getLure(baitStack);
+                    Bait bait = Bait.getBait(baitStack);
+                    if(lure != null) return lure;
+                    return bait;
                 } return null;
             }).filter(Objects::nonNull).toList();
         } else this.tacklebox = new ArrayList<>();
@@ -49,7 +51,7 @@ public class FishingRod extends FOMCItem {
             this.line = nbtList.stream().map(nbtElement -> {
                 if(nbtElement instanceof NbtCompound compound) {
                     ItemStack lineStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
-                    if(getFOMCItem(lineStack) instanceof Line lineType) return lineType;
+                    return Line.getLine(lineStack);
                 } return null;
             }).filter(Objects::nonNull).findFirst().orElse(null);
         } else this.line = null;
@@ -58,7 +60,7 @@ public class FishingRod extends FOMCItem {
             this.pole = nbtList.stream().map(nbtElement -> {
                 if(nbtElement instanceof NbtCompound compound) {
                     ItemStack poleStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
-                    if(getFOMCItem(poleStack) instanceof Pole poleType) return poleType;
+                    return Pole.getPole(poleStack);
                 } return null;
             }).filter(Objects::nonNull).findFirst().orElse(null);
         } else this.pole = null;
@@ -67,7 +69,7 @@ public class FishingRod extends FOMCItem {
             this.reel = nbtList.stream().map(nbtElement -> {
                 if(nbtElement instanceof NbtCompound compound) {
                     ItemStack reelStack = ItemStackHelper.jsonToItemStack(NbtHelper.nbtCompoundToJson(compound));
-                    if(getFOMCItem(reelStack) instanceof Reel reelType) return reelType;
+                    return Reel.getReel(reelStack);
                 } return null;
             }).filter(Objects::nonNull).findFirst().orElse(null);
         } else this.reel = null;
@@ -75,5 +77,15 @@ public class FishingRod extends FOMCItem {
 
     public static FishingRod getFishingRod(ItemStack itemStack, String type, String name) {
         return new FishingRod(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA), name);
+    }
+
+    public static FishingRod getFishingRod(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            if (itemStack.getItem() == Items.FISHING_ROD) {
+                return FishingRod.getFishingRod(itemStack, Defaults.ItemTypes.FISHINGROD, itemStack.getName().getString());
+            }
+        }
+        return null;
     }
 }

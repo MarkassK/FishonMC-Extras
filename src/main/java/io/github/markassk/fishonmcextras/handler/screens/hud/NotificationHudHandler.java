@@ -4,7 +4,7 @@ import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
 import io.github.markassk.fishonmcextras.FOMC.Types.Bait;
 import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
-import io.github.markassk.fishonmcextras.FishOnMCExtrasClient;
+import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.util.TextHelper;
@@ -13,6 +13,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NotificationHudHandler {
     private static NotificationHudHandler INSTANCE = new NotificationHudHandler();
@@ -264,10 +265,26 @@ public class NotificationHudHandler {
             ));
         }
 
-        if(!textList.isEmpty()) {
-            textList.addFirst(Text.literal("ɴᴏᴛɪꜰɪᴄᴀᴛɪᴏɴѕ").formatted(Formatting.GRAY));
+        if(config.crewTracker.crewChatLocation == CrewHandler.CrewChatLocation.IN_NOTIFICATION
+                && ProfileDataHandler.instance().profileData.isInCrewChat
+                && ChatScreenHandler.instance().screenInit) {
+            textList.add(Text.empty());
+            textList.add(TextHelper.concat(
+                    Text.literal("You are in ").formatted(Formatting.RED),
+                    Text.literal("Crew Chat").formatted(Formatting.GREEN)
+            ));
+        }
+
+        if(!textList.isEmpty() && ThemingHandler.instance().currentThemeType == Theming.ThemeType.OFF) {
+            textList.addFirst(getTitle().copy().formatted(Formatting.GRAY));
+        } else if(!textList.isEmpty() && Objects.equals(textList.getFirst(), Text.empty())) {
+            textList.removeFirst();
         }
 
         return textList;
+    }
+
+    public Text getTitle() {
+        return Text.literal("ɴᴏᴛɪꜰɪᴄᴀᴛɪᴏɴѕ").formatted(Formatting.BOLD);
     }
 }
