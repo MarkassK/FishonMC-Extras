@@ -53,8 +53,7 @@ public class TextFieldWidgetMixin {
         if(ChatScreenHandler.instance().screenInit
                 && ProfileDataHandler.instance().profileData.isInCrewChat && !this.text.startsWith("/")
                 && config.crewTracker.crewChatLocation == CrewHandler.CrewChatLocation.IN_CHAT) {
-            Text marker = Text.literal("ɪɴ ᴄʀᴇᴡ ᴄʜᴀᴛ").formatted(Formatting.GREEN);
-            context.fill(16 + xCoord - 2, yCoord - 1, 16 + xCoord + textRenderer.getWidth(marker) + 2, yCoord + textRenderer.fontHeight, ((int) 50f << 24) | 0xFFFFFF);
+            Text marker = Text.literal("ɪɴ ᴄʀᴇᴡ ᴄʜᴀᴛ").formatted(Formatting.GREEN, Formatting.ITALIC);
             context.drawText(this.textRenderer, marker, 16 + xCoord, yCoord - 1, ((int) 150f << 24) | 0xFFFFFF, true);
         }
     }
