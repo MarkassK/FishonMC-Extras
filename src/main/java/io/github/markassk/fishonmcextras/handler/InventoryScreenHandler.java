@@ -1,9 +1,12 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.mixin.RecipeBookScreenAccessor;
 import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.RecipeBookScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
@@ -12,14 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class InventoryButtonHandler {
-    private static InventoryButtonHandler INSTANCE = new InventoryButtonHandler();
+public class InventoryScreenHandler {
+    private static InventoryScreenHandler INSTANCE = new InventoryScreenHandler();
 
     public boolean screenInit = false;
+    public boolean isRecipeBookOpen = false;
 
-    public static InventoryButtonHandler instance() {
+    public static InventoryScreenHandler instance() {
         if (INSTANCE == null) {
-            INSTANCE = new InventoryButtonHandler();
+            INSTANCE = new InventoryScreenHandler();
         }
         return INSTANCE;
     }
@@ -28,6 +32,18 @@ public class InventoryButtonHandler {
         if (screenInit) {
             this.createButton(minecraftClient);
             this.screenInit = false;
+        }
+
+        if(minecraftClient.currentScreen != null) {
+            if(minecraftClient.currentScreen instanceof RecipeBookScreen<?> recipeBookScreen) {
+                if(isRecipeBookOpen != ((RecipeBookScreenAccessor) recipeBookScreen).getRecipeBook().isOpen()) {
+                    isRecipeBookOpen = ((RecipeBookScreenAccessor) recipeBookScreen).getRecipeBook().isOpen();
+
+                    // Update Buttons
+                    Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget instanceof IconButtonWidget);
+                    this.createButton(minecraftClient);
+                }
+            }
         }
     }
 
@@ -61,6 +77,7 @@ public class InventoryButtonHandler {
 
     private IconButtonWidget getButton(int index, String text, String icon, String command, String tooltip, boolean isRight, boolean isLoader, MinecraftClient minecraftClient) {
         int padding = 4;
+        int offsetRecipe = isRecipeBookOpen ? (isRight ? 180 : 190) : 100;
 
         IconButtonWidget.Builder builder = IconButtonWidget.builder(Text.literal(text), button -> {
                     // Command
@@ -70,7 +87,7 @@ public class InventoryButtonHandler {
 
                 })
                 .position(
-                        isRight ? minecraftClient.getWindow().getScaledWidth() / 2 + 100 : minecraftClient.getWindow().getScaledWidth() / 2 - 100 - 100,
+                        isRight ? minecraftClient.getWindow().getScaledWidth() / 2 + offsetRecipe : minecraftClient.getWindow().getScaledWidth() / 2 - offsetRecipe - 100,
                         minecraftClient.getWindow().getScaledHeight() / 2 - 70 + index * (padding + 24))
                 .width(100)
                 .stringIcon(icon)

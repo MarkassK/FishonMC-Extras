@@ -76,6 +76,12 @@ public class CrewHandler {
         } else if(message.getString().contains("CREWS » You have joined")) {
             reset();
         }
+
+        if(message.getString().startsWith("CREWS » Crew Chat has been enabled")) {
+            ProfileDataHandler.instance().profileData.isInCrewChat = true;
+        } else if (message.getString().startsWith("CREWS » Crew Chat has been disabled")) {
+            ProfileDataHandler.instance().profileData.isInCrewChat = false;
+        }
     }
 
     private void isCrewNearbyCheck(MinecraftClient minecraftClient) {
@@ -102,5 +108,11 @@ public class CrewHandler {
         NOTINITIALIZED,
         NOCREW,
         HASCREW
+    }
+
+    public enum CrewChatLocation {
+        OFF,
+        IN_CHAT,
+        IN_NOTIFICATION
     }
 }

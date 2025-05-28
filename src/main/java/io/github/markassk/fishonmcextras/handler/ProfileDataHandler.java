@@ -237,6 +237,7 @@ public class ProfileDataHandler {
         // Crew Data
         public List<UUID> crewMembers = new ArrayList<>();
         public CrewHandler.CrewState crewState = CrewHandler.CrewState.NOTINITIALIZED;
+        public boolean isInCrewChat = false;
 
         // Quest Data
         public Map<Constant, List<QuestHandler.Quest>> activeQuests = new HashMap<>();

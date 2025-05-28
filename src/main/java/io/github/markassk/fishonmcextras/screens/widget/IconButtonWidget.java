@@ -70,18 +70,19 @@ public class IconButtonWidget extends ClickableWidget {
         if(ThemingHandler.instance().currentThemeType != Theming.ThemeType.OFF) {
             Theming theme = ThemingHandler.instance().currentTheme;
             int colorOverlay = config.theme.colorOverlay;
+            int alphaOverlay = (int) 255f << 24;
 
             // Corners
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, this.getX() - 8, this.getY() - 8, 16, 16, colorOverlay);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, this.getX() + this.width - 8, this.getY() - 8, 16, 16, colorOverlay);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, this.getX() - 8, this.getY() + this.height - 8, 16, 16, colorOverlay);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, this.getX() + this.width - 8, this.getY() + this.height - 8, 16, 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, this.getX() - 8, this.getY() - 8, 16, 16, alphaOverlay | colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, this.getX() + this.width - 8, this.getY() - 8, 16, 16, alphaOverlay | colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, this.getX() - 8, this.getY() + this.height - 8, 16, 16, alphaOverlay | colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, this.getX() + this.width - 8, this.getY() + this.height - 8, 16, 16, alphaOverlay | colorOverlay);
 
             // Sides
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, this.getX() - 8, this.getY() + 8, 16, this.height - 16, colorOverlay);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, this.getX() + this.width - 8, this.getY() + 8, 16, this.height - 16, colorOverlay);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, this.getX() + 8, this.getY() - 8, this.width - 16, 16, colorOverlay);
-            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, this.getX() + 8, this.getY() + this.height - 8, this.width - 16, 16, colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, this.getX() - 8, this.getY() + 8, 16, this.height - 16, alphaOverlay | colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, this.getX() + this.width - 8, this.getY() + 8, 16, this.height - 16, alphaOverlay | colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, this.getX() + 8, this.getY() - 8, this.width - 16, 16, alphaOverlay | colorOverlay);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, this.getX() + 8, this.getY() + this.height - 8, this.width - 16, 16, alphaOverlay | colorOverlay);
         }
     }
 

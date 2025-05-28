@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -78,7 +79,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     StatsImportHandler.instance().tick(minecraftClient);
                     DiscordHandler.instance().tick();
                     KeybindHandler.instance().tick(minecraftClient);
-                    InventoryButtonHandler.instance().tick(minecraftClient);
+                    InventoryScreenHandler.instance().tick(minecraftClient);
                     ThemingHandler.instance().tick();
                 }
              }
@@ -165,7 +166,9 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 StatsImportHandler.instance().screenInit = true;
                 StatsImportHandler.instance().isOnScreen = true;
             } else if (screen instanceof InventoryScreen) {
-                InventoryButtonHandler.instance().screenInit = true;
+                InventoryScreenHandler.instance().screenInit = true;
+            } else if (screen instanceof ChatScreen) {
+                ChatScreenHandler.instance().screenInit = true;
             }
         }
         ScreenEvents.remove(screen).register(this::onRemoveScreen);
@@ -181,6 +184,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 // Crew Menu:
                 CrewHandler.instance().crewMenuState = false;
                 CrewHandler.instance().onScreenClose();
+            } else if(screen instanceof ChatScreen) {
+                ChatScreenHandler.instance().screenInit = false;
             }
         }
     }

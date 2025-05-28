@@ -62,19 +62,20 @@ public class CrewHud {
                 if(config.theme.themeType != Theming.ThemeType.OFF) {
                     Theming theme = ThemingHandler.instance().currentTheme;
                     int colorOverlay = config.theme.colorOverlay;
+                    int alphaOverlay = (int) ((config.theme.opacity / 100f) * 255f) << 24;
 
                     // Corners
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY - padding - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, scaledX + maxLength / 2, scaledY - padding - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + lineHeight - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, scaledX + maxLength / 2, scaledY + lineHeight - heightClampTranslation, 16, 16, colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, scaledX + maxLength / 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + lineHeight - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, scaledX + maxLength / 2, scaledY + lineHeight - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
 
                     // Sides
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + paddingHeight - heightClampTranslation, 16, lineHeight, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, scaledX + maxLength / 2, scaledY + paddingHeight - heightClampTranslation, 16, lineHeight, colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + paddingHeight - heightClampTranslation, 16, lineHeight, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, scaledX + maxLength / 2, scaledY + paddingHeight - heightClampTranslation, 16, lineHeight, alphaOverlay | colorOverlay);
 
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, scaledX - maxLength / 2, scaledY - padding - heightClampTranslation, maxLength, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, scaledX - maxLength / 2, scaledY + lineHeight - heightClampTranslation, maxLength, 16, colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, scaledX - maxLength / 2, scaledY - padding - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, scaledX - maxLength / 2, scaledY + lineHeight - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
                 }
 
                 drawContext.drawText(textRenderer, text, scaledX - maxLength / 2, scaledY + paddingHeight - heightClampTranslation, 0xFFFFFF, true);

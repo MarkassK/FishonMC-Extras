@@ -66,26 +66,27 @@ public class NotificationHud {
                 if(config.theme.themeType != Theming.ThemeType.OFF) {
                     Theming theme = ThemingHandler.instance().currentTheme;
                     int colorOverlay = config.theme.colorOverlay;
-
+                    int themeTextColor = ThemingHandler.instance().currentThemeType.TEXT_COLOR;
+                    int alphaOverlay = (int) ((config.theme.opacity / 100f) * 255f) << 24;
 
                     // Corners
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY - padding - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, scaledX + maxLength / 2, scaledY - padding - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, scaledX + maxLength / 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, scaledX + maxLength / 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, scaledX + maxLength / 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
 
                     // Sides
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, scaledX + maxLength / 2, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, scaledX - maxLength / 2, scaledY - padding - heightClampTranslation, maxLength, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, scaledX - maxLength / 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, maxLength, 16, colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, scaledX - maxLength / 2 - padding * 2, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, scaledX + maxLength / 2, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, scaledX - maxLength / 2, scaledY - padding - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, scaledX - maxLength / 2, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, maxLength, 16, alphaOverlay | colorOverlay);
 
                     // Title
                     Text title = NotificationHudHandler.instance().getTitle().copy().withColor(ThemingHandler.instance().currentThemeType.TEXT_COLOR);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_LEFT, scaledX - textRenderer.getWidth(title) / 2 - 16, scaledY - padding - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_MIDDLE, scaledX  - textRenderer.getWidth(title) / 2, scaledY - padding - heightClampTranslation, textRenderer.getWidth(title), 16, colorOverlay);
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_RIGHT, scaledX + textRenderer.getWidth(title) / 2, scaledY - padding - heightClampTranslation, 16, 16, colorOverlay);
-                    drawContext.drawText(textRenderer, title, scaledX - textRenderer.getWidth(title) / 2, scaledY - textRenderer.fontHeight / 2 - heightClampTranslation - 1, 0xFFFFFF, false);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_LEFT, scaledX - textRenderer.getWidth(title) / 2 - 16, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_MIDDLE, scaledX  - textRenderer.getWidth(title) / 2, scaledY - padding - heightClampTranslation, textRenderer.getWidth(title), 16, alphaOverlay | colorOverlay);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_RIGHT, scaledX + textRenderer.getWidth(title) / 2, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                    drawContext.drawText(textRenderer, title, scaledX - textRenderer.getWidth(title) / 2, scaledY - textRenderer.fontHeight / 2 - heightClampTranslation - 1, themeTextColor, false);
                 }
 
                 // Flair

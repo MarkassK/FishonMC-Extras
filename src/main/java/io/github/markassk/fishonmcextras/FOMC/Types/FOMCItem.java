@@ -71,4 +71,24 @@ public class FOMCItem {
         }
         return false;
     }
+
+    public static Constant getRarity(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null && itemStack.getItem() != Items.FISHING_ROD) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if(nbtCompound != null) {
+                return Constant.valueOfId(nbtCompound.getString("rarity"));
+            }
+        }
+        return Constant.DEFAULT;
+    }
+
+    public static boolean isFish(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
+            return itemStack.getItem() == Items.COD
+                    || itemStack.getItem() == Items.WHITE_DYE
+                    || itemStack.getItem() == Items.BLACK_DYE
+                    || itemStack.getItem() == Items.GOLD_INGOT;
+        }
+        return false;
+    }
 }

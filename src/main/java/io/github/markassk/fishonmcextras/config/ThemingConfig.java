@@ -9,13 +9,14 @@ public class ThemingConfig {
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public Theming.ThemeType themeType = Theming.ThemeType.OFF;
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.ColorPicker(allowAlpha = true)
-        public int colorOverlay = 0xFFFFFFFF;
+        @ConfigEntry.ColorPicker(allowAlpha = false)
+        public int colorOverlay = 0xFFFFFF;
+        public int opacity = 100;
     }
 
     public static class Flair {
         @ConfigEntry.Gui.CollapsibleObject
-        public ContestHudFlair contestHudFlair = new ContestHudFlair();
+        public ContestHudFlair contestFlair = new ContestHudFlair();
         public static class ContestHudFlair {
             @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
             public FlairDecor.FlairTopLeft flairTopLeft = FlairDecor.FlairTopLeft.Off;
