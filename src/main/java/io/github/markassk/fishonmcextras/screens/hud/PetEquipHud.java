@@ -1,13 +1,18 @@
 package io.github.markassk.fishonmcextras.screens.hud;
 
+import io.github.markassk.fishonmcextras.common.FlairDecor;
+import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.PetEquipHandler;
+import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.handler.screens.hud.PetEquipHudHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -74,6 +79,42 @@ public class PetEquipHud {
                     drawContext.drawItem(activePet, scaledX + padding, scaledY + padding + 1 - heightClampTranslation);
                 }
             }
+
+            // Theming
+            FlairDecor flairDecor = ThemingHandler.instance().flairDecorPetEquip;
+            int rightAlignmentOffset = (rightAlignment ? padding * 3 + maxLength + 16 : 0);
+
+            if(config.theme.themeType != Theming.ThemeType.OFF) {
+                Theming theme = ThemingHandler.instance().currentTheme;
+                int colorOverlay = config.theme.colorOverlay;
+                int themeTextColor = ThemingHandler.instance().currentThemeType.TEXT_COLOR;
+                int alphaOverlay = (int) ((config.theme.opacity / 100f) * 255f) << 24;
+
+                // Corners
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_LEFT, scaledX - padding - rightAlignmentOffset, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP_RIGHT, scaledX + padding * 2 + maxLength + 16 - rightAlignmentOffset, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_LEFT, scaledX - padding - rightAlignmentOffset, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM_RIGHT, scaledX + padding * 2 + maxLength + 16 - rightAlignmentOffset, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+
+                // Sides
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_LEFT, scaledX - padding - rightAlignmentOffset, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_RIGHT, scaledX + padding * 2 + 16 + maxLength - rightAlignmentOffset, scaledY + padding - heightClampTranslation, 16, ((textList.size() - 1) * lineHeight) + padding, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TOP, scaledX + padding - rightAlignmentOffset, scaledY - padding - heightClampTranslation, maxLength + padding + 16, 16, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_BOTTOM, scaledX + padding - rightAlignmentOffset, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation, maxLength + padding + 16, 16, alphaOverlay | colorOverlay);
+
+                // Title
+                Text title = Text.literal("ᴘᴇᴛ").withColor(ThemingHandler.instance().currentThemeType.TEXT_COLOR).formatted(Formatting.BOLD);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_LEFT, scaledX + (maxLength + padding * 3 + 16) / 2 - textRenderer.getWidth(title) / 2 - 16 - rightAlignmentOffset, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_MIDDLE, scaledX  + (maxLength + padding * 3 + 16) / 2 - textRenderer.getWidth(title) / 2 - rightAlignmentOffset, scaledY - padding - heightClampTranslation, textRenderer.getWidth(title), 16, alphaOverlay | colorOverlay);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, theme.GUI_TEXT_RIGHT, scaledX + (maxLength + padding * 3 + 16) / 2 + textRenderer.getWidth(title) / 2 - rightAlignmentOffset, scaledY - padding - heightClampTranslation, 16, 16, alphaOverlay | colorOverlay);
+                drawContext.drawText(textRenderer, title, scaledX + (maxLength + padding * 3 + 16) / 2 - textRenderer.getWidth(title) / 2 - rightAlignmentOffset, scaledY - textRenderer.fontHeight / 2 - heightClampTranslation - 1, themeTextColor, false);
+            }
+
+            // Flair
+            drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_TOP_LEFT, scaledX - padding - rightAlignmentOffset - 24, scaledY - padding - heightClampTranslation - 24, 64, 64);
+            drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_TOP_RIGHT, scaledX + padding * 2 + maxLength + 16 - rightAlignmentOffset - 24, scaledY - padding - heightClampTranslation - 24, 64, 64);
+            drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_BOTTOM_LEFT, scaledX - padding - rightAlignmentOffset - 24, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation - 24, 64, 64);
+            drawContext.drawGuiTexture(RenderLayer::getGuiTextured, flairDecor.GUI_FLAIR_BOTTOM_RIGHT, scaledX + padding * 2 + maxLength + 16 - rightAlignmentOffset - 24, scaledY + padding * 2 + ((textList.size() - 1) * lineHeight) - heightClampTranslation - 24, 64, 64);
 
             // Draw Text
             int finalHeightClampTranslation = heightClampTranslation;

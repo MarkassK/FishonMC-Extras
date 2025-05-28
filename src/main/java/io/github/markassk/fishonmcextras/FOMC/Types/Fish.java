@@ -6,6 +6,7 @@ import io.github.markassk.fishonmcextras.util.UUIDHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 
 import java.time.LocalDate;
@@ -68,5 +69,20 @@ public class Fish extends FOMCItem {
 
     public static Fish getFish(ItemStack itemStack, String type, String name) {
         return new Fish(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA), name);
+    }
+
+    public static Fish getFish(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+            if (itemStack.getItem() == Items.COD
+                    || itemStack.getItem() == Items.WHITE_DYE
+                    || itemStack.getItem() == Items.BLACK_DYE
+                    || itemStack.getItem() == Items.GOLD_INGOT
+            ) {
+                String line = Objects.requireNonNull(itemStack.getComponents().get(DataComponentTypes.LORE)).lines().get(15).getString();
+                return Fish.getFish(itemStack, Defaults.ItemTypes.FISH, line.substring(line.lastIndexOf(" ") + 1));
+            }
+        }
+        return null;
     }
 }

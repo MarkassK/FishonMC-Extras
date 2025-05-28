@@ -49,6 +49,10 @@ public class ContestHandler {
         }
     }
 
+    public void onLeaveServer() {
+        this.hasEnded = true;
+    }
+
     public void onReceiveMessage(Text message) {
         if(message.getString().contains("FISHING CONTEST RANKINGS")) {
             this.lastUpdated = System.currentTimeMillis();
