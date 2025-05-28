@@ -18,13 +18,12 @@ public enum Constant {
     GIGANTIC("gigantic", Text.literal("ɢɪɢᴀɴᴛɪᴄ").withColor(0xAF3333), 0xAF3333),
 
     // Rarity
-    COMMON("common", Text.literal("\uF033").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
-    RARE("rare",
-            Text.literal("\uF034").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
-    EPIC("epic", Text.literal("\uF035").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
-    LEGENDARY("legendary", Text.literal("\uF036").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
-    MYTHICAL("mythical", Text.literal("\uF037").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
-    SPECIAL("special", Text.literal("\uF092").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
+    COMMON("common", Text.literal("\uF033").formatted(Formatting.WHITE), 0xFFFFFF),
+    RARE("rare", Text.literal("\uF034").formatted(Formatting.WHITE), 0x2B85C4),
+    EPIC("epic", Text.literal("\uF035").formatted(Formatting.WHITE), 0x1CD832),
+    LEGENDARY("legendary", Text.literal("\uF036").formatted(Formatting.WHITE), 0xD98103),
+    MYTHICAL("mythical", Text.literal("\uF037").formatted(Formatting.WHITE), 0xC93832),
+    SPECIAL("special", Text.literal("\uF092").formatted(Formatting.WHITE), 0xDD7ACF),
 
     // Location
     SPAWNHUB("spawnhub", Text.literal("Cypress Lake").withColor(0x5CAE65), DEFAULT_COLOR),
@@ -62,15 +61,15 @@ public enum Constant {
     FABLED("fabled", Text.literal("\uF044").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
 
     // Pet Rating
-    SICKLY(EMPTY_STRING, Text.literal("sɪᴄᴋʟʏ").withColor(0xFF74403B), 0xFF74403B),
-    BAD(EMPTY_STRING, Text.literal("ʙᴀᴅ").withColor(0xFFFF5555), 0xFFFF5555),
-    BELOW_AVERAGE(EMPTY_STRING, Text.literal("ʙᴇʟᴏᴡ ᴀᴠᴇʀᴀɢᴇ").withColor(0xFFFCFC54), 0xFFFCFC54),
-    AVERAGE(EMPTY_STRING, Text.literal("ᴀᴠᴇʀᴀɢᴇ").withColor(0xFFFCA800), 0xFFFCA800),
-    GOOD(EMPTY_STRING, Text.literal("ɢᴏᴏᴅ").withColor(0xFF54FC54), 0xFF54FC54),
-    GREAT(EMPTY_STRING, Text.literal("ɢʀᴇᴀᴛ").withColor(0xFF00A800), 0xFF00A800),
-    EXCELLENT(EMPTY_STRING, Text.literal("ᴇxᴄᴇʟʟᴇɴᴛ").withColor(0xFF54FCFC), 0xFF54FCFC),
-    AMAZING(EMPTY_STRING, Text.literal("ᴀᴍᴀᴢɪɴɢ").withColor(0xFFFC54FC), 0xFFFC54FC),
-    PERFECT(EMPTY_STRING, Text.literal("ᴘᴇʀꜰᴇᴄᴛ").withColor(0xFFA800A8), 0xFFA800A8),
+    SICKLY("sickly", Text.literal("sɪᴄᴋʟʏ").withColor(0xFF74403B), 0xFF74403B),
+    BAD("bad", Text.literal("ʙᴀᴅ").withColor(0xFFFF5555), 0xFFFF5555),
+    BELOW_AVERAGE("below_average", Text.literal("ʙᴇʟᴏᴡ ᴀᴠᴇʀᴀɢᴇ").withColor(0xFFFCFC54), 0xFFFCFC54),
+    AVERAGE("average", Text.literal("ᴀᴠᴇʀᴀɢᴇ").withColor(0xFFFCA800), 0xFFFCA800),
+    GOOD("good", Text.literal("ɢᴏᴏᴅ").withColor(0xFF54FC54), 0xFF54FC54),
+    GREAT("great", Text.literal("ɢʀᴇᴀᴛ").withColor(0xFF00A800), 0xFF00A800),
+    EXCELLENT("excellent", Text.literal("ᴇxᴄᴇʟʟᴇɴᴛ").withColor(0xFF54FCFC), 0xFF54FCFC),
+    AMAZING("amazing", Text.literal("ᴀᴍᴀᴢɪɴɢ").withColor(0xFFFC54FC), 0xFFFC54FC),
+    PERFECT("perfect", Text.literal("ᴘᴇʀꜰᴇᴄᴛ").withColor(0xFFA800A8), 0xFFA800A8),
 
     // Pets
     BULLFROG("bullfrog", TextHelper.concat(

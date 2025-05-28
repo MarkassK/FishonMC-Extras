@@ -86,6 +86,10 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public DiscordIPCConfig.DiscordIPC discordIPC = new DiscordIPCConfig.DiscordIPC();
 
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public RarityMarkerConfig.RarityMarker rarityMarker = new RarityMarkerConfig.RarityMarker();
+
     @ConfigEntry.Category(value = COSMETIC)
     @ConfigEntry.Gui.CollapsibleObject
     public ThemingConfig.Theme theme = new ThemingConfig.Theme();

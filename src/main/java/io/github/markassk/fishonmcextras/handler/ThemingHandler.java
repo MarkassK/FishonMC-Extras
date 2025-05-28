@@ -63,15 +63,15 @@ public class ThemingHandler {
             this.currentTheme = new Theming(currentThemeType);
         }
 
-        if(flairTopLeftContest != config.flair.contestHudFlair.flairTopLeft
-                || flairTopRightContest != config.flair.contestHudFlair.flairTopRight
-                || flairBottomLeftContest != config.flair.contestHudFlair.flairBottomLeft
-                || flairBottomRightContest != config.flair.contestHudFlair.flairBottomRight
+        if(flairTopLeftContest != config.flair.contestFlair.flairTopLeft
+                || flairTopRightContest != config.flair.contestFlair.flairTopRight
+                || flairBottomLeftContest != config.flair.contestFlair.flairBottomLeft
+                || flairBottomRightContest != config.flair.contestFlair.flairBottomRight
         ) {
-            flairTopLeftContest = config.flair.contestHudFlair.flairTopLeft;
-            flairTopRightContest = config.flair.contestHudFlair.flairTopRight;
-            flairBottomLeftContest = config.flair.contestHudFlair.flairBottomLeft;
-            flairBottomRightContest = config.flair.contestHudFlair.flairBottomRight;
+            flairTopLeftContest = config.flair.contestFlair.flairTopLeft;
+            flairTopRightContest = config.flair.contestFlair.flairTopRight;
+            flairBottomLeftContest = config.flair.contestFlair.flairBottomLeft;
+            flairBottomRightContest = config.flair.contestFlair.flairBottomRight;
             flairDecorContest = new FlairDecor(flairTopLeftContest, flairTopRightContest, flairBottomLeftContest, flairBottomRightContest);
         }
 

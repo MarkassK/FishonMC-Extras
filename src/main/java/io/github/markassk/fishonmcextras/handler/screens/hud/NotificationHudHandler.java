@@ -265,6 +265,16 @@ public class NotificationHudHandler {
             ));
         }
 
+        if(config.crewTracker.crewChatLocation == CrewHandler.CrewChatLocation.IN_NOTIFICATION
+                && ProfileDataHandler.instance().profileData.isInCrewChat
+                && ChatScreenHandler.instance().screenInit) {
+            textList.add(Text.empty());
+            textList.add(TextHelper.concat(
+                    Text.literal("You are in ").formatted(Formatting.RED),
+                    Text.literal("Crew Chat").formatted(Formatting.GREEN)
+            ));
+        }
+
         if(!textList.isEmpty() && ThemingHandler.instance().currentThemeType == Theming.ThemeType.OFF) {
             textList.addFirst(getTitle().copy().formatted(Formatting.GRAY));
         } else if(!textList.isEmpty() && Objects.equals(textList.getFirst(), Text.empty())) {
