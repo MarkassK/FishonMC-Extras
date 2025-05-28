@@ -76,7 +76,7 @@ public class FOMCItem {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null && itemStack.getItem() != Items.FISHING_ROD) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if(nbtCompound != null) {
-                return Constant.valueOfId(nbtCompound.getString("rarity"));
+                return Constant.valueOfId(nbtCompound.getString("rarity").orElse("default"));
             }
         }
         return Constant.DEFAULT;
