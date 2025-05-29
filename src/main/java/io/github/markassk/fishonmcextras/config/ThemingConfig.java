@@ -11,6 +11,7 @@ public class ThemingConfig {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.ColorPicker(allowAlpha = false)
         public int colorOverlay = 0xFFFFFF;
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int opacity = 100;
     }
 

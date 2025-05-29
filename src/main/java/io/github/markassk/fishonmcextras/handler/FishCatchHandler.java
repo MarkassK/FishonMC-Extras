@@ -26,6 +26,9 @@ public class FishCatchHandler  {
     private boolean preCheck = false;
     private boolean isFull = false;
     private long fishCaughtTime = 0L;
+    private boolean hasUsedRod = false;
+
+    public long lastTimeUsedRod = 0L;
 
     public static FishCatchHandler instance() {
         if (INSTANCE == null) {
@@ -37,6 +40,13 @@ public class FishCatchHandler  {
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player == null || !LoadingHandler.instance().isLoadingDone || minecraftClient.world == null) {
             return;
+        }
+
+        if(minecraftClient.player.fishHook != null && !hasUsedRod) {
+            hasUsedRod = true;
+        } else if (hasUsedRod && minecraftClient.player.fishHook == null) {
+            hasUsedRod = false;
+            this.lastTimeUsedRod = System.currentTimeMillis();
         }
 
         if(this.preCheck) {
@@ -102,8 +112,8 @@ public class FishCatchHandler  {
             this.fishCaughtTime = System.currentTimeMillis();
 
             if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
-                MinecraftClient.getInstance().inGameHud.setSubtitle(Text.empty());
                 MinecraftClient.getInstance().inGameHud.setTitle(Text.empty());
+                MinecraftClient.getInstance().inGameHud.setSubtitle(Text.empty());
             }
         }
     }
@@ -160,6 +170,7 @@ public class FishCatchHandler  {
 
             ProfileDataHandler.instance().updateStatsOnCatch(fish);
             QuestHandler.instance().updateQuest(fish);
+            PetEquipHandler.instance().updatePet(minecraftClient.player);
 
             this.fishFound = false;
             this.isFull = false;
