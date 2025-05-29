@@ -57,6 +57,7 @@ public class InventoryScreenHandler {
             clickableWidgets.add(getButton(2, "Forge", "\uF013", "forge", "Requires atleast " + Constant.SAILOR.TAG.getString(), true, minecraftClient));
             clickableWidgets.add(getButton(3, "Scrapper", "\uF020", "scrapper", "Requires atleast " + Constant.SAILOR.TAG.getString(), true, minecraftClient));
             clickableWidgets.add(getButton(4, "Fish Merchant", "\uF012", "sell", "Requires atleast " + Constant.MARINER.TAG.getString(), true, minecraftClient));
+            clickableWidgets.add(getButton(5, "Quests", "\uF007", "quest", "", true, minecraftClient));
 
             clickableWidgets.add(getButton(1, "Crew Info", "\uF038", "crew", "", false, true, minecraftClient));
             clickableWidgets.add(getButton(2, "Crew Home", "\uF039", "crew home", "", false, true, minecraftClient));
@@ -88,7 +89,7 @@ public class InventoryScreenHandler {
                 })
                 .position(
                         isRight ? minecraftClient.getWindow().getScaledWidth() / 2 + offsetRecipe : minecraftClient.getWindow().getScaledWidth() / 2 - offsetRecipe - 100,
-                        minecraftClient.getWindow().getScaledHeight() / 2 - 70 + index * (padding + 24))
+                        minecraftClient.getWindow().getScaledHeight() / 2 - 82 + index * (padding + 24))
                 .width(100)
                 .stringIcon(icon)
                 .isLoader(isLoader);

@@ -26,6 +26,13 @@ public class InGameHudMixin {
         }
     }
 
+    @Inject(method = "renderTitleAndSubtitle", at = @At("HEAD"), cancellable = true)
+    private void injectRenderTitleAndSubtitle(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+        if(System.currentTimeMillis() - FishCatchHandler.instance().lastTimeUsedRod < 1000L) {
+            ci.cancel();
+        }
+    }
+
     @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
     private void injectRenderExperienceBar(DrawContext context, int x, CallbackInfo ci) {
         if(config.barHUD.showBar && LoadingHandler.instance().isOnServer) {
