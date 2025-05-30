@@ -167,7 +167,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 StatsImportHandler.instance().isOnScreen = true;
             } else if (screen instanceof InventoryScreen) {
                 InventoryScreenHandler.instance().screenInit = true;
-            } else if (screen instanceof ChatScreen) {
+            } else if (screen instanceof ChatScreen || Objects.equals(screen.getTitle().getString(), "Chat screen")) {
                 ChatScreenHandler.instance().screenInit = true;
             }
         }
@@ -184,7 +184,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 // Crew Menu:
                 CrewHandler.instance().crewMenuState = false;
                 CrewHandler.instance().onScreenClose();
-            } else if(screen instanceof ChatScreen) {
+            } else if(screen instanceof ChatScreen || Objects.equals(screen.getTitle().getString(), "")) {
                 ChatScreenHandler.instance().screenInit = false;
             }
         }

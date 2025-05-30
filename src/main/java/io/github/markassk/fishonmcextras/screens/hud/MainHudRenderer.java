@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.compat.LabyModCompat;
 import io.github.markassk.fishonmcextras.config.ConfigConstants;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.LoadingHandler;
@@ -67,6 +68,9 @@ public class MainHudRenderer implements HudRenderCallback {
 
                 if(config.crewTracker.showCrewNearby) {
                     this.crewHud.render(drawContext, MinecraftClient.getInstance());
+                    if(LabyModCompat.instance().isLabyMod) {
+                        this.crewHud.renderCrewChatMarker(drawContext, MinecraftClient.getInstance());
+                    }
                 }
 
                 if(config.questTracker.showQuestHud) {
