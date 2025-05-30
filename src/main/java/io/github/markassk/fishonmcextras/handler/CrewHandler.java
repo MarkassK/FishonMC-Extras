@@ -1,11 +1,18 @@
 package io.github.markassk.fishonmcextras.handler;
 
+import io.github.markassk.fishonmcextras.compat.LabyModCompat;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.mixin.ChatScreenAccessor;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +86,10 @@ public class CrewHandler {
 
         if(message.getString().startsWith("CREWS » Crew Chat has been enabled")) {
             ProfileDataHandler.instance().profileData.isInCrewChat = true;
+            ProfileDataHandler.instance().saveStats();
         } else if (message.getString().startsWith("CREWS » Crew Chat has been disabled")) {
             ProfileDataHandler.instance().profileData.isInCrewChat = false;
+            ProfileDataHandler.instance().saveStats();
         }
     }
 
@@ -101,6 +110,20 @@ public class CrewHandler {
             }
             this.isCrewNearby = isNearby.get();
             this.isCrewInRenderDistance = foundCrew.get();
+        }
+    }
+
+    public void renderCrewChatMarker(DrawContext context, TextRenderer textRenderer, int xCoord, int yCoord) {
+        FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+        Text marker = Text.literal("ɪɴ ᴄʀᴇᴡ ᴄʜᴀᴛ").formatted(Formatting.GREEN, Formatting.ITALIC);
+        if(ChatScreenHandler.instance().screenInit
+                && !LabyModCompat.instance().isLabyMod
+                && MinecraftClient.getInstance().currentScreen instanceof ChatScreen chatScreen
+                && ProfileDataHandler.instance().profileData.isInCrewChat
+                && !((ChatScreenAccessor) chatScreen).getChatField().getText().startsWith("/")
+                && config.crewTracker.crewChatLocation == CrewHandler.CrewChatLocation.IN_CHAT
+                && ((ChatScreenAccessor) chatScreen).getChatField().isVisible()) {
+            context.drawText(textRenderer, marker, 16 + xCoord, yCoord - 1, ((int) 150f << 24) | 0xFFFFFF, true);
         }
     }
 
