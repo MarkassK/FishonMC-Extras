@@ -1,16 +1,10 @@
 package io.github.markassk.fishonmcextras.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
-import io.github.markassk.fishonmcextras.handler.ChatScreenHandler;
 import io.github.markassk.fishonmcextras.handler.CrewHandler;
-import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
-import io.github.markassk.fishonmcextras.util.TextHelper;
+import io.github.markassk.fishonmcextras.handler.LoadingHandler;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(TextFieldWidget.class)
-public class TextFieldWidgetMixin {
+public abstract class TextFieldWidgetMixin {
     @Shadow @Final private TextRenderer textRenderer;
-    @Shadow private String text;
+
     @Unique
     private static int xCoord = 0;
     @Unique
@@ -35,9 +29,11 @@ public class TextFieldWidgetMixin {
 
     @ModifyArgs(method = "renderWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;III)I"))
     private void getLocals(Args args) {
-        xCoord = args.get(2);
-        yCoord = args.get(3);
-        args.set(1, ticker ? "_" : "");
+        if(LoadingHandler.instance().isOnServer) {
+            xCoord = args.get(2);
+            yCoord = args.get(3);
+            args.set(1, ticker ? "_" : "");
+        }
     }
 
     @ModifyVariable(method = "renderWidget", at = @At("STORE"), ordinal = 1)
@@ -46,15 +42,10 @@ public class TextFieldWidgetMixin {
         return true;
     }
 
-    @Inject(method = "renderWidget", at = @At("TAIL"))
+    @Inject(method = "renderWidget", at = @At("HEAD"))
     private void injectMarker(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-
-        if(ChatScreenHandler.instance().screenInit
-                && ProfileDataHandler.instance().profileData.isInCrewChat && !this.text.startsWith("/")
-                && config.crewTracker.crewChatLocation == CrewHandler.CrewChatLocation.IN_CHAT) {
-            Text marker = Text.literal("ɪɴ ᴄʀᴇᴡ ᴄʜᴀᴛ").formatted(Formatting.GREEN, Formatting.ITALIC);
-            context.drawText(this.textRenderer, marker, 16 + xCoord, yCoord - 1, ((int) 150f << 24) | 0xFFFFFF, true);
+        if(LoadingHandler.instance().isOnServer) {
+            CrewHandler.instance().renderCrewChatMarker(context, this.textRenderer, xCoord, yCoord);
         }
     }
 }
