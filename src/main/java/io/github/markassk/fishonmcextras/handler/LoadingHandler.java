@@ -1,7 +1,7 @@
 package io.github.markassk.fishonmcextras.handler;
 
-import io.github.markassk.fishonmcextras.FOMC.Types.FishingRod;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
+import io.github.markassk.fishonmcextras.compat.LabyModCompat;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
@@ -31,6 +31,12 @@ public class LoadingHandler {
             ItemStack stack = minecraftClient.player.getInventory().main.getFirst();
             if(!stack.isEmpty() && stack.get(DataComponentTypes.CUSTOM_DATA) != null && stack.getItem() == Items.FISHING_ROD) {
                 isLoadingDone = true;
+                if(MinecraftClient.getLauncherBrand() != null
+                        && MinecraftClient.getLauncherBrand().contains("labymod-launcher")
+                ) {
+                    LabyModCompat.instance().isLabyMod = true;
+                }
+
                 FishOnMCExtras.LOGGER.info("[FoE] Loading Done");
 
                 PetEquipHandler.instance().startScanTime = System.currentTimeMillis();

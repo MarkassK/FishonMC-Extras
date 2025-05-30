@@ -5,7 +5,6 @@ import io.github.markassk.fishonmcextras.mixin.RecipeBookScreenAccessor;
 import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.RecipeBookScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -59,9 +58,11 @@ public class InventoryScreenHandler {
             clickableWidgets.add(getButton(4, "Fish Merchant", "\uF012", "sell", "Requires atleast " + Constant.MARINER.TAG.getString(), true, minecraftClient));
             clickableWidgets.add(getButton(5, "Quests", "\uF007", "quest", "", true, minecraftClient));
 
-            clickableWidgets.add(getButton(1, "Crew Info", "\uF038", "crew", "", false, true, minecraftClient));
-            clickableWidgets.add(getButton(2, "Crew Home", "\uF039", "crew home", "", false, true, minecraftClient));
-            clickableWidgets.add(getButton(3, "Crew Chat", "ab", "crew chat", "", false, minecraftClient));
+            if(ProfileDataHandler.instance().profileData.crewState == CrewHandler.CrewState.HASCREW) {
+                clickableWidgets.add(getButton(1, "Crew Info", "\uF038", "crew", "", false, true, minecraftClient));
+                clickableWidgets.add(getButton(2, "Crew Home", "\uF039", "crew home", "", false, true, minecraftClient));
+                clickableWidgets.add(getButton(3, "Crew Chat", "ab", "crew chat", "", false, minecraftClient));
+            }
 
             if(LocationHandler.instance().currentLocation == Constant.CREW_ISLAND) {
                 clickableWidgets.add(getButton(4, "Crew Fly", "↑", "crew fly", "", false, minecraftClient));
