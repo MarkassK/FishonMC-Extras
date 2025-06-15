@@ -17,6 +17,7 @@ public class Reel extends FOMCItem {
     public final CustomModelDataComponent customModelData;
     public final Constant water;
     public final List<ReelStats> reelStats;
+    public final List<Calibration> calibration;
 
     private Reel(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
         super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
@@ -29,6 +30,12 @@ public class Reel extends FOMCItem {
             nbtCompoundList.add(nbtList.getCompound(i).get());
         }
         this.reelStats = nbtCompoundList.stream().map(ReelStats::new).toList();
+        NbtList nbtList1 = nbtCompound.getList("calibration", NbtElement.LIST_TYPE);
+        List<NbtCompound> nbtCompoundList1 = new ArrayList<>();
+        for (int i = 0; i < nbtList1.size(); i++) {
+            nbtCompoundList1.add(nbtList1.getCompound(i));
+        }
+        this.calibration = nbtCompoundList1.stream().map(Calibration::new).toList();
     }
 
     public static class ReelStats {
@@ -38,6 +45,18 @@ public class Reel extends FOMCItem {
         private ReelStats(NbtCompound nbtCompound) {
             this.cur = nbtCompound.getInt("cur").get();
             this.id = nbtCompound.getString("id").get();
+        }
+    }
+
+    public static class Calibration {
+        public final int cur;
+        public final String id;
+        public final String calibration;
+
+        private Calibration(NbtCompound nbtCompound) {
+            this.cur = nbtCompound.getInt("cur");
+            this.id = nbtCompound.getString("id");
+            this.calibration = nbtCompound.getString("gold");
         }
     }
 

@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.screens.petCalculator;
 
-import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.handler.PetCalculatorHandler;
 import io.github.markassk.fishonmcextras.handler.screens.petCalculator.PetCalculatorScreenHandler;

@@ -59,7 +59,7 @@ public class DebugScreen extends Screen {
             AtomicInteger countLine = new AtomicInteger(0);
 
             int maxLines = 30;
-            int maxLength = textList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
+            int maxLength = textList.stream().map(textRenderer::getWidth).max(Integer::compareTo).orElse(0);
             int columns = (int) Math.ceil((double) textList.size() / maxLines);
             int heightTextList = columns > 1 ? maxLines * lineHeight : textList.size() * lineHeight;
             int columnStart = (int) (Math.ceil(columns / 2f) - columns);

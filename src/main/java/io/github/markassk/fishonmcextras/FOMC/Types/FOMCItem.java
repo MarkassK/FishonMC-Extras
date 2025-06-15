@@ -38,6 +38,7 @@ public class FOMCItem {
             } else if (itemStack.getItem() == Items.COD
                     || itemStack.getItem() == Items.WHITE_DYE
                     || itemStack.getItem() == Items.BLACK_DYE
+                    || itemStack.getItem() == Items.ROTTEN_FLESH
                     || itemStack.getItem() == Items.GOLD_INGOT
             ) {
                 String line = Objects.requireNonNull(itemStack.getComponents().get(DataComponentTypes.LORE)).lines().get(15).getString();
@@ -65,6 +66,7 @@ public class FOMCItem {
                 return itemStack.getItem() == Items.COD
                         || itemStack.getItem() == Items.WHITE_DYE
                         || itemStack.getItem() == Items.BLACK_DYE
+                        || itemStack.getItem() == Items.ROTTEN_FLESH
                         || itemStack.getItem() == Items.GOLD_INGOT
                         || itemStack.getItem() == Items.FISHING_ROD;
             }

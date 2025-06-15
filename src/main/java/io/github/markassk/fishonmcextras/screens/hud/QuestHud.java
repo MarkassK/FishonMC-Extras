@@ -56,7 +56,7 @@ public class QuestHud {
                 int padding = 8;
                 AtomicInteger count = new AtomicInteger(0);
 
-                int maxLength = textList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
+                int maxLength = textList.stream().map(textRenderer::getWidth).max(Integer::compareTo).orElse(0);
                 int heightClampTranslation = (int) ((padding * 2 + textList.size() * lineHeight) * yPercent);
                 heightClampTranslation -= (int) ((padding * 3) * (1 - yPercent));
 
