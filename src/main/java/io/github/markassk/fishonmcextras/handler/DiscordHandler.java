@@ -111,7 +111,9 @@ public class DiscordHandler {
     }
 
     public void disconnect() {
-        if(shouldConnect) ipcClient.close();
+        if(shouldConnect && ipcClient != null && ipcClient.getStatus() == PipeStatus.CONNECTED) {
+            ipcClient.close();
+        }
     }
 
     private void processState() {

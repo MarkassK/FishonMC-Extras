@@ -68,7 +68,7 @@ public class InventoryScreenHandler {
                 clickableWidgets.add(getButton(4, "Crew Fly", "↑", "crew fly", "", false, minecraftClient));
                 clickableWidgets.add(getButton(0, "Spawn", "\uF016", "spawn", "", false, true, minecraftClient));
             } else {
-                clickableWidgets.add(getButton(0, "Instances", "\uF016", "instances", "", false, true, minecraftClient));
+                clickableWidgets.add(getButton(0, "Instances (i" + TabHandler.instance().instance + ")", "\uF016", "instances", "", false, true, minecraftClient));
             }
 
 

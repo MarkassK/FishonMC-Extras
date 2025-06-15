@@ -41,7 +41,7 @@ public class MoveHudScreen extends Screen {
         int fishTrackerY = config.fishTracker.hudY;
         boolean fishTrackerRightAlignment = config.fishTracker.rightAlignment;
         int fishTrackerFontSize = config.fishTracker.fontSize;
-        int fishTrackerMaxLength = fishTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
+        int fishTrackerMaxLength = fishTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).orElse(0);
         movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, fishTrackerX, fishTrackerY, fishTrackerRightAlignment, Text.literal("Fish Tracker"), fishTrackerFontSize, fishTrackerTextList.size(), fishTrackerMaxLength, (xPercent, yPercent) -> {
             config.fishTracker.hudX = xPercent;
             config.fishTracker.hudY = yPercent;
@@ -54,7 +54,7 @@ public class MoveHudScreen extends Screen {
         int contestTrackerY = config.contestTracker.hudY;
         boolean contestTrackerRightAlignment = config.contestTracker.rightAlignment;
         int contestTrackerFontSize = config.contestTracker.fontSize;
-        int contestTrackerMaxLength = contestTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
+        int contestTrackerMaxLength = contestTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).orElse(0);
         movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, contestTrackerX, contestTrackerY, contestTrackerRightAlignment, Text.literal("Contest Tracker"), contestTrackerFontSize, contestTrackerTextList.size(), contestTrackerMaxLength, (xPercent, yPercent) -> {
             config.contestTracker.hudX = xPercent;
             config.contestTracker.hudY = yPercent;
@@ -67,7 +67,7 @@ public class MoveHudScreen extends Screen {
         int petTrackerY = config.petEquipTracker.activePetHUDOptions.hudY;
         boolean petTrackerRightAlignment = config.petEquipTracker.activePetHUDOptions.rightAlignment;
         int petTrackerFontSize = config.petEquipTracker.activePetHUDOptions.fontSize;
-        int petTrackerMaxLength = petTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
+        int petTrackerMaxLength = petTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).orElse(0);
         movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, petTrackerX, petTrackerY, petTrackerRightAlignment, Text.literal("Pet Tracker"), petTrackerFontSize, petTrackerTextList.size(), petTrackerMaxLength + 16 + 8, (xPercent, yPercent) -> {
             config.petEquipTracker.activePetHUDOptions.hudX = xPercent;
             config.petEquipTracker.activePetHUDOptions.hudY = yPercent;
@@ -80,7 +80,7 @@ public class MoveHudScreen extends Screen {
         int questTrackerY = config.questTracker.hudY;
         boolean questTrackerRightAlignment = config.questTracker.rightAlignment;
         int questTrackerFontSize = config.questTracker.fontSize;
-        int questTrackerMaxLength = questTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).get();
+        int questTrackerMaxLength = questTrackerTextList.stream().map(textRenderer::getWidth).max(Integer::compareTo).orElse(0);
         movableBoxWidgetList.add(new MovableBoxWidget(textRenderer, questTrackerX, questTrackerY, questTrackerRightAlignment, Text.literal("Quest Tracker"), questTrackerFontSize, questTrackerTextList.size(), questTrackerMaxLength, (xPercent, yPercent) -> {
             config.questTracker.hudX = xPercent;
             config.questTracker.hudY = yPercent;

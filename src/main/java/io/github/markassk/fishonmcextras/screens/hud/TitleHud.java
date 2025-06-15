@@ -64,9 +64,7 @@ public class TitleHud {
                 int scaledY = (int) (baseY / scale);
                 AtomicInteger count = new AtomicInteger(0);
 
-                title.forEach(text -> {
-                    drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY - ((count.getAndIncrement() + 1) * lineHeight), alphaInt, true);
-                });
+                title.forEach(text -> drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY - ((count.getAndIncrement() + 1) * lineHeight), alphaInt, true));
             } finally {
                 drawContext.getMatrices().pop();
             }
@@ -93,9 +91,7 @@ public class TitleHud {
                 int scaledY = (int) (baseY / scale);
                 AtomicInteger count = new AtomicInteger(0);
 
-                subtitle.forEach(text -> {
-                    drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY + (count.getAndIncrement() * lineHeight) + lineHeight, alphaInt, true);
-                });
+                subtitle.forEach(text -> drawContext.drawText(textRenderer, text, scaledX - textRenderer.getWidth(text) / 2, scaledY + (count.getAndIncrement() * lineHeight) + lineHeight, alphaInt, true));
             } finally {
                 drawContext.getMatrices().pop();
             }

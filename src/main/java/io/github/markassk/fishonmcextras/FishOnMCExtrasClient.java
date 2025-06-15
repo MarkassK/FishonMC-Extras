@@ -81,6 +81,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     KeybindHandler.instance().tick(minecraftClient);
                     InventoryScreenHandler.instance().tick(minecraftClient);
                     ThemingHandler.instance().tick();
+                    PlayerStatsDisplayHandler.instance().tick(minecraftClient);
                 }
              }
         }
@@ -102,12 +103,12 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                         FishCatchHandler.instance().onJoinServer();
                         DiscordHandler.instance().connect();
                         LoadingHandler.instance().isOnServer = true;
+                        LoadingHandler.instance().wasOnServer = true;
                     }
                 });
             } else {
                 FishOnMCExtras.LOGGER.info("[FoE] Not on server. (play.fishonmc.net)");
                 LoadingHandler.instance().isOnServer = false;
-                DiscordHandler.instance().disconnect();
             }
         }
     }
@@ -134,7 +135,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         FishCatchHandler.instance().onLeaveServer();
         ContestHandler.instance().onLeaveServer();
         LoadingHandler.instance().isOnServer = false;
-
+        DiscordHandler.instance().disconnect();
     }
 
     private void onItemTooltipCallback(ItemStack itemStack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> textList) {

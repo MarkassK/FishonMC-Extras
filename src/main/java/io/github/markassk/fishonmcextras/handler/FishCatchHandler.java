@@ -1,8 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
-import io.github.markassk.fishonmcextras.FOMC.FishStrings;
-import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
@@ -15,7 +13,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FishCatchHandler  {
     private static FishCatchHandler INSTANCE = new FishCatchHandler();
@@ -157,6 +154,7 @@ public class FishCatchHandler  {
     private void processStack(ItemStack stack, MinecraftClient minecraftClient) {
         Fish fish = Fish.getFish(stack);
         if (fish != null
+                && minecraftClient.player != null
                 && Objects.equals(fish.catcher, minecraftClient.player.getUuid())
                 && !trackFishList.contains(fish.id)
                 && this.subtitle.getString().contains(stack.getName().getString())) {
@@ -199,13 +197,8 @@ public class FishCatchHandler  {
     private void sendToTitleHud(Fish fish, Text icon, Text name) {
         // Send to TitleHud
         List<Text> title = new ArrayList<>();
-        if(FishStrings.valueOfId(fish.fishId) != null) {
-            title.add(icon.copy().formatted(Formatting.WHITE));
-            title.add(Text.empty());
-        }
-        if(fish.variant != Constant.NORMAL) {
-            title.add(fish.variant.TAG);
-        }
+        title.add(icon.copy().formatted(Formatting.WHITE));
+        title.add(Text.empty());
         title.add(name);
         title.add(fish.size.TAG);
         if(FullInventoryHandler.instance().slotsLeft == 0) {

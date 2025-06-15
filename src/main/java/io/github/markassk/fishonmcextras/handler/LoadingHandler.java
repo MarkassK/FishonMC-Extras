@@ -14,6 +14,7 @@ public class LoadingHandler {
 
     public boolean isLoadingDone = false;
     public boolean isOnServer = false;
+    public boolean wasOnServer = false;
 
     public static LoadingHandler instance() {
         if (INSTANCE == null) {
