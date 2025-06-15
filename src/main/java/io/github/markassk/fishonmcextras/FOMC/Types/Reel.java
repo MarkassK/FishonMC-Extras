@@ -59,7 +59,7 @@ public class Reel extends FOMCItem {
         private Calibration(NbtCompound nbtCompound) {
             this.cur = nbtCompound.getInt("cur");
             this.id = nbtCompound.getString("id");
-            this.calibration = nbtCompound.getString("gold");
+            this.calibration = nbtCompound.getString("calibration");
         }
     }
 
