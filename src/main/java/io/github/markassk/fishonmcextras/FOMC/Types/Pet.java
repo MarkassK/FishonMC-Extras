@@ -7,6 +7,7 @@ import io.github.markassk.fishonmcextras.util.UUIDHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 
 import java.time.LocalDate;
@@ -35,21 +36,20 @@ public class Pet extends FOMCItem {
     public final String date;
 
     private Pet(NbtCompound nbtCompound, String type) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id").get());
-        this.pet = Constant.valueOfId(nbtCompound.getString("pet").get());
-        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("climate").get());
-        this.location = Constant.valueOfId(nbtCompound.getString("location").get());
-        this.lvl = nbtCompound.getInt("level").get();
-        this.currentXp = nbtCompound.getFloat("xp_cur").get();
-        this.neededXp = nbtCompound.getFloat("xp_need").get();
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").orElse(null)));
+        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id").orElse(new int[]{0}));
+        this.pet = Constant.valueOfId(nbtCompound.getString("pet").orElse(null));
+        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("climate").orElse(ClimateConstant.DEFAULT.ID));
+        this.location = Constant.valueOfId(nbtCompound.getString("location").orElse(Constant.CYPRESS_LAKE.ID));
+        this.lvl = nbtCompound.getInt("level").orElse(0);
+        this.currentXp = nbtCompound.getFloat("xp_cur").orElse(0f);
+        this.neededXp = nbtCompound.getFloat("xp_need").orElse(0f);
         this.climateStat = new Stat(nbtCompound, Constant.CLIMATE_BASE);
         this.locationStat = new Stat(nbtCompound, Constant.LOCATION_BASE);
         this.percentPetRating = getPercentPetRating(this.climateStat.percentLuck, this.climateStat.percentScale, this.locationStat.percentLuck, this.locationStat.percentScale);
-        this.discovererName = nbtCompound.getString("username").get();
-        this.discoverer = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").get());
-
-        this.date = nbtCompound.getString("date").get();
+        this.discovererName = nbtCompound.getString("username").orElse(null);
+        this.discoverer = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").orElse(new int[]{0}));
+        this.date = nbtCompound.getString("date").orElse(null);
     }
 
     public Pet(
@@ -105,22 +105,22 @@ public class Pet extends FOMCItem {
         private Stat(NbtCompound nbtCompound, Constant base) {
             switch (base) {
                 case Constant.CLIMATE_BASE -> {
-                    this.id = nbtCompound.getString("climate").get();
-                    this.currentLuck = nbtCompound.getList("cbase").get().getCompound(0).get().getInt("cur").get();
-                    this.currentScale = nbtCompound.getList("cbase").get().getCompound(1).get().getInt("cur").get();
-                    this.maxLuck = nbtCompound.getList("cbase").get().getCompound(0).get().getInt("cur_max").get();
-                    this.maxScale = nbtCompound.getList("cbase").get().getCompound(1).get().getInt("cur_max").get();
-                    this.percentLuck = nbtCompound.getList("cbase").get().getCompound(0).get().getFloat("percent_max").get();
-                    this.percentScale = nbtCompound.getList("cbase").get().getCompound(1).get().getFloat("percent_max").get();
+                    this.id = nbtCompound.getString("climate").orElse(null);
+                    this.currentLuck = nbtCompound.getList("cbase").orElse(new NbtList()).getCompound(0).orElse(new NbtCompound()).getInt("cur").orElse(0);
+                    this.currentScale = nbtCompound.getList("cbase").orElse(new NbtList()).getCompound(1).orElse(new NbtCompound()).getInt("cur").orElse(0);
+                    this.maxLuck = nbtCompound.getList("cbase").orElse(new NbtList()).getCompound(0).orElse(new NbtCompound()).getInt("cur_max").orElse(0);
+                    this.maxScale = nbtCompound.getList("cbase").orElse(new NbtList()).getCompound(1).orElse(new NbtCompound()).getInt("cur_max").orElse(0);
+                    this.percentLuck = nbtCompound.getList("cbase").orElse(new NbtList()).getCompound(0).orElse(new NbtCompound()).getFloat("percent_max").orElse(0f);
+                    this.percentScale = nbtCompound.getList("cbase").orElse(new NbtList()).getCompound(1).orElse(new NbtCompound()).getFloat("percent_max").orElse(0f);
                 }
                 case Constant.LOCATION_BASE -> {
-                    this.id = nbtCompound.getString("location").get();
-                    this.currentLuck = nbtCompound.getList("lbase").get().getCompound(0).get().getInt("cur").get();
-                    this.currentScale = nbtCompound.getList("lbase").get().getCompound(1).get().getInt("cur").get();
-                    this.maxLuck = nbtCompound.getList("lbase").get().getCompound(0).get().getInt("cur_max").get();
-                    this.maxScale = nbtCompound.getList("lbase").get().getCompound(1).get().getInt("cur_max").get();
-                    this.percentLuck = nbtCompound.getList("lbase").get().getCompound(0).get().getFloat("percent_max").get();
-                    this.percentScale = nbtCompound.getList("lbase").get().getCompound(1).get().getFloat("percent_max").get();
+                    this.id = nbtCompound.getString("location").orElse(null);
+                    this.currentLuck = nbtCompound.getList("lbase").orElse(new NbtList()).getCompound(0).orElse(new NbtCompound()).getInt("cur").orElse(0);
+                    this.currentScale = nbtCompound.getList("lbase").orElse(new NbtList()).getCompound(1).orElse(new NbtCompound()).getInt("cur").orElse(0);
+                    this.maxLuck = nbtCompound.getList("lbase").orElse(new NbtList()).getCompound(0).orElse(new NbtCompound()).getInt("cur_max").orElse(0);
+                    this.maxScale = nbtCompound.getList("lbase").orElse(new NbtList()).getCompound(1).orElse(new NbtCompound()).getInt("cur_max").orElse(0);
+                    this.percentLuck = nbtCompound.getList("lbase").orElse(new NbtList()).getCompound(0).orElse(new NbtCompound()).getFloat("percent_max").orElse(0f);
+                    this.percentScale = nbtCompound.getList("lbase").orElse(new NbtList()).getCompound(1).orElse(new NbtCompound()).getFloat("percent_max").orElse(0f);
                 }
                 default -> {
                     this.id = Defaults.EMPTY_STRING;

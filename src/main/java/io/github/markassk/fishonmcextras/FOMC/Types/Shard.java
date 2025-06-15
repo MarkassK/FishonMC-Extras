@@ -16,9 +16,9 @@ public class Shard extends FOMCItem {
 
     private Shard(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
         super(type, Constant.DEFAULT);
-        this.climateId = nbtCompound.getString("name").get();
+        this.climateId = nbtCompound.getString("name").orElse(null);
         this.customModelData = customModelData;
-        this.rarity = Constant.valueOfId(nbtCompound.getString("rarity").get());
+        this.rarity = Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID));
     }
 
     public static Shard getShard(ItemStack itemStack, String type) {

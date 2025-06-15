@@ -21,16 +21,16 @@ public class Bait extends FOMCItem {
     public final List<BaitStats> baitStats;
 
     private Bait(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
-        this.name = nbtCompound.getString("name").get();
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID)));
+        this.name = nbtCompound.getString("name").orElse(null);
         this.customModelData = customModelData;
-        this.counter = nbtCompound.getInt("counter").get();
-        this.water = Constant.valueOfId(nbtCompound.getString("water").get());
-        this.intricacy = nbtCompound.getString("intricacy").get();
-        NbtList nbtList = nbtCompound.getList("base").get();
+        this.counter = nbtCompound.getInt("counter").orElse(0);
+        this.water = Constant.valueOfId(nbtCompound.getString("water").orElse(Constant.FRESHWATER.ID));
+        this.intricacy = nbtCompound.getString("intricacy").orElse(null);
+        NbtList nbtList = nbtCompound.getList("base").orElse(new NbtList());
         List<NbtCompound> nbtCompoundList = new ArrayList<>();
         for (int i = 0; i < nbtList.size(); i++) {
-            nbtCompoundList.add(nbtList.getCompound(i).get());
+            nbtCompoundList.add(nbtList.getCompound(i).orElse(new NbtCompound()));
         }
         this.baitStats = nbtCompoundList.stream().map(BaitStats::new).toList();
     }
@@ -39,9 +39,9 @@ public class Bait extends FOMCItem {
         public final int cur;
         public final String id;
 
-        private  BaitStats(NbtCompound nbtCompound) {
-            this.cur = nbtCompound.getInt("cur").get();
-            this.id = nbtCompound.getString("id").get();
+        private BaitStats(NbtCompound nbtCompound) {
+            this.cur = nbtCompound.getInt("cur").orElse(0);
+            this.id = nbtCompound.getString("id").orElse(null);
         }
     }
 

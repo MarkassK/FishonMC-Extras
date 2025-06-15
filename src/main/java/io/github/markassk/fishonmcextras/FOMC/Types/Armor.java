@@ -30,30 +30,30 @@ public class Armor extends FOMCItem {
     public final ArmorStat prospect;
 
     private Armor(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID)));
         List<ArmorBonus> tempArmorBonuses;
         NbtList nbtLineList = (NbtList) nbtCompound.get("fish_bonus");
         tempArmorBonuses = new ArrayList<>();
         if(nbtLineList != null) {
             tempArmorBonuses = List.of(
-                    new ArmorBonus(nbtLineList.getCompound(0).get()),
-                    new ArmorBonus(nbtLineList.getCompound(1).get()),
-                    new ArmorBonus(nbtLineList.getCompound(2).get()),
-                    new ArmorBonus(nbtLineList.getCompound(3).get()),
-                    new ArmorBonus(nbtLineList.getCompound(4).get())
+                    new ArmorBonus(nbtLineList.getCompound(0).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtLineList.getCompound(1).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtLineList.getCompound(2).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtLineList.getCompound(3).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtLineList.getCompound(4).orElse(new NbtCompound()))
             );
         }
         this.armorBonuses = tempArmorBonuses;
         this.customModelData = customModelData;
-        this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb").get());
+        this.color = ColorHelper.getColorFromNbt(nbtCompound.getString("rgb").orElse("255, 255, 255"));
         this.quality = nbtCompound.getInt("quality").orElse(0);
-        this.identified = nbtCompound.getBoolean("identified").get();
-        this.armorPiece = nbtCompound.getString("piece").get();
-        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name").orElse(""));
-        this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").orElse(new int[]{}));
-        this.luck =  nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(0).get()) : null;
-        this.scale = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(1).get()) : null;
-        this.prospect = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(2).get()) : null;
+        this.identified = nbtCompound.getBoolean("identified").orElse(false);
+        this.armorPiece = nbtCompound.getString("piece").orElse(null);
+        this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name").orElse(ClimateConstant.DEFAULT.ID));
+        this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").orElse(new int[]{0}));
+        this.luck =  nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(0).orElse(new NbtCompound())) : null;
+        this.scale = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(1).orElse(new NbtCompound())) : null;
+        this.prospect = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(2).orElse(new NbtCompound())) : null;
     }
 
     public static class ArmorBonus {
@@ -65,10 +65,10 @@ public class Armor extends FOMCItem {
         public final String id;
 
         private ArmorBonus(NbtCompound nbtCompound) {
-            this.tier = nbtCompound.getInt("tier").get();
-            this.rolled = nbtCompound.getBoolean("rolled").get();
-            this.rolls = nbtCompound.getInt("rolls").get();
-            this.unlocked = nbtCompound.getBoolean("unlocked").get();
+            this.tier = nbtCompound.getInt("tier").orElse(0);
+            this.rolled = nbtCompound.getBoolean("rolled").orElse(false);
+            this.rolls = nbtCompound.getInt("rolls").orElse(0);
+            this.unlocked = nbtCompound.getBoolean("unlocked").orElse(false);
             this.cur = nbtCompound.getFloat("cur").orElse(0f);
             this.id = nbtCompound.getString("id").orElse(null);
         }

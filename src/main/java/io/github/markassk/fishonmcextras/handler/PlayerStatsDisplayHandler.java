@@ -6,12 +6,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.decoration.DisplayEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.AffineTransformation;
@@ -77,7 +78,8 @@ public class PlayerStatsDisplayHandler {
 
     private void spawnDisplayEntities(MinecraftClient minecraftClient, PlayerEntity targetedPlayer) {
         // Left Side
-        targetedPlayer.getArmorItems().forEach(itemStack -> {
+        List<ItemStack> armorItems = List.of(targetedPlayer.getEquippedStack(EquipmentSlot.FEET), targetedPlayer.getEquippedStack(EquipmentSlot.LEGS), targetedPlayer.getEquippedStack(EquipmentSlot.CHEST));
+        armorItems.forEach(itemStack -> {
             if(FOMCItem.isFOMCItem(itemStack)) {
                 Armor armor = Armor.getArmor(itemStack);
                 if(armor != null) {
@@ -96,7 +98,7 @@ public class PlayerStatsDisplayHandler {
         if(FOMCItem.isFOMCItem(mainhandStack)) {
             FishingRod fishingRod = FishingRod.getFishingRod(mainhandStack);
             if(fishingRod != null) {
-                spawnItemDisplay(minecraftClient, mainhandStack, targetedPlayer.getPos(), 90, 2.3, DISTANCE - .6, 1.0f, ModelTransformationMode.FIRST_PERSON_RIGHT_HAND);
+                spawnItemDisplay(minecraftClient, mainhandStack, targetedPlayer.getPos(), 90, 2.3, DISTANCE - .6, 1.0f, ItemDisplayContext.FIRST_PERSON_RIGHT_HAND);
                 spawnTextDisplay(minecraftClient, mainhandStack.getName(), targetedPlayer.getPos(), 90, 0, DISTANCE, 0.8f);
 
                 if(fishingRod.reel != null) {
@@ -155,7 +157,7 @@ public class PlayerStatsDisplayHandler {
         spawnTextDisplay(minecraftClient, text, position, angle, index, distance, 1.0f, DisplayEntity.BillboardMode.VERTICAL);
     }
 
-    private void spawnItemDisplay(MinecraftClient minecraftClient, ItemStack itemStack, Vec3d position, double angle, double index, double distance, float scale, ModelTransformationMode modelTransformationMode) {
+    private void spawnItemDisplay(MinecraftClient minecraftClient, ItemStack itemStack, Vec3d position, double angle, double index, double distance, float scale, ItemDisplayContext itemDisplayContext) {
         if (minecraftClient.world == null || minecraftClient.player == null) return;
         DisplayEntity.ItemDisplayEntity itemDisplayEntity = Objects.requireNonNull(EntityType.ITEM_DISPLAY.create(minecraftClient.world, SpawnReason.TRIGGERED));
         minecraftClient.world.addEntity(itemDisplayEntity);
@@ -165,15 +167,15 @@ public class PlayerStatsDisplayHandler {
         itemDisplayEntity.setItemStack(itemStack);
         itemDisplayEntity.setPosition(VectorHelper.getPoint(minecraftClient.player.getPos(), position, distance, angle).add(0, verticalOffset - index * lineHeight, 0));
         itemDisplayEntity.setBillboardMode(DisplayEntity.BillboardMode.VERTICAL);
-        itemDisplayEntity.setTransformationMode(modelTransformationMode);
+        itemDisplayEntity.setItemDisplayContext(itemDisplayContext);
         itemDisplayEntity.setTransformation(new AffineTransformation(null, null, new Vector3f(scale, scale, scale), null));
     }
 
     private void spawnItemDisplay(MinecraftClient minecraftClient, ItemStack itemStack, Vec3d position, double angle, double index, double distance, float scale) {
-        spawnItemDisplay(minecraftClient, itemStack, position, angle, index, distance, scale, ModelTransformationMode.GROUND);
+        spawnItemDisplay(minecraftClient, itemStack, position, angle, index, distance, scale, ItemDisplayContext.GROUND);
     }
 
     private void spawnItemDisplay(MinecraftClient minecraftClient, ItemStack itemStack, Vec3d position, double angle, double index, double distance) {
-        spawnItemDisplay(minecraftClient, itemStack, position, angle, index, distance, 1.0f, ModelTransformationMode.GROUND);
+        spawnItemDisplay(minecraftClient, itemStack, position, angle, index, distance, 1.0f, ItemDisplayContext.GROUND);
     }
 }

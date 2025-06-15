@@ -23,20 +23,20 @@ public class Lure extends FOMCItem {
     public final String size;
 
     private Lure(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity").get()));
-        this.name = nbtCompound.getString("name").get();
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID)));
+        this.name = nbtCompound.getString("name").orElse(null);
         this.customModelData = customModelData;
-        this.counter = nbtCompound.getInt("counter").get();
-        this.water = Constant.valueOfId(nbtCompound.getString("water").get());
-        this.intricacy = nbtCompound.getString("intricacy").get();
-        NbtList nbtList = nbtCompound.getList("base").get();
+        this.counter = nbtCompound.getInt("counter").orElse(0);
+        this.water = Constant.valueOfId(nbtCompound.getString("water").orElse(Constant.FRESHWATER.ID));
+        this.intricacy = nbtCompound.getString("intricacy").orElse(null);
+        NbtList nbtList = nbtCompound.getList("base").orElse(new NbtList());
         List<NbtCompound> nbtCompoundList = new ArrayList<>();
         for (int i = 0; i < nbtList.size(); i++) {
-            nbtCompoundList.add(nbtList.getCompound(i).get());
+            nbtCompoundList.add(nbtList.getCompound(i).orElse(new NbtCompound()));
         }
         this.lureStats = nbtCompoundList.stream().map(LureStats::new).toList();
-        this.totalUses = nbtCompound.getInt("totalUses").get();
-        this.size = nbtCompound.getString("size").get();
+        this.totalUses = nbtCompound.getInt("totalUses").orElse(0);
+        this.size = nbtCompound.getString("size").orElse(null);
     }
 
     public static class LureStats {
@@ -44,8 +44,8 @@ public class Lure extends FOMCItem {
         public final String id;
 
         private LureStats(NbtCompound nbtCompound) {
-            this.cur = nbtCompound.getInt("cur").get();
-            this.id = nbtCompound.getString("id").get();
+            this.cur = nbtCompound.getInt("cur").orElse(0);
+            this.id = nbtCompound.getString("id").orElse(null);
         }
     }
 

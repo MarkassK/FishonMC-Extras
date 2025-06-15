@@ -31,9 +31,9 @@ public class FishingRod extends FOMCItem {
         super(type, Constant.DEFAULT);
         this.name = name;
         this.customModelData = customModelData;
-        this.soulboundRod = nbtCompound.getBoolean("soulbound_rod").get();
-        this.skin = nbtCompound.getString("skin").get();
-        this.owner = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").get());
+        this.soulboundRod = nbtCompound.getBoolean("soulbound_rod").orElse(false);
+        this.skin = nbtCompound.getString("skin").orElse(null);
+        this.owner = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").orElse(new int[]{0}));
 
         if(nbtCompound.get("tacklebox") instanceof NbtList nbtList) {
             this.tacklebox = nbtList.stream().map(nbtElement -> {
