@@ -9,7 +9,7 @@ public class ThemingConfig {
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public Theming.ThemeType themeType = Theming.ThemeType.OFF;
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.ColorPicker(allowAlpha = false)
+        @ConfigEntry.ColorPicker()
         public int colorOverlay = 0xFFFFFF;
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int opacity = 100;

@@ -21,7 +21,6 @@ public class BarHud {
         drawContext.getMatrices().push();
         try {
             // Get non scaled screen size
-            int height = client.getWindow().getHeight();
             int width = client.getWindow().getWidth();
 
             int screenWidth = client.getWindow().getScaledWidth();

@@ -7,7 +7,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import static io.github.markassk.fishonmcextras.FOMC.Types.Defaults.DEFAULT_COLOR;
-import static io.github.markassk.fishonmcextras.FOMC.Types.Defaults.EMPTY_STRING;
 
 public enum Constant {
     // Fish Size

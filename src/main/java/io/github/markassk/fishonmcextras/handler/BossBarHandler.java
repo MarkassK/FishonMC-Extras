@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.handler;
 
-import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.mixin.BossBarHudAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ClientBossBar;
@@ -10,7 +9,6 @@ import java.util.UUID;
 
 public class BossBarHandler {
     private static BossBarHandler INSTANCE = new BossBarHandler();
-    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     public String time = "";
     public String weather = "";

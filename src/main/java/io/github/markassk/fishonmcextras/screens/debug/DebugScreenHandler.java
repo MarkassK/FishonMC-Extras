@@ -51,6 +51,10 @@ public class DebugScreenHandler {
             }
             case FISHCATCH -> {
                 FishCatchHandler fishCatchHandler = FishCatchHandler.instance();
+
+                textList.add(
+                        assembleText("lastTimeUsedRod", fishCatchHandler.lastTimeUsedRod)
+                );
             }
             case FULLINVENTORY -> {
                 FullInventoryHandler fullInventoryHandler = FullInventoryHandler.instance();
@@ -65,7 +69,8 @@ public class DebugScreenHandler {
 
                 textList.addAll(List.of(
                         assembleText("isLoadingDone", loadingHandler.isLoadingDone),
-                        assembleText("isOnServer", loadingHandler.isOnServer)
+                        assembleText("isOnServer", loadingHandler.isOnServer),
+                        assembleText("wasOnServer", loadingHandler.wasOnServer)
                 ));
             }
             case LOCATION -> {
@@ -107,7 +112,7 @@ public class DebugScreenHandler {
                         assembleText("petStatus", petEquipHandler.petStatus.name())
                 ));
             }
-            case PROFILESTATS -> {
+            case PROFILEDATA -> {
                 ProfileDataHandler profileDataHandler = ProfileDataHandler.instance();
 
                 textList.addAll(List.of(
@@ -173,7 +178,10 @@ public class DebugScreenHandler {
                         assembleText("profileStats.fishSizeDryStreak[JUVENILE]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.JUVENILE, 0)),
                         assembleText("profileStats.fishSizeDryStreak[ADULT]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.ADULT, 0)),
                         assembleText("profileStats.fishSizeDryStreak[LARGE]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.LARGE, 0)),
-                        assembleText("profileStats.fishSizeDryStreak[GIGANTIC]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.GIGANTIC, 0))
+                        assembleText("profileStats.fishSizeDryStreak[GIGANTIC]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.GIGANTIC, 0)),
+                        assembleText("profileStats.crewState", profileDataHandler.profileData.crewState.name()),
+                        assembleText("profileStats.isInCrewChat", profileDataHandler.profileData.isInCrewChat),
+                        assembleText("profileStats.isStatsInitialized", profileDataHandler.profileData.isStatsInitialized)
                 ));
             }
             case RAYTRACING -> {
@@ -201,7 +209,12 @@ public class DebugScreenHandler {
             case TAB -> {
                 TabHandler tabHandler = TabHandler.instance();
 
-                textList.add(assembleText("player", tabHandler.player.getString()));
+                textList.addAll(List.of(
+                        assembleText("player", tabHandler.player.getString()),
+                        assembleText("rank", tabHandler.rank.ID),
+                        assembleText("instance", tabHandler.instance),
+                        assembleText("isInstance", tabHandler.isInstance)
+                ));
             }
             case TITLE -> {
                 TitleHandler titleHandler = TitleHandler.instance();
@@ -241,7 +254,7 @@ public class DebugScreenHandler {
                         assembleText("isWrongBootsClimate", armorHandler.isWrongBootsClimate)
                 ));
             }
-            case FISHING_ROD -> {
+            case FISHINGROD -> {
                 FishingRodHandler fishingRodHandler = FishingRodHandler.instance();
 
                 textList.addAll(List.of(
@@ -282,6 +295,76 @@ public class DebugScreenHandler {
                 textList.add(
                         assembleText("isQuestInitialized", questHandler.isQuestInitialized())
                 );
+            }
+            case STAFF -> {
+                StaffHandler staffHandler = StaffHandler.instance();
+
+                textList.add(
+                        assembleText("isVanished", staffHandler.isVanished)
+                );
+            }
+            case STATSIMPORT -> {
+                StatsImportHandler statsImportHandler = StatsImportHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("screenInit", statsImportHandler.screenInit),
+                        assembleText("isOnScreen", statsImportHandler.isOnScreen)
+                ));
+            }
+            case THEMING -> {
+                ThemingHandler themingHandler = ThemingHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("currentThemeType", themingHandler.currentThemeType.ID),
+                        assembleText("flairDecorContest.GUI_FLAIR_TOP_LEFT", themingHandler.flairDecorContest.GUI_FLAIR_TOP_LEFT.getPath()),
+                        assembleText("flairDecorContest.GUI_FLAIR_TOP_RIGHT", themingHandler.flairDecorContest.GUI_FLAIR_TOP_RIGHT.getPath()),
+                        assembleText("flairDecorContest.GUI_FLAIR_BOTTOM_LEFT", themingHandler.flairDecorContest.GUI_FLAIR_BOTTOM_LEFT.getPath()),
+                        assembleText("flairDecorContest.GUI_FLAIR_BOTTOM_RIGHT", themingHandler.flairDecorContest.GUI_FLAIR_BOTTOM_RIGHT.getPath()),
+                        assembleText("flairDecorFishTracker.GUI_FLAIR_TOP_LEFT", themingHandler.flairDecorFishTracker.GUI_FLAIR_TOP_LEFT.getPath()),
+                        assembleText("flairDecorFishTracker.GUI_FLAIR_TOP_RIGHT", themingHandler.flairDecorFishTracker.GUI_FLAIR_TOP_RIGHT.getPath()),
+                        assembleText("flairDecorFishTracker.GUI_FLAIR_BOTTOM_LEFT", themingHandler.flairDecorFishTracker.GUI_FLAIR_BOTTOM_LEFT.getPath()),
+                        assembleText("flairDecorFishTracker.GUI_FLAIR_BOTTOM_RIGHT", themingHandler.flairDecorFishTracker.GUI_FLAIR_BOTTOM_RIGHT.getPath()),
+                        assembleText("flairDecorNotification.GUI_FLAIR_TOP_LEFT", themingHandler.flairDecorNotification.GUI_FLAIR_TOP_LEFT.getPath()),
+                        assembleText("flairDecorNotification.GUI_FLAIR_TOP_RIGHT", themingHandler.flairDecorNotification.GUI_FLAIR_TOP_RIGHT.getPath()),
+                        assembleText("flairDecorNotification.GUI_FLAIR_BOTTOM_LEFT", themingHandler.flairDecorNotification.GUI_FLAIR_BOTTOM_LEFT.getPath()),
+                        assembleText("flairDecorNotification.GUI_FLAIR_BOTTOM_RIGHT", themingHandler.flairDecorNotification.GUI_FLAIR_BOTTOM_RIGHT.getPath()),
+                        assembleText("flairDecorPetEquip.GUI_FLAIR_TOP_LEFT", themingHandler.flairDecorPetEquip.GUI_FLAIR_TOP_LEFT.getPath()),
+                        assembleText("flairDecorPetEquip.GUI_FLAIR_TOP_RIGHT", themingHandler.flairDecorPetEquip.GUI_FLAIR_TOP_RIGHT.getPath()),
+                        assembleText("flairDecorPetEquip.GUI_FLAIR_BOTTOM_LEFT", themingHandler.flairDecorPetEquip.GUI_FLAIR_BOTTOM_LEFT.getPath()),
+                        assembleText("flairDecorPetEquip.GUI_FLAIR_BOTTOM_RIGHT", themingHandler.flairDecorPetEquip.GUI_FLAIR_BOTTOM_RIGHT.getPath()),
+                        assembleText("flairDecorQuest.GUI_FLAIR_TOP_LEFT", themingHandler.flairDecorQuest.GUI_FLAIR_TOP_LEFT.getPath()),
+                        assembleText("flairDecorQuest.GUI_FLAIR_TOP_RIGHT", themingHandler.flairDecorQuest.GUI_FLAIR_TOP_RIGHT.getPath()),
+                        assembleText("flairDecorQuest.GUI_FLAIR_BOTTOM_LEFT", themingHandler.flairDecorQuest.GUI_FLAIR_BOTTOM_LEFT.getPath()),
+                        assembleText("flairDecorQuest.GUI_FLAIR_BOTTOM_RIGHT", themingHandler.flairDecorQuest.GUI_FLAIR_BOTTOM_RIGHT.getPath())
+                ));
+            }
+            case CHATSCREEN -> {
+                ChatScreenHandler chatScreenHandler = ChatScreenHandler.instance();
+
+                textList.add(assembleText("screenInit", chatScreenHandler.screenInit));
+            }
+            case DISCORD -> {
+                DiscordHandler discordHandler = DiscordHandler.instance();
+            }
+            case FISHINGSTATS -> {
+                FishingStatsHandler fishingStatsHandler = FishingStatsHandler.instance();
+            }
+            case INVENTORYSCREEN -> {
+                InventoryScreenHandler inventoryScreenHandler = InventoryScreenHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("screenInit", inventoryScreenHandler.screenInit),
+                        assembleText("isRecipeBookOpen", inventoryScreenHandler.isRecipeBookOpen)
+                ));
+            }
+            case KEYBIND -> {
+                KeybindHandler keybindHandler = KeybindHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("openConfigKeybind", keybindHandler.openConfigKeybind.isPressed()),
+                        assembleText("openExtraInfoKeybind", keybindHandler.openExtraInfoKeybind.isPressed()),
+                        assembleText("showExtraInfo", keybindHandler.showExtraInfo)
+                ));
             }
         }
 
@@ -339,7 +422,7 @@ public class DebugScreenHandler {
         NOTIFICATIONSOUND(7, "NotificationSoundHandler"),
         PETCALCULATOR(8, "PetCalculatorHandler"),
         PETEQUIP(9, "PetEquipHandler"),
-        PROFILESTATS(10, "ProfileStatsHandler"),
+        PROFILEDATA(10, "ProfileDataHandler"),
         RAYTRACING(11, "RayTracingHandler"),
         SCOREBOARD(12, "ScoreboardHandler"),
         TAB(13, "TabHandler"),
@@ -347,9 +430,17 @@ public class DebugScreenHandler {
         PETTOOLTIP(15, "PetTooltipHandler"),
         BOSSBAR(16, "BossBarHandler"),
         ARMOR(17, "ArmorHandler"),
-        FISHING_ROD(18, "FishingRodHandler"),
+        FISHINGROD(18, "FishingRodHandler"),
         CREW(19, "CrewHandler"),
-        QUEST(20, "QuestHandler")
+        QUEST(20, "QuestHandler"),
+        STAFF(21, "StaffHandler"),
+        STATSIMPORT(22, "StatsImportHandler"),
+        THEMING(23, "ThemingHandler"),
+        CHATSCREEN(24, "ChatScreenHandler"),
+        DISCORD(25, "DiscordHandler"),
+        FISHINGSTATS(26, "FishingStatsHandler"),
+        INVENTORYSCREEN(27, "InventoryScreenHandler"),
+        KEYBIND(28, "KeybindHandler")
         ;
 
         public final int id;

@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras.handler;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
 import io.github.markassk.fishonmcextras.FOMC.Types.Armor;
-import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
@@ -96,7 +95,7 @@ public class ArmorHandler {
             if(KeybindHandler.instance().showExtraInfo) {
                 Armor armor = Armor.getArmor(itemStack);
                 if(armor != null && armor.identified) {
-                    Text emptyLine = textList.get(16).copy();
+                    Text emptyLine = getTextRarity(armor.rarity).TAG;
                     if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(textList, 4, armor, emptyLine);
                     if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(textList, 3, armor, emptyLine);
                     if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(textList, 2, armor, emptyLine);
@@ -215,5 +214,17 @@ public class ArmorHandler {
             amount = amount + extraRolls * 50000;
         }
         return amount;
+    }
+
+    private Constant getTextRarity(Constant rarity) {
+        return switch (rarity) {
+            case COMMON -> Constant.TEXTCOMMON;
+            case RARE -> Constant.TEXTRARE;
+            case EPIC -> Constant.TEXTEPIC;
+            case LEGENDARY -> Constant.TEXTLEGENDARY;
+            case MYTHICAL -> Constant.TEXTMYTHICAL;
+            case SPECIAL -> Constant.TEXTSPECIAL;
+            default -> Constant.TEXTDEFAULT;
+        };
     }
 }

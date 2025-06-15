@@ -34,7 +34,7 @@ public class LocationHandler {
 
             String location = findClosestLocation(playerX, playerZ);
 
-            currentLocation = Constant.valueOfId(location);
+            currentLocation = location == null ? Constant.SPAWNHUB : Constant.valueOfId(location);
         }
 
     }
