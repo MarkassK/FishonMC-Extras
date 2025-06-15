@@ -1,7 +1,6 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
-import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import net.minecraft.client.MinecraftClient;

@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.CrewHandler;
 import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
-import io.github.markassk.fishonmcextras.handler.QuestHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -94,8 +93,6 @@ public class CommandRegistry {
     }
 
     public static void initialize() {
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            registerCommands(dispatcher);
-        });
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> registerCommands(dispatcher));
     }
 }
