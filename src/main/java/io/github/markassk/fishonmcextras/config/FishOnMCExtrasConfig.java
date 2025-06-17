@@ -98,4 +98,12 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public ThemingConfig.Flair flair = new ThemingConfig.Flair();
     //endregion
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.Excluded
+    public boolean isButtonMenuOpen = true;
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.Excluded
+    public boolean isCrewButtonMenuOpen = true;
 }

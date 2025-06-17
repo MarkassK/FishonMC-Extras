@@ -41,6 +41,7 @@ public class ContestHandler {
             this.isReset = false;
         } else if (hourMs > (60L*60L*1000L / 2)){
             this.isContest = false;
+            this.hasEnded = true;
             if(System.currentTimeMillis() - this.lastUpdated > 15000L && !isReset && hasEnded) {
                 this.isReset = true;
                 this.hasEnded = false;

@@ -10,6 +10,8 @@ import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import java.util.Objects;
+
 public class BarHudHandler {
     private static BarHudHandler INSTANCE = new BarHudHandler();
 
@@ -43,6 +45,8 @@ public class BarHudHandler {
             weather = Text.literal(BossBarHandler.instance().weather).formatted(Formatting.YELLOW);
         } else if(BossBarHandler.instance().weather.contains("☂")) {
             weather = Text.literal(BossBarHandler.instance().weather).formatted(Formatting.BLUE);
+        } else if(BossBarHandler.instance().weather.contains("⚡")) {
+            weather = Text.literal(BossBarHandler.instance().weather).formatted(Formatting.YELLOW);
         } else {
             // Moon
             weather = Text.literal(BossBarHandler.instance().weather);
@@ -53,9 +57,18 @@ public class BarHudHandler {
             time = Text.literal(" ").append(weather).append(Text.literal(" ")).append(Text.literal(BossBarHandler.instance().time).formatted(Formatting.WHITE)).append(BossBarHandler.instance().timeSuffix.contains("AM") ? Text.literal("ᴀᴍ").formatted(Formatting.GRAY) : Text.literal("ᴘᴍ").formatted(Formatting.GRAY));
         }
 
+        Text locationCatch = !Objects.equals(ScoreboardHandler.instance().locationMin, ScoreboardHandler.instance().locationMax) && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND ? TextHelper.concat(
+                Text.literal(" (").formatted(Formatting.DARK_GRAY),
+                Text.literal(ScoreboardHandler.instance().locationMin).formatted(Formatting.GOLD),
+                Text.literal("/").formatted(Formatting.GRAY),
+                Text.literal(ScoreboardHandler.instance().locationMax).formatted(Formatting.GOLD),
+                Text.literal(")").formatted(Formatting.DARK_GRAY)
+        ) : Text.literal("");
+
         return TextHelper.concat(
                 Text.literal("\uF039 ").formatted(Formatting.WHITE),
                 LocationHandler.instance().currentLocation != null ? LocationHandler.instance().currentLocation.TAG : Text.empty(),
+                locationCatch,
                 time
         );
     }

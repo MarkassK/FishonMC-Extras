@@ -80,7 +80,7 @@
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.useNewTitle": "Use the New title system.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.useNewTitle.@Tooltip": "§7This replaces the default title system on fish catch.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch": "Show extra stats on catch.",
-  "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch.@Tooltip": "§7If §aShow extra stats on catch§7 is §cdisabled§7, this option will be ignored.",
+  "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatch.@Tooltip": "§7If §aUse the New title system§7 is §cdisabled§7, this option will be ignored.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showStatsOnCatchTime": "Time for title to stay on screen.",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.abbreviateNumbers": "Shorten long numbers",
   "text.autoconfig.fishonmcextras.option.fishTracker.rightAlignment": "Right alignment",
