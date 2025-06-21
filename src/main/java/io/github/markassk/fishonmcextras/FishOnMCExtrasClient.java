@@ -61,6 +61,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             if(LoadingHandler.instance().checkAddress(minecraftClient) && LoadingHandler.instance().isOnServer) {
                 LoadingHandler.instance().tick(minecraftClient);
                 if(LoadingHandler.instance().isLoadingDone) {
+                    WorldHandler.instance().tick(minecraftClient);
                     FishCatchHandler.instance().tick(minecraftClient);
                     PetEquipHandler.instance().tick(minecraftClient);
                     FullInventoryHandler.instance().tick(minecraftClient);
@@ -81,7 +82,9 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     KeybindHandler.instance().tick(minecraftClient);
                     InventoryScreenHandler.instance().tick(minecraftClient);
                     ThemingHandler.instance().tick();
-                    PlayerStatsDisplayHandler.instance().tick(minecraftClient);
+                    OtherPlayerHandler.instance().tick(minecraftClient);
+                    WeatherHandler.instance().tick(minecraftClient);
+                    HiderHandler.instance().tick(minecraftClient);
                 }
              }
         }
@@ -101,6 +104,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     if (minecraftClient.player != null) {
                         ProfileDataHandler.instance().onJoinServer(minecraftClient.player);
                         FishCatchHandler.instance().onJoinServer();
+                        CrewHandler.instance().onJoinServer();
                         DiscordHandler.instance().connect();
                         LoadingHandler.instance().isOnServer = true;
                         LoadingHandler.instance().wasOnServer = true;
@@ -136,6 +140,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ContestHandler.instance().onLeaveServer();
         LoadingHandler.instance().isOnServer = false;
         DiscordHandler.instance().disconnect();
+        WeatherHandler.instance().onLeaveServer();
     }
 
     private void onItemTooltipCallback(ItemStack itemStack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> textList) {
@@ -143,6 +148,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             PetTooltipHandler.instance().appendTooltip(textList, itemStack);
             ArmorHandler.instance().appendTooltip(textList, itemStack);
             FishingStatsHandler.instance().appendTooltip(textList, itemStack);
+            AuctionHandler.instance().appendTooltip(textList, itemStack);
         }
     }
 

@@ -9,6 +9,7 @@
   "text.autoconfig.fishonmcextras.category.tooltips": "Tooltips",
   "text.autoconfig.fishonmcextras.category.other": "Miscellaneous",
   "text.autoconfig.fishonmcextras.category.cosmetic": "Cosmetics",
+  "text.autoconfig.fishonmcextras.category.fun": "Fun",
 
   "text.autoconfig.fishonmcextras.option.fishTracker": "§f§lFish Tracker Options",
   "text.autoconfig.fishonmcextras.option.fishTracker.showFishTrackerHUD": "Fish Tracker HUD",
@@ -170,6 +171,19 @@
   "text.autoconfig.fishonmcextras.option.questTracker.hudX": "HUD §fX §7position",
   "text.autoconfig.fishonmcextras.option.questTracker.hudY": "HUD §fY §7position",
 
+  "text.autoconfig.fishonmcextras.option.weatherTracker": "§f§lWeather Tracker Options",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.showAlertHUD": "Show alert when important weather is active",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.alertDismissSeconds": "Amount of seconds before dismissing alert",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.useAlertWarningSound": "Use alert sound",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.useAlertWarningSound.@Tooltip": "§7If §aShow alert when important weather is active§7 is §cdisabled§7, this option will be ignored.\n§7The first sound will always play",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.intervalWarningSound": "Timing of alert sound",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.alertSoundType": "Sound used for Alert",
+
+  "text.autoconfig.fishonmcextras.option.bobberTracker": "§f§lBobber Tracker Options",
+  "text.autoconfig.fishonmcextras.option.bobberTracker.skyLightWarning": "Show warning on bobber when fishing under a block",
+  "text.autoconfig.fishonmcextras.option.bobberTracker.showWaitingTime": "Show waiting time on bobber",
+  "text.autoconfig.fishonmcextras.option.bobberTracker.showBait": "Show bait on bobber",
+
   "text.autoconfig.fishonmcextras.option.petTooltip": "§f§lPet Tooltip Options",
   "text.autoconfig.fishonmcextras.option.petTooltip.showPetPercentages": "Show Pet Stat percentages",
   "text.autoconfig.fishonmcextras.option.petTooltip.decimalPlaces": "Amount of decimals shown on percentages",
@@ -203,12 +217,19 @@
 
   "text.autoconfig.fishonmcextras.option.discordIPC": "§f§lDiscord Rich Presence Options",
   "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled": "Enable Discord Rich Presence",
-  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this options",
+  "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this option",
 
   "text.autoconfig.fishonmcextras.option.rarityMarker": "§f§lRarity Marker Options",
   "text.autoconfig.fishonmcextras.option.rarityMarker.showRarityMarker": "Show Rarity Marker",
   "text.autoconfig.fishonmcextras.option.rarityMarker.showFishRarityMarker": "Show Rarity Marker on fishes",
   "text.autoconfig.fishonmcextras.option.rarityMarker.showOtherRarityMarker": "Show Rarity Marker on other items",
+
+  "text.autoconfig.fishonmcextras.option.hoverOverPlayerStats": "§f§lHover over Player Options",
+  "text.autoconfig.fishonmcextras.option.hoverOverPlayerStats.showPlayerEquipment": "Show equipment on players when sneaking",
+
+  "text.autoconfig.fishonmcextras.option.petFollower": "§f§lPet Follower Options",
+  "text.autoconfig.fishonmcextras.option.petFollower.ownPet": "Toggle between visibility options for own pet",
+  "text.autoconfig.fishonmcextras.option.petFollower.otherPets": "Toggle between visibility options for all other pets",
 
   "text.autoconfig.fishonmcextras.option.theme": "§f§lTheme Options",
   "text.autoconfig.fishonmcextras.option.theme.themeType": "Change Theme",
@@ -241,5 +262,11 @@
   "text.autoconfig.fishonmcextras.option.flair.questFlair.flairTopLeft": "Choose Top Left Flair",
   "text.autoconfig.fishonmcextras.option.flair.questFlair.flairTopRight": "Choose Top Right Flair",
   "text.autoconfig.fishonmcextras.option.flair.questFlair.flairBottomLeft": "Choose Bottom Left Flair",
-  "text.autoconfig.fishonmcextras.option.flair.questFlair.flairBottomRight": "Choose Bottom Right Flair"
+  "text.autoconfig.fishonmcextras.option.flair.questFlair.flairBottomRight": "Choose Bottom Right Flair",
+
+
+  "text.autoconfig.fishonmcextras.option.fun.@PrefixText": "\n§c!!! All of these are experimental, use with caution\n",
+  "text.autoconfig.fishonmcextras.option.fun": "§f§lFun Options",
+  "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber": "Show minigame on bobber",
+  "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber.@Tooltip": "§cThis will disable minigame on your hud"
 }

@@ -29,10 +29,18 @@ public class ContainerButtonWidget extends ClickableWidget {
 
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        if(this.isHovered() || this.isFocused()) context.drawGuiTexture(RenderLayer::getGuiTextured, buttonHoverTexture, this.getX(), this.getY(), this.width, this.height);
-        else context.drawGuiTexture(RenderLayer::getGuiTextured, buttonTexture, this.getX(), this.getY(), this.width, this.height);
+        context.getMatrices().push();
+        try {
+            context.getMatrices().translate(0, 0, 5);
+            if(this.isHovered() || this.isFocused()) context.drawGuiTexture(RenderLayer::getGuiTextured, buttonHoverTexture, this.getX(), this.getY(), this.width, this.height);
+            else context.drawGuiTexture(RenderLayer::getGuiTextured, buttonTexture, this.getX(), this.getY(), this.width, this.height);
 
-        context.drawText(textRenderer, this.getMessage(), this.getX() + this.width / 2 - this.textRenderer.getWidth(this.getMessage())/ 2, this.getY() + this.height / 2 - this.textRenderer.fontHeight / 2, 0xFFFFFF, true);
+            context.drawText(textRenderer, this.getMessage(), this.getX() + this.width / 2 - this.textRenderer.getWidth(this.getMessage())/ 2, this.getY() + this.height / 2 - this.textRenderer.fontHeight / 2, 0xFFFFFF, true);
+        } finally {
+            context.getMatrices().pop();
+        }
+
+
     }
 
     @Override

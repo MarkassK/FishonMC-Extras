@@ -55,4 +55,11 @@ public class InGameHudMixin {
     private void injectSetSubtitle(Text title, CallbackInfo ci) {
         FishCatchHandler.instance().catchSubtitle(title);
     }
+
+    @Inject(method = "renderOverlayMessage", at = @At("HEAD"), cancellable = true)
+    private void injectRenderOverlayMessage(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+        if(config.fun.minigameOnBobber) {
+            ci.cancel();
+        }
+    }
 }

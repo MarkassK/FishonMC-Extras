@@ -66,7 +66,6 @@ public class ScoreboardHandler {
         this.level = player.experienceLevel;
         this.percentLevel = player.experienceProgress;
         data.forEach(text -> {
-            System.out.println(text.getString());
             if(text.getString().contains("ᴡᴀʟʟᴇᴛ")) wallet = text.getString().substring(text.getString().indexOf("$") + 1);
             if(text.getString().contains("ᴄʀᴇᴅɪᴛꜱ")) credits = text.getString().substring(text.getString().indexOf("\uF00C") + 1);
             if(text.getString().contains("ᴄᴀᴛᴄʜᴇꜱ")) catches = text.getString().substring(text.getString().indexOf(":") + 2);

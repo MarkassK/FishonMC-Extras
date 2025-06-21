@@ -3,11 +3,14 @@ package io.github.markassk.fishonmcextras.handler;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.mixin.PlayerListHudAccessor;
+import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.PlayerListHud;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
-import java.util.Objects;
+import java.util.*;
 
 public class TabHandler {
     private static TabHandler INSTANCE = new TabHandler();
@@ -16,6 +19,8 @@ public class TabHandler {
     public Constant rank = Constant.DEFAULT;
     public String instance = "";
     public boolean isInstance = false;
+
+    private Collection<PlayerListEntry> playerListEntries = new ArrayList<>();
 
     public static TabHandler instance() {
         if (INSTANCE == null) {
@@ -42,10 +47,45 @@ public class TabHandler {
                         this.isInstance = false;
                     }
                 }
+
+                if(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() > playerListEntries.size() && !playerListEntries.isEmpty()) {
+                    List<PlayerListEntry> differences = new ArrayList<>(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries());
+                    differences.removeAll(playerListEntries);
+
+                    differences.forEach(playerListEntry -> {
+                        if(ProfileDataHandler.instance().profileData.crewMembers.contains(playerListEntry.getProfile().getId())) {
+                            minecraftClient.inGameHud.getChatHud().addMessage(TextHelper.concat(
+                                    Text.literal("CREWS ").withColor(0x70aa6e).formatted(Formatting.BOLD),
+                                    Text.literal("» ").withColor(0x545454),
+                                    Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                                    Text.literal("| ").formatted(Formatting.DARK_GRAY),
+                                    playerListEntry.getDisplayName(),
+                                    Text.literal(" joined the server").withColor(0xa8a8a8)
+                            ));
+                        }
+                    });
+                }
+                // CREWS » Crew Chat has been enabled (/crew chat)
+                if(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() != playerListEntries.size()) {
+                    playerListEntries = new ArrayList<>(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries());
+                }
             } catch (Exception e) {
-                FishOnMCExtras.LOGGER.error(e.getMessage());
+                FishOnMCExtras.LOGGER.error("TabHandler: {}", e.getMessage());
             }
+
+
         }
+    }
+
+    public Text getPlayer(UUID uuid) {
+        PlayerListHud playerListHud = MinecraftClient.getInstance().inGameHud.getPlayerListHud();
+        if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+            PlayerListEntry playerListEntry = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(uuid);
+            return playerListEntry != null ? playerListHud.getPlayerName(playerListEntry) : null;
+
+
+        }
+        return null;
     }
 
     private Constant getRank(String player) {

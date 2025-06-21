@@ -5,13 +5,15 @@ import io.github.markassk.fishonmcextras.FOMC.LevelColors;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.mixin.RecipeBookScreenAccessor;
 import io.github.markassk.fishonmcextras.screens.widget.TextWidget;
-import io.github.markassk.fishonmcextras.screens.widget.container.Container3x3Widget;
+import io.github.markassk.fishonmcextras.screens.widget.container.ContainerCrewWidget;
 import io.github.markassk.fishonmcextras.screens.widget.container.ContainerButtonWidget;
-import io.github.markassk.fishonmcextras.screens.widget.container.Container2x7Widget;
+import io.github.markassk.fishonmcextras.screens.widget.container.ContainerButtonsWidget;
+import io.github.markassk.fishonmcextras.screens.widget.container.ContainerHeaderWidget;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.ingame.RecipeBookScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -19,6 +21,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class InventoryScreenHandler {
 
     private final int recipeTranslation = 77;
     private boolean isReset = true;
+    private List<String> playerList = new ArrayList<>();
 
     public static InventoryScreenHandler instance() {
         if (INSTANCE == null) {
@@ -43,10 +47,20 @@ public class InventoryScreenHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if (screenInit) {
-            //this.createButton(minecraftClient);
+            if(CrewHandler.instance().crewState == CrewHandler.CrewState.HASCREW) {
+                playerList.clear();
+                ProfileDataHandler.instance().profileData.crewMembers.forEach(uuid -> {
+                    Text displayName = TabHandler.instance().getPlayer(uuid);
+                    if(displayName != null) {
+                        String[] parts = displayName.getString().split(" ");
+                        playerList.add(parts[parts.length - 1]);
+                    }
+                });
+            }
 
             this.createButtonMenu(minecraftClient);
             this.createCrewMenu(minecraftClient);
+            this.createHeader(minecraftClient);
 
             this.screenInit = false;
         }
@@ -68,16 +82,31 @@ public class InventoryScreenHandler {
         }
     }
 
+    private void createHeader(MinecraftClient minecraftClient) {
+        if(minecraftClient.currentScreen != null) {
+            int height = 83;
+            List<ClickableWidget> clickableWidgets = new ArrayList<>();
+
+            Text header = TabHandler.instance().player;
+            clickableWidgets.add(new TextWidget(minecraftClient.getWindow().getScaledWidth() / 2 - MinecraftClient.getInstance().textRenderer.getWidth(header) / 2, minecraftClient.getWindow().getScaledHeight() / 2 - height - 28 / 2 - MinecraftClient.getInstance().textRenderer.fontHeight / 2, header, 0xFFFFFF, true));
+
+            clickableWidgets.add(new ContainerHeaderWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 174 / 2,  minecraftClient.getWindow().getScaledHeight() / 2 - height - 28, Text.empty()));
+
+            Screens.getButtons(minecraftClient.currentScreen).addAll(clickableWidgets);
+        }
+    }
+
     private void resetButtons(MinecraftClient minecraftClient) {
         if (minecraftClient.currentScreen != null) {
-            Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget instanceof ContainerButtonWidget || clickableWidget instanceof Container2x7Widget || clickableWidget instanceof Container3x3Widget || clickableWidget instanceof TextWidget);
+            Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget instanceof ContainerButtonWidget || clickableWidget instanceof ContainerButtonsWidget || clickableWidget instanceof ContainerCrewWidget || clickableWidget instanceof TextWidget);
         }
         this.createButtonMenu(minecraftClient);
         this.createCrewMenu(minecraftClient);
+        this.createHeader(minecraftClient);
     }
 
     private void createCrewMenu(MinecraftClient minecraftClient) {
-        if (ProfileDataHandler.instance().profileData.crewState == CrewHandler.CrewState.HASCREW) {
+        if (CrewHandler.instance().crewState == CrewHandler.CrewState.HASCREW) {
             if(minecraftClient.currentScreen != null && config.isCrewButtonMenuOpen) {
                 int height = - 82;
                 int buttonSize = 22 + 1;
@@ -86,7 +115,7 @@ public class InventoryScreenHandler {
                 List<ClickableWidget> clickableWidgets = new ArrayList<>();
 
                 Text crew = TextHelper.concat(Text.literal(ScoreboardHandler.instance().crewName).formatted(Formatting.DARK_GREEN), Text.literal(" [").formatted(Formatting.DARK_GRAY), Text.literal(ScoreboardHandler.instance().crewLevel).withColor(LevelColors.valueOfLvl(Integer.parseInt(ScoreboardHandler.instance().crewLevel)).color), Text.literal("]").formatted(Formatting.DARK_GRAY));
-                clickableWidgets.add(new TextWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + 82 / 2 - MinecraftClient.getInstance().textRenderer.getWidth(crew) / 2 + offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height + 7 + buttonSize / 2 - MinecraftClient.getInstance().textRenderer.fontHeight / 2, crew, 0xFFFFFF, true));
+                clickableWidgets.add(new TextWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + 105 / 2 - MinecraftClient.getInstance().textRenderer.getWidth(crew) / 2 + offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height + 7 + buttonSize / 2 - MinecraftClient.getInstance().textRenderer.fontHeight / 2, crew, 0xFFFFFF, true));
 
                 clickableWidgets.add(assembleCrewButton(-buttonSize * 1, buttonSize, Text.literal("\uF038"), "crew", Tooltip.of(
                         TextHelper.concat(
@@ -105,16 +134,18 @@ public class InventoryScreenHandler {
                         )), minecraftClient));
 
                 if(LocationHandler.instance().currentLocation == Constant.CREW_ISLAND) {
-                    clickableWidgets.add(assembleCrewButton(-buttonSize * 1, buttonSize * 2, Text.literal("↑"), "crew fly", Tooltip.of(
+                    clickableWidgets.add(assembleCrewButton(buttonSize * 2, buttonSize, Text.literal("↑"), "crew fly", Tooltip.of(
                             TextHelper.concat(
                                     Text.literal("Crew Fly\n").formatted(Formatting.BOLD, Formatting.WHITE),
                                     Text.literal("Toggle crew fly on and off.").formatted(Formatting.GRAY, Formatting.ITALIC)
                             )), minecraftClient));
                 }
 
-                clickableWidgets.add(new Container3x3Widget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
+                clickableWidgets.addAll(assembleCrewList(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + 105 /2 , minecraftClient.getWindow().getScaledHeight() / 2 - 82 + buttonSize * 3, minecraftClient));
 
-                clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe + 1, minecraftClient.getWindow().getScaledHeight() / 2 + height + 82, Text.literal("←"), Tooltip.of(
+                clickableWidgets.add(new ContainerCrewWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
+
+                clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe + 105, minecraftClient.getWindow().getScaledHeight() / 2 + height + 1, Text.literal("←"), Tooltip.of(
                         Text.literal("Close Crew Menu").formatted(Formatting.BOLD, Formatting.WHITE)
                 ), button -> {
                     config.isCrewButtonMenuOpen = false;
@@ -207,7 +238,7 @@ public class InventoryScreenHandler {
             } else {
                 clickableWidgets.add(assembleButton( -buttonSize * 3, buttonSize, Text.literal("\uF016"), "instances", Tooltip.of(
                         TextHelper.concat(
-                                Text.literal("Instances\n").formatted(Formatting.BOLD, Formatting.WHITE),
+                                TextHelper.concat(Text.literal("Instances").formatted(Formatting.BOLD, Formatting.WHITE), Text.literal(" (").formatted(Formatting.DARK_GRAY), Text.literal("i" + TabHandler.instance().instance).formatted(Formatting.YELLOW), Text.literal(")\n").formatted(Formatting.DARK_GRAY)),
                                 Text.literal("The Instance Selector lets you change between instances.").formatted(Formatting.GRAY, Formatting.ITALIC)
                         )), minecraftClient));
             }
@@ -232,7 +263,7 @@ public class InventoryScreenHandler {
                             Text.literal("Open the official Wiki of FishOnMC.").formatted(Formatting.GRAY, Formatting.ITALIC)
                     )), minecraftClient));
 
-            clickableWidgets.add(new Container2x7Widget(minecraftClient.getWindow().getScaledWidth() / 2 - 174 / 2,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
+            clickableWidgets.add(new ContainerButtonsWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 174 / 2,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
 
             clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 - 1, minecraftClient.getWindow().getScaledHeight() / 2 + 90 + 22 / 2, Text.literal("↑"), Tooltip.of(
                     Text.literal("Close Button Menu").formatted(Formatting.BOLD, Formatting.WHITE)
@@ -266,6 +297,32 @@ public class InventoryScreenHandler {
                 minecraftClient.player.networkHandler.sendChatCommand(command);
             }
         });
+    }
+
+    private List<ClickableWidget> assembleCrewList(int x, int y, MinecraftClient minecraftClient) {
+        int lineHeight = MinecraftClient.getInstance().textRenderer.fontHeight + 1;
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+        List<ClickableWidget> clickableWidgets = new ArrayList<>();
+
+        Text onlineText = Text.literal("ᴏɴʟɪɴᴇ").formatted(Formatting.GRAY, Formatting.ITALIC);
+        clickableWidgets.add(new TextWidget(x - textRenderer.getWidth(onlineText) / 2, y - lineHeight * 2 + 5, onlineText, 0xFFFFFF, true));
+        Text lineText = Text.literal("─────────").formatted(Formatting.DARK_GRAY);
+        clickableWidgets.add(new TextWidget(x - textRenderer.getWidth(lineText) / 2, y - lineHeight + 2, lineText, 0xFFFFFF, true));
+
+        for (int i = 0; i < playerList.size(); i++) {
+            String player = StringUtils.abbreviate(playerList.get(i), 16);
+            int finalI = i;
+            TextWidget playerWidget = new TextWidget(x - textRenderer.getWidth(player) / 2, y + lineHeight * i, Text.literal(player).formatted(Formatting.GREEN), 0xFFFFFF, true, iconButtonWidget -> {
+                if (minecraftClient.player != null) {
+                    minecraftClient.player.networkHandler.sendChatCommand("find " + playerList.get(finalI));
+                }
+            });
+            playerWidget.setTooltip(Tooltip.of(Text.literal("/find " + playerList.get(i))));
+            clickableWidgets.add(playerWidget);
+        }
+
+        return clickableWidgets;
     }
 
     private ClickableWidget assembleButton(int x, int y, Text icon, String command, @Nullable Tooltip tooltip, MinecraftClient minecraftClient) {

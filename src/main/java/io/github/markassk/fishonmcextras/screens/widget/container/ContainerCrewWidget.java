@@ -8,18 +8,18 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class Container2x7Widget extends ClickableWidget {
-    private final Identifier panelTexture = Identifier.of(FishOnMCExtras.MOD_ID, "containers/panel2x7");
+public class ContainerCrewWidget extends ClickableWidget {
+    private final Identifier panelTexture = Identifier.of(FishOnMCExtras.MOD_ID, "containers/panel_crew");
 
-    public Container2x7Widget(int x, int y, Text message) {
-        super(x, y, 174, 59, message);
+    public ContainerCrewWidget(int x, int y, Text message) {
+        super(x, y, 105, 164, message);
     }
 
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         context.getMatrices().push();
         try {
-            context.getMatrices().translate(0, 0, -100);
+            context.getMatrices().translate(0, 0, 0);
             context.drawGuiTexture(RenderLayer::getGuiTextured, panelTexture, this.getX(), this.getY(), this.width, this.height);
         } finally {
             context.getMatrices().pop();

@@ -195,6 +195,25 @@ public class ProfileDataHandler {
         }
     }
 
+    public void resetDryStreak() {
+        profileData.petDryStreak = profileData.allFishCaughtCount;
+        profileData.shardDryStreak = profileData.allFishCaughtCount;
+        profileData.rarityDryStreak.put(Constant.COMMON, profileData.allFishCaughtCount);
+        profileData.rarityDryStreak.put(Constant.RARE, profileData.allFishCaughtCount);
+        profileData.rarityDryStreak.put(Constant.EPIC, profileData.allFishCaughtCount);
+        profileData.rarityDryStreak.put(Constant.LEGENDARY, profileData.allFishCaughtCount);
+        profileData.rarityDryStreak.put(Constant.MYTHICAL, profileData.allFishCaughtCount);
+        profileData.fishSizeDryStreak.put(Constant.BABY, profileData.allFishCaughtCount);
+        profileData.fishSizeDryStreak.put(Constant.JUVENILE, profileData.allFishCaughtCount);
+        profileData.fishSizeDryStreak.put(Constant.ADULT, profileData.allFishCaughtCount);
+        profileData.fishSizeDryStreak.put(Constant.LARGE, profileData.allFishCaughtCount);
+        profileData.fishSizeDryStreak.put(Constant.GIGANTIC, profileData.allFishCaughtCount);
+        profileData.variantDryStreak.put(Constant.ALBINO, profileData.allFishCaughtCount);
+        profileData.variantDryStreak.put(Constant.MELANISTIC, profileData.allFishCaughtCount);
+        profileData.variantDryStreak.put(Constant.TROPHY, profileData.allFishCaughtCount);
+        profileData.variantDryStreak.put(Constant.FABLED, profileData.allFishCaughtCount);
+    }
+
     public static class ProfileData {
         // Session stats
         public int fishCaughtCount = 0;
@@ -236,7 +255,6 @@ public class ProfileDataHandler {
 
         // Crew Data
         public List<UUID> crewMembers = new ArrayList<>();
-        public CrewHandler.CrewState crewState = CrewHandler.CrewState.NOTINITIALIZED;
         public boolean isInCrewChat = false;
 
         // Quest Data

@@ -23,15 +23,17 @@ public class BarHudHandler {
     }
 
     public Text assembleLeftText() {
-        int stringRepetitions = (int) Math.floor(ScoreboardHandler.instance().percentLevel * 100 / 10);
+        float repetitions = 100f / 20f;
+        float stringRepetitions = (float) Math.floor(ScoreboardHandler.instance().percentLevel * 100);
+        float restRepetitions = 100 - stringRepetitions;
 
         return TextHelper.concat(
                 TabHandler.instance().player,
                 Text.literal(" [").formatted(Formatting.DARK_GRAY),
                 Text.literal(String.valueOf(ScoreboardHandler.instance().level)).withColor(LevelColors.valueOfLvl(ScoreboardHandler.instance().level).color),
                 Text.literal("] ").formatted(Formatting.DARK_GRAY),
-                Text.literal("━".repeat(stringRepetitions)).formatted(Formatting.GREEN),
-                Text.literal("━".repeat(10 - stringRepetitions)).formatted(Formatting.DARK_GRAY),
+                Text.literal(" ".repeat(Math.round(stringRepetitions / repetitions))).formatted(Formatting.GREEN, Formatting.STRIKETHROUGH),
+                Text.literal(" ".repeat(Math.round(restRepetitions / repetitions))).formatted(Formatting.DARK_GRAY, Formatting.STRIKETHROUGH),
                 Text.literal(" (").formatted(Formatting.DARK_GRAY),
                 Text.literal(TextHelper.fmt(ScoreboardHandler.instance().percentLevel * 100)).formatted(Formatting.GRAY),
                 Text.literal("%").formatted(Formatting.GRAY),
@@ -41,12 +43,12 @@ public class BarHudHandler {
 
     public Text assembleMiddleText() {
         Text weather;
-        if(BossBarHandler.instance().weather.contains("☀")) {
-            weather = Text.literal(BossBarHandler.instance().weather).formatted(Formatting.YELLOW);
-        } else if(BossBarHandler.instance().weather.contains("☂")) {
-            weather = Text.literal(BossBarHandler.instance().weather).formatted(Formatting.BLUE);
-        } else if(BossBarHandler.instance().weather.contains("⚡")) {
-            weather = Text.literal(BossBarHandler.instance().weather).formatted(Formatting.YELLOW);
+        if(BossBarHandler.instance().weather.contains(Constant.SUN.ID)) {
+            weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.SUN.COLOR);
+        } else if(BossBarHandler.instance().weather.contains(Constant.RAIN.ID)) {
+            weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.RAIN.COLOR);
+        } else if(BossBarHandler.instance().weather.contains(Constant.THUNDERSTORM.ID)) {
+            weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.THUNDERSTORM.COLOR);
         } else {
             // Moon
             weather = Text.literal(BossBarHandler.instance().weather);

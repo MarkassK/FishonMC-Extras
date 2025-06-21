@@ -47,7 +47,7 @@ public class MainScreen extends Screen {
         textList.add(TabHandler.instance().player);
         textList.add(Text.empty());
         textList.add(Text.literal("Version 0.2.3-beta.1").formatted(Formatting.GRAY));
-        textList.add(Text.literal("Cosmetics Update: Pets and Pals").formatted(Formatting.GRAY, Formatting.ITALIC));
+        textList.add(Text.literal("Quality of Fishing Update").formatted(Formatting.GRAY, Formatting.ITALIC));
 
         textList.forEach(text -> context.drawText(textRenderer, text, width / 2 - 4 - textRenderer.getWidth(text), height / 2 - (textList.size() * (textRenderer.fontHeight + 1)) / 2 + count.getAndIncrement() * (textRenderer.fontHeight + 1), 0xFFFFFF, true));
     }
