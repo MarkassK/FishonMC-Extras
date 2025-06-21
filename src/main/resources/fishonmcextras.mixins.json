@@ -3,6 +3,7 @@
   "package": "io.github.markassk.fishonmcextras.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ClientGlowMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -11,10 +12,13 @@
     "BossBarHudAccessor",
     "BossBarHudMixin",
     "ChatScreenAccessor",
+    "EntityMixin",
     "HandledScreenMixin",
+    "InGameHudAccessor",
     "InGameHudMixin",
     "KeyBindingAccessor",
     "PlayerListHudAccessor",
+    "PlayerListHudMixin",
     "RecipeBookScreenAccessor",
     "TextFieldWidgetMixin"
   ]

@@ -7,6 +7,8 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.regex.Pattern;
 
 public class TextHelper {
@@ -43,13 +45,17 @@ public class TextHelper {
     // Format to number string
     public static String fmnt(float d) {
         if(d > 1000 && d < 1000000) {
-            return String.format("%.2fK", d / 1000);
+            String s = String.format("%.2f", d / 1000);
+            return (s.contains(".") ? s.replaceAll("0*$","").replaceAll("\\.$","") : s) + "K";
         } else if (d > 1000000 && d < 1000000000 ){
-            return String.format("%.2fM", d / 1000000);
+            String s =String.format("%.2f", d / 1000000);
+            return (s.contains(".") ? s.replaceAll("0*$","").replaceAll("\\.$","") : s) + "M";
         } else if (d > 1000000000) {
-            return String.format("%.2fB", d / 1000000000);
+            String s =String.format("%.2f", d / 1000000000);
+            return (s.contains(".") ? s.replaceAll("0*$","").replaceAll("\\.$","") : s) + "B";
         } else {
-            return String.format("%.0f", d);
+            String s =String.format("%.0f", d);
+            return s.contains(".") ? s.replaceAll("0*$","").replaceAll("\\.$","") : s;
         }
     }
 
@@ -81,5 +87,19 @@ public class TextHelper {
         return Pattern.compile(regex).matcher(text).replaceAll(
                 matched -> matched.group(1).toUpperCase() + matched.group(2)
         );
+    }
+
+    public static float roundFirstSignificantDigit(float input) {
+        if(input >= 0.1f || input == 0) {
+            return input;
+        }
+
+        int precision = 0;
+        float val = input - Math.round(input);
+        while (Math.abs(val) < 1) {
+            val *= 10;
+            precision++;
+        }
+        return BigDecimal.valueOf(input).setScale(precision, RoundingMode.HALF_UP).floatValue();
     }
 }

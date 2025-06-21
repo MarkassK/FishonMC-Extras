@@ -383,7 +383,8 @@ public class FishTrackerHudHandler {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         if (config.fishTracker.fishTrackerToggles.otherToggles.showPercentages) {
             float percentage = (count * 100f) / totalCount;
-            return Text.literal(String.format(" (%.1f%%)", percentage)).formatted(Formatting.GRAY);
+            float roundedPercentage = TextHelper.roundFirstSignificantDigit(percentage);
+            return Text.literal(roundedPercentage >= 0.1f ? String.format(" (%.1f%%)", percentage) : " (" + roundedPercentage + "%)").formatted(Formatting.GRAY);
         } else {
             return Text.empty();
         }
