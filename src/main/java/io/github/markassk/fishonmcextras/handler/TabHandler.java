@@ -2,6 +2,7 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.mixin.PlayerListHudAccessor;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
@@ -14,6 +15,7 @@ import java.util.*;
 
 public class TabHandler {
     private static TabHandler INSTANCE = new TabHandler();
+    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     public Text player = Text.empty();
     public Constant rank = Constant.DEFAULT;
@@ -48,7 +50,9 @@ public class TabHandler {
                     }
                 }
 
-                if(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() > playerListEntries.size() && !playerListEntries.isEmpty()) {
+                if(config.crewTracker.notifyCrewOnJoin
+                        && Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() > playerListEntries.size()
+                        && !playerListEntries.isEmpty()) {
                     List<PlayerListEntry> differences = new ArrayList<>(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries());
                     differences.removeAll(playerListEntries);
 
