@@ -24,11 +24,11 @@ public class AuctionHandler {
     public void appendTooltip(List<Text> textList, ItemStack itemStack) {
         if (itemStack.getCount() > 1) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
-            if(nbtCompound != null && nbtCompound.contains("renderInfo", NbtElement.LIST_TYPE)) {
+            if(nbtCompound != null && nbtCompound.contains("renderInfo")) {
                 if(nbtCompound.get("renderInfo") instanceof NbtList nbtList) {
                     if(nbtList.size() == 1) {
-                        NbtCompound renderInfo = nbtList.getCompound(0);
-                        float money = renderInfo.getFloat("money");
+                        NbtCompound renderInfo = nbtList.getCompound(0).orElse(new NbtCompound());
+                        float money = renderInfo.getFloat("money").orElse(0f);
                         float moneyPerItem = money / itemStack.getCount();
 
                         textList.set(textList.size() - 5, TextHelper.concat(textList.get(textList.size() - 5), Text.literal(" ($" + TextHelper.fmnt(moneyPerItem) + " per item)").formatted(Formatting.DARK_GREEN)));

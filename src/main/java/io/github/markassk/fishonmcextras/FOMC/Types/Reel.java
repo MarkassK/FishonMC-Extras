@@ -7,7 +7,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class Reel extends FOMCItem {
         super(type, Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID)));
         this.name = nbtCompound.getString("name").orElse(null);
         this.customModelData = customModelData;
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
+        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id").orElse(new int[]{0}));
         this.water = Constant.valueOfId(nbtCompound.getString("water").orElse(Constant.FRESHWATER.ID));
         NbtList nbtList = nbtCompound.getList("base").orElse(new NbtList());
         List<NbtCompound> nbtCompoundList = new ArrayList<>();

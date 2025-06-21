@@ -17,9 +17,9 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.decoration.DisplayEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.AffineTransformation;
@@ -162,7 +162,7 @@ public class FishingRodHandler {
                     itemDisplayEntity.setItemStack(baitStack);
                     itemDisplayEntity.setPosition(entity.getPos().add(0, -0.32, 0));
                     itemDisplayEntity.setBillboardMode(DisplayEntity.BillboardMode.VERTICAL);
-                    itemDisplayEntity.setTransformationMode(ModelTransformationMode.GROUND);
+                    itemDisplayEntity.setItemDisplayContext(ItemDisplayContext.GROUND);
                     itemDisplayEntity.setTransformation(new AffineTransformation(null, null, new Vector3f(0.75f, 0.75f, 0.75f), null));
                 }
             }
