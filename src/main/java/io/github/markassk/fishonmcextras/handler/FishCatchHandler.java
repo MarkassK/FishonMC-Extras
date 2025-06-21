@@ -69,8 +69,6 @@ public class FishCatchHandler  {
 
                 if(FullInventoryHandler.instance().slotsLeft == 0) {
                     this.isFull = true;
-
-
                 }
 
             } else {
@@ -85,7 +83,7 @@ public class FishCatchHandler  {
     }
 
     public void tickEntities(Entity entity, MinecraftClient minecraftClient) {
-        if(this.isFull) {
+        if(this.fishFound && this.isFull) {
             if(entity instanceof ItemEntity itemEntity) {
                 ItemStack stack =  itemEntity.getStack();
                 if(stack.isEmpty()) {
