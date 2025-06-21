@@ -1,5 +1,6 @@
 package io.github.markassk.fishonmcextras.mixin;
 
+import io.github.markassk.fishonmcextras.handler.LoadingHandler;
 import io.github.markassk.fishonmcextras.handler.RarityMarkerHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class HandledScreenMixin {
     @Inject(method = "drawSlot", at = @At("TAIL"))
     private void injectDrawSlot(DrawContext context, Slot slot, CallbackInfo ci) {
-        RarityMarkerHandler.instance().renderRarityMarker(context, slot);
+        if(LoadingHandler.instance().isOnServer) {
+            RarityMarkerHandler.instance().renderRarityMarker(context, slot);
+        }
     }
 }

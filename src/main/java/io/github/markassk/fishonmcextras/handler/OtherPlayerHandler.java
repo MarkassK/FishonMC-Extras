@@ -148,10 +148,10 @@ public class OtherPlayerHandler {
     }
 
     private void spawnLight(MinecraftClient minecraftClient, PlayerEntity targetedPlayer) {
-        if(targetedPlayer != null && minecraftClient.world != null && !Objects.equals(this.previousPos, BlockPos.ofFloored(targetedPlayer.getPos()))) {
+        if(targetedPlayer != null && minecraftClient.world != null && !Objects.equals(this.previousPos, BlockPos.ofFloored(targetedPlayer.getPos()).up())) {
             minecraftClient.world.setBlockState(this.previousPos, this.previousBlockState);
-            this.previousBlockState = minecraftClient.world.getBlockState(BlockPos.ofFloored(targetedPlayer.getPos()));
-            this.previousPos = BlockPos.ofFloored(targetedPlayer.getPos());
+            this.previousBlockState = minecraftClient.world.getBlockState(BlockPos.ofFloored(targetedPlayer.getPos()).up());
+            this.previousPos = BlockPos.ofFloored(targetedPlayer.getPos()).up();
             if(minecraftClient.world.getBlockState(this.previousPos).getBlock() == Blocks.WATER) {
                 BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
                 minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState().with(WATERLOGGED, Boolean.TRUE));
