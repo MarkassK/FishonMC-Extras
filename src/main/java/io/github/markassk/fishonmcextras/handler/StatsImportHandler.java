@@ -84,6 +84,8 @@ public class StatsImportHandler {
         }
 
         if(fishCaught.get() != -1) {
+            dummyProfileData.allPetCaughtCount = oldProfileData.allPetCaughtCount;
+            dummyProfileData.allShardCaughtCount = oldProfileData.allShardCaughtCount;
             dummyProfileData.allFishCaughtCount = fishCaught.get();
             dummyProfileData.petDryStreak = Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.petDryStreak), fishCaught.get());
             dummyProfileData.shardDryStreak = Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.shardDryStreak), fishCaught.get());

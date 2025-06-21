@@ -56,18 +56,20 @@ public class TabHandler {
                     List<PlayerListEntry> differences = new ArrayList<>(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries());
                     differences.removeAll(playerListEntries);
 
-                    differences.forEach(playerListEntry -> {
-                        if(ProfileDataHandler.instance().profileData.crewMembers.contains(playerListEntry.getProfile().getId())) {
-                            minecraftClient.inGameHud.getChatHud().addMessage(TextHelper.concat(
-                                    Text.literal("CREWS ").withColor(0x70aa6e).formatted(Formatting.BOLD),
-                                    Text.literal("» ").withColor(0x545454),
-                                    Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                    Text.literal("| ").formatted(Formatting.DARK_GRAY),
-                                    playerListEntry.getDisplayName(),
-                                    Text.literal(" joined the server").withColor(0xa8a8a8)
-                            ));
-                        }
-                    });
+                    if(differences.size() == 1) {
+                        differences.forEach(playerListEntry -> {
+                            if(ProfileDataHandler.instance().profileData.crewMembers.contains(playerListEntry.getProfile().getId())) {
+                                minecraftClient.inGameHud.getChatHud().addMessage(TextHelper.concat(
+                                        Text.literal("CREWS ").withColor(0x70aa6e).formatted(Formatting.BOLD),
+                                        Text.literal("» ").withColor(0x545454),
+                                        Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                                        Text.literal("| ").formatted(Formatting.DARK_GRAY),
+                                        playerListEntry.getDisplayName(),
+                                        Text.literal(" joined the server").withColor(0xa8a8a8)
+                                ));
+                            }
+                        });
+                    }
                 }
                 // CREWS » Crew Chat has been enabled (/crew chat)
                 if(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() != playerListEntries.size()) {
