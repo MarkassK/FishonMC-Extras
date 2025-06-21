@@ -140,7 +140,7 @@ public class CommandRegistry {
                                     TextHelper.concat(
                                             Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
                                             Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Stop Highlight")
+                                            Text.literal("Stopping Highlight")
                                     )
                             );
                             return 1;

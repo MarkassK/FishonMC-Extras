@@ -1,0 +1,18 @@
+{"providers":
+  [
+    {
+      "type":"bitmap",
+      "file":"minecraft:font/crew.png",
+      "ascent":7,
+      "height":7,
+      "chars":["\uE00A"]
+    },
+    {
+      "type":"bitmap",
+      "file":"minecraft:font/foe.png",
+      "ascent":7,
+      "height":7,
+      "chars":["\uE00B"]
+    }
+  ]
+}

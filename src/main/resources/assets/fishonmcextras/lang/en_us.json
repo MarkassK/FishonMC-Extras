@@ -163,6 +163,7 @@
   "text.autoconfig.fishonmcextras.option.crewTracker.backgroundOpacity": "Background opacity",
   "text.autoconfig.fishonmcextras.option.crewTracker.crewChatLocation": "Crew Chat Marker Location",
   "text.autoconfig.fishonmcextras.option.crewTracker.notifyCrewOnJoin": "Notify when crew member joins the server",
+  "text.autoconfig.fishonmcextras.option.crewTracker.showCrewTag": "Show Crew tag in tab",
 
   "text.autoconfig.fishonmcextras.option.questTracker": "§f§lQuest Tracker Options",
   "text.autoconfig.fishonmcextras.option.questTracker.showQuestHud": "Show Quest HUD",

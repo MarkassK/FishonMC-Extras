@@ -6,10 +6,10 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 public class TrackerWeatherConfig {
     public static class WeatherTracker {
         public boolean showAlertHUD = true;
-        @ConfigEntry.BoundedDiscrete(min = 1, max = 60)
-        public int alertDismissSeconds = 15;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 300)
+        public int alertDismissSeconds = 30;
         @ConfigEntry.Gui.Tooltip
-        public boolean useAlertWarningSound = true;
+        public boolean useAlertWarningSound = false;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
         public int intervalWarningSound = 5;
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
