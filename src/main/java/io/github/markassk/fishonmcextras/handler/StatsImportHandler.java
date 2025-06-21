@@ -52,6 +52,7 @@ public class StatsImportHandler {
 
     private void getData(MinecraftClient minecraftClient) {
         ProfileDataHandler.ProfileData dummyProfileData = new ProfileDataHandler.ProfileData();
+        ProfileDataHandler.ProfileData oldProfileData = ProfileDataHandler.instance().profileData;
 
         AtomicInteger fishCaught = new AtomicInteger(-1);
 
@@ -84,22 +85,22 @@ public class StatsImportHandler {
 
         if(fishCaught.get() != -1) {
             dummyProfileData.allFishCaughtCount = fishCaught.get();
-            dummyProfileData.petDryStreak = fishCaught.get();
-            dummyProfileData.shardDryStreak = fishCaught.get();
-            dummyProfileData.rarityDryStreak.put(Constant.COMMON, fishCaught.get());
-            dummyProfileData.rarityDryStreak.put(Constant.RARE, fishCaught.get());
-            dummyProfileData.rarityDryStreak.put(Constant.EPIC, fishCaught.get());
-            dummyProfileData.rarityDryStreak.put(Constant.LEGENDARY, fishCaught.get());
-            dummyProfileData.rarityDryStreak.put(Constant.MYTHICAL, fishCaught.get());
-            dummyProfileData.fishSizeDryStreak.put(Constant.BABY, fishCaught.get());
-            dummyProfileData.fishSizeDryStreak.put(Constant.JUVENILE, fishCaught.get());
-            dummyProfileData.fishSizeDryStreak.put(Constant.ADULT, fishCaught.get());
-            dummyProfileData.fishSizeDryStreak.put(Constant.LARGE, fishCaught.get());
-            dummyProfileData.fishSizeDryStreak.put(Constant.GIGANTIC, fishCaught.get());
-            dummyProfileData.variantDryStreak.put(Constant.ALBINO, fishCaught.get());
-            dummyProfileData.variantDryStreak.put(Constant.MELANISTIC, fishCaught.get());
-            dummyProfileData.variantDryStreak.put(Constant.TROPHY, fishCaught.get());
-            dummyProfileData.variantDryStreak.put(Constant.FABLED, fishCaught.get());
+            dummyProfileData.petDryStreak = Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.petDryStreak), fishCaught.get());
+            dummyProfileData.shardDryStreak = Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.shardDryStreak), fishCaught.get());
+            dummyProfileData.rarityDryStreak.put(Constant.COMMON, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.rarityDryStreak.getOrDefault(Constant.COMMON, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.rarityDryStreak.put(Constant.RARE, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.rarityDryStreak.getOrDefault(Constant.RARE, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.rarityDryStreak.put(Constant.EPIC, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.rarityDryStreak.getOrDefault(Constant.EPIC, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.rarityDryStreak.put(Constant.LEGENDARY, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.rarityDryStreak.getOrDefault(Constant.LEGENDARY, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.rarityDryStreak.put(Constant.MYTHICAL, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.rarityDryStreak.getOrDefault(Constant.MYTHICAL, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.fishSizeDryStreak.put(Constant.BABY, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.fishSizeDryStreak.getOrDefault(Constant.BABY, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.fishSizeDryStreak.put(Constant.JUVENILE, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.fishSizeDryStreak.getOrDefault(Constant.JUVENILE, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.fishSizeDryStreak.put(Constant.ADULT, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.fishSizeDryStreak.getOrDefault(Constant.ADULT, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.fishSizeDryStreak.put(Constant.LARGE, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.fishSizeDryStreak.getOrDefault(Constant.LARGE, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.fishSizeDryStreak.put(Constant.GIGANTIC, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.fishSizeDryStreak.getOrDefault(Constant.GIGANTIC, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.variantDryStreak.put(Constant.ALBINO, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.variantDryStreak.getOrDefault(Constant.ALBINO, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.variantDryStreak.put(Constant.MELANISTIC, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.variantDryStreak.getOrDefault(Constant.MELANISTIC, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.variantDryStreak.put(Constant.TROPHY, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.variantDryStreak.getOrDefault(Constant.TROPHY, oldProfileData.allFishCaughtCount)), fishCaught.get()));
+            dummyProfileData.variantDryStreak.put(Constant.FABLED, Math.min(fishCaught.get() - (oldProfileData.allFishCaughtCount - oldProfileData.variantDryStreak.getOrDefault(Constant.FABLED, oldProfileData.allFishCaughtCount)), fishCaught.get()));
 
             this.dummyProfileData = dummyProfileData;
         }
@@ -114,7 +115,7 @@ public class StatsImportHandler {
                                 Text.literal("Import your stats into ").formatted(Formatting.WHITE),
                                 Text.literal("FoE").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
                                 Text.literal(".\n").formatted(Formatting.WHITE),
-                                Text.literal("This will delete your previous all time stats and drystreaks!\n").formatted(Formatting.RED),
+                                Text.literal("This will delete your previous all time stats!\n").formatted(Formatting.RED),
                                 Text.literal("- The stats are not accurate and could be off by 5.\n- You can change your FoE stats in the config file located in /config/foe/stats.").formatted(Formatting.GRAY, Formatting.ITALIC)
                         )))
                 .itemIcon(Items.COMMAND_BLOCK.getDefaultStack())
@@ -139,8 +140,6 @@ public class StatsImportHandler {
         ProfileDataHandler.instance().profileData.fishSizeDryStreak = dummyProfileData.fishSizeDryStreak;
         ProfileDataHandler.instance().profileData.variantDryStreak = dummyProfileData.variantDryStreak;
         ProfileDataHandler.instance().profileData.isStatsInitialized = true;
-        ProfileDataHandler.instance().profileData.allPetCaughtCount = 0;
-        ProfileDataHandler.instance().profileData.allShardCaughtCount = 0;
         ProfileDataHandler.instance().saveStats();
     }
 

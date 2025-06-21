@@ -22,7 +22,7 @@ public class CrewHud {
 
         drawContext.getMatrices().push();
         try {
-            if(CrewHandler.instance().isCrewInRenderDistance && LocationHandler.instance().currentLocation != Constant.SPAWNHUB && ProfileDataHandler.instance().profileData.crewState == CrewHandler.CrewState.HASCREW) {
+            if(CrewHandler.instance().isCrewInRenderDistance && LocationHandler.instance().currentLocation != Constant.SPAWNHUB && CrewHandler.instance().crewState == CrewHandler.CrewState.HASCREW) {
                 // Get screen size
                 int screenWidth = client.getWindow().getScaledWidth();
                 int screenHeight = client.getWindow().getScaledHeight();

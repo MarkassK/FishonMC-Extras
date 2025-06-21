@@ -21,7 +21,9 @@ public class ScoreboardHandler {
     public String catches = "";
     public String catchRate = "";
     public String crewName = "";
-    public String crewLevel = "";
+    public String crewLevel = "0";
+    public String locationMin = "";
+    public String locationMax = "";
     public boolean isCrewNearby = false;
     public boolean noScoreBoard = false;
 
@@ -71,6 +73,8 @@ public class ScoreboardHandler {
             if(text.getString().contains("ᴄʀᴇᴡ:")) crewName = text.getString().substring(text.getString().indexOf("[") + 1, text.getString().lastIndexOf("]"));
             if(text.getString().contains("┠ ʟᴇᴠᴇʟ")) crewLevel = text.getString().substring(text.getString().indexOf("[") + 1, text.getString().lastIndexOf("]"));
             if(text.getString().contains("ᴄʀᴇᴡ ɴᴇᴀʀʙʏ")) isCrewNearby = text.getString().contains("✔");
+            if(text.getString().contains("┠ ʟᴏᴄᴀᴛɪᴏɴ") && !text.getString().contains("---")) locationMin = text.getString().substring(text.getString().indexOf(":") + 2, text.getString().lastIndexOf("/"));
+            if(text.getString().contains("┠ ʟᴏᴄᴀᴛɪᴏɴ") && !text.getString().contains("---")) locationMax = text.getString().substring(text.getString().indexOf("/") + 1).trim();
         });
     }
 }
