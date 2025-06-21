@@ -12,5 +12,6 @@ public class TrackerCrewHUDConfig {
         public int backgroundOpacity = 40;
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public CrewHandler.CrewChatLocation crewChatLocation = CrewHandler.CrewChatLocation.IN_CHAT;
+        public boolean notifyCrewOnJoin = true;
     }
 }

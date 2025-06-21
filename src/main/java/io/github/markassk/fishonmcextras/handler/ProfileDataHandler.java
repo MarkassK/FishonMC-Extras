@@ -212,6 +212,7 @@ public class ProfileDataHandler {
         profileData.variantDryStreak.put(Constant.MELANISTIC, profileData.allFishCaughtCount);
         profileData.variantDryStreak.put(Constant.TROPHY, profileData.allFishCaughtCount);
         profileData.variantDryStreak.put(Constant.FABLED, profileData.allFishCaughtCount);
+        ProfileDataHandler.instance().saveStats();
     }
 
     public static class ProfileData {
