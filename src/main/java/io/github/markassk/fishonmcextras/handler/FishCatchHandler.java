@@ -6,6 +6,7 @@ import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -69,15 +70,7 @@ public class FishCatchHandler  {
                 if(FullInventoryHandler.instance().slotsLeft == 0) {
                     this.isFull = true;
 
-                    minecraftClient.world.getEntities().forEach(entity -> {
-                        if(entity instanceof ItemEntity itemEntity) {
-                            ItemStack stack =  itemEntity.getStack();
-                            if(stack.isEmpty()) {
-                                return;
-                            }
-                            this.processStack(stack, minecraftClient);
-                        }
-                    });
+
                 }
 
             } else {
@@ -89,6 +82,18 @@ public class FishCatchHandler  {
         }
 
         ProfileDataHandler.instance().tickTimer();
+    }
+
+    public void tickEntities(Entity entity, MinecraftClient minecraftClient) {
+        if(this.isFull) {
+            if(entity instanceof ItemEntity itemEntity) {
+                ItemStack stack =  itemEntity.getStack();
+                if(stack.isEmpty()) {
+                    return;
+                }
+                this.processStack(stack, minecraftClient);
+            }
+        }
     }
 
     public void onJoinServer() {

@@ -1,8 +1,12 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Types.*;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.util.VectorHelper;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,18 +17,28 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.AffineTransformation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
 import java.util.*;
 
-public class PlayerStatsDisplayHandler {
-    private static PlayerStatsDisplayHandler INSTANCE = new PlayerStatsDisplayHandler();
+public class OtherPlayerHandler {
+    private static OtherPlayerHandler INSTANCE = new OtherPlayerHandler();
+    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+
+    public PlayerListEntry highlightedPlayer = null;
+    public long highlightStartTime = 0L;
+    public boolean isHighlighted = false;
 
     private PlayerEntity targetedPlayer = null;
+    private BlockPos previousPos = BlockPos.ofFloored(0, 0, 0);
+    private BlockState previousBlockState = Blocks.AIR.getDefaultState();
     // First Double is Index, Second Double is Distance, Third Double is Angle
     private final Map<DisplayEntity, List<Double>> displayEntityList = new HashMap<>();
 
@@ -32,41 +46,51 @@ public class PlayerStatsDisplayHandler {
     private final double verticalOffset = 1.2;
     private final double lineHeight = 0.3;
 
-    public static PlayerStatsDisplayHandler instance() {
+    public static OtherPlayerHandler instance() {
         if (INSTANCE == null) {
-            INSTANCE = new PlayerStatsDisplayHandler();
+            INSTANCE = new OtherPlayerHandler();
         }
         return INSTANCE;
     }
 
     public void tick(MinecraftClient minecraftClient) {
-        PlayerEntity target = null;
-        if(minecraftClient.player != null && minecraftClient.player.isSneaking()) {
-            target = LookTickHandler.instance().targetedPlayerEntity;
-        }
-
-        if(target != null && targetedPlayer != target) {
-            this.targetedPlayer = target;
-            removeTextDisplayEntities(minecraftClient);
-
-            if(target.getDisplayName() != null && !Objects.equals(target.getDisplayName().getString(), "")) {
-                this.spawnDisplayEntities(minecraftClient, target);
+        if (config.hoverOverPlayerStats.showPlayerEquipment) {
+            PlayerEntity target = null;
+            if(minecraftClient.player != null && minecraftClient.player.isSneaking()) {
+                target = LookTickHandler.instance().targetedPlayerEntity;
             }
 
-        } else if(target == targetedPlayer) {
-            this.updateTextDisplayEntities(minecraftClient.player, targetedPlayer);
-            // Update
-//            Vec3d leftPoint = this.getPoint(minecraftClient.player, targetedPlayer, 2,)
-        }
-
-        if(target == null) {
-            if(!displayEntityList.isEmpty()) {
+            if(target != null && targetedPlayer != target) {
+                this.targetedPlayer = target;
                 removeTextDisplayEntities(minecraftClient);
+
+                if(target.getDisplayName() != null && !Objects.equals(target.getDisplayName().getString(), "")) {
+                    this.spawnDisplayEntities(minecraftClient, target);
+                }
+
+            } else if(target == targetedPlayer) {
+                this.updateTextDisplayEntities(minecraftClient.player, targetedPlayer);
             }
 
-            if(targetedPlayer != null) {
-                this.targetedPlayer = null;
+            if(target == null) {
+                if(!displayEntityList.isEmpty()) {
+                    this.removeTextDisplayEntities(minecraftClient);
+                }
+
+                if(targetedPlayer != null) {
+                    this.targetedPlayer = null;
+                }
             }
+
+            // Light
+            spawnLight(minecraftClient, targetedPlayer);
+        }
+
+        if(System.currentTimeMillis() - highlightStartTime <= 300000L && highlightedPlayer != null) {
+            this.isHighlighted = true;
+        } else if (this.isHighlighted && highlightedPlayer != null) {
+            highlightedPlayer = null;
+            this.isHighlighted = false;
         }
     }
 
@@ -123,6 +147,24 @@ public class PlayerStatsDisplayHandler {
 
         // Below
         spawnTextDisplay(minecraftClient, Text.literal("ʀɪɢʜᴛ ᴄʟɪᴄᴋ ᴛᴏ ᴛʀᴀᴅᴇ").formatted(Formatting.YELLOW), targetedPlayer.getPos(), 180, 3.5, .4, .5f, DisplayEntity.BillboardMode.CENTER);
+    }
+
+    private void spawnLight(MinecraftClient minecraftClient, PlayerEntity targetedPlayer) {
+        if(targetedPlayer != null && minecraftClient.world != null && !Objects.equals(this.previousPos, BlockPos.ofFloored(targetedPlayer.getPos()))) {
+            minecraftClient.world.setBlockState(this.previousPos, this.previousBlockState);
+            this.previousBlockState = minecraftClient.world.getBlockState(BlockPos.ofFloored(targetedPlayer.getPos()));
+            this.previousPos = BlockPos.ofFloored(targetedPlayer.getPos());
+            if(minecraftClient.world.getBlockState(this.previousPos).getBlock() == Blocks.WATER) {
+                BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+                minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState().with(WATERLOGGED, Boolean.TRUE));
+            } else {
+                minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState());
+            }
+        } else if(minecraftClient.world != null && targetedPlayer == null && !Objects.equals(this.previousPos, BlockPos.ofFloored(0, 0, 0))) {
+            minecraftClient.world.setBlockState(this.previousPos, this.previousBlockState);
+            this.previousPos = BlockPos.ofFloored(0, 0, 0);
+            this.previousBlockState = Blocks.AIR.getDefaultState();
+        }
     }
 
     private void showItemStats(MinecraftClient minecraftClient, PlayerEntity targetedPlayer, ItemStack itemStack, Text text, double angle, double index, double distance) {

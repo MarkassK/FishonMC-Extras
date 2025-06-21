@@ -179,7 +179,6 @@ public class DebugScreenHandler {
                         assembleText("profileStats.fishSizeDryStreak[ADULT]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.ADULT, 0)),
                         assembleText("profileStats.fishSizeDryStreak[LARGE]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.LARGE, 0)),
                         assembleText("profileStats.fishSizeDryStreak[GIGANTIC]", profileDataHandler.profileData.fishSizeDryStreak.getOrDefault(Constant.GIGANTIC, 0)),
-                        assembleText("profileStats.crewState", profileDataHandler.profileData.crewState.name()),
                         assembleText("profileStats.isInCrewChat", profileDataHandler.profileData.isInCrewChat),
                         assembleText("profileStats.isStatsInitialized", profileDataHandler.profileData.isStatsInitialized)
                 ));

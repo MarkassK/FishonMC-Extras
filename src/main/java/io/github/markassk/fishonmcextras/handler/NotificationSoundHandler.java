@@ -8,6 +8,7 @@ import net.minecraft.sound.SoundEvents;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class NotificationSoundHandler {
     private static NotificationSoundHandler INSTANCE = new NotificationSoundHandler();
@@ -24,6 +25,7 @@ public class NotificationSoundHandler {
     public void init() {
         lastPlayedSoundTime.put(NotificationType.PET_EQUIP, 0L);
         lastPlayedSoundTime.put(NotificationType.INVENTORY_FULL, 0L);
+        lastPlayedSoundTime.put(NotificationType.WEATHER_ALERT, 0L);
     }
 
     public void tick(MinecraftClient minecraftClient) {
@@ -54,11 +56,25 @@ public class NotificationSoundHandler {
                         lastPlayedSoundTime.put(NotificationType.INVENTORY_FULL, System.currentTimeMillis());
                     }
                 }
+
+                // Weather Alert Warning Sound
+                if(config.weatherTracker.showAlertHUD
+                        && config.weatherTracker.useAlertWarningSound
+                        && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                        && System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime <= config.weatherTracker.alertDismissSeconds * 1000L
+                ) {
+                    if(Objects.equals(WeatherHandler.instance().currentWeather, Constant.THUNDERSTORM.ID)
+                            && System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.WEATHER_ALERT) > config.weatherTracker.intervalWarningSound * 1000L
+                    ) {
+                        playSoundWarning(config.weatherTracker.alertSoundType, minecraftClient);
+                        lastPlayedSoundTime.put(NotificationType.WEATHER_ALERT, System.currentTimeMillis());
+                    }
+                }
             }
         }
     }
 
-    private void playSoundWarning(SoundType soundType, MinecraftClient client) {
+    public void playSoundWarning(SoundType soundType, MinecraftClient client) {
         if(client.player != null) {
             switch (soundType) {
                 case PLING -> client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_PLING.value(), client.options.getSoundVolume(SoundCategory.RECORDS), 1f);
@@ -90,6 +106,7 @@ public class NotificationSoundHandler {
 
     private enum NotificationType {
         PET_EQUIP,
-        INVENTORY_FULL
+        INVENTORY_FULL,
+        WEATHER_ALERT
     }
 }

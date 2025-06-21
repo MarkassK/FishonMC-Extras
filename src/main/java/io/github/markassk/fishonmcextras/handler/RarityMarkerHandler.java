@@ -11,16 +11,16 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 
 
-public class RarityMarkerhandler {
-    private static RarityMarkerhandler INSTANCE = new RarityMarkerhandler();
+public class RarityMarkerHandler {
+    private static RarityMarkerHandler INSTANCE = new RarityMarkerHandler();
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     private final Identifier rarityMarker = Identifier.of(FishOnMCExtras.MOD_ID, "icons/rarity");
 
 
-    public static RarityMarkerhandler instance() {
+    public static RarityMarkerHandler instance() {
         if (INSTANCE == null) {
-            INSTANCE = new RarityMarkerhandler();
+            INSTANCE = new RarityMarkerHandler();
         }
         return INSTANCE;
     }

@@ -8,6 +8,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -27,6 +28,13 @@ public class CrewHandler {
     public boolean crewMenuState = false;
     public boolean isCrewNearby = false;
     public boolean isCrewInRenderDistance = false;
+    public CrewState crewState = CrewState.NOTINITIALIZED;
+
+    public boolean isNotInitialized = false;
+
+    private long startCheckTime = 0L;
+    private AtomicBoolean foundCrew = new AtomicBoolean(false);
+    private AtomicBoolean isNearby = new AtomicBoolean(false);
 
     public static CrewHandler instance() {
         if (INSTANCE == null) {
@@ -36,6 +44,24 @@ public class CrewHandler {
     }
 
     public void tick(MinecraftClient minecraftClient) {
+        if(this.crewState == CrewState.NOTINITIALIZED
+                && System.currentTimeMillis() - startCheckTime <= 30000L
+        ) {
+            if(!ScoreboardHandler.instance().crewName.isEmpty()) {
+                this.crewState = CrewState.HASCREW;
+
+                if(ProfileDataHandler.instance().profileData.crewMembers.isEmpty()) {
+                    this.isNotInitialized = true;
+                }
+            }
+        } else if(this.crewState == CrewState.NOTINITIALIZED) {
+            this.crewState = CrewState.NOCREW;
+            ProfileDataHandler.instance().profileData.crewMembers.clear();
+            ProfileDataHandler.instance().saveStats();
+        } else if(this.crewState == CrewState.NOCREW && !ScoreboardHandler.instance().crewName.isEmpty()) {
+            this.isNotInitialized = true;
+        }
+
         if(this.crewMenuState && minecraftClient.player != null) {
             List<UUID> uuids = new ArrayList<>();
 
@@ -47,17 +73,40 @@ public class CrewHandler {
                     if(uuids.stream().noneMatch(uuid -> uuid.equals(Objects.requireNonNull(itemStack.get(DataComponentTypes.PROFILE)).id().orElse(UUID.randomUUID())))) {
                         uuids.add(Objects.requireNonNull(itemStack.get(DataComponentTypes.PROFILE)).id().get());
                     }
-
                 }
             }
 
             if(uuids.stream().anyMatch(uuid -> uuid.equals(minecraftClient.player.getUuid()))) {
-                ProfileDataHandler.instance().profileData.crewState = CrewState.HASCREW;
+                this.crewState = CrewState.HASCREW;
                 this.crewMembers = uuids;
+                this.isNotInitialized = false;
             }
         }
+    }
 
-        isCrewNearbyCheck(minecraftClient);
+    public void beforeTickEntitiess() {
+        foundCrew.set(false);
+        isNearby.set(false);
+    }
+
+    public void tickEntities(Entity entity, MinecraftClient minecraftClient) {
+        if (this.crewState == CrewState.HASCREW
+                && !Objects.equals(ScoreboardHandler.instance().crewName, "")
+                && minecraftClient.player != null
+                && entity instanceof PlayerEntity crewMember
+                && ProfileDataHandler.instance().profileData.crewMembers.stream().anyMatch(uuid -> uuid.equals(crewMember.getUuid()))
+                && !crewMember.getUuid().equals(minecraftClient.player.getUuid())
+        ) {
+            if (crewMember.getPos().distanceTo(minecraftClient.player.getPos()) < 10) {
+                isNearby.set(true);
+            }
+            foundCrew.set(true);
+        }
+    }
+
+    public void afterTickEntities() {
+        this.isCrewNearby = isNearby.get();
+        this.isCrewInRenderDistance = foundCrew.get();
     }
 
     public void onScreenClose() {
@@ -68,13 +117,11 @@ public class CrewHandler {
     }
 
     public void setNoCrew() {
-        ProfileDataHandler.instance().profileData.crewState = CrewState.NOCREW;
-        ProfileDataHandler.instance().saveStats();
+        this.crewState = CrewState.NOCREW;
     }
 
     public void reset() {
-        ProfileDataHandler.instance().profileData.crewState = CrewState.NOTINITIALIZED;
-        ProfileDataHandler.instance().saveStats();
+        this.crewState = CrewState.NOTINITIALIZED;
     }
 
     public void onReceiveMessage(Text message) {
@@ -93,26 +140,6 @@ public class CrewHandler {
         }
     }
 
-    private void isCrewNearbyCheck(MinecraftClient minecraftClient) {
-        if(ProfileDataHandler.instance().profileData.crewState == CrewState.HASCREW && !Objects.equals(ScoreboardHandler.instance().crewName, "")) {
-            AtomicBoolean foundCrew = new AtomicBoolean(false);
-            AtomicBoolean isNearby = new AtomicBoolean(false);
-
-            if (minecraftClient.world != null) {
-                minecraftClient.world.getEntities().forEach(entity -> {
-                    if (minecraftClient.player != null && entity instanceof PlayerEntity crewMember && ProfileDataHandler.instance().profileData.crewMembers.stream().anyMatch(uuid -> uuid.equals(crewMember.getUuid())) && !crewMember.getUuid().equals(minecraftClient.player.getUuid())) {
-                        if (crewMember.getPos().distanceTo(minecraftClient.player.getPos()) < 10) {
-                            isNearby.set(true);
-                        }
-                        foundCrew.set(true);
-                    }
-                });
-            }
-            this.isCrewNearby = isNearby.get();
-            this.isCrewInRenderDistance = foundCrew.get();
-        }
-    }
-
     public void renderCrewChatMarker(DrawContext context, TextRenderer textRenderer, int xCoord, int yCoord) {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         Text marker = Text.literal("ɪɴ ᴄʀᴇᴡ ᴄʜᴀᴛ").formatted(Formatting.GREEN, Formatting.ITALIC);
@@ -125,6 +152,10 @@ public class CrewHandler {
                 && ((ChatScreenAccessor) chatScreen).getChatField().isVisible()) {
             context.drawText(textRenderer, marker, 16 + xCoord, yCoord - 1, ((int) 150f << 24) | 0xFFFFFF, true);
         }
+    }
+
+    public void onJoinServer() {
+        this.startCheckTime = System.currentTimeMillis();
     }
 
     public enum CrewState {

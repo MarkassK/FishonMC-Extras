@@ -5,14 +5,34 @@ import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
 import io.github.markassk.fishonmcextras.FOMC.Types.Bait;
 import io.github.markassk.fishonmcextras.FOMC.Types.FishingRod;
 import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.mixin.InGameHudAccessor;
+import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.CustomModelDataComponent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.decoration.DisplayEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ModelTransformationMode;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.math.AffineTransformation;
+import org.joml.Vector3f;
+
+import java.util.*;
 
 public class FishingRodHandler {
     private static FishingRodHandler INSTANCE = new FishingRodHandler();
+    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     private ItemStack fishingRodStack = null;
+    private Map<Integer, Integer> baitDisplay = new HashMap<>();
 
     public FishingRod fishingRod = null;
     public boolean isWrongBait = false;
@@ -70,6 +90,90 @@ public class FishingRodHandler {
             } else {
                 this.isWrongLine = false;
             }
+        }
+
+        List<Integer> entityToRemove = new ArrayList<>();
+        baitDisplay.forEach((entity, bait) -> {
+            if(minecraftClient.world != null) {
+                Entity bobberEntity = minecraftClient.world.getEntityById(entity);
+                if(bobberEntity != null) {
+                    Entity baitEntity = minecraftClient.world.getEntityById(bait);
+                    if (baitEntity != null) baitEntity.setPosition(bobberEntity.getPos().add(0, -0.32, 0));
+                } else {
+                    entityToRemove.add(entity);
+                }
+            }
+        });
+        entityToRemove.forEach(id -> {
+            if (minecraftClient.world != null) {
+                minecraftClient.world.removeEntity(baitDisplay.get(id), Entity.RemovalReason.DISCARDED);
+            }
+            baitDisplay.remove(id);
+        });
+    }
+
+    public void tickEntities(Entity entity, MinecraftClient minecraftClient) {
+        if(entity instanceof FishingBobberEntity fishingBobberEntity) {
+            PlayerEntity player = fishingBobberEntity.getPlayerOwner();
+            if(minecraftClient.player != null && player != null && Objects.equals(minecraftClient.player.getUuid(), player.getUuid())) {
+                List<Text> textList = new ArrayList<>();
+                int remaining = ((InGameHudAccessor) minecraftClient.inGameHud).getOverlayRemaining();
+                // Add Text
+                if(config.bobberTracker.skyLightWarning
+                        && !fishingBobberEntity.getWorld().isSkyVisible(fishingBobberEntity.getBlockPos().up())
+                        && remaining <= 0
+                ) this.addText(textList, Text.literal("ʙᴏʙʙᴇʀ ᴜɴᴅᴇʀ ᴀ ʙʟᴏᴄᴋ").formatted(Formatting.RED));
+
+                if (config.bobberTracker.showWaitingTime) {
+                    int seconds = Math.round(fishingBobberEntity.age / 20f);
+                    this.addText(textList, TextHelper.concat(Text.literal("ᴡᴀɪᴛ ᴛɪᴍᴇ: ").formatted(Formatting.YELLOW), Text.literal(String.valueOf(seconds)).formatted(Formatting.WHITE, Formatting.BOLD), Text.literal(" sec.").formatted(Formatting.GRAY)));
+                }
+
+                // Render Text
+                if (config.fun.minigameOnBobber && remaining > 0) {
+                    Text message = ((InGameHudAccessor) minecraftClient.inGameHud).getOverlayMessage();
+
+                    fishingBobberEntity.setCustomName(message);
+                    fishingBobberEntity.setCustomNameVisible(true);
+                } else if(!textList.isEmpty()) {
+                    Text concatText = TextHelper.concat(textList.toArray(new Text[0]));
+                    fishingBobberEntity.setCustomName(concatText);
+                    fishingBobberEntity.setCustomNameVisible(true);
+                } else {
+                    fishingBobberEntity.setCustomNameVisible(false);
+                }
+            }
+
+            // Bait Display
+            if(config.bobberTracker.showBait && player != null && !baitDisplay.containsKey(entity.getId())) {
+                ItemStack itemStack = player.getMainHandStack();
+                FishingRod rod = FishingRod.getFishingRod(itemStack);
+                if(rod != null && !rod.tacklebox.isEmpty()) {
+                    if (minecraftClient.world == null || minecraftClient.player == null) return;
+                    DisplayEntity.ItemDisplayEntity itemDisplayEntity = Objects.requireNonNull(EntityType.ITEM_DISPLAY.create(minecraftClient.world, SpawnReason.TRIGGERED));
+                    minecraftClient.world.addEntity(itemDisplayEntity);
+
+                    baitDisplay.put(entity.getId(), itemDisplayEntity.getId());
+
+                    ItemStack baitStack = Items.COOKED_COD.getDefaultStack().copy();
+                    baitStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, rod.tacklebox.getFirst() instanceof Bait bait ?
+                            bait.customModelData : CustomModelDataComponent.DEFAULT);
+
+                    itemDisplayEntity.setItemStack(baitStack);
+                    itemDisplayEntity.setPosition(entity.getPos().add(0, -0.32, 0));
+                    itemDisplayEntity.setBillboardMode(DisplayEntity.BillboardMode.VERTICAL);
+                    itemDisplayEntity.setTransformationMode(ModelTransformationMode.GROUND);
+                    itemDisplayEntity.setTransformation(new AffineTransformation(null, null, new Vector3f(0.75f, 0.75f, 0.75f), null));
+                }
+            }
+        }
+    }
+
+    private void addText(List<Text> textList, Text text) {
+        if(textList.isEmpty()) {
+            textList.add(text);
+        } else {
+            textList.add(TextHelper.concat(Text.literal(" | ").formatted(Formatting.WHITE), text));
         }
     }
 }
