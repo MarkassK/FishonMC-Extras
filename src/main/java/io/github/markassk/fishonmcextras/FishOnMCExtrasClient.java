@@ -129,7 +129,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
 
     private Text modifyGameMessage(Text text, boolean b) {
         if(LoadingHandler.instance().isOnServer) {
-            return PetTooltipHandler.instance().appendTooltip(text);
+            text = PetTooltipHandler.instance().appendTooltip(text);
+            text = ChatScreenHandler.instance().appendTooltip(text);
         }
         return text;
     }
