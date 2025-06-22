@@ -7,11 +7,11 @@ public class TrackerWeatherConfig {
     public static class WeatherTracker {
         public boolean showAlertHUD = true;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 300)
-        public int alertDismissSeconds = 30;
+        public int alertDismissSeconds = 15;
         @ConfigEntry.Gui.Tooltip
-        public boolean useAlertWarningSound = false;
+        public boolean useAlertWarningSound = true;
         @ConfigEntry.BoundedDiscrete(min = 1, max = 30)
-        public int intervalWarningSound = 5;
+        public int intervalWarningSound = 10;
         @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
         public NotificationSoundHandler.SoundType alertSoundType = NotificationSoundHandler.SoundType.BELL;
     }
