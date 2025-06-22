@@ -27,7 +27,9 @@ public class InGameHudMixin {
 
     @Inject(method = "renderTitleAndSubtitle", at = @At("HEAD"), cancellable = true)
     private void injectRenderTitleAndSubtitle(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-        if(LoadingHandler.instance().isOnServer && System.currentTimeMillis() - FishCatchHandler.instance().lastTimeUsedRod < 1000L && !config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
+        if(LoadingHandler.instance().isOnServer
+                && System.currentTimeMillis() - FishCatchHandler.instance().lastTimeUsedRod < 1000L
+                && config.titlePopup.useNewTitleSystem) {
             ci.cancel();
         }
     }

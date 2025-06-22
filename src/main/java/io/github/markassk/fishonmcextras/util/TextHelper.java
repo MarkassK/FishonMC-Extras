@@ -90,16 +90,19 @@ public class TextHelper {
     }
 
     public static float roundFirstSignificantDigit(float input) {
-        if(input >= 0.1f || input == 0) {
-            return input;
-        }
+        if (!Float.isNaN(input) && !Float.isInfinite(input)) {
+            if(input >= 0.1f || input == 0) {
+                return input;
+            }
 
-        int precision = 0;
-        float val = input - Math.round(input);
-        while (Math.abs(val) < 1) {
-            val *= 10;
-            precision++;
+            int precision = 0;
+            float val = input - Math.round(input);
+            while (Math.abs(val) < 1) {
+                val *= 10;
+                precision++;
+            }
+            return BigDecimal.valueOf(input).setScale(precision, RoundingMode.HALF_UP).floatValue();
         }
-        return BigDecimal.valueOf(input).setScale(precision, RoundingMode.HALF_UP).floatValue();
+        return input;
     }
 }

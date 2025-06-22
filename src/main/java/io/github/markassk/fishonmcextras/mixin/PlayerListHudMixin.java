@@ -26,11 +26,15 @@ public class PlayerListHudMixin {
         MutableText text = instance.getPlayerName(entry).copy();
 
         if(LoadingHandler.instance().isOnServer && Objects.equals(entry.getProfile().getId(), UUID.fromString("b5a9bbb7-42b4-4a6a-9ebe-bdf6697c8ee0"))) {
-            text = Text.literal("\uE00B ").formatted(Formatting.WHITE).append(Text.literal("DannyPX").withColor(0x00AF0E));
+            if(config.fun.isFoeTagPrefix) {
+                text = Text.literal("\uE00B ").formatted(Formatting.WHITE).append(Text.literal(entry.getProfile().getName()).withColor(0x00AF0E));
+            } else {
+                text = text.append(Text.literal(" \uE00B").formatted(Formatting.WHITE));
+            }
         }
 
         if(config.crewTracker.showCrewTag && LoadingHandler.instance().isOnServer && ProfileDataHandler.instance().profileData.crewMembers.contains(entry.getProfile().getId())) {
-            return Text.literal("\uE00A ").append(text);
+            return config.crewTracker.isPrefix ? Text.literal("\uE00A ").append(text) : text.append(Text.literal(" \uE00A").formatted(Formatting.WHITE));
         } else {
             return text;
         }
