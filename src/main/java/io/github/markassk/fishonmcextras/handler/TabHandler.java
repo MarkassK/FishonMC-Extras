@@ -59,12 +59,20 @@ public class TabHandler {
                     if(differences.size() == 1) {
                         differences.forEach(playerListEntry -> {
                             if(ProfileDataHandler.instance().profileData.crewMembers.contains(playerListEntry.getProfile().getId())) {
+                                Text displayName = playerListEntry.getDisplayName();
+                                if(displayName != null && Objects.equals(playerListEntry.getProfile().getId(), UUID.fromString("b5a9bbb7-42b4-4a6a-9ebe-bdf6697c8ee0"))) {
+                                    if(config.fun.isFoeTagPrefix) {
+                                        displayName = Text.literal("\uE00B ").formatted(Formatting.WHITE).append(Text.literal(playerListEntry.getProfile().getName()).withColor(0x00AF0E));
+                                    } else {
+                                        displayName = displayName.copy().append(Text.literal(" \uE00B").formatted(Formatting.WHITE));
+                                    }
+                                }
                                 minecraftClient.inGameHud.getChatHud().addMessage(TextHelper.concat(
                                         Text.literal("CREWS ").withColor(0x70aa6e).formatted(Formatting.BOLD),
                                         Text.literal("» ").withColor(0x545454),
                                         Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
                                         Text.literal("| ").formatted(Formatting.DARK_GRAY),
-                                        playerListEntry.getDisplayName(),
+                                        displayName,
                                         Text.literal(" joined the server").withColor(0xa8a8a8)
                                 ));
                             }
