@@ -2,6 +2,7 @@ package io.github.markassk.fishonmcextras.mixin;
 
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.HiderHandler;
+import io.github.markassk.fishonmcextras.handler.LoadingHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.Entity;
@@ -22,7 +23,8 @@ public abstract class EntityMixin<T extends Entity, S extends EntityRenderState>
 
     @Inject(method = "isCustomNameVisible", at = @At("RETURN"), cancellable = true)
     private void injectShouldRenderName(CallbackInfoReturnable<Boolean> cir) {
-        if(this.getName().getString().contains("'s")
+        if(LoadingHandler.instance().isOnServer
+                && this.getName().getString().contains("'s")
                 && this.getName().getString().contains("Pet")
         ) {
             if(MinecraftClient.getInstance().player != null

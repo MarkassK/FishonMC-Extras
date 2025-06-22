@@ -39,7 +39,10 @@ public abstract class TextFieldWidgetMixin {
     @ModifyVariable(method = "renderWidget", at = @At("STORE"), ordinal = 1)
     private boolean getbl2(boolean bl2) {
         ticker = bl2;
-        return true;
+        if(LoadingHandler.instance().isOnServer) {
+            return true;
+        }
+        return bl2;
     }
 
     @Inject(method = "renderWidget", at = @At("HEAD"))

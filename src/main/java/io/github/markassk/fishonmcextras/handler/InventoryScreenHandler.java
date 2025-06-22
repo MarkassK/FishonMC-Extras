@@ -141,7 +141,7 @@ public class InventoryScreenHandler {
                             )), minecraftClient));
                 }
 
-                clickableWidgets.addAll(assembleCrewList(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + 105 /2 , minecraftClient.getWindow().getScaledHeight() / 2 - 82 + buttonSize * 3, minecraftClient));
+                clickableWidgets.addAll(assembleCrewList(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + 105 /2 + offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 - 82 + buttonSize * 3, minecraftClient));
 
                 clickableWidgets.add(new ContainerCrewWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
 
@@ -274,7 +274,7 @@ public class InventoryScreenHandler {
             }));
 
             Screens.getButtons(minecraftClient.currentScreen).addAll(clickableWidgets);
-        } else {
+        } else if (minecraftClient.currentScreen != null){
             List<ClickableWidget> clickableWidgets = new ArrayList<>();
 
             clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 22 / 2, minecraftClient.getWindow().getScaledHeight() / 2 + 84, Text.literal("↓"), Tooltip.of(
