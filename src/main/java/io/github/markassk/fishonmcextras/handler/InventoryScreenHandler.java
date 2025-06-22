@@ -274,7 +274,7 @@ public class InventoryScreenHandler {
             }));
 
             Screens.getButtons(minecraftClient.currentScreen).addAll(clickableWidgets);
-        } else {
+        } else if (minecraftClient.currentScreen != null){
             List<ClickableWidget> clickableWidgets = new ArrayList<>();
 
             clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 22 / 2, minecraftClient.getWindow().getScaledHeight() / 2 + 84, Text.literal("↓"), Tooltip.of(

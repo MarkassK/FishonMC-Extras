@@ -8,6 +8,7 @@ import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.mixin.InGameHudAccessor;
 import io.github.markassk.fishonmcextras.util.TextHelper;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
@@ -120,7 +121,9 @@ public class FishingRodHandler {
                 int remaining = ((InGameHudAccessor) minecraftClient.inGameHud).getOverlayRemaining();
                 // Add Text
                 if(config.bobberTracker.skyLightWarning
+                        && minecraftClient.world != null
                         && !fishingBobberEntity.getWorld().isSkyVisible(fishingBobberEntity.getBlockPos().up())
+                        && minecraftClient.world.getBlockState(fishingBobberEntity.getBlockPos().up()).getBlock() != Blocks.WATER
                         && remaining <= 0
                 ) this.addText(textList, Text.literal("ʙᴏʙʙᴇʀ ᴜɴᴅᴇʀ ᴀ ʙʟᴏᴄᴋ").formatted(Formatting.RED));
 
