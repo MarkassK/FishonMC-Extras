@@ -26,7 +26,7 @@ public class WeatherHandler {
     public void tick(MinecraftClient minecraftClient) {
         if(config.weatherTracker.showAlertHUD && !Objects.equals(currentWeather, BossBarHandler.instance().weather)) {
             this.currentWeather = BossBarHandler.instance().weather;
-            this.checkWeatherEvent(currentWeather, minecraftClient);
+            this.checkWeatherEvent(BossBarHandler.instance().weather, minecraftClient);
         } else if(!config.weatherTracker.showAlertHUD && !Objects.equals(currentWeather, "")) this.currentWeather = "";
     }
 

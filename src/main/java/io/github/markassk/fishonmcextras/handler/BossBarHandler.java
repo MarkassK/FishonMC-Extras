@@ -31,7 +31,7 @@ public class BossBarHandler {
                     String bossText = clientBossBar.getName().getString();
                     if(bossText.contains(":")) {
                         time = bossText.substring(bossText.indexOf(":") - 2, bossText.indexOf(":") + 3).trim();
-                        weather = bossText.substring(bossText.indexOf(":") - 4, bossText.indexOf(":") - 2).trim();
+                        weather = bossText.substring(bossText.indexOf(":") - 4, bossText.indexOf(":") - 2).trim().replace("\uEEE1", "");
                         timeSuffix = bossText.substring(bossText.indexOf(":") + 3, bossText.indexOf(":") + 5);
                         temperature = bossText.contains("PM") ? bossText.substring(bossText.lastIndexOf("PM") + 3, bossText.lastIndexOf("°")) : bossText.substring(bossText.lastIndexOf("AM") + 3, bossText.lastIndexOf("°"));
                     }
@@ -39,5 +39,4 @@ public class BossBarHandler {
             }));
         }
     }
-
 }

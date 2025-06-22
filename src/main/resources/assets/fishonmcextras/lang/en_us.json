@@ -176,9 +176,9 @@
   "text.autoconfig.fishonmcextras.option.weatherTracker": "§f§lWeather Tracker Options",
   "text.autoconfig.fishonmcextras.option.weatherTracker.showAlertHUD": "Show alert when important weather is active",
   "text.autoconfig.fishonmcextras.option.weatherTracker.alertDismissSeconds": "Amount of seconds before dismissing alert",
-  "text.autoconfig.fishonmcextras.option.weatherTracker.useAlertWarningSound": "Use alert sound",
-  "text.autoconfig.fishonmcextras.option.weatherTracker.useAlertWarningSound.@Tooltip": "§7If §aShow alert when important weather is active§7 is §cdisabled§7, this option will be ignored.\n§7The first sound will always play",
-  "text.autoconfig.fishonmcextras.option.weatherTracker.intervalWarningSound": "Timing of alert sound",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.useAlertWarningSound": "Play repeating alert sound",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.useAlertWarningSound.@Tooltip": "§7If §aShow alert when important weather is active§7 is §cdisabled§7, this option will be ignored.\n§7When this is §cdisabled§7 only one alert sound will be played at the beginning",
+  "text.autoconfig.fishonmcextras.option.weatherTracker.intervalWarningSound": "Timing of alert sound in seconds",
   "text.autoconfig.fishonmcextras.option.weatherTracker.alertSoundType": "Sound used for Alert",
 
   "text.autoconfig.fishonmcextras.option.bobberTracker": "§f§lBobber Tracker Options",

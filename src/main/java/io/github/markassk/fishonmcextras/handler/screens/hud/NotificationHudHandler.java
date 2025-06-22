@@ -193,6 +193,26 @@ public class NotificationHudHandler {
                         Text.literal(".").formatted(Formatting.RED)
                 ));
             }
+
+            if(LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime <= config.weatherTracker.alertDismissSeconds * 1000L
+            ) {
+                int seconds = config.weatherTracker.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime) % 60));
+
+                if (Objects.equals(WeatherHandler.instance().currentWeather, Constant.THUNDERSTORM.ID)) {
+                    textList.add(Text.empty());
+                    textList.add(TextHelper.concat(
+                            Constant.THUNDERSTORM.TAG.copy().withColor(Constant.THUNDERSTORM.COLOR),
+                            Text.literal(" Lightning Storm").formatted(Formatting.YELLOW, Formatting.BOLD),
+                            Text.literal(" Alert!").formatted(Formatting.YELLOW)
+                    ));
+                    textList.add(TextHelper.concat(
+                            Text.literal("ᴛʜɪѕ ᴀʟᴇʀᴛ ᴡɪʟʟ ʙᴇ ᴅɪѕᴍɪѕѕᴇᴅ ɪɴ ").formatted(Formatting.GRAY),
+                            Text.literal("" + seconds),
+                            Text.literal(" ѕᴇᴄᴏɴᴅѕ").formatted(Formatting.GRAY)
+                    ));
+                }
+            }
         }
 
         if(ScoreboardHandler.instance().noScoreBoard) {
@@ -274,26 +294,6 @@ public class NotificationHudHandler {
                     Text.literal("You are in ").formatted(Formatting.RED),
                     Text.literal("Crew Chat").formatted(Formatting.GREEN)
             ));
-        }
-
-        if(LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                && System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime <= config.weatherTracker.alertDismissSeconds * 1000L
-        ) {
-            int seconds = config.weatherTracker.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime) % 60));
-
-            if (Objects.equals(WeatherHandler.instance().currentWeather, Constant.THUNDERSTORM.ID)) {
-                textList.add(Text.empty());
-                textList.add(TextHelper.concat(
-                        Constant.THUNDERSTORM.TAG.copy().withColor(Constant.THUNDERSTORM.COLOR),
-                        Text.literal(" Lightning Storm").formatted(Formatting.YELLOW, Formatting.BOLD),
-                        Text.literal(" Alert!").formatted(Formatting.YELLOW)
-                ));
-                textList.add(TextHelper.concat(
-                        Text.literal("ᴛʜɪѕ ᴀʟᴇʀᴛ ᴡɪʟʟ ʙᴇ ᴅɪѕᴍɪѕѕᴇᴅ ɪɴ ").formatted(Formatting.GRAY),
-                        Text.literal("" + seconds),
-                        Text.literal(" ѕᴇᴄᴏɴᴅѕ").formatted(Formatting.GRAY)
-                ));
-            }
         }
 
         if(!textList.isEmpty() && ThemingHandler.instance().currentThemeType == Theming.ThemeType.OFF) {
