@@ -6,5 +6,6 @@ public class FunConfig {
     public static class Fun {
         @ConfigEntry.Gui.Tooltip
         public boolean minigameOnBobber = false;
+        public boolean isFoeTagPrefix = true;
     }
 }

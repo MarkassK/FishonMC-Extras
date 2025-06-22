@@ -113,7 +113,7 @@ public class FishCatchHandler  {
             this.fishFound = true;
             this.fishCaughtTime = System.currentTimeMillis();
 
-            if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle) {
+            if(config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle && config.titlePopup.useNewTitleSystem) {
                 MinecraftClient.getInstance().inGameHud.setTitle(Text.empty());
                 MinecraftClient.getInstance().inGameHud.setSubtitle(Text.empty());
             }

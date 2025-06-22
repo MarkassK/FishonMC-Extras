@@ -164,6 +164,8 @@
   "text.autoconfig.fishonmcextras.option.crewTracker.crewChatLocation": "Crew Chat Marker Location",
   "text.autoconfig.fishonmcextras.option.crewTracker.notifyCrewOnJoin": "Notify when crew member joins the server",
   "text.autoconfig.fishonmcextras.option.crewTracker.showCrewTag": "Show Crew tag in tab",
+  "text.autoconfig.fishonmcextras.option.crewTracker.isPrefix": "Show Crew tag as a prefix",
+  "text.autoconfig.fishonmcextras.option.crewTracker.isPrefix.@Tooltip": "§7If §cdisabled§7, it will show as a suffix in tab",
 
   "text.autoconfig.fishonmcextras.option.questTracker": "§f§lQuest Tracker Options",
   "text.autoconfig.fishonmcextras.option.questTracker.showQuestHud": "Show Quest HUD",
@@ -270,5 +272,7 @@
   "text.autoconfig.fishonmcextras.option.fun.@PrefixText": "\n§c!!! All of these are experimental, use with caution\n",
   "text.autoconfig.fishonmcextras.option.fun": "§f§lFun Options",
   "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber": "Show minigame on bobber",
-  "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber.@Tooltip": "§cThis will disable minigame on your hud"
+  "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber.@Tooltip": "§cThis will disable minigame on your hud",
+  "text.autoconfig.fishonmcextras.option.fun.isFoeTagPrefix": "Show FoE tag as a prefix",
+  "text.autoconfig.fishonmcextras.option.fun.isFoeTagPrefix.@Tooltip": "§7If §cdisabled§7, it will show as a suffix in tab"
 }

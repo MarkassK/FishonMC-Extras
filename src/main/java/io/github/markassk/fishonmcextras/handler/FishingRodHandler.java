@@ -128,8 +128,8 @@ public class FishingRodHandler {
                 ) this.addText(textList, Text.literal("ʙᴏʙʙᴇʀ ᴜɴᴅᴇʀ ᴀ ʙʟᴏᴄᴋ").formatted(Formatting.RED));
 
                 if (config.bobberTracker.showWaitingTime) {
-                    int seconds = Math.round(fishingBobberEntity.age / 20f);
-                    this.addText(textList, TextHelper.concat(Text.literal("ᴡᴀɪᴛ ᴛɪᴍᴇ: ").formatted(Formatting.YELLOW), Text.literal(String.valueOf(seconds)).formatted(Formatting.WHITE, Formatting.BOLD), Text.literal(" sec.").formatted(Formatting.GRAY)));
+                    float seconds = fishingBobberEntity.age / 20f;
+                    this.addText(textList, TextHelper.concat(Text.literal(String.format("%.1f", seconds)).formatted(Formatting.WHITE, Formatting.BOLD), Text.literal(" sec.").formatted(Formatting.GRAY)));
                 }
 
                 // Render Text

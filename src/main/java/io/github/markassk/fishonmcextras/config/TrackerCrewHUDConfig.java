@@ -14,5 +14,7 @@ public class TrackerCrewHUDConfig {
         public CrewHandler.CrewChatLocation crewChatLocation = CrewHandler.CrewChatLocation.IN_CHAT;
         public boolean notifyCrewOnJoin = true;
         public boolean showCrewTag = true;
+        @ConfigEntry.Gui.Tooltip
+        public boolean isPrefix = true;
     }
 }
