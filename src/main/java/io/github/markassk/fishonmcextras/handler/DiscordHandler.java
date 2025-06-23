@@ -128,11 +128,11 @@ public class DiscordHandler {
     private RichPresence buildPresence() {
         String state = TabHandler.instance().isInstance
                 ? "Fishing at: "
-                    + (StaffHandler.instance().isVanished ? Constant.CYPRESS_LAKE.TAG.getString() : LocationHandler.instance().currentLocation.TAG.getString())
+                    + (StaffHandler.instance().isVanished ? Constant.CYPRESS_LAKE.TAG.getString() : BossBarHandler.instance().currentLocation.TAG.getString())
                     + " (i"
                     + (StaffHandler.instance().isVanished ? "1" : TabHandler.instance().instance)
                     + ")"
-                : "At: " + LocationHandler.instance().currentLocation.TAG.getString();
+                : "At: " + BossBarHandler.instance().currentLocation.TAG.getString();
         ExtendedRichPresence.ExtendedBuilder presence = new ExtendedRichPresence.ExtendedBuilder()
                 .setActivity(ActivityType.Playing)
                 .setState(state)

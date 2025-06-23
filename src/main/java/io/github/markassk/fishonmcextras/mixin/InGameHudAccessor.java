@@ -11,4 +11,8 @@ public interface InGameHudAccessor {
     Text getOverlayMessage();
     @Accessor
     int getOverlayRemaining();
+    @Accessor
+    int getTitleRemainTicks();
+    @Accessor
+    Text getTitle();
 }

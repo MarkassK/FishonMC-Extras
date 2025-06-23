@@ -50,7 +50,8 @@ public class TabHandler {
                     }
                 }
 
-                if(config.crewTracker.notifyCrewOnJoin
+
+                if (config.crewTracker.notifyCrewOnJoin
                         && Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() > playerListEntries.size()
                         && !playerListEntries.isEmpty()) {
                     List<PlayerListEntry> differences = new ArrayList<>(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries());
@@ -73,12 +74,43 @@ public class TabHandler {
                                         Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
                                         Text.literal("| ").formatted(Formatting.DARK_GRAY),
                                         displayName,
-                                        Text.literal(" joined the server").withColor(0xa8a8a8)
+                                        Text.literal(" joined").formatted(Formatting.GREEN),
+                                        Text.literal(" the server").withColor(0xa8a8a8)
+                                ));
+                            }
+                        });
+                    }
+                } else if (config.crewTracker.notifyCrewOnLeave
+                        && Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() < playerListEntries.size()
+                ) {
+                    List<PlayerListEntry> differences = new ArrayList<>(playerListEntries);
+                    differences.removeAll(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries());
+
+                    if(differences.size() == 1) {
+                        differences.forEach(playerListEntry -> {
+                            if(ProfileDataHandler.instance().profileData.crewMembers.contains(playerListEntry.getProfile().getId())) {
+                                Text displayName = playerListEntry.getDisplayName();
+                                if(displayName != null && Objects.equals(playerListEntry.getProfile().getId(), UUID.fromString("b5a9bbb7-42b4-4a6a-9ebe-bdf6697c8ee0"))) {
+                                    if(config.fun.isFoeTagPrefix) {
+                                        displayName = Text.literal("\uE00B ").formatted(Formatting.WHITE).append(Text.literal(playerListEntry.getProfile().getName()).withColor(0x00AF0E));
+                                    } else {
+                                        displayName = displayName.copy().append(Text.literal(" \uE00B").formatted(Formatting.WHITE));
+                                    }
+                                }
+                                minecraftClient.inGameHud.getChatHud().addMessage(TextHelper.concat(
+                                        Text.literal("CREWS ").withColor(0x70aa6e).formatted(Formatting.BOLD),
+                                        Text.literal("» ").withColor(0x545454),
+                                        Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                                        Text.literal("| ").formatted(Formatting.DARK_GRAY),
+                                        displayName,
+                                        Text.literal(" left").formatted(Formatting.RED),
+                                        Text.literal(" the server").withColor(0xa8a8a8)
                                 ));
                             }
                         });
                     }
                 }
+
                 // CREWS » Crew Chat has been enabled (/crew chat)
                 if(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries().size() != playerListEntries.size()) {
                     playerListEntries = new ArrayList<>(Objects.requireNonNull(minecraftClient.getNetworkHandler()).getListedPlayerListEntries());
@@ -86,8 +118,6 @@ public class TabHandler {
             } catch (Exception e) {
                 FishOnMCExtras.LOGGER.error("TabHandler: {}", e.getMessage());
             }
-
-
         }
     }
 

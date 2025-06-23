@@ -133,7 +133,7 @@ public class InventoryScreenHandler {
                                 Text.literal("Toggles crew chat on and off.").formatted(Formatting.GRAY, Formatting.ITALIC)
                         )), minecraftClient));
 
-                if(LocationHandler.instance().currentLocation == Constant.CREW_ISLAND) {
+                if(BossBarHandler.instance().currentLocation == Constant.CREW_ISLAND) {
                     clickableWidgets.add(assembleCrewButton(buttonSize * 2, buttonSize, Text.literal("↑"), "crew fly", Tooltip.of(
                             TextHelper.concat(
                                     Text.literal("Crew Fly\n").formatted(Formatting.BOLD, Formatting.WHITE),
@@ -229,7 +229,7 @@ public class InventoryScreenHandler {
                             Text.literal("Quests are missions you activate per location that give rewards for catching fish based on size or rarity.").formatted(Formatting.GRAY, Formatting.ITALIC)
                     )), minecraftClient));
 
-            if(LocationHandler.instance().currentLocation == Constant.CREW_ISLAND) {
+            if(BossBarHandler.instance().currentLocation == Constant.CREW_ISLAND) {
                 clickableWidgets.add(assembleButton( -buttonSize * 3, buttonSize, Text.literal("\uF016"), "spawn", Tooltip.of(
                         TextHelper.concat(
                                 Text.literal("Spawn\n").formatted(Formatting.BOLD, Formatting.WHITE),
@@ -334,14 +334,13 @@ public class InventoryScreenHandler {
     }
 
     private ClickableWidget assembleUrlButton(int x, int y, Text icon, String url, @Nullable Tooltip tooltip, MinecraftClient minecraftClient) {
-        return new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 22 / 2 + x, minecraftClient.getWindow().getScaledHeight() / 2 + 90 + y, icon, tooltip, button -> {
-            minecraftClient.setScreen(new ConfirmLinkScreen((confirmed) -> {
-                if (confirmed) {
-                    Util.getOperatingSystem().open(url);
-                }
+        return new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 22 / 2 + x, minecraftClient.getWindow().getScaledHeight() / 2 + 90 + y, icon, tooltip, button -> minecraftClient.setScreen(new ConfirmLinkScreen((confirmed) -> {
+            if (confirmed) {
+                Util.getOperatingSystem().open(url);
+            }
 
-                minecraftClient.setScreen(null);
-            }, url, true));
-        });
+            minecraftClient.setScreen(null);
+        }, url, true))
+        );
     }
 }

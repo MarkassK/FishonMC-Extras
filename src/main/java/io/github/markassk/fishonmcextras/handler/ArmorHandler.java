@@ -77,8 +77,8 @@ public class ArmorHandler {
             this.currentChestplate = null;
         }
 
-        if(LocationHandler.instance().currentLocation != Constant.DEFAULT && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND) {
-            String currentLocationClimate = LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE.ID;
+        if(BossBarHandler.instance().currentLocation != Constant.DEFAULT && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND) {
+            String currentLocationClimate = LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).CLIMATE.ID;
             this.isWrongChestplateClimate = currentChestplate != null && !Objects.equals(currentChestplate.climate.ID, currentLocationClimate);
             this.isWrongLeggingsClimate = currentLeggings != null && !Objects.equals(currentLeggings.climate.ID, currentLocationClimate);
             this.isWrongBootsClimate = currentBoots != null && !Objects.equals(currentBoots.climate.ID, currentLocationClimate);
@@ -96,19 +96,19 @@ public class ArmorHandler {
                 Armor armor = Armor.getArmor(itemStack);
                 if(armor != null && armor.identified) {
                     Text emptyLine = getTextRarity(armor.rarity).TAG;
-                    if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(textList, 4, armor, emptyLine);
-                    if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(textList, 3, armor, emptyLine);
-                    if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(textList, 2, armor, emptyLine);
-                    if(armor.armorBonuses.get(1).rolled) insertArmorRollTooltip(textList, 1, armor, emptyLine);
-                    if(armor.armorBonuses.get(0).rolled) insertArmorRollTooltip(textList, 0, armor, emptyLine);
+                    int slot = textList.size() - 7;
+                    if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(slot, 4, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(slot, 3, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(slot, 2, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(1).rolled) insertArmorRollTooltip(slot, 1, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(0).rolled) insertArmorRollTooltip(slot, 0, armor, emptyLine, textList);
                 }
             }
         }
     }
 
-    private void insertArmorRollTooltip(List<Text> textList, int index, Armor armor, Text prefix) {
+    private void insertArmorRollTooltip(int slot, int index, Armor armor, Text prefix, List<Text> textList) {
         if(armor.armorBonuses.get(index).rolled) {
-            int slot = index + 12;
             int amount = calculateMoneyRolls(armor.armorBonuses.get(index).rolls, armor.armorBonuses.get(index).tier);
 
             Text amountText = TextHelper.concat(
@@ -121,7 +121,7 @@ public class ArmorHandler {
                     Text.literal(TextHelper.fmnt(amount)).formatted(Formatting.GREEN)
             );
 
-            textList.add(slot, amountText);
+            textList.add(slot + index, amountText);
         }
     }
 
