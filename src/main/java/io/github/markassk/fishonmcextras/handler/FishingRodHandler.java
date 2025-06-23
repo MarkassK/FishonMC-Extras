@@ -65,9 +65,9 @@ public class FishingRodHandler {
             if(!this.fishingRod.tacklebox.isEmpty()) {
                 // Bait
                 if(this.fishingRod.tacklebox.getFirst() instanceof Bait bait && bait.water != Constant.ANY_WATER) {
-                    this.isWrongBait = bait.water != LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER;
+                    this.isWrongBait = bait.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
                 } else if (this.fishingRod.tacklebox.getFirst() instanceof Lure lure && lure.water != Constant.ANY_WATER) {
-                    this.isWrongLure = lure.water != LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER;
+                    this.isWrongLure = lure.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
                 }
             } else {
                 this.isWrongBait = false;
@@ -75,19 +75,19 @@ public class FishingRodHandler {
             }
 
             if(this.fishingRod.reel != null && this.fishingRod.reel.water != Constant.GLOBAL_WATER) {
-                this.isWrongReel = this.fishingRod.reel.water != LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER;
+                this.isWrongReel = this.fishingRod.reel.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
             } else {
                 this.isWrongReel = false;
             }
 
             if(this.fishingRod.pole != null && this.fishingRod.pole.water != Constant.GLOBAL_WATER) {
-                this.isWrongPole = this.fishingRod.pole.water != LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER;
+                this.isWrongPole = this.fishingRod.pole.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
             } else {
                 this.isWrongPole = false;
             }
 
             if(this.fishingRod.line != null && this.fishingRod.line.water != Constant.GLOBAL_WATER) {
-                this.isWrongLine = this.fishingRod.line.water != LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).WATER;
+                this.isWrongLine = this.fishingRod.line.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
             } else {
                 this.isWrongLine = false;
             }
@@ -132,6 +132,15 @@ public class FishingRodHandler {
                     this.addText(textList, TextHelper.concat(Text.literal(String.format("%.1f", seconds)).formatted(Formatting.WHITE, Formatting.BOLD), Text.literal(" sec.").formatted(Formatting.GRAY)));
                 }
 
+                InGameHudAccessor inGameHudAccessor = ((InGameHudAccessor) minecraftClient.inGameHud);
+                if(config.fun.immersionMode
+                        && inGameHudAccessor.getTitle() != null
+                        && Objects.equals(inGameHudAccessor.getTitle().getString(), "BITE!")
+                        && inGameHudAccessor.getTitleRemainTicks() > 0
+                ) {
+                    this.addText(textList, inGameHudAccessor.getTitle());
+                }
+
                 // Render Text
                 if (config.fun.minigameOnBobber && remaining > 0) {
                     Text message = ((InGameHudAccessor) minecraftClient.inGameHud).getOverlayMessage();
@@ -160,7 +169,7 @@ public class FishingRodHandler {
 
                     ItemStack baitStack = Items.COOKED_COD.getDefaultStack().copy();
                     baitStack.set(DataComponentTypes.CUSTOM_MODEL_DATA, rod.tacklebox.getFirst() instanceof Bait bait ?
-                            bait.customModelData : CustomModelDataComponent.DEFAULT);
+                            bait.customModelData : rod.tacklebox.getFirst() instanceof Lure lure ? lure.customModelData : CustomModelDataComponent.DEFAULT);
 
                     itemDisplayEntity.setItemStack(baitStack);
                     itemDisplayEntity.setPosition(entity.getPos().add(0, -0.32, 0));

@@ -3,7 +3,6 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LevelColors;
 import io.github.markassk.fishonmcextras.handler.BossBarHandler;
-import io.github.markassk.fishonmcextras.handler.LocationHandler;
 import io.github.markassk.fishonmcextras.handler.ScoreboardHandler;
 import io.github.markassk.fishonmcextras.handler.TabHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
@@ -55,11 +54,11 @@ public class BarHudHandler {
         }
         Text time = Text.empty();
 
-        if(LocationHandler.instance().currentLocation != Constant.CREW_ISLAND) {
+        if(BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND) {
             time = Text.literal(" ").append(weather).append(Text.literal(" ")).append(Text.literal(BossBarHandler.instance().time).formatted(Formatting.WHITE)).append(BossBarHandler.instance().timeSuffix.contains("AM") ? Text.literal("ᴀᴍ").formatted(Formatting.GRAY) : Text.literal("ᴘᴍ").formatted(Formatting.GRAY));
         }
 
-        Text locationCatch = !Objects.equals(ScoreboardHandler.instance().locationMin, ScoreboardHandler.instance().locationMax) && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND ? TextHelper.concat(
+        Text locationCatch = !Objects.equals(ScoreboardHandler.instance().locationMin, ScoreboardHandler.instance().locationMax) && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND ? TextHelper.concat(
                 Text.literal(" (").formatted(Formatting.DARK_GRAY),
                 Text.literal(ScoreboardHandler.instance().locationMin).formatted(Formatting.GOLD),
                 Text.literal("/").formatted(Formatting.GRAY),
@@ -69,7 +68,7 @@ public class BarHudHandler {
 
         return TextHelper.concat(
                 Text.literal("\uF039 ").formatted(Formatting.WHITE),
-                LocationHandler.instance().currentLocation != null ? LocationHandler.instance().currentLocation.TAG : Text.empty(),
+                BossBarHandler.instance().currentLocation != null ? BossBarHandler.instance().currentLocation.TAG : Text.empty(),
                 locationCatch,
                 time
         );

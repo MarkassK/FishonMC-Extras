@@ -47,6 +47,7 @@ public enum Constant {
             Text.literal("i").withColor(0x35F4EF)), Defaults.DEFAULT_COLOR),
     CAIRNS("cairns", Text.literal("Cairns").withColor(0xA1C2FB), Defaults.DEFAULT_COLOR),
     CREW_ISLAND("crewisland", Text.literal("Crew Island"), Defaults.DEFAULT_COLOR),
+    UNKNOWN("unknown", Text.literal("Unknown"), Defaults.DEFAULT_COLOR),
 
     // Pet Base
     LOCATION_BASE("lbase", Text.empty(), Defaults.DEFAULT_COLOR),
