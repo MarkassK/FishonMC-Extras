@@ -4,8 +4,8 @@ import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.compat.LabyModCompat;
 import io.github.markassk.fishonmcextras.config.ConfigConstants;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.handler.BossBarHandler;
 import io.github.markassk.fishonmcextras.handler.LoadingHandler;
-import io.github.markassk.fishonmcextras.handler.LocationHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -32,49 +32,51 @@ public class MainHudRenderer implements HudRenderCallback {
         if(!MinecraftClient.getInstance().options.hudHidden && LoadingHandler.instance().isOnServer && LoadingHandler.instance().isLoadingDone) {
             this.notificationHud.render(drawContext, MinecraftClient.getInstance());
 
-            if(config.titlePopup.useNewTitleSystem) {
-                this.titleHud.render(drawContext, MinecraftClient.getInstance());
-            }
-
-            if(config.itemFrameTooltip.showTooltip) {
-                this.itemFrameTooltipHud.render(drawContext, MinecraftClient.getInstance());
-            }
-
-            if(config.barHUD.showBar) {
-                this.barHud.render(drawContext, MinecraftClient.getInstance());
-            }
-
-            if(LocationHandler.instance().currentLocation != Constant.CREW_ISLAND) {
-
-                if(config.fishTracker.showFishTrackerHUD) {
-                    this.fishTrackerHud.render(drawContext, MinecraftClient.getInstance());
+            if(!config.fun.immersionMode) {
+                if(config.titlePopup.useNewTitleSystem) {
+                    this.titleHud.render(drawContext, MinecraftClient.getInstance());
                 }
 
-                if(config.petEquipTracker.showPetEquipTrackerHUD) {
-                    this.petEquipHud.render(drawContext, MinecraftClient.getInstance());
+                if(config.itemFrameTooltip.showTooltip) {
+                    this.itemFrameTooltipHud.render(drawContext, MinecraftClient.getInstance());
                 }
 
-                if(config.contestTracker.showContest) {
-                    this.contestHud.render(drawContext, MinecraftClient.getInstance());
+                if(config.barHUD.showBar) {
+                    this.barHud.render(drawContext, MinecraftClient.getInstance());
                 }
 
-                if(config.baitTracker.showBaitHud) {
-                    this.baitHud.render(drawContext, MinecraftClient.getInstance());
-                }
+                if(BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND) {
 
-                if(config.equipmentTracker.showEquipmentHud) {
-                    this.equipmentHud.render(drawContext, MinecraftClient.getInstance());
-                }
-
-                if(config.crewTracker.showCrewNearby) {
-                    this.crewHud.render(drawContext, MinecraftClient.getInstance());
-                    if(LabyModCompat.instance().isLabyMod) {
-                        this.crewHud.renderCrewChatMarker(drawContext, MinecraftClient.getInstance());
+                    if(config.fishTracker.showFishTrackerHUD) {
+                        this.fishTrackerHud.render(drawContext, MinecraftClient.getInstance());
                     }
-                }
 
-                if(config.questTracker.showQuestHud) {
-                    this.questHud.render(drawContext, MinecraftClient.getInstance());
+                    if(config.petEquipTracker.showPetEquipTrackerHUD) {
+                        this.petEquipHud.render(drawContext, MinecraftClient.getInstance());
+                    }
+
+                    if(config.contestTracker.showContest) {
+                        this.contestHud.render(drawContext, MinecraftClient.getInstance());
+                    }
+
+                    if(config.baitTracker.showBaitHud) {
+                        this.baitHud.render(drawContext, MinecraftClient.getInstance());
+                    }
+
+                    if(config.equipmentTracker.showEquipmentHud) {
+                        this.equipmentHud.render(drawContext, MinecraftClient.getInstance());
+                    }
+
+                    if(config.crewTracker.showCrewNearby) {
+                        this.crewHud.render(drawContext, MinecraftClient.getInstance());
+                        if(LabyModCompat.instance().isLabyMod) {
+                            this.crewHud.renderCrewChatMarker(drawContext, MinecraftClient.getInstance());
+                        }
+                    }
+
+                    if(config.questTracker.showQuestHud) {
+                        this.questHud.render(drawContext, MinecraftClient.getInstance());
+                    }
                 }
             }
 

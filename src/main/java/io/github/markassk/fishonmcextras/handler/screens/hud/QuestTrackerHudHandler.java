@@ -3,7 +3,7 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.common.Theming;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
-import io.github.markassk.fishonmcextras.handler.LocationHandler;
+import io.github.markassk.fishonmcextras.handler.BossBarHandler;
 import io.github.markassk.fishonmcextras.handler.QuestHandler;
 import io.github.markassk.fishonmcextras.handler.ThemingHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
@@ -42,11 +42,11 @@ public class QuestTrackerHudHandler {
         }
 
         if(QuestHandler.instance().isQuestInitialized()) {
-            List<QuestHandler.Quest> activeQuests = LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? QuestHandler.instance().activeQuests.get(Constant.CYPRESS_LAKE) : QuestHandler.instance().activeQuests.get(LocationHandler.instance().currentLocation);
+            List<QuestHandler.Quest> activeQuests = BossBarHandler.instance().currentLocation == Constant.SPAWNHUB ? QuestHandler.instance().activeQuests.get(Constant.CYPRESS_LAKE) : QuestHandler.instance().activeQuests.get(BossBarHandler.instance().currentLocation);
 
             textList.add(TextHelper.concat(
                     Text.literal("ʟᴏᴄ.: ").formatted(Formatting.GRAY),
-                    LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.TAG : LocationHandler.instance().currentLocation.TAG
+                    BossBarHandler.instance().currentLocation == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.TAG : BossBarHandler.instance().currentLocation.TAG
             ));
 
             if(activeQuests != null) {
