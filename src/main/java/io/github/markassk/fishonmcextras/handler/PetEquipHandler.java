@@ -88,7 +88,8 @@ public class PetEquipHandler  {
     }
 
     public void tickEntities(Entity entity, MinecraftClient minecraftClient) {
-        if (System.currentTimeMillis() - startScanTime < 5000
+        if (minecraftClient.player != null
+                && System.currentTimeMillis() - startScanTime < 5000
                 && ProfileDataHandler.instance().profileData.equippedPetSlot != -1
                 && LoadingHandler.instance().isLoadingDone
                 && petStatus == PetStatus.LOADING
@@ -135,8 +136,8 @@ public class PetEquipHandler  {
         return PetEquipHandler.instance().petStatus == PetStatus.HAS_PET
                 && this.isUnequipHandled
                 && this.isEquipHandled
-                && ProfileDataHandler.instance().profileData.equippedPet.location != LocationHandler.instance().currentLocation
-                && LocationInfo.valueOfId(LocationHandler.instance().currentLocation.ID).CLIMATE != ProfileDataHandler.instance().profileData.equippedPet.climate;
+                && ProfileDataHandler.instance().profileData.equippedPet.location != BossBarHandler.instance().currentLocation
+                && LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).CLIMATE != ProfileDataHandler.instance().profileData.equippedPet.climate;
     }
 
     public enum PetStatus {

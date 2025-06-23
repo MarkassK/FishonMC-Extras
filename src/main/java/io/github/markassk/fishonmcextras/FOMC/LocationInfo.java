@@ -1,6 +1,6 @@
 package io.github.markassk.fishonmcextras.FOMC;
 
-public enum LocationInfo {
+public enum  LocationInfo {
     SPAWNHUB("spawnhub", ClimateConstant.SUBTROPICAL, Constant.FRESHWATER),
     CYPRESS_LAKE("spawn", ClimateConstant.SUBTROPICAL, Constant.FRESHWATER),
     KENAI_RIVER("kenai", ClimateConstant.SUBARCTIC, Constant.FRESHWATER),

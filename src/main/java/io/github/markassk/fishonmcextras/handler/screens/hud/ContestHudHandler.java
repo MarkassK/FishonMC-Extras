@@ -2,8 +2,8 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.handler.BossBarHandler;
 import io.github.markassk.fishonmcextras.handler.ContestHandler;
-import io.github.markassk.fishonmcextras.handler.LocationHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -61,7 +61,7 @@ public class ContestHudHandler {
                         Text.literal("ʟᴏᴄᴀᴛɪᴏɴ: ").formatted(Formatting.GRAY),
                         location
                 ));
-                if (Objects.equals(Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location)) == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.ID : Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location).ID), LocationHandler.instance().currentLocation.ID)) {
+                if (Objects.equals(Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location)) == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.ID : Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location).ID), BossBarHandler.instance().currentLocation.ID)) {
                     if(!Objects.equals(ContestHandler.instance().firstName, "")) {
                         textList.add(Text.empty());
                         textList.add(TextHelper.concat(

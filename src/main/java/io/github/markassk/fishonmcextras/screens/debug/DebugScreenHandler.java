@@ -73,13 +73,6 @@ public class DebugScreenHandler {
                         assembleText("wasOnServer", loadingHandler.wasOnServer)
                 ));
             }
-            case LOCATION -> {
-                LocationHandler locationHandler = LocationHandler.instance();
-
-                textList.add(
-                        assembleText("currentLocation", locationHandler.currentLocation.ID)
-                );
-            }
             case LOOKTICK -> {
                 LookTickHandler lookTickHandler = LookTickHandler.instance();
 
@@ -235,7 +228,8 @@ public class DebugScreenHandler {
                         assembleText("time", bossBarHandler.time),
                         assembleText("weather", bossBarHandler.weather),
                         assembleText("timeSuffix", bossBarHandler.timeSuffix),
-                        assembleText("temps", bossBarHandler.temperature)
+                        assembleText("temps", bossBarHandler.temperature),
+                        assembleText("currentLocation", bossBarHandler.currentLocation.ID)
                 ));
             }
             case ARMOR -> {
@@ -416,7 +410,6 @@ public class DebugScreenHandler {
         FISHCATCH(2, "FishCatchHandler"),
         FULLINVENTORY(3, "FullInventoryHandler"),
         LOADING(4, "LoadingHandler"),
-        LOCATION(5, "LocationHandler"),
         LOOKTICK(6, "LookTickhandler"),
         NOTIFICATIONSOUND(7, "NotificationSoundHandler"),
         PETCALCULATOR(8, "PetCalculatorHandler"),

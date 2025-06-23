@@ -70,10 +70,10 @@ public class QuestHandler {
             }
 
             if(!quests.isEmpty()) {
-                if(LocationHandler.instance().currentLocation == Constant.SPAWNHUB) {
+                if(BossBarHandler.instance().currentLocation == Constant.SPAWNHUB) {
                     activeQuests.put(Constant.CYPRESS_LAKE, quests);
                 } else {
-                    activeQuests.put(LocationHandler.instance().currentLocation, quests);
+                    activeQuests.put(BossBarHandler.instance().currentLocation, quests);
                 }
             }
         }
@@ -85,7 +85,7 @@ public class QuestHandler {
     }
 
     public void updateQuest(Fish fish) {
-        List<Quest> currentLocationQuests = LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? this.activeQuests.get(Constant.CYPRESS_LAKE) : this.activeQuests.get(LocationHandler.instance().currentLocation);
+        List<Quest> currentLocationQuests = BossBarHandler.instance().currentLocation == Constant.SPAWNHUB ? this.activeQuests.get(Constant.CYPRESS_LAKE) : this.activeQuests.get(BossBarHandler.instance().currentLocation);
         if(currentLocationQuests != null) {
             currentLocationQuests.forEach(quest -> {
                 if(quest.goal == fish.rarity || quest.goal == fish.size) {
@@ -121,7 +121,7 @@ public class QuestHandler {
     }
 
     public boolean isQuestInitialized() {
-        return LocationHandler.instance().currentLocation == Constant.SPAWNHUB ? activeQuests.containsKey(Constant.CYPRESS_LAKE) : activeQuests.containsKey(LocationHandler.instance().currentLocation);
+        return BossBarHandler.instance().currentLocation == Constant.SPAWNHUB ? activeQuests.containsKey(Constant.CYPRESS_LAKE) : activeQuests.containsKey(BossBarHandler.instance().currentLocation);
     }
 
     public static class Quest {

@@ -145,6 +145,20 @@ public class CommandRegistry {
                             );
                             return 1;
                         })
+                ).then(ClientCommandManager.literal("immersionmode")
+                        .executes(context -> {
+                            FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+                            config.fun.immersionMode = !config.fun.immersionMode;
+                            AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                            context.getSource().sendFeedback(
+                                    TextHelper.concat(
+                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
+                                            Text.literal("Stopping Highlight")
+                                    )
+                            );
+                            return 1;
+                        })
                 )
         );
     }

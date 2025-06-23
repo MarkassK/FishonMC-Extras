@@ -3,11 +3,14 @@ package io.github.markassk.fishonmcextras.mixin;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.FishCatchHandler;
 import io.github.markassk.fishonmcextras.handler.LoadingHandler;
+import io.github.markassk.fishonmcextras.handler.OwnPlayerHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
+    @Shadow private @Nullable Text title;
+    @Shadow private int titleRemainTicks;
     @Unique
     private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
@@ -27,9 +32,21 @@ public class InGameHudMixin {
 
     @Inject(method = "renderTitleAndSubtitle", at = @At("HEAD"), cancellable = true)
     private void injectRenderTitleAndSubtitle(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-        if(LoadingHandler.instance().isOnServer
+        if((LoadingHandler.instance().isOnServer
                 && System.currentTimeMillis() - FishCatchHandler.instance().lastTimeUsedRod < 1000L
-                && config.titlePopup.useNewTitleSystem) {
+                && config.titlePopup.useNewTitleSystem)
+                || config.fun.immersionMode
+                || (
+                        config.titlePopup.useNewTitleSystem
+                                && config.fishTracker.fishTrackerToggles.otherToggles.useNewTitle
+                                && this.title != null
+                                && !this.title.getString().isEmpty()
+                                && this.titleRemainTicks > 0
+                                && (int) this.title.getString().charAt(0) > 0xE000
+                                && (int) this.title.getString().charAt(0) < 0xE999
+
+                   )
+        ) {
             ci.cancel();
         }
     }
@@ -65,6 +82,20 @@ public class InGameHudMixin {
     @Inject(method = "renderOverlayMessage", at = @At("HEAD"), cancellable = true)
     private void injectRenderOverlayMessage(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         if(LoadingHandler.instance().isOnServer && config.fun.minigameOnBobber) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "renderMainHud", at = @At("HEAD"), cancellable = true)
+    private void injectRenderMainHud(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+        if(LoadingHandler.instance().isOnServer && config.fun.immersionMode && System.currentTimeMillis() - OwnPlayerHandler.instance().changedSlotTime > 5000L) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
+    private void injectRenderCrosshair(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+        if(LoadingHandler.instance().isOnServer && config.fun.immersionMode) {
             ci.cancel();
         }
     }

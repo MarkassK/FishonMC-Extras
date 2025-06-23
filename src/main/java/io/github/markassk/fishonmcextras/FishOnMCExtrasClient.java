@@ -68,7 +68,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     NotificationSoundHandler.instance().tick(minecraftClient);
                     RayTracingHandler.instance().tick(minecraftClient);
                     LookTickHandler.instance().tick();
-                    LocationHandler.instance().tick(minecraftClient);
                     ScoreboardHandler.instance().tick(minecraftClient);
                     ContestHandler.instance().tick();
                     TabHandler.instance().tick(minecraftClient);
@@ -85,6 +84,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     OtherPlayerHandler.instance().tick(minecraftClient);
                     WeatherHandler.instance().tick(minecraftClient);
                     HiderHandler.instance().tick(minecraftClient);
+                    OwnPlayerHandler.instance().tick(minecraftClient);
                 }
              }
         }

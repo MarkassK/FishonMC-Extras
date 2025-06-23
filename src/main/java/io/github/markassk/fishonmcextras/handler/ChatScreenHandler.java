@@ -25,7 +25,7 @@ public class ChatScreenHandler {
             if(config.fun.isFoeTagPrefix) {
                 String jsonText = TextHelper.textToJson(text);
                 jsonText = jsonText.replace("\uF028", "\uE00B");
-                jsonText = jsonText.replace("#B05BF9", "#00AF0E");
+                jsonText = jsonText.replace("B05BF9", "00AF0E");
                 return TextHelper.jsonToText(jsonText);
             } else {
                 String jsonText = TextHelper.textToJson(text);

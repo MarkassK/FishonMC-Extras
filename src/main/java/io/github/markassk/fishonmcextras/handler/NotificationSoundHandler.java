@@ -35,8 +35,8 @@ public class NotificationSoundHandler {
                 if(config.petEquipTracker.warningOptions.showPetEquipWarningHUD
                         && config.petEquipTracker.warningOptions.usePetEquipWarningSound
                         && PetEquipHandler.instance().petStatus == PetEquipHandler.PetStatus.NO_PET
-                        && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                        && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+                        && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
+                        && BossBarHandler.instance().currentLocation != Constant.SPAWNHUB
                 ) {
                     if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.PET_EQUIP) > config.petEquipTracker.warningOptions.timePetEquipWarningSound * 1000L) {
                         playSoundWarning(config.petEquipTracker.warningOptions.petEquipSoundType, minecraftClient);
@@ -48,8 +48,8 @@ public class NotificationSoundHandler {
                 if(config.fullInventoryTracker.showFullInventoryWarningHUD
                         && config.fullInventoryTracker.useInventoryWarningSound
                         && FullInventoryHandler.instance().isOverThreshold
-                        && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
-                        && LocationHandler.instance().currentLocation != Constant.SPAWNHUB
+                        && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
+                        && BossBarHandler.instance().currentLocation != Constant.SPAWNHUB
                 ) {
                     if(System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.INVENTORY_FULL) > config.fullInventoryTracker.timeInventoryWarningSound * 1000L) {
                         playSoundWarning(config.fullInventoryTracker.fullInventorySoundType, minecraftClient);
@@ -60,7 +60,7 @@ public class NotificationSoundHandler {
                 // Weather Alert Warning Sound
                 if(config.weatherTracker.showAlertHUD
                         && config.weatherTracker.useAlertWarningSound
-                        && LocationHandler.instance().currentLocation != Constant.CREW_ISLAND
+                        && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
                         && System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime <= config.weatherTracker.alertDismissSeconds * 1000L
                 ) {
                     if(Objects.equals(WeatherHandler.instance().currentWeather, Constant.THUNDERSTORM.ID)
