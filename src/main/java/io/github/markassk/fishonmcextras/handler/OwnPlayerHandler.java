@@ -18,9 +18,9 @@ public class OwnPlayerHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.player != null
-                && prevSelectedSlot != minecraftClient.player.getInventory().selectedSlot
+                && prevSelectedSlot != minecraftClient.player.getInventory().getSelectedSlot()
         ) {
-            prevSelectedSlot = minecraftClient.player.getInventory().selectedSlot;
+            prevSelectedSlot = minecraftClient.player.getInventory().getSelectedSlot();
             changedSlotTime = System.currentTimeMillis();
         }
     }
