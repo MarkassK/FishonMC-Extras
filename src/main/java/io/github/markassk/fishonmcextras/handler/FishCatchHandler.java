@@ -133,17 +133,17 @@ public class FishCatchHandler  {
     }
 
     public void onReceiveMessage(Text text) {
-        if(text.getString().startsWith("PET DROP! You pulled a")) {
+        if(text.getString().startsWith("PET DROP! You pulled")) {
             ProfileDataHandler.instance().updatePetCaughtStatsOnCatch();
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Pet");
         }
 
-        if(text.getString().startsWith("RARE DROP! You pulled a") && text.getString().contains("Shard")) {
+        if(text.getString().startsWith("RARE DROP! You pulled") && text.getString().contains("Shard")) {
             ProfileDataHandler.instance().updateShardCaughtStatsOnCatch(1);
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
         }
 
-        if(text.getString().startsWith("RARE DROP! You pulled a") && text.getString().contains("Lightning in a Bottle")) {
+        if(text.getString().startsWith("RARE DROP! You pulled") && text.getString().contains("Lightning in a Bottle")) {
             ProfileDataHandler.instance().updateLightningBottleCaughtStatsOnCatch();
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
         }
