@@ -9,5 +9,8 @@ public class FunConfig {
         @ConfigEntry.Gui.Tooltip
         public boolean immersionMode = false;
         public boolean isFoeTagPrefix = true;
+        public boolean hideArmor = false;
+        @ConfigEntry.Gui.Tooltip
+        public boolean biteBobber = false;
     }
 }

@@ -2,6 +2,8 @@ package io.github.markassk.fishonmcextras.handler;
 
 import net.minecraft.text.Text;
 
+import java.util.Objects;
+
 public class ContestHandler {
     private static ContestHandler INSTANCE = new ContestHandler();
 
@@ -42,7 +44,18 @@ public class ContestHandler {
         } else if (hourMs > (60L*60L*1000L / 2)){
             this.isContest = false;
             this.hasEnded = true;
-            if(System.currentTimeMillis() - this.lastUpdated > 15000L && !isReset && hasEnded) {
+            if(System.currentTimeMillis() - this.lastUpdated > 15000L && hasEnded && (
+                    !Objects.equals(this.type, "")
+                            || !Objects.equals(this.location, "")
+                            || !Objects.equals(this.firstName, "")
+                            || !Objects.equals(this.firstStat, "")
+                            || !Objects.equals(this.secondName, "")
+                            || !Objects.equals(this.secondStat, "")
+                            || !Objects.equals(this.thirdName, "")
+                            || !Objects.equals(this.thirdStat, "")
+                            || !Objects.equals(this.rank, "Unranked")
+                            || this.lastUpdated != 0L
+                    )) {
                 this.isReset = true;
                 this.hasEnded = false;
                 this.reset();

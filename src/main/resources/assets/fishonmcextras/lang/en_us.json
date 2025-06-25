@@ -9,7 +9,7 @@
   "text.autoconfig.fishonmcextras.category.tooltips": "Tooltips",
   "text.autoconfig.fishonmcextras.category.other": "Miscellaneous",
   "text.autoconfig.fishonmcextras.category.cosmetic": "Cosmetics",
-  "text.autoconfig.fishonmcextras.category.fun": "Fun",
+  "text.autoconfig.fishonmcextras.category.fun": "Experimental",
 
   "text.autoconfig.fishonmcextras.option.fishTracker": "§f§lFish Tracker Options",
   "text.autoconfig.fishonmcextras.option.fishTracker.showFishTrackerHUD": "Fish Tracker HUD",
@@ -30,6 +30,7 @@
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.generalToggles.showPetPerHour": "Show Pet per Hour",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.generalToggles.showShardCaught": "Show Shard Caught",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.generalToggles.showShardPerHour": "Show Shard per Hour",
+  "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.generalToggles.showLightningBottleCaught": "Show Lightning Bottles Caught",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.rarityToggles": "§f§lRarity Toggles",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.rarityToggles.showRarities": "§lShow Rarities",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.rarityToggles.showRarities.@Tooltip": "Toggle to see rarities section.\n§7If §cdisabled§7, all below options will not show.",
@@ -76,6 +77,7 @@
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.dryStreakToggles.showPet.@PrefixText": "§fOther",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.dryStreakToggles.showPet": "Show Pets",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.dryStreakToggles.showShard": "Show Shards",
+  "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.dryStreakToggles.showLightningBottle": "Show Lightning Bottles",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles": "§f§lOther Toggles",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.showPercentages": "Show percentages",
   "text.autoconfig.fishonmcextras.option.fishTracker.fishTrackerToggles.otherToggles.useNewTitle": "Use the New title system.",
@@ -271,11 +273,14 @@
 
 
   "text.autoconfig.fishonmcextras.option.fun.@PrefixText": "\n§c!!! All of these are experimental, use with caution\n",
-  "text.autoconfig.fishonmcextras.option.fun": "§f§lFun Options",
+  "text.autoconfig.fishonmcextras.option.fun": "§f§lExperimental Options",
   "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber": "Show minigame on bobber",
-  "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber.@Tooltip": "§cThis will disable minigame on your hud",
+  "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber.@Tooltip": "§cThis will §cdisable§7 minigame on your hud",
   "text.autoconfig.fishonmcextras.option.fun.immersionMode": "Immersion mode",
   "text.autoconfig.fishonmcextras.option.fun.immersionMode.@Tooltip": "§7When this is on, every hud element is off except Notifications and chat",
   "text.autoconfig.fishonmcextras.option.fun.isFoeTagPrefix": "Show FoE tag as a prefix",
-  "text.autoconfig.fishonmcextras.option.fun.isFoeTagPrefix.@Tooltip": "§7If §cdisabled§7, it will show as a suffix in tab"
+  "text.autoconfig.fishonmcextras.option.fun.isFoeTagPrefix.@Tooltip": "§7If §cdisabled§7, it will show as a suffix in tab",
+  "text.autoconfig.fishonmcextras.option.fun.hideArmor": "Toggle armor visibility",
+  "text.autoconfig.fishonmcextras.option.fun.biteBobber": "Show bite notification on bobber instead",
+  "text.autoconfig.fishonmcextras.option.fun.biteBobber.@Tooltip": "This will §cdisable§7 the bite notification from the HUD"
 }

@@ -32,6 +32,7 @@ public class FOMCItem {
                     case Defaults.ItemTypes.LINE -> Line.getLine(itemStack, Defaults.ItemTypes.LINE);
                     case Defaults.ItemTypes.POLE -> Pole.getPole(itemStack, Defaults.ItemTypes.POLE);
                     case Defaults.ItemTypes.REEL -> Reel.getReel(itemStack, Defaults.ItemTypes.REEL);
+                    case Defaults.ItemTypes.CRAFTINGCOMPONENT -> CraftingComponent.getCraftingComponent(itemStack, Defaults.ItemTypes.CRAFTINGCOMPONENT);
                     default -> null;
                 };
                 // Fish
@@ -58,7 +59,7 @@ public class FOMCItem {
                 return switch (nbtCompound.getString("type")) {
                     case Defaults.ItemTypes.PET, Defaults.ItemTypes.REEL, Defaults.ItemTypes.POLE,
                          Defaults.ItemTypes.LINE, Defaults.ItemTypes.LURE, Defaults.ItemTypes.BAIT,
-                         Defaults.ItemTypes.ARMOR, Defaults.ItemTypes.SHARD -> true;
+                         Defaults.ItemTypes.ARMOR, Defaults.ItemTypes.SHARD, Defaults.ItemTypes.CRAFTINGCOMPONENT-> true;
                     default -> false;
                 };
                 // Fish

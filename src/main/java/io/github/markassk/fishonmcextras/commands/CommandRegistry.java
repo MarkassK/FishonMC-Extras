@@ -94,7 +94,6 @@ public class CommandRegistry {
                         .executes(context -> {
                             if(!ProfileDataHandler.instance().profileData.isStatsInitialized) {
                                 ProfileDataHandler.instance().profileData.isStatsInitialized = true;
-                                ProfileDataHandler.instance().saveStats();
                                 TextHelper.concat(
                                         Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
                                         Text.literal("» ").formatted(Formatting.DARK_GRAY),
@@ -154,7 +153,21 @@ public class CommandRegistry {
                                     TextHelper.concat(
                                             Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
                                             Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Stopping Highlight")
+                                            Text.literal("Immersion Mode Toggled")
+                                    )
+                            );
+                            return 1;
+                        })
+                ).then(ClientCommandManager.literal("armorvisibility")
+                        .executes(context -> {
+                            FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+                            config.fun.hideArmor = !config.fun.hideArmor;
+                            AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                            context.getSource().sendFeedback(
+                                    TextHelper.concat(
+                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
+                                            Text.literal("Armor Visibility Toggled")
                                     )
                             );
                             return 1;
