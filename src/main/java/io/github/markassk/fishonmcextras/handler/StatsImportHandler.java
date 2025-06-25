@@ -142,7 +142,6 @@ public class StatsImportHandler {
         ProfileDataHandler.instance().profileData.fishSizeDryStreak = dummyProfileData.fishSizeDryStreak;
         ProfileDataHandler.instance().profileData.variantDryStreak = dummyProfileData.variantDryStreak;
         ProfileDataHandler.instance().profileData.isStatsInitialized = true;
-        ProfileDataHandler.instance().saveStats();
     }
 
     public void onButtonClick(MinecraftClient minecraftClient) {

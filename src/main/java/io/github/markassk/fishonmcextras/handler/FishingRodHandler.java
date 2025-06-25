@@ -133,7 +133,7 @@ public class FishingRodHandler {
                 }
 
                 InGameHudAccessor inGameHudAccessor = ((InGameHudAccessor) minecraftClient.inGameHud);
-                if(config.fun.immersionMode
+                if((config.fun.immersionMode || config.fun.biteBobber)
                         && inGameHudAccessor.getTitle() != null
                         && Objects.equals(inGameHudAccessor.getTitle().getString(), "BITE!")
                         && inGameHudAccessor.getTitleRemainTicks() > 0

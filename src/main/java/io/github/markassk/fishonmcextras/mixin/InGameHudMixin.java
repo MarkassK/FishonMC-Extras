@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
     @Shadow private @Nullable Text title;
@@ -46,6 +48,13 @@ public class InGameHudMixin {
                                 && (int) this.title.getString().charAt(0) < 0xE999
 
                    )
+                || (
+                        config.fun.biteBobber
+                                && this.title != null
+                                && !this.title.getString().isEmpty()
+                                && this.titleRemainTicks > 0
+                                && Objects.equals(this.title.getString(), "BITE!")
+                )
         ) {
             ci.cancel();
         }
