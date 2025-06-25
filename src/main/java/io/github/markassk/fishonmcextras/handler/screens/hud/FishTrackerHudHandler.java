@@ -47,6 +47,9 @@ public class FishTrackerHudHandler {
         int displayShardCaughtCount = config.fishTracker.isFishTrackerOnTimer
                 ? profileData.shardCaughtCount
                 : profileData.allShardCaughtCount;
+        int displayLightningBottleCaughtCount = config.fishTracker.isFishTrackerOnTimer
+                ? profileData.lightningBottleCount
+                : profileData.allLightningBottleCount;
         Map<Constant, Integer> displayRarityCounts = config.fishTracker.isFishTrackerOnTimer
                 ? profileData.rarityCounts
                 : profileData.allRarityCounts;
@@ -148,41 +151,60 @@ public class FishTrackerHudHandler {
 
         ));
 
-        if (config.fishTracker.fishTrackerToggles.generalToggles.showPetCaught) {
-            textList.add(TextHelper.concat(
-                    Text.literal("ᴘᴇᴛѕ ᴄᴀᴜɢʜᴛ: ").formatted(Formatting.GRAY),
-                    Text.literal(String.valueOf(displayPetCaughtCount)).formatted(Formatting.WHITE)
-            ));
-            if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showPet) {
-                textList.add(getDryStreak(profileData.petDryStreak));
+        if(config.fishTracker.fishTrackerToggles.generalToggles.showPetCaught
+                || config.fishTracker.fishTrackerToggles.generalToggles.showShardCaught
+                || config.fishTracker.fishTrackerToggles.generalToggles.showLightningBottleCaught
+        ) {
+            textList.add(Text.empty());
+
+            if (config.fishTracker.fishTrackerToggles.generalToggles.showPetCaught) {
+                textList.add(TextHelper.concat(
+                        Text.literal("ᴘᴇᴛѕ: ").formatted(Formatting.GRAY),
+                        Text.literal(String.valueOf(displayPetCaughtCount)).formatted(Formatting.WHITE)
+                ));
+                if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showPet) {
+                    textList.add(getDryStreak(profileData.petDryStreak));
+                }
+
+                if (config.fishTracker.fishTrackerToggles.generalToggles.showPetPerHour && config.fishTracker.isFishTrackerOnTimer) {
+                    double petPerHour = (displayPetCaughtCount / (timeSinceReset / 3600000.0));
+                    textList.add(TextHelper.concat(
+                            Text.literal("ᴘᴇᴛѕ/ʜᴏᴜʀ: ").formatted(Formatting.GRAY),
+                            Text.literal(String.format("%.1f", petPerHour))
+                    ));
+                }
             }
 
-            if (config.fishTracker.fishTrackerToggles.generalToggles.showPetPerHour && config.fishTracker.isFishTrackerOnTimer) {
-                double petPerHour = (displayPetCaughtCount / (timeSinceReset / 3600000.0));
+            if (config.fishTracker.fishTrackerToggles.generalToggles.showShardCaught) {
                 textList.add(TextHelper.concat(
-                        Text.literal("ᴘᴇᴛѕ/ʜᴏᴜʀ: ").formatted(Formatting.GRAY),
-                        Text.literal(String.format("%.1f", petPerHour))
+                        Text.literal("ѕʜᴀʀᴅѕ: ").formatted(Formatting.GRAY),
+                        Text.literal(String.valueOf(displayShardCaughtCount)).formatted(Formatting.WHITE)
                 ));
+                if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showShard) {
+                    textList.add(getDryStreak(profileData.shardDryStreak));
+                }
+
+                if (config.fishTracker.fishTrackerToggles.generalToggles.showShardPerHour && config.fishTracker.isFishTrackerOnTimer) {
+                    double shardPerHour = (displayShardCaughtCount / (timeSinceReset / 3600000.0));
+                    textList.add(TextHelper.concat(
+                            Text.literal("ѕʜᴀʀᴅѕ/ʜᴏᴜʀ: ").formatted(Formatting.GRAY),
+                            Text.literal(String.format("%.1f", shardPerHour))
+                    ));
+                }
+            }
+
+            if(config.fishTracker.fishTrackerToggles.generalToggles.showLightningBottleCaught) {
+                textList.add(TextHelper.concat(
+                        Text.literal("ʟɪɢʜᴛ. ʙᴏᴛᴛʟᴇѕ: ").formatted(Formatting.GRAY),
+                        Text.literal(String.valueOf(displayLightningBottleCaughtCount)).formatted(Formatting.WHITE)
+                ));
+                if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showLightningBottle) {
+                    textList.add(getDryStreak(profileData.lightningBottleDryStreak));
+                }
             }
         }
 
-        if (config.fishTracker.fishTrackerToggles.generalToggles.showShardCaught) {
-            textList.add(TextHelper.concat(
-                    Text.literal("ѕʜᴀʀᴅѕ ᴄᴀᴜɢʜᴛ: ").formatted(Formatting.GRAY),
-                    Text.literal(String.valueOf(displayShardCaughtCount)).formatted(Formatting.WHITE)
-            ));
-            if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showShard) {
-                textList.add(getDryStreak(profileData.shardDryStreak));
-            }
 
-            if (config.fishTracker.fishTrackerToggles.generalToggles.showShardPerHour && config.fishTracker.isFishTrackerOnTimer) {
-                double shardPerHour = (displayShardCaughtCount / (timeSinceReset / 3600000.0));
-                textList.add(TextHelper.concat(
-                        Text.literal("ѕʜᴀʀᴅѕ/ʜᴏᴜʀ: ").formatted(Formatting.GRAY),
-                        Text.literal(String.format("%.1f", shardPerHour))
-                ));
-            }
-        }
 
         if (config.fishTracker.fishTrackerToggles.rarityToggles.showRarities) {
             textList.add(Text.empty());

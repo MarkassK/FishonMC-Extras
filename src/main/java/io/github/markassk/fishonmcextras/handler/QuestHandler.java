@@ -98,7 +98,6 @@ public class QuestHandler {
 
     public void onScreenClose() {
         ProfileDataHandler.instance().profileData.activeQuests = this.activeQuests;
-        ProfileDataHandler.instance().saveStats();
     }
 
     private Quest getStartedQuest(ItemStack itemStack, int slot) {

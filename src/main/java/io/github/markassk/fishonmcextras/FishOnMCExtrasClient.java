@@ -86,8 +86,9 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     HiderHandler.instance().tick(minecraftClient);
                     OwnPlayerHandler.instance().tick(minecraftClient);
                 }
-             }
+            }
         }
+        ProfileDataHandler.instance().tick();
     }
 
     private void onJoin(ClientPlayNetworkHandler clientPlayNetworkHandler, PacketSender packetSender, MinecraftClient minecraftClient) {

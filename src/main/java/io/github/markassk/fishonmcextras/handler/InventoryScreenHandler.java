@@ -50,10 +50,9 @@ public class InventoryScreenHandler {
             if(CrewHandler.instance().crewState == CrewHandler.CrewState.HASCREW) {
                 playerList.clear();
                 ProfileDataHandler.instance().profileData.crewMembers.forEach(uuid -> {
-                    Text displayName = TabHandler.instance().getPlayer(uuid);
+                    String displayName = TabHandler.instance().getPlayer(uuid);
                     if(displayName != null) {
-                        String[] parts = displayName.getString().split(" ");
-                        playerList.add(parts[parts.length - 1]);
+                        playerList.add(displayName);
                     }
                 });
             }
@@ -154,7 +153,7 @@ public class InventoryScreenHandler {
                 }));
 
                 Screens.getButtons(minecraftClient.currentScreen).addAll(clickableWidgets);
-            } else {
+            } else if(minecraftClient.currentScreen != null) {
                 int offsetRecipe = isRecipeBookOpen ? recipeTranslation : 0;
 
                 List<ClickableWidget> clickableWidgets = new ArrayList<>();
