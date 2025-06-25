@@ -57,7 +57,6 @@ public class CrewHandler {
         } else if(this.crewState == CrewState.NOTINITIALIZED) {
             this.crewState = CrewState.NOCREW;
             ProfileDataHandler.instance().profileData.crewMembers.clear();
-            ProfileDataHandler.instance().saveStats();
         } else if(this.crewState == CrewState.NOCREW && !ScoreboardHandler.instance().crewName.isEmpty()) {
             this.isNotInitialized = true;
         }
@@ -113,7 +112,6 @@ public class CrewHandler {
         if(this.crewMembers.stream().anyMatch(uuid -> uuid.equals(MinecraftClient.getInstance().player != null ? MinecraftClient.getInstance().player.getUuid() : null))) {
             ProfileDataHandler.instance().profileData.crewMembers = this.crewMembers;
         }
-        ProfileDataHandler.instance().saveStats();
     }
 
     public void setNoCrew() {
@@ -133,10 +131,8 @@ public class CrewHandler {
 
         if(message.getString().startsWith("CREWS » Crew Chat has been enabled")) {
             ProfileDataHandler.instance().profileData.isInCrewChat = true;
-            ProfileDataHandler.instance().saveStats();
         } else if (message.getString().startsWith("CREWS » Crew Chat has been disabled")) {
             ProfileDataHandler.instance().profileData.isInCrewChat = false;
-            ProfileDataHandler.instance().saveStats();
         }
     }
 

@@ -23,14 +23,28 @@ public class ProfileDataHandler {
     private boolean isSavedAfterTimer = false;
 
     public ProfileData profileData = new ProfileData();
+    public ProfileData prevProfileData = new ProfileData();
+    public boolean isDataLoaded = false;
     public long lastUpdateTime = System.currentTimeMillis();
-    public UUID playerUUID = UUID.randomUUID();
+    public UUID playerUUID = null;
 
     public static ProfileDataHandler instance() {
         if (INSTANCE == null) {
             INSTANCE = new ProfileDataHandler();
         }
         return INSTANCE;
+    }
+
+    public void tick() {
+        if(isDataLoaded && LoadingHandler.instance().wasOnServer && !prevProfileData.equals(profileData)) {
+            prevProfileData = new ProfileData(profileData);
+            this.saveStats();
+        }
+
+        //TODO remove in 0.2.4
+        if(profileData.lightningBottleDryStreak == 0) {
+            profileData.lightningBottleDryStreak = profileData.allFishCaughtCount;
+        }
     }
 
     public void onJoinServer(PlayerEntity player) {
@@ -67,7 +81,12 @@ public class ProfileDataHandler {
         this.profileData.rarityDryStreak.put(fish.rarity, this.profileData.allFishCaughtCount);
 
         this.isSavedAfterTimer = false;
-        this.saveStats();
+    }
+
+    public void updateStatsOnCatch() {
+        if(!Objects.equals(BossBarHandler.instance().weather, Constant.THUNDERSTORM.ID)) {
+            this.profileData.lightningBottleDryStreak++;
+        }
     }
 
     public void updatePetCaughtStatsOnCatch() {
@@ -78,8 +97,6 @@ public class ProfileDataHandler {
         this.profileData.petCaughtCount++;
 
         this.profileData.petDryStreak = this.profileData.allFishCaughtCount;
-
-        this.saveStats();
     }
 
     public void updateShardCaughtStatsOnCatch(int count) {
@@ -90,20 +107,26 @@ public class ProfileDataHandler {
         this.profileData.shardCaughtCount += count;
 
         this.profileData.shardDryStreak = this.profileData.allFishCaughtCount;
+    }
 
-        this.saveStats();
+    public void updateLightningBottleCaughtStatsOnCatch() {
+        // All-time stats
+        this.profileData.allLightningBottleCount++;
+
+        // Session stats
+        this.profileData.lightningBottleCount++;
+
+        this.profileData.lightningBottleDryStreak = this.profileData.allFishCaughtCount;
     }
 
     public void updatePet(Pet pet, int slot) {
         this.profileData.equippedPet = pet;
         this.profileData.equippedPetSlot = slot;
-        this.saveStats();
     }
 
     public void resetPet() {
         this.profileData.equippedPet = null;
         this.profileData.equippedPetSlot = -1;
-        this.saveStats();
     }
 
     /**
@@ -111,14 +134,16 @@ public class ProfileDataHandler {
      */
     public void saveStats() {
         try {
-            Path configDir = FabricLoader.getInstance().getConfigDir();
-            Path subDir = configDir.resolve("foe");
-            Path statsDir = subDir.resolve("stats");
-            Files.createDirectories(statsDir);
-            Path filePath = statsDir.resolve(playerUUID.toString() + ".json");
-            Gson gson = new GsonBuilder().create();
-            String json = gson.toJson(this.profileData);
-            Files.writeString(filePath, json);
+            if (playerUUID != null) {
+                Path configDir = FabricLoader.getInstance().getConfigDir();
+                Path subDir = configDir.resolve("foe");
+                Path statsDir = subDir.resolve("stats");
+                Files.createDirectories(statsDir);
+                Path filePath = statsDir.resolve(playerUUID.toString() + ".json");
+                Gson gson = new GsonBuilder().create();
+                String json = gson.toJson(this.profileData);
+                Files.writeString(filePath, json);
+            }
         } catch (IOException e) {
             FishOnMCExtras.LOGGER.error(e.getMessage());
         }
@@ -139,6 +164,7 @@ public class ProfileDataHandler {
                 String json = Files.readString(filePath, StandardCharsets.UTF_8);
                 Gson gson = new GsonBuilder().create();
                 this.profileData = gson.fromJson(json, ProfileData.class);
+                isDataLoaded = true;
             }
         } catch (IOException e) {
             FishOnMCExtras.LOGGER.error(e.getMessage());
@@ -157,6 +183,7 @@ public class ProfileDataHandler {
         this.profileData.fishSizeCounts.clear();
         this.profileData.petCaughtCount = 0;
         this.profileData.shardCaughtCount = 0;
+        this.profileData.lightningBottleCount = 0;
         if(config.fishTracker.isFishTrackerOnTimer) {
             this.profileData.timerFishCaughtCount = 0;
             this.profileData.activeTime = 0;
@@ -165,13 +192,11 @@ public class ProfileDataHandler {
         this.profileData.timerPaused = true;
 
         FishCatchHandler.instance().reset();
-        this.saveStats();
     }
 
     public void resetTimer() {
         this.profileData.timerFishCaughtCount = 0;
         this.profileData.activeTime = 0;
-        this.saveStats();
     }
 
     public void tickTimer() {
@@ -182,7 +207,6 @@ public class ProfileDataHandler {
             ProfileDataHandler.instance().profileData.timerPaused = true;
             if(!isSavedAfterTimer) {
                 this.isSavedAfterTimer = true;
-                this.saveStats();
             }
         }
 
@@ -198,6 +222,7 @@ public class ProfileDataHandler {
     public void resetDryStreak() {
         profileData.petDryStreak = profileData.allFishCaughtCount;
         profileData.shardDryStreak = profileData.allFishCaughtCount;
+        profileData.lightningBottleDryStreak = profileData.allFishCaughtCount;
         profileData.rarityDryStreak.put(Constant.COMMON, profileData.allFishCaughtCount);
         profileData.rarityDryStreak.put(Constant.RARE, profileData.allFishCaughtCount);
         profileData.rarityDryStreak.put(Constant.EPIC, profileData.allFishCaughtCount);
@@ -212,7 +237,6 @@ public class ProfileDataHandler {
         profileData.variantDryStreak.put(Constant.MELANISTIC, profileData.allFishCaughtCount);
         profileData.variantDryStreak.put(Constant.TROPHY, profileData.allFishCaughtCount);
         profileData.variantDryStreak.put(Constant.FABLED, profileData.allFishCaughtCount);
-        ProfileDataHandler.instance().saveStats();
     }
 
     public static class ProfileData {
@@ -220,11 +244,12 @@ public class ProfileDataHandler {
         public int fishCaughtCount = 0;
         public float totalXP = 0.0f;
         public float totalValue = 0.0f;
-        public final Map<Constant, Integer> variantCounts = new HashMap<>();
-        public final Map<Constant, Integer> rarityCounts = new HashMap<>();
-        public final Map<Constant, Integer> fishSizeCounts = new HashMap<>();
+        public Map<Constant, Integer> variantCounts = new HashMap<>();
+        public Map<Constant, Integer> rarityCounts = new HashMap<>();
+        public Map<Constant, Integer> fishSizeCounts = new HashMap<>();
         public int petCaughtCount = 0;
         public int shardCaughtCount = 0;
+        public int lightningBottleCount = 0;
 
         // Current active timer stats
         public long activeTime = 0;
@@ -240,6 +265,7 @@ public class ProfileDataHandler {
         public Map<Constant, Integer> allFishSizeCounts = new HashMap<>();
         public int allPetCaughtCount = 0;
         public int allShardCaughtCount = 0;
+        public int allLightningBottleCount = 0;
 
         public int timerFishCaughtCount = 0;
 
@@ -250,6 +276,7 @@ public class ProfileDataHandler {
         // Dry streak count
         public int petDryStreak;
         public int shardDryStreak;
+        public int lightningBottleDryStreak;
         public Map<Constant, Integer> rarityDryStreak = new HashMap<>();
         public Map<Constant, Integer> variantDryStreak = new HashMap<>();
         public Map<Constant, Integer> fishSizeDryStreak = new HashMap<>();
@@ -263,5 +290,85 @@ public class ProfileDataHandler {
 
         // Stats Data
         public boolean isStatsInitialized = false;
+
+        public ProfileData() {
+        }
+
+        public ProfileData(ProfileData prevData) {
+            fishCaughtCount = prevData.fishCaughtCount;
+            totalXP = prevData.totalXP;
+            totalValue = prevData.totalValue;
+            variantCounts = new HashMap<>(prevData.variantCounts);
+            rarityCounts = new HashMap<>(prevData.rarityCounts);
+            fishSizeCounts = new HashMap<>(prevData.fishSizeCounts);
+            petCaughtCount = prevData.petCaughtCount;
+            shardCaughtCount = prevData.shardCaughtCount;
+            lightningBottleCount = prevData.lightningBottleCount;
+            activeTime = prevData.activeTime;
+            lastFishCaughtTime = prevData.lastFishCaughtTime;
+            timerPaused = prevData.timerPaused;
+            allFishCaughtCount = prevData.allFishCaughtCount;
+            allTotalXP = prevData.allTotalXP;
+            allTotalValue = prevData.allTotalValue;
+            allRarityCounts = new HashMap<>(prevData.allRarityCounts);
+            allVariantCounts = new HashMap<>(prevData.allVariantCounts);
+            allFishSizeCounts = new HashMap<>(prevData.allFishSizeCounts);
+            allPetCaughtCount = prevData.allPetCaughtCount;
+            allShardCaughtCount = prevData.allShardCaughtCount;
+            allLightningBottleCount = prevData.allLightningBottleCount;
+            timerFishCaughtCount = prevData.timerFishCaughtCount;
+            equippedPetSlot = prevData.equippedPetSlot;
+            equippedPet = prevData.equippedPet;
+            petDryStreak = prevData.petDryStreak;
+            shardDryStreak = prevData.shardDryStreak;
+            lightningBottleDryStreak = prevData.lightningBottleDryStreak;
+            rarityDryStreak = new HashMap<>(prevData.rarityDryStreak);
+            variantDryStreak = new HashMap<>(prevData.variantDryStreak);
+            fishSizeDryStreak = new HashMap<>(prevData.fishSizeDryStreak);
+            crewMembers = new ArrayList<>(prevData.crewMembers);
+            isInCrewChat = prevData.isInCrewChat;
+            activeQuests = new HashMap<>(prevData.activeQuests);
+            isStatsInitialized = prevData.isStatsInitialized;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(obj == this) {
+                return true;
+            }
+
+            return obj instanceof ProfileData oldProfileData
+                    && this.fishCaughtCount == oldProfileData.fishCaughtCount
+                    && this.totalXP == oldProfileData.totalXP
+                    && this.totalValue == oldProfileData.totalValue
+//                    && this.variantCounts.equals(oldProfileData.variantCounts)
+//                    && this.rarityCounts.equals(oldProfileData.rarityCounts)
+//                    && this.fishSizeCounts.equals(oldProfileData.fishSizeCounts)
+                    && this.petCaughtCount == oldProfileData.petCaughtCount
+                    && this.shardCaughtCount == oldProfileData.shardCaughtCount
+                    && this.lightningBottleCount == oldProfileData.lightningBottleCount
+                    && this.lastFishCaughtTime == oldProfileData.lastFishCaughtTime
+                    && this.timerPaused == oldProfileData.timerPaused
+                    && this.allFishCaughtCount == oldProfileData.allFishCaughtCount
+                    && this.allTotalXP == oldProfileData.allTotalXP
+                    && this.allTotalValue == oldProfileData.allTotalValue
+//                    && this.allRarityCounts.equals(oldProfileData.allRarityCounts)
+//                    && this.allVariantCounts.equals(oldProfileData.allVariantCounts)
+//                    && this.allFishSizeCounts.equals(oldProfileData.allFishSizeCounts)
+                    && this.allPetCaughtCount == oldProfileData.allPetCaughtCount
+                    && this.allShardCaughtCount == oldProfileData.allShardCaughtCount
+                    && this.allLightningBottleCount == oldProfileData.allLightningBottleCount
+                    && this.timerFishCaughtCount == oldProfileData.timerFishCaughtCount
+                    && this.equippedPetSlot == oldProfileData.equippedPetSlot
+                    && this.petDryStreak == oldProfileData.petDryStreak
+                    && this.shardDryStreak == oldProfileData.shardDryStreak
+                    && this.lightningBottleDryStreak == oldProfileData.lightningBottleDryStreak
+                    && this.rarityDryStreak.equals(oldProfileData.rarityDryStreak)
+                    && this.variantDryStreak.equals(oldProfileData.variantDryStreak)
+                    && this.fishSizeDryStreak.equals(oldProfileData.fishSizeDryStreak)
+                    && this.crewMembers.equals(oldProfileData.crewMembers)
+                    && this.isInCrewChat == oldProfileData.isInCrewChat
+                    && this.activeQuests.equals(oldProfileData.activeQuests);
+        }
     }
 }

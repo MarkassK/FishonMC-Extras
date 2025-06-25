@@ -121,11 +121,11 @@ public class TabHandler {
         }
     }
 
-    public Text getPlayer(UUID uuid) {
+    public String getPlayer(UUID uuid) {
         PlayerListHud playerListHud = MinecraftClient.getInstance().inGameHud.getPlayerListHud();
         if (MinecraftClient.getInstance().getNetworkHandler() != null) {
             PlayerListEntry playerListEntry = MinecraftClient.getInstance().getNetworkHandler().getPlayerListEntry(uuid);
-            return playerListEntry != null ? playerListHud.getPlayerName(playerListEntry) : null;
+            return playerListEntry != null ? playerListEntry.getProfile().getName() : null;
 
 
         }

@@ -99,7 +99,6 @@ public class FishCatchHandler  {
     }
 
     public void onLeaveServer() {
-        ProfileDataHandler.instance().saveStats();
         this.fishFound = false;
     }
 
@@ -143,6 +142,11 @@ public class FishCatchHandler  {
             ProfileDataHandler.instance().updateShardCaughtStatsOnCatch(1);
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
         }
+
+        if(text.getString().startsWith("RARE DROP! You pulled a") && text.getString().contains("Lightning in a Bottle")) {
+            ProfileDataHandler.instance().updateLightningBottleCaughtStatsOnCatch();
+            FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
+        }
     }
 
     private boolean isFish(char character) {
@@ -163,6 +167,7 @@ public class FishCatchHandler  {
             }
 
             ProfileDataHandler.instance().updateStatsOnCatch(fish);
+            ProfileDataHandler.instance().updateStatsOnCatch();
             QuestHandler.instance().updateQuest(fish);
             PetEquipHandler.instance().updatePet(minecraftClient.player);
 
