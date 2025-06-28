@@ -228,6 +228,7 @@ public class ProfileDataHandler {
         profileData.rarityDryStreak.put(Constant.EPIC, profileData.allFishCaughtCount);
         profileData.rarityDryStreak.put(Constant.LEGENDARY, profileData.allFishCaughtCount);
         profileData.rarityDryStreak.put(Constant.MYTHICAL, profileData.allFishCaughtCount);
+        profileData.rarityDryStreak.put(Constant.SPECIAL, profileData.allFishCaughtCount);
         profileData.fishSizeDryStreak.put(Constant.BABY, profileData.allFishCaughtCount);
         profileData.fishSizeDryStreak.put(Constant.JUVENILE, profileData.allFishCaughtCount);
         profileData.fishSizeDryStreak.put(Constant.ADULT, profileData.allFishCaughtCount);
