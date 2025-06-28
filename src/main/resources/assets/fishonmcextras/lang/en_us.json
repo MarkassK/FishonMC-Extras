@@ -282,5 +282,5 @@
   "text.autoconfig.fishonmcextras.option.fun.isFoeTagPrefix.@Tooltip": "§7If §cdisabled§7, it will show as a suffix in tab",
   "text.autoconfig.fishonmcextras.option.fun.hideArmor": "Toggle armor visibility",
   "text.autoconfig.fishonmcextras.option.fun.biteBobber": "Show bite notification on bobber instead",
-  "text.autoconfig.fishonmcextras.option.fun.biteBobber.@Tooltip": "This will §cdisable§7 the bite notification from the HUD"
+  "text.autoconfig.fishonmcextras.option.fun.biteBobber.@Tooltip": "§7This will §cdisable§7 the bite notification from the HUD"
 }
