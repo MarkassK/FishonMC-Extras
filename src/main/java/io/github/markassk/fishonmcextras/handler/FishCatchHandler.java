@@ -120,6 +120,7 @@ public class FishCatchHandler  {
                 || title.getString().contains(Constant.EPIC.TAG.getString())
                 || title.getString().contains(Constant.LEGENDARY.TAG.getString())
                 || title.getString().contains(Constant.MYTHICAL.TAG.getString())
+                || title.getString().contains(Constant.SPECIAL.TAG.getString())
         ) {
             this.subtitle = title;
         }
