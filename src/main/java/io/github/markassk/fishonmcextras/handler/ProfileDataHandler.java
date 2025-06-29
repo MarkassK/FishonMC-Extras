@@ -160,7 +160,12 @@ public class ProfileDataHandler {
                 Path statsDir = subDir.resolve("stats");
                 Files.createDirectories(statsDir);
                 Path filePath = statsDir.resolve(playerUUID.toString() + ".json");
-                if (!Files.exists(filePath)) return;
+                if (!Files.exists(filePath)) {
+                    Files.createFile(filePath);
+                    isDataLoaded = true;
+                    saveStats();
+                    return;
+                };
                 String json = Files.readString(filePath, StandardCharsets.UTF_8);
                 Gson gson = new GsonBuilder().create();
                 this.profileData = gson.fromJson(json, ProfileData.class);
