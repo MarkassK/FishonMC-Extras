@@ -217,15 +217,13 @@ public class InventoryScreenHandler {
                             Text.literal("Requires atleast ").formatted(Formatting.WHITE, Formatting.ITALIC),
                             Text.literal(Constant.MARINER.TAG.getString()).formatted(Formatting.WHITE)
                     )), minecraftClient));
-            clickableWidgets.add(assembleButton( buttonSize * 2, 0, Text.literal("\uF006"), "ah", Tooltip.of(
+            clickableWidgets.add(assembleButton( buttonSize * 2, 0, Text.literal("★").formatted(Formatting.YELLOW, Formatting.BOLD), "calibrator", Tooltip.of(
                     TextHelper.concat(
-                            Text.literal("Auction House\n").formatted(Formatting.BOLD, Formatting.WHITE),
-                            Text.literal("The Auction House is where you can buy and sell items to other players.").formatted(Formatting.GRAY, Formatting.ITALIC)
-                    )), minecraftClient));
-            clickableWidgets.add(assembleButton( buttonSize * 3, 0, Text.literal("\uF007"), "quest", Tooltip.of(
-                    TextHelper.concat(
-                            Text.literal("Quests\n").formatted(Formatting.BOLD, Formatting.WHITE),
-                            Text.literal("Quests are missions you activate per location that give rewards for catching fish based on size or rarity.").formatted(Formatting.GRAY, Formatting.ITALIC)
+                            Text.literal("Calibrator\n").formatted(Formatting.BOLD, Formatting.WHITE),
+                            Text.literal("Calibrate your rod parts with extra stats.").formatted(Formatting.GRAY, Formatting.ITALIC),
+                            Text.literal("\n"),
+                            Text.literal("Requires atleast ").formatted(Formatting.WHITE, Formatting.ITALIC),
+                            Text.literal(Constant.MARINER.TAG.getString()).formatted(Formatting.WHITE)
                     )), minecraftClient));
 
             if(BossBarHandler.instance().currentLocation == Constant.CREW_ISLAND) {
@@ -241,6 +239,16 @@ public class InventoryScreenHandler {
                                 Text.literal("The Instance Selector lets you change between instances.").formatted(Formatting.GRAY, Formatting.ITALIC)
                         )), minecraftClient));
             }
+            clickableWidgets.add(assembleButton( -buttonSize * 2, buttonSize, Text.literal("\uF006"), "ah", Tooltip.of(
+                    TextHelper.concat(
+                            Text.literal("Auction House\n").formatted(Formatting.BOLD, Formatting.WHITE),
+                            Text.literal("The Auction House is where you can buy and sell items to other players.").formatted(Formatting.GRAY, Formatting.ITALIC)
+                    )), minecraftClient));
+            clickableWidgets.add(assembleButton( -buttonSize * 1, buttonSize, Text.literal("\uF007"), "quest", Tooltip.of(
+                    TextHelper.concat(
+                            Text.literal("Quests\n").formatted(Formatting.BOLD, Formatting.WHITE),
+                            Text.literal("Quests are missions you activate per location that give rewards for catching fish based on size or rarity.").formatted(Formatting.GRAY, Formatting.ITALIC)
+                    )), minecraftClient));
             clickableWidgets.add(assembleButton( buttonSize * 0, buttonSize, Text.literal("\uF005"), "pv", Tooltip.of(
                     TextHelper.concat(
                             Text.literal("Personal Vault\n").formatted(Formatting.BOLD, Formatting.WHITE),

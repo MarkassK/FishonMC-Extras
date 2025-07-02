@@ -6,8 +6,10 @@ import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
+import me.enderkill98.proxlib.client.ProxLib;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
@@ -23,6 +25,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -52,8 +56,12 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::modifyGameMessage);
         ItemTooltipCallback.EVENT.register(this::onItemTooltipCallback);
         ScreenEvents.AFTER_INIT.register(this::afterScreenInit);
+        ClientEntityEvents.ENTITY_LOAD.register(this::onEntityLoad);
 
         HudRenderCallback.EVENT.register(MAIN_HUD_RENDERER);
+    }
+
+    private void onEntityLoad(Entity entity, ClientWorld clientWorld) {
     }
 
     private void onEndClientTick(MinecraftClient minecraftClient) {
@@ -177,6 +185,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             } else if (screen instanceof InventoryScreen) {
                 InventoryScreenHandler.instance().screenInit = true;
             } else if (screen instanceof ChatScreen || Objects.equals(screen.getTitle().getString(), "Chat screen")) {
+                ChatScreenHandler.instance().onOpenScreen();
                 ChatScreenHandler.instance().screenInit = true;
             }
         }
@@ -194,6 +203,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 CrewHandler.instance().crewMenuState = false;
                 CrewHandler.instance().onScreenClose();
             } else if(screen instanceof ChatScreen || Objects.equals(screen.getTitle().getString(), "")) {
+                ChatScreenHandler.instance().onRemoveScreen();
                 ChatScreenHandler.instance().screenInit = false;
             }
         }

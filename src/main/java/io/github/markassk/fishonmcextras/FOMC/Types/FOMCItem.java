@@ -94,4 +94,14 @@ public class FOMCItem {
         }
         return false;
     }
+
+    public static boolean[] isPet(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")) {
+                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.PET) ? new boolean[]{true, nbtCompound.contains("skin"), nbtCompound.contains("item"), nbtCompound.contains("trail")} : new boolean[]{false} ;
+            }
+        }
+        return new boolean[]{false};
+    }
 }

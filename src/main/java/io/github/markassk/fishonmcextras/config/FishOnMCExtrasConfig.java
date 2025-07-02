@@ -100,7 +100,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
 
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
-    public RarityMarkerConfig.RarityMarker rarityMarker = new RarityMarkerConfig.RarityMarker();
+    public ItemMarkerConfig.ItemMarker itemMarker = new ItemMarkerConfig.ItemMarker();
 
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject

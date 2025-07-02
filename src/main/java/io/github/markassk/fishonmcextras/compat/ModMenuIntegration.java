@@ -1,4 +1,4 @@
-package io.github.markassk.fishonmcextras.config;
+package io.github.markassk.fishonmcextras.compat;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

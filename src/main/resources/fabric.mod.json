@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "fishonmcextras",
-	"version": "0.2.3-hotfix.6",
+	"version": "2.4.0",
 	"name": "FishOnMC-Extras",
 	"description": "A QOL mod for play.fishonmc.net.",
 	"authors": [
@@ -28,7 +28,7 @@
 			"io.github.markassk.fishonmcextras.FishOnMCExtrasClient"
 		],
 		"modmenu": [
-			"io.github.markassk.fishonmcextras.config.ModMenuIntegration"
+			"io.github.markassk.fishonmcextras.compat.ModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -40,7 +40,8 @@
 		"java": ">=21",
 		"fabric-api": "*",
 		"cloth-config": ">=17.0.142",
-		"modmenu" : ">=13.0.0"
+		"modmenu" : ">=13.0.0",
+		"proxlib": ">=0.2.0"
 	},
 	"conflicts": {
 		"iceberg": "*"

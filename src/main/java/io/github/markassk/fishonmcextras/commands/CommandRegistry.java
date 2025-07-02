@@ -16,6 +16,8 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import java.util.UUID;
+
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 
 public class CommandRegistry {

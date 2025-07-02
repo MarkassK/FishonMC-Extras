@@ -3,6 +3,7 @@ package io.github.markassk.fishonmcextras.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
+import io.github.markassk.fishonmcextras.FOMC.Constant;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
@@ -104,5 +105,14 @@ public class TextHelper {
             return BigDecimal.valueOf(input).setScale(precision, RoundingMode.HALF_UP).floatValue();
         }
         return input;
+    }
+
+    public static String replaceToFoE(String text) {
+        if(text.contains(Constant.ANGLER.TAG.getString())) text = text.replace(Constant.ANGLER.TAG.getString(), Constant.FOE.TAG.getString());
+        if(text.contains(Constant.SAILOR.TAG.getString())) text = text.replace(Constant.SAILOR.TAG.getString(), Constant.FOE.TAG.getString());
+        if(text.contains(Constant.MARINER.TAG.getString())) text = text.replace(Constant.MARINER.TAG.getString(), Constant.FOE.TAG.getString());
+        if(text.contains(Constant.CAPTAIN.TAG.getString())) text = text.replace(Constant.CAPTAIN.TAG.getString(), Constant.FOE.TAG.getString());
+        if(text.contains(Constant.ADMIRAL.TAG.getString())) text = text.replace(Constant.ADMIRAL.TAG.getString(), Constant.FOE.TAG.getString());
+        return text;
     }
 }

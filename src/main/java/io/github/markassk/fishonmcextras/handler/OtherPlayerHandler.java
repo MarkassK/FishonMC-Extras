@@ -2,6 +2,7 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Types.*;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.util.TextHelper;
 import io.github.markassk.fishonmcextras.util.VectorHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -40,6 +41,7 @@ public class OtherPlayerHandler {
     private BlockState previousBlockState = Blocks.AIR.getDefaultState();
     // First Double is Index, Second Double is Distance, Third Double is Angle
     private final Map<DisplayEntity, List<Double>> displayEntityList = new HashMap<>();
+    private List<Integer> hiddenNamePlates = new ArrayList<>();
 
     private final double DISTANCE = 1.5;
     private final double verticalOffset = 1.2;
@@ -217,5 +219,44 @@ public class OtherPlayerHandler {
 
     private void spawnItemDisplay(MinecraftClient minecraftClient, ItemStack itemStack, Vec3d position, double angle, double index, double distance) {
         spawnItemDisplay(minecraftClient, itemStack, position, angle, index, distance, 1.0f, ModelTransformationMode.GROUND);
+    }
+
+    public void tickEntities(Entity entity, MinecraftClient minecraftClient) {
+        if(
+                minecraftClient.options.hudHidden
+                && entity instanceof DisplayEntity.TextDisplayEntity textDisplayEntity
+                && textDisplayEntity.getText().getString().contains("\uF064")
+        ) {
+            textDisplayEntity.setTextOpacity((byte) 24);
+
+            if(!hiddenNamePlates.contains(entity.getId())) {
+                hiddenNamePlates.add(entity.getId());
+            }
+            
+        } else if(!minecraftClient.options.hudHidden
+                && !hiddenNamePlates.isEmpty()
+                && minecraftClient.world != null) {
+            hiddenNamePlates.forEach(id -> {
+                Entity namePlate = minecraftClient.world.getEntityById(id);
+                if(namePlate != null) {
+                    ((DisplayEntity.TextDisplayEntity) namePlate).setTextOpacity((byte) -1);
+                }
+            });
+            hiddenNamePlates.clear();
+        }
+
+        // Nameplate FoE
+        if(entity instanceof DisplayEntity.TextDisplayEntity textDisplayEntity
+                && textDisplayEntity.getText().getString().contains("\uF064")
+                && Defaults.foeDevs.values().stream().anyMatch(textDisplayEntity.getText().getString()::contains)
+        ) {
+            String jsonText = TextHelper.textToJson(textDisplayEntity.getText());
+            if(config.fun.isFoeTagPrefix) {
+                jsonText = TextHelper.replaceToFoE(jsonText);
+            } else {
+                jsonText = jsonText.replace("\uF028", "\uF028 \uE00B");
+            }
+            textDisplayEntity.setText(TextHelper.jsonToText(jsonText));
+        }
     }
 }

@@ -8,6 +8,7 @@ import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.io.IOException;
@@ -134,7 +135,7 @@ public class ProfileDataHandler {
      */
     public void saveStats() {
         try {
-            if (playerUUID != null) {
+            if (playerUUID != null && MinecraftClient.getInstance().player != null && Objects.equals(playerUUID, MinecraftClient.getInstance().player.getUuid())) {
                 Path configDir = FabricLoader.getInstance().getConfigDir();
                 Path subDir = configDir.resolve("foe");
                 Path statsDir = subDir.resolve("stats");

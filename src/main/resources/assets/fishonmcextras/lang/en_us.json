@@ -226,10 +226,10 @@
   "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled": "Enable Discord Rich Presence",
   "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this option",
 
-  "text.autoconfig.fishonmcextras.option.rarityMarker": "§f§lRarity Marker Options",
-  "text.autoconfig.fishonmcextras.option.rarityMarker.showRarityMarker": "Show Rarity Marker",
-  "text.autoconfig.fishonmcextras.option.rarityMarker.showFishRarityMarker": "Show Rarity Marker on fishes",
-  "text.autoconfig.fishonmcextras.option.rarityMarker.showOtherRarityMarker": "Show Rarity Marker on other items",
+  "text.autoconfig.fishonmcextras.option.itemMarker": "§f§lItem Marker Options",
+  "text.autoconfig.fishonmcextras.option.itemMarker.showItemMarker": "Show Item Marker",
+  "text.autoconfig.fishonmcextras.option.itemMarker.showFishRarityMarker": "Show Rarity Marker on fishes",
+  "text.autoconfig.fishonmcextras.option.itemMarker.showOtherRarityMarker": "Show Rarity Marker on other items",
 
   "text.autoconfig.fishonmcextras.option.hoverOverPlayerStats": "§f§lHover over Player Options",
   "text.autoconfig.fishonmcextras.option.hoverOverPlayerStats.showPlayerEquipment": "Show equipment on players when sneaking",
