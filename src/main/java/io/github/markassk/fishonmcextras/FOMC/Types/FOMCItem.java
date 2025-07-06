@@ -33,6 +33,7 @@ public class FOMCItem {
                     case Defaults.ItemTypes.POLE -> Pole.getPole(itemStack, Defaults.ItemTypes.POLE);
                     case Defaults.ItemTypes.REEL -> Reel.getReel(itemStack, Defaults.ItemTypes.REEL);
                     case Defaults.ItemTypes.CRAFTINGCOMPONENT -> CraftingComponent.getCraftingComponent(itemStack, Defaults.ItemTypes.CRAFTINGCOMPONENT);
+                    case Defaults.ItemTypes.BAITPACKAGE -> BaitPackage.getBaitPackage(itemStack, Defaults.ItemTypes.BAITPACKAGE);
                     default -> null;
                 };
                 // Fish
@@ -59,7 +60,7 @@ public class FOMCItem {
                 return switch (nbtCompound.getString("type")) {
                     case Defaults.ItemTypes.PET, Defaults.ItemTypes.REEL, Defaults.ItemTypes.POLE,
                          Defaults.ItemTypes.LINE, Defaults.ItemTypes.LURE, Defaults.ItemTypes.BAIT,
-                         Defaults.ItemTypes.ARMOR, Defaults.ItemTypes.SHARD, Defaults.ItemTypes.CRAFTINGCOMPONENT-> true;
+                         Defaults.ItemTypes.ARMOR, Defaults.ItemTypes.SHARD, Defaults.ItemTypes.CRAFTINGCOMPONENT, Defaults.ItemTypes.BAITPACKAGE -> true;
                     default -> false;
                 };
                 // Fish
@@ -99,9 +100,19 @@ public class FOMCItem {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")) {
-                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.PET) ? new boolean[]{true, nbtCompound.contains("skin"), nbtCompound.contains("item"), nbtCompound.contains("trail")} : new boolean[]{false} ;
+                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.PET) ? new boolean[]{true, nbtCompound.contains("skin"), nbtCompound.contains("item"), nbtCompound.contains("trail")} : new boolean[]{false};
             }
         }
         return new boolean[]{false};
+    }
+
+    public static boolean isArmor(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")) {
+                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.ARMOR);
+            }
+        }
+        return false;
     }
 }

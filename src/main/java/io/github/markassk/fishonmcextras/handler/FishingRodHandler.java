@@ -77,6 +77,9 @@ public class FishingRodHandler {
                     this.isWrongBait = bait.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
                 } else if (this.fishingRod.tacklebox.getFirst() instanceof Lure lure && lure.water != Constant.ANY_WATER) {
                     this.isWrongLure = lure.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
+                } else {
+                    this.isWrongBait = false;
+                    this.isWrongLure = false;
                 }
             } else {
                 this.isWrongBait = false;

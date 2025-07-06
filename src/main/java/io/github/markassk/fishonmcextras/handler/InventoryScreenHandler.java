@@ -97,7 +97,7 @@ public class InventoryScreenHandler {
 
     private void resetButtons(MinecraftClient minecraftClient) {
         if (minecraftClient.currentScreen != null) {
-            Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget instanceof ContainerButtonWidget || clickableWidget instanceof ContainerButtonsWidget || clickableWidget instanceof ContainerCrewWidget || clickableWidget instanceof TextWidget);
+            Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget instanceof ContainerButtonWidget || clickableWidget instanceof ContainerButtonsWidget || clickableWidget instanceof ContainerCrewWidget || clickableWidget instanceof TextWidget || clickableWidget instanceof ContainerHeaderWidget);
         }
         this.createButtonMenu(minecraftClient);
         this.createCrewMenu(minecraftClient);

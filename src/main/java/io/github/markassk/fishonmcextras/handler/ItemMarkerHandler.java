@@ -1,14 +1,18 @@
 package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.FOMC.Types.Armor;
 import io.github.markassk.fishonmcextras.FOMC.Types.FOMCItem;
 import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
+import io.github.markassk.fishonmcextras.FOMC.Types.Pet;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.util.ItemStackHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -38,6 +42,7 @@ public class ItemMarkerHandler {
     }
 
     public void renderItemMarker(DrawContext drawContext, ItemStack itemStack, int x, int y) {
+        // Show Rarity Marker
         Constant rarity = FOMCItem.getRarity(itemStack);
         if(FOMCItem.isFish(itemStack)
                 && rarity != Constant.DEFAULT
@@ -64,6 +69,7 @@ public class ItemMarkerHandler {
             }
         }
 
+        // Show Rarity Marker
         if(config.itemMarker.showOtherRarityMarker
                 && rarity != Constant.DEFAULT
         ) {
@@ -77,6 +83,7 @@ public class ItemMarkerHandler {
             }
         }
 
+        // Show Pet Item Marker
         boolean[] pet = FOMCItem.isPet(itemStack);
         if(pet[0] && (pet[1] || pet[2] || pet[3])) {
             int alpha =  ((int) 255f << 24);
@@ -89,6 +96,7 @@ public class ItemMarkerHandler {
             }
         }
 
+        // Show Selected Pet
         if(MinecraftClient.getInstance().player != null
                 && ProfileDataHandler.instance().profileData.equippedPet != null
                 && itemStack.equals(MinecraftClient.getInstance().player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot))) {
@@ -101,19 +109,57 @@ public class ItemMarkerHandler {
                 drawContext.getMatrices().pop();
             }
         }
+
+        // Show search item
+        if(FOMCItem.isFOMCItem(itemStack)
+                && !SearchBarContainerHandler.instance().searchString.isBlank()
+        ) {
+            boolean isMatch = false;
+
+            if(SearchBarContainerHandler.instance().searchFilter != null && SearchBarContainerHandler.instance().operator != null) {
+                if (SearchBarContainerHandler.instance().searchValue != null) {
+                    if(FOMCItem.isPet(itemStack)[0]) {
+                        isMatch = SearchBarContainerHandler.checkItem(Pet.getPet(itemStack), SearchBarContainerHandler.instance().searchFilter, SearchBarContainerHandler.instance().operator, SearchBarContainerHandler.instance().searchValue);
+                    } else if (FOMCItem.isArmor(itemStack)) {
+                        isMatch = SearchBarContainerHandler.checkItem(Armor.getArmor(itemStack), SearchBarContainerHandler.instance().searchFilter, SearchBarContainerHandler.instance().operator, SearchBarContainerHandler.instance().searchValue);
+                    }
+                }
+            } else {
+                NbtCompound data = ItemStackHelper.getNbt(itemStack);
+                if(data != null
+                        && (data.toString().toLowerCase().contains(SearchBarContainerHandler.instance().searchString.toLowerCase())
+                        || itemStack.getName().getString().toLowerCase().contains(SearchBarContainerHandler.instance().searchString.toLowerCase()))
+                ) {
+                    isMatch = true;
+                }
+            }
+
+            if(isMatch) {
+                int alphaInt = (int) (0.6f * 255f) << 24;
+
+                drawContext.getMatrices().push();
+                try {
+                    drawContext.getMatrices().translate(0, 0, 100);
+                    drawContext.fill(x, y, x + 16, y + 16,  alphaInt | config.itemMarker.searchHighlightColor);
+                } finally {
+                    drawContext.getMatrices().pop();
+                }
+            }
+        }
     }
 
     public void renderHotBarSelectedPet(DrawContext drawContext, int x, int y, ItemStack itemStack) {
-        if(MinecraftClient.getInstance().player != null
+        if(config.itemMarker.showSelectedPetHighlight
+                && MinecraftClient.getInstance().player != null
                 && !itemStack.isEmpty()
                 && ProfileDataHandler.instance().profileData.equippedPet != null
                 && itemStack.equals(MinecraftClient.getInstance().player.getInventory().getStack(ProfileDataHandler.instance().profileData.equippedPetSlot))
         ) {
-            int alpha =  ((int) 175f << 24);
+            int alpha =  ((int) (0.6f * 255f) << 24);
             drawContext.getMatrices().push();
             try {
                 drawContext.getMatrices().translate(0, 0, 100);
-                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, selectedSlotMarker, x, y, 16, 16, alpha | 0xFFAA00);
+                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, selectedSlotMarker, x, y, 16, 16, alpha | config.itemMarker.selectedPetHighlightColor);
             } finally {
                 drawContext.getMatrices().pop();
             }

@@ -253,8 +253,6 @@ public class OtherPlayerHandler {
             String jsonText = TextHelper.textToJson(textDisplayEntity.getText());
             if(config.fun.isFoeTagPrefix) {
                 jsonText = TextHelper.replaceToFoE(jsonText);
-            } else {
-                jsonText = jsonText.replace("\uF028", "\uF028 \uE00B");
             }
             textDisplayEntity.setText(TextHelper.jsonToText(jsonText));
         }

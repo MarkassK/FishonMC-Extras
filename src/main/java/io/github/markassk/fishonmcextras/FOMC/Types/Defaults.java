@@ -22,6 +22,7 @@ public class Defaults {
         public static final String REEL = "reel";
         public static final String FISHINGROD = "fishing_rod";
         public static final String CRAFTINGCOMPONENT = "craftingComponent";
+        public static final String BAITPACKAGE = "package";
     }
 
     public static final Map<String, String> foeDevs = Map.of(

@@ -2,7 +2,9 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FOMC.Types.Defaults;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.handler.packet.PacketHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 public class ChatScreenHandler {
@@ -38,10 +40,14 @@ public class ChatScreenHandler {
     }
 
     public void onOpenScreen() {
-
+        if(MinecraftClient.getInstance().player != null) {
+            PacketHandler.TYPING_PACKET.sendStartTypingPacket(MinecraftClient.getInstance().player.getUuid());
+        }
     }
 
     public void onRemoveScreen() {
-
+        if(MinecraftClient.getInstance().player != null) {
+            PacketHandler.TYPING_PACKET.sendStopTypingPacket(MinecraftClient.getInstance().player.getUuid());
+        }
     }
 }

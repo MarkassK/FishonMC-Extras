@@ -109,6 +109,10 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public PetFollowerConfig.PetFollower petFollower = new PetFollowerConfig.PetFollower();
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public PlayerStatusConfig.PlayerStatus playerStatus = new PlayerStatusConfig.PlayerStatus();
     //endregion
 
     //region Cosmetic

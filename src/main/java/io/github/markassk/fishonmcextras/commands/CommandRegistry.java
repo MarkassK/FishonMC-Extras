@@ -1,6 +1,8 @@
 package io.github.markassk.fishonmcextras.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import io.github.markassk.fishonmcextras.commands.argument.PlayerArgumentType;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.CrewHandler;
@@ -16,169 +18,146 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.util.UUID;
+import java.util.List;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 
 public class CommandRegistry {
-    public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher) {
-        dispatcher.register(ClientCommandManager.literal("foe")
-                .then(ClientCommandManager.literal("resetsession")
-                        .executes(context -> {
-                            ProfileDataHandler.instance().resetStats();
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Session Fish Tracker reset")
-                                    )
-                            );
-                            return 1;
-                        })
-                )
-                .then(ClientCommandManager.literal("resetdrystreak")
-                        .executes(context -> {
-                            ProfileDataHandler.instance().resetDryStreak();
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Dry-streak reset")
-                                    )
-                            );
-                            return 1;
-                        })
-                )
-                .then(ClientCommandManager.literal("reload")
-                        .executes(context -> {
-                            ProfileDataHandler.instance().loadStats();
-                            AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).load();
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Config/Stats Reloaded")
-                                    )
-                            );
-                            return 1;
-                        })
-                )
-                .then(ClientCommandManager.literal("config")
-                        .executes(context -> {
-                            MinecraftClient.getInstance().setScreen(AutoConfig.getConfigScreen(FishOnMCExtrasConfig.class, MinecraftClient.getInstance().currentScreen).get());
-                            return 1;
-                        })
-                ).then(ClientCommandManager.literal("nocrew")
-                        .executes(context -> {
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Set to No Crew")
-                                    )
-                            );
-                            CrewHandler.instance().setNoCrew();
-                            return 1;
-                        })
-                ).then(ClientCommandManager.literal("resettimer")
-                        .executes(context -> {
-                            ProfileDataHandler.instance().resetTimer();
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Fish Timer reset")
-                                    )
-                            );
-                            return 1;
-                        })
-                ).then(ClientCommandManager.literal("cancelimport")
-                        .executes(context -> {
-                            if(!ProfileDataHandler.instance().profileData.isStatsInitialized) {
-                                ProfileDataHandler.instance().profileData.isStatsInitialized = true;
-                                TextHelper.concat(
-                                        Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                        Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                        Text.literal("Removed import notification")
-                                );
-
-                            }
-                            return 1;
-                        })
-                ).then(ClientCommandManager.literal("highlightuser")
-                        .then(argument("username", PlayerArgumentType.getPlayerArgumentType())
-                                .executes(context -> {
-                                    PlayerListEntry playerListEntry = PlayerArgumentType.getPlayer(context, "username");
-                                    if (playerListEntry != null) {
-                                        OtherPlayerHandler.instance().highlightedPlayer = playerListEntry;
-                                        OtherPlayerHandler.instance().highlightStartTime = System.currentTimeMillis();
-                                        context.getSource().sendFeedback(
-                                                TextHelper.concat(
-                                                        Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                                        Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                                        Text.literal("Highlighted "),
-                                                        playerListEntry.getDisplayName(),
-                                                        Text.literal(" for 5 minutes")
-                                                )
-                                        );
-                                    } else {
-                                        context.getSource().sendError(
-                                                TextHelper.concat(
-                                                        Text.literal("FoE ").formatted(Formatting.RED, Formatting.BOLD),
-                                                        Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                                        Text.literal("Could not find Player")
-                                                )
-                                        );
-                                    }
-                                    return 1;
-                                })
-                        )
-                ).then(ClientCommandManager.literal("stophighlight")
-                        .executes(context -> {
-                            OtherPlayerHandler.instance().isHighlighted = false;
-                            OtherPlayerHandler.instance().highlightedPlayer = null;
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Stopping Highlight")
-                                    )
-                            );
-                            return 1;
-                        })
-                ).then(ClientCommandManager.literal("immersionmode")
-                        .executes(context -> {
-                            FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-                            config.fun.immersionMode = !config.fun.immersionMode;
-                            AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Immersion Mode Toggled")
-                                    )
-                            );
-                            return 1;
-                        })
-                ).then(ClientCommandManager.literal("armorvisibility")
-                        .executes(context -> {
-                            FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-                            config.fun.hideArmor = !config.fun.hideArmor;
-                            AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
-                            context.getSource().sendFeedback(
-                                    TextHelper.concat(
-                                            Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
-                                            Text.literal("» ").formatted(Formatting.DARK_GRAY),
-                                            Text.literal("Armor Visibility Toggled")
-                                    )
-                            );
-                            return 1;
-                        })
-                )
-        );
-    }
-
     public static void initialize() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> registerCommands(dispatcher));
     }
+
+    public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher) {
+        dispatcher.register(command("foe")
+                .then(command("config").executes(Command::config)
+                .then(command("resetsession").executes(Command::resetSession))
+                .then(command("resetdrystreak").executes(Command::resetDryStreak))
+                .then(command("reload").executes(Command::reload)))
+                .then(command("nocrew").executes(Command::noCrew))
+                .then(command("resettimer").executes(Command::resetTimer))
+                .then(command("cancelimport").executes(Command::cancelImport))
+                .then(command("highlightuser").then(argument("username", PlayerArgumentType.getPlayerArgumentType()).executes(Command::highlightUser)))
+                .then(command("stophighlight").executes(Command::stopHighlight))
+                .then(command("immersionmode").executes(Command::immersionMode))
+                .then(command("armorvisibility").executes(Command::armorVisibility))
+        );
+    }
+
+    private static class Command {
+        private static int config(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(() -> {
+                MinecraftClient.getInstance().setScreen(AutoConfig.getConfigScreen(FishOnMCExtrasConfig.class, MinecraftClient.getInstance().currentScreen).get());
+            });
+        }
+
+        private static int resetSession(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Session Fish Tracker reset", () -> ProfileDataHandler.instance().resetStats());
+        }
+
+        private static int resetDryStreak(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Dry-streak reset", () -> ProfileDataHandler.instance().resetDryStreak());
+        }
+
+        private static int reload(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Config/Stats Reloaded", () -> {
+                ProfileDataHandler.instance().loadStats();
+                AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).load();
+            });
+        }
+
+        private static int noCrew(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Set to No Crew", () -> CrewHandler.instance().setNoCrew());
+        }
+
+        private static int resetTimer(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Fish Timer reset", () -> ProfileDataHandler.instance().resetTimer());
+        }
+
+        private static int cancelImport(CommandContext<FabricClientCommandSource> context) {
+            if(!ProfileDataHandler.instance().profileData.isStatsInitialized) {
+                ProfileDataHandler.instance().profileData.isStatsInitialized = true;
+                return sendFeedback(context, Text.literal("Removed import notification"));
+            }
+            return 1;
+        }
+
+        private static int highlightUser(CommandContext<FabricClientCommandSource> context) {
+            PlayerListEntry playerListEntry = PlayerArgumentType.getPlayer(context, "username");
+            if (playerListEntry != null && playerListEntry.getDisplayName() != null) {
+                return executeCommand(context, List.of(
+                        Text.literal("Highlighted "),
+                        playerListEntry.getDisplayName(),
+                        Text.literal(" for 5 minutes")
+                ), () -> {
+                    OtherPlayerHandler.instance().highlightedPlayer = playerListEntry;
+                    OtherPlayerHandler.instance().highlightStartTime = System.currentTimeMillis();
+                });
+            }
+            return sendFeedback(context, Text.literal("Could not find Player"));
+        }
+
+        private static int stopHighlight(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Stopping Highlight", () -> {
+                OtherPlayerHandler.instance().isHighlighted = false;
+                OtherPlayerHandler.instance().highlightedPlayer = null;
+            });
+        }
+
+        private static int immersionMode(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Immersion Mode Toggled", () -> {
+                FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+                config.fun.immersionMode = !config.fun.immersionMode;
+                AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+            });
+        }
+
+        private static int armorVisibility(CommandContext<FabricClientCommandSource> context) {
+            return executeCommand(context, "Armor Visibility Toggled", () -> {
+                FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
+                config.fun.hideArmor = !config.fun.hideArmor;
+                AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+            });
+        }
+    }
+
+
+    //region Command Builder
+    private static LiteralArgumentBuilder<FabricClientCommandSource> command(String command) {
+        return ClientCommandManager.literal(command);
+    }
+
+    private static int executeCommand(CommandContext<FabricClientCommandSource> context, List<Text> feedback, ExecuteCallback executeCallback) {
+        return executeCommand(context, TextHelper.concat(feedback.toArray(new Text[]{})), executeCallback);
+    }
+
+    private static int executeCommand(CommandContext<FabricClientCommandSource> context, String feedback, ExecuteCallback executeCallback) {
+        return executeCommand(context, Text.literal(feedback), executeCallback);
+    }
+
+    private static int executeCommand(ExecuteCallback executeCallback) {
+        executeCallback.execute();
+        return 1;
+    }
+
+    private static int executeCommand(CommandContext<FabricClientCommandSource> context, Text feedback, ExecuteCallback executeCallback) {
+        executeCallback.execute();
+        return sendFeedback(context, feedback);
+    }
+
+    private static int sendFeedback(CommandContext<FabricClientCommandSource> context, Text feedback) {
+        context.getSource().sendFeedback(
+                TextHelper.concat(
+                        Text.literal("FoE ").formatted(Formatting.DARK_GREEN, Formatting.BOLD),
+                        Text.literal("» ").formatted(Formatting.DARK_GRAY),
+                        feedback
+                )
+
+        );
+        return 1;
+    }
+
+    private interface ExecuteCallback {
+        void execute();
+    }
+    //endregion
 }

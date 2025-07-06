@@ -2,6 +2,7 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.util.ItemStackHelper;
 import io.github.markassk.fishonmcextras.util.TextHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -31,7 +32,7 @@ public class AuctionHandler {
                         float money = renderInfo.getFloat("money");
                         float moneyPerItem = money / itemStack.getCount();
 
-                        textList.set(textList.size() - 5, TextHelper.concat(textList.get(textList.size() - 5), Text.literal(" ($" + TextHelper.fmnt(moneyPerItem) + " per item)").formatted(Formatting.DARK_GREEN)));
+                        textList.set(textList.size() - (MinecraftClient.getInstance().options.advancedItemTooltips ? 7 : 5), TextHelper.concat(textList.get(textList.size() - (MinecraftClient.getInstance().options.advancedItemTooltips ? 7 : 5)), Text.literal(" ($" + TextHelper.fmnt(moneyPerItem) + " per item)").formatted(Formatting.DARK_GREEN)));
                     }
                 }
             }
