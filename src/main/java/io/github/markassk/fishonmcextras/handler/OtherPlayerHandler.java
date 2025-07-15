@@ -248,7 +248,7 @@ public class OtherPlayerHandler {
         // Nameplate FoE
         if(entity instanceof DisplayEntity.TextDisplayEntity textDisplayEntity
                 && textDisplayEntity.getText().getString().contains("\uF064")
-                && Defaults.foeDevs.values().stream().anyMatch(textDisplayEntity.getText().getString()::contains)
+                && Defaults.foeDevs.values().stream().anyMatch(foEDevType -> textDisplayEntity.getText().getString().contains(foEDevType.name))
         ) {
             String jsonText = TextHelper.textToJson(textDisplayEntity.getText());
             if(config.fun.isFoeTagPrefix) {

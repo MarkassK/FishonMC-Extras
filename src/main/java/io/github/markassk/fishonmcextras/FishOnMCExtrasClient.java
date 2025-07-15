@@ -4,6 +4,7 @@ import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
 import io.github.markassk.fishonmcextras.handler.packet.PacketHandler;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
+import io.github.markassk.fishonmcextras.screens.main.FoETitleScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
@@ -23,6 +24,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -57,6 +59,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ClientReceiveMessageEvents.GAME.register(this::receiveGameMessage);
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::modifyGameMessage);
         ItemTooltipCallback.EVENT.register(this::onItemTooltipCallback);
+        ScreenEvents.BEFORE_INIT.register(this::beforeScreenInit);
         ScreenEvents.AFTER_INIT.register(this::afterScreenInit);
         ClientEntityEvents.ENTITY_LOAD.register(this::onEntityLoad);
 
@@ -98,6 +101,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     HiderHandler.instance().tick(minecraftClient);
                     OwnPlayerHandler.instance().tick(minecraftClient);
                     PlayerStatusHandler.instance().tick(minecraftClient);
+                    TimerHandler.instance().tick();
                 }
             }
         }
@@ -139,6 +143,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             FishCatchHandler.instance().onReceiveMessage(text);
             StaffHandler.instance().onReceiveMessage(text);
             PlayerStatusHandler.instance().onReceiveMessage(text);
+            TimerHandler.instance().onReceiveMessage(text);
         }
     }
 
@@ -196,6 +201,9 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             } else if (screen.getTitle().getString().contains("Personal Vault ")) {
                 PersonalVaultScreenHandler.instance().page = Integer.parseInt(screen.getTitle().getString().substring(screen.getTitle().getString().length() - 1));
                 PersonalVaultScreenHandler.instance().personalVaultMenuState = true;
+            } else if (Objects.equals(screen.getTitle().getString(), "Tackle Shop\uEEE7\uEEE3합")) {
+                // Tackle Shop
+                AuctionHandler.instance().tackleShopMenuState = true;
             }
 
             if((screen.getTitle().getString().isBlank() || screen.getTitle().getString().contains("Personal Vault ")) && screen instanceof GenericContainerScreen) {
@@ -212,6 +220,13 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ScreenEvents.remove(screen).register(this::onRemoveScreen);
     }
 
+    private void beforeScreenInit(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
+        if(CONFIG.fun.useCustomTitleScreen
+                && screen instanceof TitleScreen) {
+            minecraftClient.setScreen(new FoETitleScreen());
+        }
+    }
+
     private void onRemoveScreen(Screen screen) {
         if(LoadingHandler.instance().isOnServer) {
             if (Objects.equals(screen.getTitle().getString(), "\uEEE4픹")) {
@@ -225,6 +240,9 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             } else if(screen instanceof ChatScreen || Objects.equals(screen.getTitle().getString(), "")) {
                 ChatScreenHandler.instance().onRemoveScreen();
                 ChatScreenHandler.instance().screenInit = false;
+            } else if (Objects.equals(screen.getTitle().getString(), "Tackle Shop\uEEE7\uEEE3합")) {
+                // Tackle Shop
+                AuctionHandler.instance().tackleShopMenuState = false;
             }
 
             if ((screen.getTitle().getString().isBlank() || screen.getTitle().getString().contains("Personal Vault ")) && screen instanceof GenericContainerScreen) {

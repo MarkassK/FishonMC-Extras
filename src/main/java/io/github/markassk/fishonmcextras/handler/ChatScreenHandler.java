@@ -24,7 +24,7 @@ public class ChatScreenHandler {
         String textString = text.getString();
         if(textString.startsWith("!")
                 && textString.contains("»")
-                && Defaults.foeDevs.values().stream().anyMatch(textString::contains)
+                && Defaults.foeDevs.values().stream().anyMatch(foEDevType -> textString.contains(foEDevType.text))
         ) {
             String jsonText = TextHelper.textToJson(text);
             if(config.fun.isFoeTagPrefix) {

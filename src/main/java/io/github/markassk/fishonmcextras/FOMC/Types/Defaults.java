@@ -1,10 +1,8 @@
 package io.github.markassk.fishonmcextras.FOMC.Types;
 
-import me.enderkill98.proxlib.ProxPacketIdentifier;
+import io.github.markassk.fishonmcextras.FOMC.Constant;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class Defaults {
     public static final String EMPTY_STRING = "";
@@ -25,7 +23,17 @@ public class Defaults {
         public static final String BAITPACKAGE = "package";
     }
 
-    public static final Map<String, String> foeDevs = Map.of(
-            "b5a9bbb7-42b4-4a6a-9ebe-bdf6697c8ee0", "DannyPX"
+    public static final Map<String, FoEDevType> foeDevs = Map.of(
+            "b5a9bbb7-42b4-4a6a-9ebe-bdf6697c8ee0",  new FoEDevType(Constant.ADMIRAL.TAG.getString() + " DannyPX", "DannyPX")
     );
+
+    public static class FoEDevType {
+        public String text;
+        public String name;
+
+        public FoEDevType(String text, String name) {
+            this.text = text;
+            this.name = name;
+        }
+    }
 }

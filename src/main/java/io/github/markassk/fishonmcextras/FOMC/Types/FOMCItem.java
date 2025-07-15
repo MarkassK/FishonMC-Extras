@@ -115,4 +115,24 @@ public class FOMCItem {
         }
         return false;
     }
+
+    public static boolean isLure(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")) {
+                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.LURE);
+            }
+        }
+        return false;
+    }
+
+    public static boolean isBait(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if (nbtCompound != null && nbtCompound.contains("type")) {
+                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.BAIT);
+            }
+        }
+        return false;
+    }
 }

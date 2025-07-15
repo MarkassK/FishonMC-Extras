@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.handler.packet;
 
-import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.PlayerStatusHandler;
 import me.enderkill98.proxlib.ProxPacketIdentifier;
@@ -55,7 +54,6 @@ public class TypingPacket {
                     PacketHandler.PacketType type = PacketHandler.getPacketType(dataIn.readUnsignedByte());
                     if(type == PacketHandler.PacketType.STRING) {
                         UUID uuid = UUID.fromString(dataIn.readUTF());
-                        System.out.println("Packet Start received from " + uuid);
 
                         if(!PlayerStatusHandler.instance().typingPlayers.containsKey(uuid)) {
                             PlayerStatusHandler.instance().typingPlayers.put(uuid, null);
@@ -78,7 +76,6 @@ public class TypingPacket {
                     PacketHandler.PacketType type = PacketHandler.getPacketType(dataIn.readUnsignedByte());
                     if(type == PacketHandler.PacketType.STRING) {
                         UUID uuid = UUID.fromString(dataIn.readUTF());
-                        System.out.println("Packet Stop received from " + uuid);
 
                         if (MinecraftClient.getInstance().world != null) {
                             if (PlayerStatusHandler.instance().typingPlayers.get(uuid) != null) {

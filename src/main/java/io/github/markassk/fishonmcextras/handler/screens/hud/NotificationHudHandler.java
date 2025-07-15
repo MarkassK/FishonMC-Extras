@@ -194,7 +194,8 @@ public class NotificationHudHandler {
                 ));
             }
 
-            if(BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
+            if(config.weatherTracker.showAlertHUD
+                    && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
                     && System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime <= config.weatherTracker.alertDismissSeconds * 1000L
             ) {
                 int seconds = config.weatherTracker.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime) % 60));
@@ -212,6 +213,23 @@ public class NotificationHudHandler {
                             Text.literal(" ѕᴇᴄᴏɴᴅѕ").formatted(Formatting.GRAY)
                     ));
                 }
+            }
+
+            if(config.timerTracker.baitShopNotification
+                    && System.currentTimeMillis() - TimerHandler.instance().baitShopAlertTime <= config.timerTracker.alertDismissSeconds * 1000L
+            ) {
+                int seconds = config.timerTracker.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - TimerHandler.instance().baitShopAlertTime) % 60));
+
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("Tackle Shop").formatted(Formatting.YELLOW, Formatting.BOLD),
+                        Text.literal(" has been restocked!").formatted(Formatting.WHITE)
+                ));
+                textList.add(TextHelper.concat(
+                        Text.literal("ᴛʜɪѕ ɴᴏᴛɪꜰɪᴄᴀᴛɪᴏɴ ᴡɪʟʟ ʙᴇ ᴅɪѕᴍɪѕѕᴇᴅ ɪɴ ").formatted(Formatting.GRAY),
+                        Text.literal("" + seconds),
+                        Text.literal(" ѕᴇᴄᴏɴᴅѕ").formatted(Formatting.GRAY)
+                ));
             }
         }
 

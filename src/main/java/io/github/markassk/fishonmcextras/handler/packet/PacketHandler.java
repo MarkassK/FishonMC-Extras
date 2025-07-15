@@ -77,7 +77,7 @@ public class PacketHandler {
         PacketID packetID = PacketID.valueOfId(packet.packetId());
         if(packetID != null) {
             int packets = ProxLib.sendPacket(MinecraftClient.getInstance(), packet, bytesOut.toByteArray());
-            FishOnMCExtras.LOGGER.info("Sent packet:{} using {} packets!", packetID.name(), packets);
+            FishOnMCExtras.LOGGER.info("[FoE] Sent packet:{} using {} packets!", packetID.name(), packets);
         }
     }
 

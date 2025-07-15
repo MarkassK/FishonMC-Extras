@@ -36,7 +36,7 @@ public class ItemMarkerHandler {
     }
 
     public void renderItemMarker(DrawContext drawContext, Slot slot) {
-        if(config.itemMarker.showItemMarker && !slot.getStack().isEmpty()) {
+        if(config.itemMarker.itemSlotMarker.showItemMarker && !slot.getStack().isEmpty()) {
             renderItemMarker(drawContext, slot.getStack(), slot.x, slot.y);
         }
     }
@@ -46,7 +46,7 @@ public class ItemMarkerHandler {
         Constant rarity = FOMCItem.getRarity(itemStack);
         if(FOMCItem.isFish(itemStack)
                 && rarity != Constant.DEFAULT
-                && (config.itemMarker.showFishRarityMarker || config.itemMarker.showFishSizeMarker != FishSizeMarkerToggle.OFF)
+                && (config.itemMarker.itemSlotMarker.showFishRarityMarker || config.itemMarker.itemSlotMarker.showFishSizeMarker != FishSizeMarkerToggle.OFF)
         ) {
             Constant size = Fish.getSize(itemStack);
 
@@ -54,14 +54,14 @@ public class ItemMarkerHandler {
             drawContext.getMatrices().push();
             try {
                 drawContext.getMatrices().translate(0, 0, 290);
-                if (config.itemMarker.showFishRarityMarker) {
+                if (config.itemMarker.itemSlotMarker.showFishRarityMarker) {
                     drawContext.drawGuiTexture(RenderLayer::getGuiTextured, rarityMarker, x, y, 16, 16, alpha | rarity.COLOR);
                 }
 
-                if (config.itemMarker.showFishSizeMarker == FishSizeMarkerToggle.CHARACTER) {
+                if (config.itemMarker.itemSlotMarker.showFishSizeMarker == FishSizeMarkerToggle.CHARACTER) {
                     Text sizeChar = Text.literal(size.TAG.getString().substring(0, 1)).withColor(size.COLOR);
                     drawContext.drawText(MinecraftClient.getInstance().textRenderer, sizeChar, x + 16 - MinecraftClient.getInstance().textRenderer.getWidth(sizeChar), y + 16 - MinecraftClient.getInstance().textRenderer.fontHeight + 1, 0xFFFFFF, true);
-                } else if(config.itemMarker.showFishSizeMarker == FishSizeMarkerToggle.MARKER) {
+                } else if(config.itemMarker.itemSlotMarker.showFishSizeMarker == FishSizeMarkerToggle.MARKER) {
                     drawContext.drawGuiTexture(RenderLayer::getGuiTextured, fishSizeMarker, x, y, 16, 16, alpha | size.COLOR);
                 }
             } finally {
@@ -70,7 +70,7 @@ public class ItemMarkerHandler {
         }
 
         // Show Rarity Marker
-        if(config.itemMarker.showOtherRarityMarker
+        if(config.itemMarker.itemSlotMarker.showOtherRarityMarker
                 && rarity != Constant.DEFAULT
         ) {
             int alpha =  ((int) 255f << 24);
@@ -83,16 +83,18 @@ public class ItemMarkerHandler {
             }
         }
 
-        // Show Pet Item Marker
-        boolean[] pet = FOMCItem.isPet(itemStack);
-        if(pet[0] && (pet[1] || pet[2] || pet[3])) {
-            int alpha =  ((int) 255f << 24);
-            drawContext.getMatrices().push();
-            try {
-                drawContext.getMatrices().translate(0, 0, 290);
-                drawContext.drawGuiTexture(RenderLayer::getGuiTextured, petItemMarker, x, y, 16, 16, alpha | 0xFFFFFF);
-            } finally {
-                drawContext.getMatrices().pop();
+        if (config.itemMarker.itemSlotMarker.showPetItemEquippedMarker) {
+            // Show Pet Item Marker
+            boolean[] pet = FOMCItem.isPet(itemStack);
+            if(pet[0] && (pet[1] || pet[2] || pet[3])) {
+                int alpha =  ((int) 255f << 24);
+                drawContext.getMatrices().push();
+                try {
+                    drawContext.getMatrices().translate(0, 0, 290);
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, petItemMarker, x, y, 16, 16, alpha | 0xFFFFFF);
+                } finally {
+                    drawContext.getMatrices().pop();
+                }
             }
         }
 
@@ -140,7 +142,7 @@ public class ItemMarkerHandler {
                 drawContext.getMatrices().push();
                 try {
                     drawContext.getMatrices().translate(0, 0, 100);
-                    drawContext.fill(x, y, x + 16, y + 16,  alphaInt | config.itemMarker.searchHighlightColor);
+                    drawContext.fill(x, y, x + 16, y + 16,  alphaInt | config.itemMarker.itemSearchMarker.searchHighlightColor);
                 } finally {
                     drawContext.getMatrices().pop();
                 }

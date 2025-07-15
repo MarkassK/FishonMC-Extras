@@ -5,10 +5,12 @@ import io.github.markassk.fishonmcextras.FOMC.LevelColors;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.mixin.RecipeBookScreenAccessor;
 import io.github.markassk.fishonmcextras.screens.widget.TextWidget;
-import io.github.markassk.fishonmcextras.screens.widget.container.ContainerCrewWidget;
+import io.github.markassk.fishonmcextras.screens.widget.container.ContainerSideWidget;
 import io.github.markassk.fishonmcextras.screens.widget.container.ContainerButtonWidget;
 import io.github.markassk.fishonmcextras.screens.widget.container.ContainerButtonsWidget;
 import io.github.markassk.fishonmcextras.screens.widget.container.ContainerHeaderWidget;
+import io.github.markassk.fishonmcextras.screens.widget.timer.BaitShopTimerWidget;
+import io.github.markassk.fishonmcextras.screens.widget.timer.TimerWidget;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
@@ -60,6 +62,7 @@ public class InventoryScreenHandler {
             this.createButtonMenu(minecraftClient);
             this.createCrewMenu(minecraftClient);
             this.createHeader(minecraftClient);
+            this.createTimerMenu(minecraftClient);
 
             this.screenInit = false;
         }
@@ -97,11 +100,12 @@ public class InventoryScreenHandler {
 
     private void resetButtons(MinecraftClient minecraftClient) {
         if (minecraftClient.currentScreen != null) {
-            Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget instanceof ContainerButtonWidget || clickableWidget instanceof ContainerButtonsWidget || clickableWidget instanceof ContainerCrewWidget || clickableWidget instanceof TextWidget || clickableWidget instanceof ContainerHeaderWidget);
+            Screens.getButtons(minecraftClient.currentScreen).removeIf(clickableWidget -> clickableWidget instanceof ContainerButtonWidget || clickableWidget instanceof ContainerButtonsWidget || clickableWidget instanceof ContainerSideWidget || clickableWidget instanceof TextWidget || clickableWidget instanceof ContainerHeaderWidget || clickableWidget instanceof TimerWidget);
         }
         this.createButtonMenu(minecraftClient);
         this.createCrewMenu(minecraftClient);
         this.createHeader(minecraftClient);
+        this.createTimerMenu(minecraftClient);
     }
 
     private void createCrewMenu(MinecraftClient minecraftClient) {
@@ -142,7 +146,7 @@ public class InventoryScreenHandler {
 
                 clickableWidgets.addAll(assembleCrewList(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + 105 /2 + offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 - 82 + buttonSize * 3, minecraftClient));
 
-                clickableWidgets.add(new ContainerCrewWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
+                clickableWidgets.add(new ContainerSideWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
 
                 clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 + 177 / 2 + offsetRecipe + 105, minecraftClient.getWindow().getScaledHeight() / 2 + height + 1, Text.literal("←"), Tooltip.of(
                         Text.literal("Close Crew Menu").formatted(Formatting.BOLD, Formatting.WHITE)
@@ -288,6 +292,79 @@ public class InventoryScreenHandler {
                     Text.literal("Open Button Menu").formatted(Formatting.BOLD, Formatting.WHITE)
             ), button -> {
                 config.isButtonMenuOpen = true;
+                AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                this.resetButtons(minecraftClient);
+            }));
+
+            Screens.getButtons(minecraftClient.currentScreen).addAll(clickableWidgets);
+        }
+    }
+
+    private void createTimerMenu(MinecraftClient minecraftClient) {
+        if(minecraftClient.currentScreen != null && config.isTimerButtonMenuOpen) {
+            int offsetRecipe = isRecipeBookOpen ? recipeTranslation : 0;
+            int height = - 82;
+            int buttonSize = 22 + 1;
+
+            List<ClickableWidget> clickableWidgets = new ArrayList<>();
+
+            Text title = Text.literal("Timers").formatted(Formatting.DARK_GREEN);
+            clickableWidgets.add(new TextWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 105 / 2 - MinecraftClient.getInstance().textRenderer.getWidth(title) / 2 - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height + 7 + buttonSize / 2 - MinecraftClient.getInstance().textRenderer.fontHeight / 2, title, 0xFFFFFF, true));
+
+            Text lineText = Text.literal("─────────").formatted(Formatting.DARK_GRAY);
+            // Line
+            clickableWidgets.add(new TextWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 105 / 2 - MinecraftClient.getInstance().textRenderer.getWidth(lineText) / 2 - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 4 + buttonSize * 2 - MinecraftClient.getInstance().textRenderer.fontHeight * 2, lineText, 0xFFFFFF, true));
+
+            Text baitShop = Text.literal("Tackle Shop").formatted(Formatting.WHITE);
+            clickableWidgets.add(new TextWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 105 / 2 - MinecraftClient.getInstance().textRenderer.getWidth(baitShop) / 2 - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 4 + buttonSize * 2 - MinecraftClient.getInstance().textRenderer.fontHeight, baitShop, 0xFFFFFF, true));
+
+            if(config.timerTracker.baitShopNotification) {
+                clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 82/2 - 22/2 - (23 * 2) - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 4 + buttonSize * 2, Text.literal("✔").formatted(Formatting.GREEN), Tooltip.of(
+                        TextHelper.concat(
+                                Text.literal("Currently ").formatted(Formatting.WHITE),
+                                Text.literal("Enabled\n").formatted(Formatting.GREEN),
+                                Text.literal("When enabled, it will show a notification when tackle shop is restocked").formatted(Formatting.GRAY, Formatting.ITALIC)
+                        )
+                ), button -> {
+                    config.timerTracker.baitShopNotification = false;
+                    AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                    this.resetButtons(minecraftClient);
+                }));
+            } else {
+                clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 82/2 - 22/2 - (23 * 2) - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 4 + buttonSize * 2, Text.literal("❌").formatted(Formatting.RED), Tooltip.of(
+                        TextHelper.concat(
+                                Text.literal("Currently ").formatted(Formatting.WHITE),
+                                Text.literal("Disabled\n").formatted(Formatting.RED),
+                                Text.literal("When enabled, it will show a notification when tackle shop is restocked").formatted(Formatting.GRAY, Formatting.ITALIC)
+                        )
+                ), button -> {
+                    config.timerTracker.baitShopNotification = true;
+                    AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                    this.resetButtons(minecraftClient);
+                }));
+            }
+
+            clickableWidgets.add(new BaitShopTimerWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 22 / 2 - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 2 + buttonSize * 2));
+
+            clickableWidgets.add(new ContainerSideWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - offsetRecipe - 105,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
+
+            clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - offsetRecipe - 105 - 22, minecraftClient.getWindow().getScaledHeight() / 2 + height + 1, Text.literal("→"), Tooltip.of(
+                    Text.literal("Close Timer Menu").formatted(Formatting.BOLD, Formatting.WHITE)
+            ), button -> {
+                config.isTimerButtonMenuOpen = false;
+                AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                this.resetButtons(minecraftClient);
+            }));
+
+            Screens.getButtons(minecraftClient.currentScreen).addAll(clickableWidgets);
+        } else if (minecraftClient.currentScreen != null) {
+            int offsetRecipe = isRecipeBookOpen ? recipeTranslation : 0;
+            List<ClickableWidget> clickableWidgets = new ArrayList<>();
+
+            clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - offsetRecipe - 1 - 22, minecraftClient.getWindow().getScaledHeight() / 2 - 22 / 2, Text.literal("←"), Tooltip.of(
+                    Text.literal("Open Timer Menu").formatted(Formatting.BOLD, Formatting.WHITE)
+            ), button -> {
+                config.isTimerButtonMenuOpen = true;
                 AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
                 this.resetButtons(minecraftClient);
             }));
