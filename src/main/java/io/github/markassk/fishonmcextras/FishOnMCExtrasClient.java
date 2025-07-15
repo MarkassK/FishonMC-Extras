@@ -8,7 +8,6 @@ import io.github.markassk.fishonmcextras.screens.main.FoETitleScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
-import me.enderkill98.proxlib.client.ProxLib;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;

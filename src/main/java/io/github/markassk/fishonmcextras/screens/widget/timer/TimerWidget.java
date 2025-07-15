@@ -1,12 +1,10 @@
 package io.github.markassk.fishonmcextras.screens.widget.timer;
 
-import io.github.markassk.fishonmcextras.screens.widget.TextWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.text.Text;
 
 public class TimerWidget extends ClickableWidget {
     protected final TextRenderer textRenderer;

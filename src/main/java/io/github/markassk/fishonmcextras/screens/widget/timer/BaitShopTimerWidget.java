@@ -10,8 +10,6 @@ import net.minecraft.util.Formatting;
 import java.util.concurrent.TimeUnit;
 
 public class BaitShopTimerWidget extends TimerWidget {
-    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
-
     public BaitShopTimerWidget(int x, int y) {
         super(x, y);
     }
