@@ -213,7 +213,7 @@ public class FoETitleScreen extends Screen {
         }
 
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+//        RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
         context.drawTexture(RenderLayer::getGuiTextured, BACKGROUND_TEXTURE, 0, 0, 0, 0, sw, sh, sw, sh);
     }
 

@@ -90,7 +90,7 @@ public class Fish extends FOMCItem {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if(nbtCompound != null) {
-                return Constant.valueOfId(nbtCompound.getString("size"));
+                return Constant.valueOfId(nbtCompound.getString("size").orElse(null));
             }
         }
         return Constant.DEFAULT;

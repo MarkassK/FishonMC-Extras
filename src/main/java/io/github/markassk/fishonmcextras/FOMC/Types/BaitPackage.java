@@ -18,11 +18,11 @@ public class BaitPackage extends FOMCItem{
     public final String intricacy;
 
     public BaitPackage(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
+        super(type, Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID)));
         this.customModelData = customModelData;
-        this.location = Constant.valueOfId(nbtCompound.getString("location"));
-        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id"));
-        this.intricacy = nbtCompound.getString("intricacy");
+        this.location = Constant.valueOfId(nbtCompound.getString("location").orElse(null));
+        this.id = UUIDHelper.getUUID(nbtCompound.getIntArray("id").orElse(new int[]{0}));
+        this.intricacy = nbtCompound.getString("intricacy").orElse(null);
     }
 
     public static BaitPackage getBaitPackage(ItemStack itemStack, String type) {
@@ -31,7 +31,7 @@ public class BaitPackage extends FOMCItem{
 
     public static BaitPackage getBaitPackage(ItemStack itemStack) {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
-                && Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+                && Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem").orElse(false)) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")
                     && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.BAITPACKAGE)) {

@@ -51,9 +51,6 @@ public class Armor extends FOMCItem {
         this.armorPiece = nbtCompound.getString("piece").orElse(null);
         this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name").orElse(ClimateConstant.DEFAULT.ID));
         this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid").orElse(new int[]{0}));
-        this.luck =  nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(0).orElse(new NbtCompound())) : null;
-        this.scale = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(1).orElse(new NbtCompound())) : null;
-        this.prospect = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(2).orElse(new NbtCompound())) : null;
 
         NbtList armorStatsList = (NbtList) nbtCompound.get("base");
         if(armorStatsList != null) {

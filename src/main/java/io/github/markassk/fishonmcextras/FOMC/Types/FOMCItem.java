@@ -100,7 +100,7 @@ public class FOMCItem {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")) {
-                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.PET) ? new boolean[]{true, nbtCompound.contains("skin"), nbtCompound.contains("item"), nbtCompound.contains("trail")} : new boolean[]{false};
+                return Objects.equals(nbtCompound.getString("type").orElse(null), Defaults.ItemTypes.PET) ? new boolean[]{true, nbtCompound.contains("skin"), nbtCompound.contains("item"), nbtCompound.contains("trail")} : new boolean[]{false};
             }
         }
         return new boolean[]{false};
@@ -110,7 +110,7 @@ public class FOMCItem {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")) {
-                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.ARMOR);
+                return Objects.equals(nbtCompound.getString("type").orElse(null), Defaults.ItemTypes.ARMOR);
             }
         }
         return false;
@@ -120,7 +120,7 @@ public class FOMCItem {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")) {
-                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.LURE);
+                return Objects.equals(nbtCompound.getString("type").orElse(null), Defaults.ItemTypes.LURE);
             }
         }
         return false;
@@ -130,7 +130,7 @@ public class FOMCItem {
         if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")) {
-                return Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.BAIT);
+                return Objects.equals(nbtCompound.getString("type").orElse(null), Defaults.ItemTypes.BAIT);
             }
         }
         return false;
