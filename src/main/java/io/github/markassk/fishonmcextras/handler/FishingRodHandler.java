@@ -8,6 +8,7 @@ import io.github.markassk.fishonmcextras.FOMC.Types.Lure;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.mixin.InGameHudAccessor;
 import io.github.markassk.fishonmcextras.util.TextHelper;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
@@ -21,9 +22,13 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ModelTransformationMode;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.AffineTransformation;
+import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3f;
 
 import java.util.*;
@@ -34,6 +39,10 @@ public class FishingRodHandler {
 
     private ItemStack fishingRodStack = null;
     private Map<Integer, Integer> baitDisplay = new HashMap<>();
+
+    private BlockPos previousPos = BlockPos.ofFloored(0, 0, 0);
+    private BlockState previousBlockState = Blocks.AIR.getDefaultState();
+    private boolean isBobberOut = false;
 
     public FishingRod fishingRod = null;
     public boolean isWrongBait = false;
@@ -68,6 +77,9 @@ public class FishingRodHandler {
                     this.isWrongBait = bait.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
                 } else if (this.fishingRod.tacklebox.getFirst() instanceof Lure lure && lure.water != Constant.ANY_WATER) {
                     this.isWrongLure = lure.water != LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER;
+                } else {
+                    this.isWrongBait = false;
+                    this.isWrongLure = false;
                 }
             } else {
                 this.isWrongBait = false;
@@ -117,11 +129,15 @@ public class FishingRodHandler {
         if(entity instanceof FishingBobberEntity fishingBobberEntity) {
             PlayerEntity player = fishingBobberEntity.getPlayerOwner();
             if(minecraftClient.player != null && player != null && Objects.equals(minecraftClient.player.getUuid(), player.getUuid())) {
+                this.isBobberOut = true;
                 List<Text> textList = new ArrayList<>();
                 int remaining = ((InGameHudAccessor) minecraftClient.inGameHud).getOverlayRemaining();
+                InGameHudAccessor inGameHudAccessor = ((InGameHudAccessor) minecraftClient.inGameHud);
+
                 // Add Text
                 if(config.bobberTracker.skyLightWarning
                         && minecraftClient.world != null
+                        && (inGameHudAccessor.getTitle() == null || !Objects.equals(inGameHudAccessor.getTitle().getString(), "BITE!"))
                         && !fishingBobberEntity.getWorld().isSkyVisible(fishingBobberEntity.getBlockPos().up())
                         && minecraftClient.world.getBlockState(fishingBobberEntity.getBlockPos().up()).getBlock() != Blocks.WATER
                         && remaining <= 0
@@ -132,7 +148,6 @@ public class FishingRodHandler {
                     this.addText(textList, TextHelper.concat(Text.literal(String.format("%.1f", seconds)).formatted(Formatting.WHITE, Formatting.BOLD), Text.literal(" sec.").formatted(Formatting.GRAY)));
                 }
 
-                InGameHudAccessor inGameHudAccessor = ((InGameHudAccessor) minecraftClient.inGameHud);
                 if((config.fun.immersionMode || config.fun.biteBobber)
                         && inGameHudAccessor.getTitle() != null
                         && Objects.equals(inGameHudAccessor.getTitle().getString(), "BITE!")
@@ -153,6 +168,10 @@ public class FishingRodHandler {
                     fishingBobberEntity.setCustomNameVisible(true);
                 } else {
                     fishingBobberEntity.setCustomNameVisible(false);
+                }
+
+                if(config.fun.lightOnBobber) {
+                    this.spawnLight(minecraftClient, fishingBobberEntity);
                 }
             }
 
@@ -177,6 +196,36 @@ public class FishingRodHandler {
                     itemDisplayEntity.setTransformationMode(ModelTransformationMode.GROUND);
                     itemDisplayEntity.setTransformation(new AffineTransformation(null, null, new Vector3f(0.75f, 0.75f, 0.75f), null));
                 }
+            }
+        }
+    }
+
+    public void beforeTickEntitiess() {
+        isBobberOut = false;
+    }
+
+    public void afterTickEntities(MinecraftClient minecraftClient) {
+        if(!isBobberOut) {
+            if(minecraftClient.world != null && !Objects.equals(this.previousPos, BlockPos.ofFloored(0, 0, 0))) {
+                minecraftClient.world.setBlockState(this.previousPos, this.previousBlockState);
+                this.previousPos = BlockPos.ofFloored(0, 0, 0);
+                this.previousBlockState = Blocks.AIR.getDefaultState();
+            }
+        }
+    }
+
+    private void spawnLight(MinecraftClient minecraftClient, FishingBobberEntity fishingBobberEntity) {
+        if(fishingBobberEntity != null && minecraftClient.world != null && !Objects.equals(this.previousPos, BlockPos.ofFloored(fishingBobberEntity.getPos().add(0, .40, 0)))) {
+            minecraftClient.world.setBlockState(this.previousPos, this.previousBlockState);
+            this.previousBlockState = minecraftClient.world.getBlockState(BlockPos.ofFloored(fishingBobberEntity.getPos().add(0, .40, 0)));
+            this.previousPos = BlockPos.ofFloored(fishingBobberEntity.getPos().add(0, .40, 0));
+            if(minecraftClient.world.getBlockState(this.previousPos).getBlock() == Blocks.WATER) {
+                BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+                IntProperty LEVEL_15 = Properties.LEVEL_15;
+                minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState().with(WATERLOGGED, Boolean.TRUE).with(LEVEL_15, config.fun.lightLevel));
+            } else {
+                IntProperty LEVEL_15 = Properties.LEVEL_15;
+                minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState().with(LEVEL_15, config.fun.lightLevel));
             }
         }
     }

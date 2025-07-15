@@ -1,6 +1,5 @@
 package io.github.markassk.fishonmcextras.handler;
 
-import io.github.markassk.fishonmcextras.compat.LabyModCompat;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.mixin.ChatScreenAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -140,7 +139,6 @@ public class CrewHandler {
         FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
         Text marker = Text.literal("ɪɴ ᴄʀᴇᴡ ᴄʜᴀᴛ").formatted(Formatting.GREEN, Formatting.ITALIC);
         if(ChatScreenHandler.instance().screenInit
-                && !LabyModCompat.instance().isLabyMod
                 && MinecraftClient.getInstance().currentScreen instanceof ChatScreen chatScreen
                 && ProfileDataHandler.instance().profileData.isInCrewChat
                 && !((ChatScreenAccessor) chatScreen).getChatField().getText().startsWith("/")

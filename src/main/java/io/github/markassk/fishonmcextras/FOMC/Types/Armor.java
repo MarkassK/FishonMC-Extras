@@ -33,15 +33,15 @@ public class Armor extends FOMCItem {
     private Armor(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
         super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
         List<ArmorBonus> tempArmorBonuses;
-        NbtList nbtLineList = (NbtList) nbtCompound.get("fish_bonus");
+        NbtList nbtFishBonusList = (NbtList) nbtCompound.get("fish_bonus");
         tempArmorBonuses = new ArrayList<>();
-        if(nbtLineList != null) {
+        if(nbtFishBonusList != null) {
             tempArmorBonuses = List.of(
-                    new ArmorBonus(nbtLineList.getCompound(0)),
-                    new ArmorBonus(nbtLineList.getCompound(1)),
-                    new ArmorBonus(nbtLineList.getCompound(2)),
-                    new ArmorBonus(nbtLineList.getCompound(3)),
-                    new ArmorBonus(nbtLineList.getCompound(4))
+                    new ArmorBonus(nbtFishBonusList.getCompound(0)),
+                    new ArmorBonus(nbtFishBonusList.getCompound(1)),
+                    new ArmorBonus(nbtFishBonusList.getCompound(2)),
+                    new ArmorBonus(nbtFishBonusList.getCompound(3)),
+                    new ArmorBonus(nbtFishBonusList.getCompound(4))
             );
         }
         this.armorBonuses = tempArmorBonuses;
@@ -52,9 +52,19 @@ public class Armor extends FOMCItem {
         this.armorPiece = nbtCompound.getString("piece");
         this.climate = ClimateConstant.valueOfId(nbtCompound.getString("name"));
         this.crafter = UUIDHelper.getUUID(nbtCompound.getIntArray("uuid"));
-        this.luck = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(0));
-        this.scale = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(1));
-        this.prospect = new ArmorStat(nbtCompound.getList(nbtCompound.getString("base"), NbtElement.LIST_TYPE).getCompound(2));
+
+        NbtList armorStatsList = (NbtList) nbtCompound.get("base");
+        if(armorStatsList != null) {
+            this.luck = new ArmorStat(armorStatsList.getCompound(0));
+            this.scale = new ArmorStat(armorStatsList.getCompound(1));
+            this.prospect = new ArmorStat(armorStatsList.getCompound(2));
+        } else {
+            this.luck = new ArmorStat();
+            this.scale = new ArmorStat();
+            this.prospect = new ArmorStat();
+
+        }
+
     }
 
     public static class ArmorBonus {
@@ -82,6 +92,11 @@ public class Armor extends FOMCItem {
         private ArmorStat(NbtCompound nbtCompound) {
             this.amount = nbtCompound.getInt("cur");
             this.max = nbtCompound.getFloat("max");
+        }
+
+        private ArmorStat() {
+            this.amount = 0;
+            this.max = 0;
         }
     }
 

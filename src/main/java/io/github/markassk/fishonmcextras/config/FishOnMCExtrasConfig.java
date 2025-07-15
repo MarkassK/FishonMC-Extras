@@ -52,6 +52,10 @@ public class FishOnMCExtrasConfig implements ConfigData {
 
     @ConfigEntry.Category(value = TRACKERS)
     @ConfigEntry.Gui.CollapsibleObject
+    public TrackerTimerConfig.TimerTracker timerTracker = new TrackerTimerConfig.TimerTracker();
+
+    @ConfigEntry.Category(value = TRACKERS)
+    @ConfigEntry.Gui.CollapsibleObject
     public TrackerBobberConfig.BobberTracker bobberTracker = new TrackerBobberConfig.BobberTracker();
     //endregion
 
@@ -100,7 +104,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
 
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
-    public RarityMarkerConfig.RarityMarker rarityMarker = new RarityMarkerConfig.RarityMarker();
+    public ItemMarkerConfig.ItemMarker itemMarker = new ItemMarkerConfig.ItemMarker();
 
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
@@ -109,6 +113,10 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.CollapsibleObject
     public PetFollowerConfig.PetFollower petFollower = new PetFollowerConfig.PetFollower();
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.CollapsibleObject
+    public PlayerStatusConfig.PlayerStatus playerStatus = new PlayerStatusConfig.PlayerStatus();
     //endregion
 
     //region Cosmetic
@@ -128,6 +136,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
     public FunConfig.Fun fun = new FunConfig.Fun();
     //endregion
 
+    //region Inventory Menu
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.Excluded
     public boolean isButtonMenuOpen = true;
@@ -135,4 +144,9 @@ public class FishOnMCExtrasConfig implements ConfigData {
     @ConfigEntry.Category(value = OTHER)
     @ConfigEntry.Gui.Excluded
     public boolean isCrewButtonMenuOpen = true;
+
+    @ConfigEntry.Category(value = OTHER)
+    @ConfigEntry.Gui.Excluded
+    public boolean isTimerButtonMenuOpen = true;
+    //endregion
 }
