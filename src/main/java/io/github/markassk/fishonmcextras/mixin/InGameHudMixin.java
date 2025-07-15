@@ -2,11 +2,14 @@ package io.github.markassk.fishonmcextras.mixin;
 
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.FishCatchHandler;
+import io.github.markassk.fishonmcextras.handler.ItemMarkerHandler;
 import io.github.markassk.fishonmcextras.handler.LoadingHandler;
 import io.github.markassk.fishonmcextras.handler.OwnPlayerHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -106,6 +109,13 @@ public class InGameHudMixin {
     private void injectRenderCrosshair(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         if(LoadingHandler.instance().isOnServer && config.fun.immersionMode) {
             ci.cancel();
+        }
+    }
+
+    @Inject(method = "renderHotbarItem", at = @At("TAIL"))
+    private void injectDrawHotbarItem(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack stack, int seed, CallbackInfo ci) {
+        if(LoadingHandler.instance().isOnServer && LoadingHandler.instance().isLoadingDone) {
+            ItemMarkerHandler.instance().renderHotBarSelectedPet(context, x, y, stack);
         }
     }
 }

@@ -46,8 +46,8 @@ public class MainScreen extends Screen {
         textList.add(Text.literal("Welcome to FishOnMC-Extras").formatted(Formatting.WHITE));
         textList.add(TabHandler.instance().player);
         textList.add(Text.empty());
-        textList.add(Text.literal("Version 0.2.3-hotfix.6").formatted(Formatting.GRAY));
-        textList.add(Text.literal("Quality of Fishing Update").formatted(Formatting.GRAY, Formatting.ITALIC));
+        textList.add(Text.literal("2.4.0-rc.1").formatted(Formatting.GRAY));
+        textList.add(Text.literal("Quality of Fishing Part 2 Update").formatted(Formatting.GRAY, Formatting.ITALIC));
 
         textList.forEach(text -> context.drawText(textRenderer, text, width / 2 - 4 - textRenderer.getWidth(text), height / 2 - (textList.size() * (textRenderer.fontHeight + 1)) / 2 + count.getAndIncrement() * (textRenderer.fontHeight + 1), 0xFFFFFF, true));
     }
