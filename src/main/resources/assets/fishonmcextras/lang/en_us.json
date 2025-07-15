@@ -1,4 +1,8 @@
 {
+  "menu.fishonextra.status.offline": "An error occurred whilst connecting to the server.",
+  "menu.fishonextra.status.online.empty": "There are currently no online players.",
+  "menu.fishonextra.status.online": "There are %s players online.",
+
   "key.fishonmcextras.openconfig": "Open Config",
   "key.fishonmcextras.openextrainfo": "Show Extra Details",
   "category.fishonmcextras.general": "FishOnMC Extras",
@@ -186,6 +190,10 @@
   "text.autoconfig.fishonmcextras.option.weatherTracker.intervalWarningSound": "Timing of alert sound in seconds",
   "text.autoconfig.fishonmcextras.option.weatherTracker.alertSoundType": "Sound used for Alert",
 
+  "text.autoconfig.fishonmcextras.option.timerTracker": "§f§lTimer Tracker Options",
+  "text.autoconfig.fishonmcextras.option.timerTracker.baitShopNotification": "Show notification when shop is reset",
+  "text.autoconfig.fishonmcextras.option.timerTracker.alertDismissSeconds": "Amount of seconds before dismissing notification",
+
   "text.autoconfig.fishonmcextras.option.bobberTracker": "§f§lBobber Tracker Options",
   "text.autoconfig.fishonmcextras.option.bobberTracker.skyLightWarning": "Show warning on bobber when fishing under a block",
   "text.autoconfig.fishonmcextras.option.bobberTracker.showWaitingTime": "Show waiting time on bobber",
@@ -226,10 +234,17 @@
   "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled": "Enable Discord Rich Presence",
   "text.autoconfig.fishonmcextras.option.discordIPC.isEnabled.@Tooltip": "§cMust restart Minecraft when toggling this option",
 
-  "text.autoconfig.fishonmcextras.option.rarityMarker": "§f§lRarity Marker Options",
-  "text.autoconfig.fishonmcextras.option.rarityMarker.showRarityMarker": "Show Rarity Marker",
-  "text.autoconfig.fishonmcextras.option.rarityMarker.showFishRarityMarker": "Show Rarity Marker on fishes",
-  "text.autoconfig.fishonmcextras.option.rarityMarker.showOtherRarityMarker": "Show Rarity Marker on other items",
+  "text.autoconfig.fishonmcextras.option.itemMarker": "§f§lItem Marker Options",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSlotMarker": "§f§lItem Slot Markers",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSlotMarker.showItemMarker": "Show Item Marker",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSlotMarker.showFishRarityMarker": "Show Rarity Marker on fishes",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSlotMarker.showFishSizeMarker": "Show Fish Size Marker on fishes",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSlotMarker.showOtherRarityMarker": "Show Rarity Marker on other items",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSlotMarker.showPetItemEquippedMarker": "Show Equipped Pet Item Marker",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSearchMarker": "§f§lHighlight Markers",
+  "text.autoconfig.fishonmcextras.option.itemMarker.itemSearchMarker.searchHighlightColor": "Background color when items are highlighted in search",
+  "text.autoconfig.fishonmcextras.option.itemMarker.showSelectedPetHighlight": "Show highlight on equipped pet",
+  "text.autoconfig.fishonmcextras.option.itemMarker.selectedPetHighlightColor": "Background highlight color of equipped pet",
 
   "text.autoconfig.fishonmcextras.option.hoverOverPlayerStats": "§f§lHover over Player Options",
   "text.autoconfig.fishonmcextras.option.hoverOverPlayerStats.showPlayerEquipment": "Show equipment on players when sneaking",
@@ -237,6 +252,9 @@
   "text.autoconfig.fishonmcextras.option.petFollower": "§f§lPet Follower Options",
   "text.autoconfig.fishonmcextras.option.petFollower.ownPet": "Toggle between visibility options for own pet",
   "text.autoconfig.fishonmcextras.option.petFollower.otherPets": "Toggle between visibility options for all other pets",
+
+  "text.autoconfig.fishonmcextras.option.playerStatus": "§f§lPlayer Status Options",
+  "text.autoconfig.fishonmcextras.option.playerStatus.showIsTyping": "Show marker when a player is typing",
 
   "text.autoconfig.fishonmcextras.option.theme": "§f§lTheme Options",
   "text.autoconfig.fishonmcextras.option.theme.themeType": "Change Theme",
@@ -271,7 +289,6 @@
   "text.autoconfig.fishonmcextras.option.flair.questFlair.flairBottomLeft": "Choose Bottom Left Flair",
   "text.autoconfig.fishonmcextras.option.flair.questFlair.flairBottomRight": "Choose Bottom Right Flair",
 
-
   "text.autoconfig.fishonmcextras.option.fun.@PrefixText": "\n§c!!! All of these are experimental, use with caution\n",
   "text.autoconfig.fishonmcextras.option.fun": "§f§lExperimental Options",
   "text.autoconfig.fishonmcextras.option.fun.minigameOnBobber": "Show minigame on bobber",
@@ -282,5 +299,8 @@
   "text.autoconfig.fishonmcextras.option.fun.isFoeTagPrefix.@Tooltip": "§7If §cdisabled§7, it will show as a suffix in tab",
   "text.autoconfig.fishonmcextras.option.fun.hideArmor": "Toggle armor visibility",
   "text.autoconfig.fishonmcextras.option.fun.biteBobber": "Show bite notification on bobber instead",
-  "text.autoconfig.fishonmcextras.option.fun.biteBobber.@Tooltip": "§7This will §cdisable§7 the bite notification from the HUD"
+  "text.autoconfig.fishonmcextras.option.fun.biteBobber.@Tooltip": "§7This will §cdisable§7 the bite notification from the HUD",
+  "text.autoconfig.fishonmcextras.option.fun.lightOnBobber": "Make bobber emit a light source",
+  "text.autoconfig.fishonmcextras.option.fun.lightLevel": "Light level of the light source on bobber",
+  "text.autoconfig.fishonmcextras.option.fun.useCustomTitleScreen": "Use FoE Custom Title Screen"
 }

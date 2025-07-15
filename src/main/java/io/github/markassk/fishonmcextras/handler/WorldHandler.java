@@ -15,7 +15,7 @@ public class WorldHandler {
 
     public void tick(MinecraftClient minecraftClient) {
         if(minecraftClient.world != null) {
-            this.beforeIterator();
+            this.beforeIterator(minecraftClient);
 
             minecraftClient.world.getEntities().forEach(entity -> {
                 CrewHandler.instance().tickEntities(entity, minecraftClient);
@@ -23,17 +23,20 @@ public class WorldHandler {
                 HiderHandler.instance().tickEntities(entity, minecraftClient);
                 PetEquipHandler.instance().tickEntities(entity, minecraftClient);
                 FishingRodHandler.instance().tickEntities(entity, minecraftClient);
+                OtherPlayerHandler.instance().tickEntities(entity, minecraftClient);
             });
 
-            this.afterIterator();
+            this.afterIterator(minecraftClient);
         }
     }
 
-    public void beforeIterator() {
+    public void beforeIterator(MinecraftClient minecraftClient) {
+        FishingRodHandler.instance().beforeTickEntitiess();
         CrewHandler.instance().beforeTickEntitiess();
     }
 
-    public void afterIterator() {
+    public void afterIterator(MinecraftClient minecraftClient) {
+        FishingRodHandler.instance().afterTickEntities(minecraftClient);
         CrewHandler.instance().afterTickEntities();
     }
 }

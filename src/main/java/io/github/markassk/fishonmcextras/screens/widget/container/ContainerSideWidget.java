@@ -8,10 +8,10 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class ContainerCrewWidget extends ClickableWidget {
+public class ContainerSideWidget extends ClickableWidget {
     private final Identifier panelTexture = Identifier.of(FishOnMCExtras.MOD_ID, "containers/panel_crew");
 
-    public ContainerCrewWidget(int x, int y, Text message) {
+    public ContainerSideWidget(int x, int y, Text message) {
         super(x, y, 105, 164, message);
     }
 

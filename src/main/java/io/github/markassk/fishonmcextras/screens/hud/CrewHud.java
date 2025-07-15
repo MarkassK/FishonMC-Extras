@@ -82,16 +82,4 @@ public class CrewHud {
             drawContext.getMatrices().pop();
         }
     }
-
-    public void renderCrewChatMarker(DrawContext context, MinecraftClient client) {
-        TextRenderer textRenderer = client.textRenderer;
-        Text marker = Text.literal("ɪɴ ᴄʀᴇᴡ ᴄʜᴀᴛ").formatted(Formatting.GREEN, Formatting.ITALIC);
-
-        if (ChatScreenHandler.instance().screenInit
-                && ProfileDataHandler.instance().profileData.isInCrewChat
-        ) {
-            MinecraftClient minecraftClient = MinecraftClient.getInstance();
-            context.drawText(textRenderer, marker, 4, minecraftClient.getWindow().getScaledHeight() - (int) (textRenderer.fontHeight * 2.7f), ((int) 150f << 24) | 0xFFFFFF, true);
-        }
-    }
 }
