@@ -85,4 +85,14 @@ public class Fish extends FOMCItem {
         }
         return null;
     }
+
+    public static Constant getSize(ItemStack itemStack) {
+        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null) {
+            NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+            if(nbtCompound != null) {
+                return Constant.valueOfId(nbtCompound.getString("size"));
+            }
+        }
+        return Constant.DEFAULT;
+    }
 }

@@ -156,16 +156,16 @@ public class Pet extends FOMCItem {
     }
 
     public static Constant getConstantFromPercent(float value) {
-        float ceilValue = Math.round(value * 100f);
-        if (ceilValue <= 20) return Constant.SICKLY;
-        else if (ceilValue < 30) return Constant.BAD;
-        else if (ceilValue < 40) return Constant.BELOW_AVERAGE;
-        else if (ceilValue < 50) return Constant.AVERAGE;
-        else if (ceilValue < 60) return Constant.GOOD;
-        else if (ceilValue < 80) return Constant.GREAT;
-        else if (ceilValue < 90) return Constant.EXCELLENT;
-        else if (ceilValue < 100) return Constant.AMAZING;
-        else if (ceilValue <= 101) return Constant.PERFECT;
+        float ceilValue = Float.parseFloat(String.format("%.2f", value * 100f));
+        if (ceilValue <= 20f) return Constant.SICKLY;
+        else if (ceilValue < 30f) return Constant.BAD;
+        else if (ceilValue < 40f) return Constant.BELOW_AVERAGE;
+        else if (ceilValue < 50f) return Constant.AVERAGE;
+        else if (ceilValue < 60f) return Constant.GOOD;
+        else if (ceilValue < 80f) return Constant.GREAT;
+        else if (ceilValue < 90f) return Constant.EXCELLENT;
+        else if (ceilValue < 100f) return Constant.AMAZING;
+        else if (ceilValue <= 101f) return Constant.PERFECT;
         return Constant.DEFAULT;
     }
 

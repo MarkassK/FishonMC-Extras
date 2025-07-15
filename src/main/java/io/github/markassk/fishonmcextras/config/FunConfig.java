@@ -12,5 +12,9 @@ public class FunConfig {
         public boolean hideArmor = false;
         @ConfigEntry.Gui.Tooltip
         public boolean biteBobber = false;
+        public boolean lightOnBobber = false;
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 15)
+        public int lightLevel = 10;
+        public boolean useCustomTitleScreen = true;
     }
 }

@@ -97,7 +97,8 @@ public class ArmorHandler {
                 Armor armor = Armor.getArmor(itemStack);
                 if(armor != null && armor.identified) {
                     Text emptyLine = getTextRarity(armor.rarity).TAG;
-                    int slot = textList.size() - 7;
+
+                    int slot = textList.size() - (MinecraftClient.getInstance().options.advancedItemTooltips ? 9 : 7);
                     if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(slot, 4, armor, emptyLine, textList);
                     if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(slot, 3, armor, emptyLine, textList);
                     if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(slot, 2, armor, emptyLine, textList);

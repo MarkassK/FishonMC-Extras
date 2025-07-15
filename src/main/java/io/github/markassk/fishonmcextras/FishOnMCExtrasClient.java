@@ -2,12 +2,15 @@ package io.github.markassk.fishonmcextras;
 
 import io.github.markassk.fishonmcextras.commands.CommandRegistry;
 import io.github.markassk.fishonmcextras.handler.*;
+import io.github.markassk.fishonmcextras.handler.packet.PacketHandler;
 import io.github.markassk.fishonmcextras.screens.hud.MainHudRenderer;
+import io.github.markassk.fishonmcextras.screens.main.FoETitleScreen;
 import io.github.markassk.fishonmcextras.screens.petCalculator.PetCalculatorScreen;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.screens.widget.IconButtonWidget;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
@@ -20,9 +23,12 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -44,6 +50,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         CONFIG = AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).getConfig();
         CommandRegistry.initialize();
         KeybindHandler.instance().init();
+        PacketHandler.instance().addHandlers();
 
         ClientPlayConnectionEvents.JOIN.register(this::onJoin);
         ClientPlayConnectionEvents.DISCONNECT.register(this::onLeave);
@@ -51,9 +58,14 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ClientReceiveMessageEvents.GAME.register(this::receiveGameMessage);
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::modifyGameMessage);
         ItemTooltipCallback.EVENT.register(this::onItemTooltipCallback);
+        ScreenEvents.BEFORE_INIT.register(this::beforeScreenInit);
         ScreenEvents.AFTER_INIT.register(this::afterScreenInit);
+        ClientEntityEvents.ENTITY_LOAD.register(this::onEntityLoad);
 
         HudRenderCallback.EVENT.register(MAIN_HUD_RENDERER);
+    }
+
+    private void onEntityLoad(Entity entity, ClientWorld clientWorld) {
     }
 
     private void onEndClientTick(MinecraftClient minecraftClient) {
@@ -80,11 +92,15 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     DiscordHandler.instance().tick();
                     KeybindHandler.instance().tick(minecraftClient);
                     InventoryScreenHandler.instance().tick(minecraftClient);
+                    PersonalVaultScreenHandler.instance().tick(minecraftClient);
+                    SearchBarContainerHandler.instance().tick(minecraftClient);
                     ThemingHandler.instance().tick();
                     OtherPlayerHandler.instance().tick(minecraftClient);
                     WeatherHandler.instance().tick(minecraftClient);
                     HiderHandler.instance().tick(minecraftClient);
                     OwnPlayerHandler.instance().tick(minecraftClient);
+                    PlayerStatusHandler.instance().tick(minecraftClient);
+                    TimerHandler.instance().tick();
                 }
             }
         }
@@ -125,6 +141,8 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             CrewHandler.instance().onReceiveMessage(text);
             FishCatchHandler.instance().onReceiveMessage(text);
             StaffHandler.instance().onReceiveMessage(text);
+            PlayerStatusHandler.instance().onReceiveMessage(text);
+            TimerHandler.instance().onReceiveMessage(text);
         }
     }
 
@@ -177,10 +195,35 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             } else if (screen instanceof InventoryScreen) {
                 InventoryScreenHandler.instance().screenInit = true;
             } else if (screen instanceof ChatScreen || Objects.equals(screen.getTitle().getString(), "Chat screen")) {
+                ChatScreenHandler.instance().onOpenScreen();
                 ChatScreenHandler.instance().screenInit = true;
+            } else if (screen.getTitle().getString().contains("Personal Vault ")) {
+                PersonalVaultScreenHandler.instance().page = Integer.parseInt(screen.getTitle().getString().substring(screen.getTitle().getString().length() - 1));
+                PersonalVaultScreenHandler.instance().personalVaultMenuState = true;
+            } else if (Objects.equals(screen.getTitle().getString(), "Tackle Shop\uEEE7\uEEE3합")) {
+                // Tackle Shop
+                AuctionHandler.instance().tackleShopMenuState = true;
+            }
+
+            if((screen.getTitle().getString().isBlank() || screen.getTitle().getString().contains("Personal Vault ")) && screen instanceof GenericContainerScreen) {
+                SearchBarContainerHandler.instance().containerMenuState = true;
+            } else if (SearchBarContainerHandler.instance().searchBar != null
+                     && (!screen.getTitle().getString().isBlank()
+                    || screen instanceof RecipeBookScreen
+                    || screen instanceof StonecutterScreen
+                    || screen instanceof AbstractFurnaceScreen)
+            ) {
+                SearchBarContainerHandler.instance().searchBar.setText("");
             }
         }
         ScreenEvents.remove(screen).register(this::onRemoveScreen);
+    }
+
+    private void beforeScreenInit(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
+        if(CONFIG.fun.useCustomTitleScreen
+                && screen instanceof TitleScreen) {
+            minecraftClient.setScreen(new FoETitleScreen());
+        }
     }
 
     private void onRemoveScreen(Screen screen) {
@@ -194,7 +237,15 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                 CrewHandler.instance().crewMenuState = false;
                 CrewHandler.instance().onScreenClose();
             } else if(screen instanceof ChatScreen || Objects.equals(screen.getTitle().getString(), "")) {
+                ChatScreenHandler.instance().onRemoveScreen();
                 ChatScreenHandler.instance().screenInit = false;
+            } else if (Objects.equals(screen.getTitle().getString(), "Tackle Shop\uEEE7\uEEE3합")) {
+                // Tackle Shop
+                AuctionHandler.instance().tackleShopMenuState = false;
+            }
+
+            if ((screen.getTitle().getString().isBlank() || screen.getTitle().getString().contains("Personal Vault ")) && screen instanceof GenericContainerScreen) {
+                SearchBarContainerHandler.instance().searchBar.setFocused(false);
             }
         }
     }

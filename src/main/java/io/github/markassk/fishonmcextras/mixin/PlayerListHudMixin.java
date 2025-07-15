@@ -1,5 +1,7 @@
 package io.github.markassk.fishonmcextras.mixin;
 
+import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.FOMC.Types.Defaults;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.LoadingHandler;
 import io.github.markassk.fishonmcextras.handler.ProfileDataHandler;
@@ -25,11 +27,11 @@ public class PlayerListHudMixin {
     private Text injectRender(PlayerListHud instance, PlayerListEntry entry) {
         MutableText text = instance.getPlayerName(entry).copy();
 
-        if(LoadingHandler.instance().isOnServer && Objects.equals(entry.getProfile().getId(), UUID.fromString("b5a9bbb7-42b4-4a6a-9ebe-bdf6697c8ee0"))) {
+        if(LoadingHandler.instance().isOnServer && Defaults.foeDevs.containsKey(entry.getProfile().getId().toString())) {
             if(config.fun.isFoeTagPrefix) {
-                text = Text.literal("\uE00B ").formatted(Formatting.WHITE).append(Text.literal(entry.getProfile().getName()).withColor(0x00AF0E));
+                text = Constant.FOE.TAG.copy().append(Text.literal(" ")).append(Text.literal(entry.getProfile().getName()).withColor(0x00AF0E));
             } else {
-                text = text.append(Text.literal(" \uE00B").formatted(Formatting.WHITE));
+                text = text.append(Text.literal(" ").append(Constant.FOE.TAG));
             }
         }
 

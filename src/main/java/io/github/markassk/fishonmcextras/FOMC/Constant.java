@@ -199,6 +199,7 @@ public enum Constant {
     ADMIN("admin", Text.literal("\uF022"), DEFAULT_COLOR),
     OWNER("owner", Text.literal("\uF021"), DEFAULT_COLOR),
     COMMUNITYMANAGER("communitymanager", Text.literal("\uF088"), DEFAULT_COLOR),
+    FOE("foe", Text.literal("\uE00B"), DEFAULT_COLOR),
 
     RAIN("☂", Text.literal("☂"), 0x5555FF),
     SUN("☀", Text.literal("☀"), 0xFFFF55),

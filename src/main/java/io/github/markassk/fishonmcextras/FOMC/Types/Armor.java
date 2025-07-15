@@ -32,15 +32,15 @@ public class Armor extends FOMCItem {
     private Armor(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
         super(type, Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID)));
         List<ArmorBonus> tempArmorBonuses;
-        NbtList nbtLineList = (NbtList) nbtCompound.get("fish_bonus");
+        NbtList nbtFishBonusList = (NbtList) nbtCompound.get("fish_bonus");
         tempArmorBonuses = new ArrayList<>();
-        if(nbtLineList != null) {
+        if(nbtFishBonusList != null) {
             tempArmorBonuses = List.of(
-                    new ArmorBonus(nbtLineList.getCompound(0).orElse(new NbtCompound())),
-                    new ArmorBonus(nbtLineList.getCompound(1).orElse(new NbtCompound())),
-                    new ArmorBonus(nbtLineList.getCompound(2).orElse(new NbtCompound())),
-                    new ArmorBonus(nbtLineList.getCompound(3).orElse(new NbtCompound())),
-                    new ArmorBonus(nbtLineList.getCompound(4).orElse(new NbtCompound()))
+                    new ArmorBonus(nbtFishBonusList.getCompound(0).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtFishBonusList.getCompound(1).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtFishBonusList.getCompound(2).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtFishBonusList.getCompound(3).orElse(new NbtCompound())),
+                    new ArmorBonus(nbtFishBonusList.getCompound(4).orElse(new NbtCompound()))
             );
         }
         this.armorBonuses = tempArmorBonuses;
@@ -54,6 +54,19 @@ public class Armor extends FOMCItem {
         this.luck =  nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(0).orElse(new NbtCompound())) : null;
         this.scale = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(1).orElse(new NbtCompound())) : null;
         this.prospect = nbtCompound.getList("base").isPresent() ? new ArmorStat(nbtCompound.getList("base").get().getCompound(2).orElse(new NbtCompound())) : null;
+
+        NbtList armorStatsList = (NbtList) nbtCompound.get("base");
+        if(armorStatsList != null) {
+            this.luck = new ArmorStat(armorStatsList.getCompound(0).orElse(new NbtCompound()));
+            this.scale = new ArmorStat(armorStatsList.getCompound(1).orElse(new NbtCompound()));
+            this.prospect = new ArmorStat(armorStatsList.getCompound(2).orElse(new NbtCompound()));
+        } else {
+            this.luck = new ArmorStat();
+            this.scale = new ArmorStat();
+            this.prospect = new ArmorStat();
+
+        }
+
     }
 
     public static class ArmorBonus {
@@ -81,6 +94,11 @@ public class Armor extends FOMCItem {
         private ArmorStat(NbtCompound nbtCompound) {
             this.amount = nbtCompound.getInt("cur").orElse(0);
             this.max = nbtCompound.getFloat("max").orElse(0f);
+        }
+
+        private ArmorStat() {
+            this.amount = 0;
+            this.max = 0;
         }
     }
 
