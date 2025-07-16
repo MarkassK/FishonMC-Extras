@@ -50,7 +50,7 @@ public class AuctionHandler {
             if(FOMCItem.isBait(itemStack)) {
                 Bait bait = Bait.getBait(itemStack);
                 if(bait != null) {
-                    String priceLine = textList.get(textList.size() - 5).getString();
+                    String priceLine = textList.get(textList.size() - (MinecraftClient.getInstance().options.advancedItemTooltips ? 7 : 5)).getString();
                     try {
                         Number price = nf.parse(priceLine.substring(priceLine.indexOf("$") + 1));
                         float moneyPerItem = price.floatValue() / bait.counter;
@@ -62,7 +62,7 @@ public class AuctionHandler {
             } else if (FOMCItem.isLure(itemStack)) {
                 Lure lure = Lure.getLure(itemStack);
                 if(lure != null) {
-                    String priceLine = textList.get(textList.size() - 5).getString();
+                    String priceLine = textList.get(textList.size() - (MinecraftClient.getInstance().options.advancedItemTooltips ? 7 : 5)).getString();
                     try {
                         Number price = nf.parse(priceLine.substring(priceLine.indexOf("$") + 1));
                         float moneyPerItem = price.floatValue() / lure.counter;

@@ -159,7 +159,7 @@ public class OtherPlayerHandler {
             if(minecraftClient.world.getBlockState(this.previousPos).getBlock() == Blocks.WATER) {
                 BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
                 minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState().with(WATERLOGGED, Boolean.TRUE));
-            } else {
+            } else if(minecraftClient.world.getBlockState(this.previousPos).getBlock() == Blocks.AIR) {
                 minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState());
             }
         } else if(minecraftClient.world != null && targetedPlayer == null && !Objects.equals(this.previousPos, BlockPos.ofFloored(0, 0, 0))) {
