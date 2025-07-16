@@ -223,7 +223,7 @@ public class FishingRodHandler {
                 BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
                 IntProperty LEVEL_15 = Properties.LEVEL_15;
                 minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState().with(WATERLOGGED, Boolean.TRUE).with(LEVEL_15, config.fun.lightLevel));
-            } else {
+            } else if(minecraftClient.world.getBlockState(this.previousPos).getBlock() == Blocks.AIR) {
                 IntProperty LEVEL_15 = Properties.LEVEL_15;
                 minecraftClient.world.setBlockState(this.previousPos, Blocks.LIGHT.getDefaultState().with(LEVEL_15, config.fun.lightLevel));
             }
