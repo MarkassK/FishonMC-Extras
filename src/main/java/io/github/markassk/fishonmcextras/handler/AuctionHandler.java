@@ -44,7 +44,7 @@ public class AuctionHandler {
                     }
                 }
             }
-        } else if (tackleShopMenuState && textList.size() > 5 && textList.get(textList.size() - 5).getString().contains("$")) {
+        } else if (tackleShopMenuState && textList.size() > 5 && textList.get(textList.size() - (MinecraftClient.getInstance().options.advancedItemTooltips ? 7 : 5)).getString().contains("$")) {
             NumberFormat nf = NumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);
 
             if(FOMCItem.isBait(itemStack)) {

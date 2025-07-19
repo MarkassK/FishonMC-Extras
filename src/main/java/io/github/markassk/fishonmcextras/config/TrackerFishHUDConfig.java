@@ -65,6 +65,7 @@ public class TrackerFishHUDConfig {
                 public boolean showMelanistic = true;
                 public boolean showTrophy = true;
                 public boolean showFabled = false;
+                public boolean showAlternate = false;
             }
 
             @ConfigEntry.Gui.CollapsibleObject
@@ -88,6 +89,7 @@ public class TrackerFishHUDConfig {
                 public boolean showMelanistic = true;
                 public boolean showTrophy = true;
                 public boolean showFabled = false;
+                public boolean showAlternate = true;
                 @ConfigEntry.Gui.PrefixText
                 public boolean showPet = false;
                 public boolean showShard = false;

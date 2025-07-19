@@ -59,6 +59,7 @@ public enum Constant {
     MELANISTIC("melanistic", Text.literal("\uF042").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
     TROPHY("trophy", Text.literal("\uF043").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
     FABLED("fabled", Text.literal("\uF044").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
+    ALTERNATE("alternate", Text.literal("\uF098").formatted(Formatting.WHITE), Defaults.DEFAULT_COLOR),
 
     // Pet Rating
     SICKLY("sickly", Text.literal("sɪᴄᴋʟʏ").withColor(0xFF74403B), 0xFF74403B),
