@@ -46,6 +46,14 @@ public class ProfileDataHandler {
         if(profileData.lightningBottleDryStreak == 0) {
             profileData.lightningBottleDryStreak = profileData.allFishCaughtCount;
         }
+
+        if(!profileData.variantCounts.containsKey(Constant.ALTERNATE)) {
+            profileData.variantCounts.put(Constant.ALTERNATE, 0);
+        }
+
+        if(!profileData.variantDryStreak.containsKey(Constant.ALTERNATE) || (profileData.variantDryStreak.containsKey(Constant.ALTERNATE) && profileData.variantDryStreak.get(Constant.ALTERNATE) == 0) ) {
+            profileData.variantDryStreak.put(Constant.ALTERNATE, profileData.allFishCaughtCount);
+        }
     }
 
     public void onJoinServer(PlayerEntity player) {

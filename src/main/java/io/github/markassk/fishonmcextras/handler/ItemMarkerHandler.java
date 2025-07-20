@@ -46,31 +46,29 @@ public class ItemMarkerHandler {
         Constant rarity = FOMCItem.getRarity(itemStack);
         if(FOMCItem.isFish(itemStack)
                 && rarity != Constant.DEFAULT
-                && (config.itemMarker.itemSlotMarker.showFishRarityMarker || config.itemMarker.itemSlotMarker.showFishSizeMarker != FishSizeMarkerToggle.OFF)
         ) {
-            Constant size = Fish.getSize(itemStack);
+            if (config.itemMarker.itemSlotMarker.showFishRarityMarker || config.itemMarker.itemSlotMarker.showFishSizeMarker != FishSizeMarkerToggle.OFF) {
+                Constant size = Fish.getSize(itemStack);
 
-            int alpha =  ((int) 255f << 24);
-            drawContext.getMatrices().push();
-            try {
-                drawContext.getMatrices().translate(0, 0, 290);
-                if (config.itemMarker.itemSlotMarker.showFishRarityMarker) {
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, rarityMarker, x, y, 16, 16, alpha | rarity.COLOR);
-                }
+                int alpha =  ((int) 255f << 24);
+                drawContext.getMatrices().push();
+                try {
+                    drawContext.getMatrices().translate(0, 0, 290);
+                    if (config.itemMarker.itemSlotMarker.showFishRarityMarker) {
+                        drawContext.drawGuiTexture(RenderLayer::getGuiTextured, rarityMarker, x, y, 16, 16, alpha | rarity.COLOR);
+                    }
 
-                if (config.itemMarker.itemSlotMarker.showFishSizeMarker == FishSizeMarkerToggle.CHARACTER) {
-                    Text sizeChar = Text.literal(size.TAG.getString().substring(0, 1)).withColor(size.COLOR);
-                    drawContext.drawText(MinecraftClient.getInstance().textRenderer, sizeChar, x + 16 - MinecraftClient.getInstance().textRenderer.getWidth(sizeChar), y + 16 - MinecraftClient.getInstance().textRenderer.fontHeight + 1, 0xFFFFFF, true);
-                } else if(config.itemMarker.itemSlotMarker.showFishSizeMarker == FishSizeMarkerToggle.MARKER) {
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, fishSizeMarker, x, y, 16, 16, alpha | size.COLOR);
+                    if (config.itemMarker.itemSlotMarker.showFishSizeMarker == FishSizeMarkerToggle.CHARACTER) {
+                        Text sizeChar = Text.literal(size.TAG.getString().substring(0, 1)).withColor(size.COLOR);
+                        drawContext.drawText(MinecraftClient.getInstance().textRenderer, sizeChar, x + 16 - MinecraftClient.getInstance().textRenderer.getWidth(sizeChar), y + 16 - MinecraftClient.getInstance().textRenderer.fontHeight + 1, 0xFFFFFF, true);
+                    } else if(config.itemMarker.itemSlotMarker.showFishSizeMarker == FishSizeMarkerToggle.MARKER) {
+                        drawContext.drawGuiTexture(RenderLayer::getGuiTextured, fishSizeMarker, x, y, 16, 16, alpha | size.COLOR);
+                    }
+                } finally {
+                    drawContext.getMatrices().pop();
                 }
-            } finally {
-                drawContext.getMatrices().pop();
             }
-        }
-
-        // Show Rarity Marker
-        if(config.itemMarker.itemSlotMarker.showOtherRarityMarker
+        } else if (config.itemMarker.itemSlotMarker.showOtherRarityMarker
                 && rarity != Constant.DEFAULT
         ) {
             int alpha =  ((int) 255f << 24);
