@@ -73,6 +73,7 @@ public class FishTrackerHudHandler {
         int displayMelanisticCount = displayVariantCounts.getOrDefault(Constant.MELANISTIC, 0);
         int displayTrophyCount = displayVariantCounts.getOrDefault(Constant.TROPHY, 0);
         int displayFabledCount = displayVariantCounts.getOrDefault(Constant.FABLED, 0);
+        int displayAlternateCount = displayVariantCounts.getOrDefault(Constant.ALTERNATE, 0);
 
         Map<Constant, Integer> displayRarityDryStreak = profileData.rarityDryStreak;
         Map<Constant, Integer> displayFishSizeDryStreak = profileData.fishSizeDryStreak;
@@ -92,6 +93,7 @@ public class FishTrackerHudHandler {
         int displayDryStreakMelanisticCount = displayVariantDryStreak.getOrDefault(Constant.MELANISTIC, 0);
         int displayDryStreakTrophyCount = displayVariantDryStreak.getOrDefault(Constant.TROPHY, 0);
         int displayDryStreakFabledCount = displayVariantDryStreak.getOrDefault(Constant.FABLED, 0);
+        int displayDryStreakAlternateCount = displayVariantDryStreak.getOrDefault(Constant.ALTERNATE, 0);
 
         int displaySpecialCount = displayRarityCounts.getOrDefault(Constant.SPECIAL, 0);
         int displayDryStreakSpecialCount = displayRarityDryStreak.getOrDefault(Constant.SPECIAL, 0);
@@ -264,22 +266,33 @@ public class FishTrackerHudHandler {
                     textList.add(getDryStreak(displayDryStreakMythicalCount));
                 }
             }
-            if(config.fishTracker.fishTrackerToggles.rarityToggles.showSpecial) {
-                //TODO Remove after event
+            if(config.fishTracker.fishTrackerToggles.rarityToggles.showSpecial || config.fishTracker.fishTrackerToggles.variantToggles.showAlternate) {
                 textList.add(Text.empty());
 
-                textList.add(TextHelper.concat(
-                        Constant.SPECIAL.TAG,
-                        Text.literal(" "),
-                        Text.literal(getNumber(displaySpecialCount)),
-                        getPercentage(displaySpecialCount, displayFishCaughtCount)
-                ));
-                if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showSpecial){
-                    textList.add(getDryStreak(displayDryStreakSpecialCount));
+                if(config.fishTracker.fishTrackerToggles.rarityToggles.showSpecial) {
+                    textList.add(TextHelper.concat(
+                            Constant.SPECIAL.TAG,
+                            Text.literal(" "),
+                            Text.literal(getNumber(displaySpecialCount)),
+                            getPercentage(displaySpecialCount, displayFishCaughtCount)
+                    ));
+                    if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showSpecial){
+                        textList.add(getDryStreak(displayDryStreakSpecialCount));
+                    }
+                }
+
+                if(config.fishTracker.fishTrackerToggles.variantToggles.showAlternate) {
+                    textList.add(TextHelper.concat(
+                            Constant.ALTERNATE.TAG,
+                            Text.literal(" "),
+                            Text.literal(getNumber(displayAlternateCount)),
+                            getPercentage(displayAlternateCount, displayFishCaughtCount)
+                    ));
+                    if(config.fishTracker.fishTrackerToggles.dryStreakToggles.showAlternate) {
+                        textList.add(getDryStreak(displayDryStreakAlternateCount));
+                    }
                 }
             }
-
-
         }
 
 
