@@ -29,10 +29,10 @@ public class CommandRegistry {
 
     public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(command("foe")
-                .then(command("config").executes(Command::config)
+                .then(command("config").executes(Command::config))
                 .then(command("resetsession").executes(Command::resetSession))
                 .then(command("resetdrystreak").executes(Command::resetDryStreak))
-                .then(command("reload").executes(Command::reload)))
+                .then(command("reload").executes(Command::reload))
                 .then(command("nocrew").executes(Command::noCrew))
                 .then(command("resettimer").executes(Command::resetTimer))
                 .then(command("cancelimport").executes(Command::cancelImport))
