@@ -49,7 +49,6 @@ public class InGameHudMixin {
                                 && this.titleRemainTicks > 0
                                 && (int) this.title.getString().charAt(0) > 0xE000
                                 && (int) this.title.getString().charAt(0) < 0xE999
-
                    )
                 || (
                         config.fun.biteBobber
