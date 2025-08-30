@@ -94,6 +94,7 @@ public class FOMCItem {
                     || itemStack.getItem() == Items.WHITE_DYE
                     || itemStack.getItem() == Items.BLACK_DYE
                     || itemStack.getItem() == Items.GOLD_INGOT
+                    || itemStack.getItem() == Items.ROTTEN_FLESH
                     || itemStack.getItem() == Items.PRISMARINE_SHARD;
         }
         return false;

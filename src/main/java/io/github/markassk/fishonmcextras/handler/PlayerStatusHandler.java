@@ -43,7 +43,9 @@ public class PlayerStatusHandler {
                         typingPlayers.put(uuid, spawnTypeStatusDisplay(minecraftClient, player.get().getPos()));
                     }
                 } else {
-                    minecraftClient.world.removeEntity(textDisplayEntity.getId(), Entity.RemovalReason.DISCARDED);
+                    if(textDisplayEntity != null) {
+                        minecraftClient.world.removeEntity(textDisplayEntity.getId(), Entity.RemovalReason.DISCARDED);
+                    }
                     notPresent.set(uuid);
                 }
             });
