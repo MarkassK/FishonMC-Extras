@@ -10,6 +10,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
@@ -156,7 +159,8 @@ public class Pet extends FOMCItem {
     }
 
     public static Constant getConstantFromPercent(float value) {
-        float ceilValue = Float.parseFloat(String.format("%.2f", value * 100f));
+        BigDecimal input = new BigDecimal(value);
+        float ceilValue = input.setScale(2, RoundingMode.HALF_EVEN).floatValue();
         if (ceilValue <= 20f) return Constant.SICKLY;
         else if (ceilValue < 30f) return Constant.BAD;
         else if (ceilValue < 40f) return Constant.BELOW_AVERAGE;
