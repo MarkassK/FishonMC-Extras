@@ -11,8 +11,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -101,7 +99,7 @@ public class ArmorHandler {
                 int offsetSlot = 0;
 
                 NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
-                if(nbtCompound != null && nbtCompound.contains("renderInfo", NbtElement.LIST_TYPE)) {
+                if(nbtCompound != null && nbtCompound.contains("renderInfo")) {
                     offsetSlot = 7;
                 }
 
