@@ -37,13 +37,6 @@ public class SearchBarContainerHandler {
         hoverInfo.add(Text.empty());
         hoverInfo.add(Text.literal("Operators").formatted(Formatting.BOLD, Formatting.WHITE));
         hoverInfo.addAll(Arrays.stream(Operator.values()).map(value -> TextHelper.concat(Text.literal("- ").formatted(Formatting.GRAY), value.TAG)).toList());
-//        hoverInfo.add(Text.empty());
-//        hoverInfo.add(Text.literal("Examples Search Queries").formatted(Formatting.BOLD, Formatting.GRAY));
-//        hoverInfo.add(Text.literal("quality>60").formatted(Formatting.GREEN));
-//        hoverInfo.add(Text.literal("Find armor pieces with higher than 60% quality").formatted(Formatting.GRAY, Formatting.ITALIC));
-//        hoverInfo.add(Text.empty());
-//        hoverInfo.add(Text.literal("rating<40").formatted(Formatting.GREEN));
-//        hoverInfo.add(Text.literal("Find pets with lower than 40% pet rating").formatted(Formatting.GRAY, Formatting.ITALIC));
     }
 
     public static SearchBarContainerHandler instance() {
@@ -73,7 +66,7 @@ public class SearchBarContainerHandler {
                 operator = Arrays.stream(Operator.values()).filter(value -> searchString.contains(value.OPERATOR)).findFirst().orElse(null);
                 if(searchFilter != null && operator != null) {
                     try {
-                        searchValue = Float.parseFloat(searchString.substring(searchString.indexOf(operator.OPERATOR) + 1));
+                        searchValue = Float.parseFloat(searchString.substring(searchString.indexOf(operator.OPERATOR) + operator.OPERATOR.length()));
                     } catch (NumberFormatException e) {
                         searchValue = null;
                     }
@@ -87,7 +80,7 @@ public class SearchBarContainerHandler {
                 operator = Arrays.stream(Operator.values()).filter(value -> searchString.contains(value.OPERATOR)).findFirst().orElse(null);
                 if(searchFilter != null && operator != null) {
                     try {
-                        searchValue = Float.parseFloat(searchString.substring(searchString.indexOf(operator.OPERATOR) + 1));
+                        searchValue = Float.parseFloat(searchString.substring(searchString.indexOf(operator.OPERATOR) + operator.OPERATOR.length()));
                     } catch (NumberFormatException e) {
                         searchValue = null;
                     }
@@ -112,10 +105,15 @@ public class SearchBarContainerHandler {
     }
 
     private static boolean checkValue(Operator operator, float value, float valueToMatch) {
+        double roundedValue = Math.round(value * 10.0) / 10.0;
+        double roundedValueToMatch = Math.round(valueToMatch * 10.0) / 10.0;
+
         return switch (operator) {
-            case GREATER -> value > valueToMatch;
-            case LESSER -> value < valueToMatch;
-            case EQUAL -> value == valueToMatch;
+            case GREATERAND -> roundedValue >= roundedValueToMatch;
+            case LESSERAND -> roundedValue <= roundedValueToMatch;
+            case GREATER -> roundedValue > roundedValueToMatch;
+            case LESSER -> roundedValue < roundedValueToMatch;
+            case EQUAL -> roundedValue == roundedValueToMatch;
         };
     }
 
@@ -123,8 +121,8 @@ public class SearchBarContainerHandler {
         QUALITY("quality", TextHelper.concat(Text.literal("quality ").formatted(Formatting.GREEN), Text.literal("quality of armor").formatted(Formatting.ITALIC, Formatting.GRAY))), // armor quality
         LEVEL("level", TextHelper.concat(Text.literal("level ").formatted(Formatting.GREEN), Text.literal("level of pet").formatted(Formatting.ITALIC, Formatting.GRAY))), // pet level
         RATING("rating", TextHelper.concat(Text.literal("rating ").formatted(Formatting.GREEN), Text.literal("pet rating percentage").formatted(Formatting.ITALIC, Formatting.GRAY))), // pet rating
-        LUCK("luck", TextHelper.concat(Text.literal("luck ").formatted(Formatting.GREEN), Text.literal("total luck on pet and armor").formatted(Formatting.ITALIC, Formatting.GRAY))), // pet/armor luck
-        SCALE("scale", TextHelper.concat(Text.literal("scale ").formatted(Formatting.GREEN), Text.literal("total scale on pet and armor").formatted(Formatting.ITALIC, Formatting.GRAY))), // pet/scale
+        LUCK("luck", TextHelper.concat(Text.literal("luck ").formatted(Formatting.GREEN), Text.literal("total luck on pet or armor").formatted(Formatting.ITALIC, Formatting.GRAY))), // pet/armor luck
+        SCALE("scale", TextHelper.concat(Text.literal("scale ").formatted(Formatting.GREEN), Text.literal("total scale on pet or armor").formatted(Formatting.ITALIC, Formatting.GRAY))), // pet/scale
         ;
 
         public final String KEYWORD;
@@ -137,6 +135,8 @@ public class SearchBarContainerHandler {
     }
 
     public enum Operator {
+        GREATERAND(">=", TextHelper.concat(Text.literal(">= ").formatted(Formatting.GREEN), Text.literal("larger and equal to").formatted(Formatting.ITALIC, Formatting.GRAY))),
+        LESSERAND("<=", TextHelper.concat(Text.literal("<= ").formatted(Formatting.GREEN), Text.literal("lesser and equal to").formatted(Formatting.ITALIC, Formatting.GRAY))),
         GREATER(">", TextHelper.concat(Text.literal("> ").formatted(Formatting.GREEN), Text.literal("larger than").formatted(Formatting.ITALIC, Formatting.GRAY))),
         LESSER("<", TextHelper.concat(Text.literal("< ").formatted(Formatting.GREEN), Text.literal("less than").formatted(Formatting.ITALIC, Formatting.GRAY))),
         EQUAL("==", TextHelper.concat(Text.literal("== ").formatted(Formatting.GREEN), Text.literal("equal to").formatted(Formatting.ITALIC, Formatting.GRAY)))
