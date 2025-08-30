@@ -86,6 +86,6 @@ public class QuestTrackerHudHandler {
     }
 
     public Text getTitle() {
-        return Text.literal("ǫᴜᴇѕᴛѕ").formatted(Formatting.BOLD);
+        return Text.literal("ꞯᴜᴇѕᴛѕ").formatted(Formatting.BOLD);
     }
 }

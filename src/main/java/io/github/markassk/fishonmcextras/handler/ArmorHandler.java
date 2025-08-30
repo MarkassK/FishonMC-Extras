@@ -4,11 +4,15 @@ import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
 import io.github.markassk.fishonmcextras.FOMC.Types.Armor;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.util.ItemStackHelper;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -93,16 +97,23 @@ public class ArmorHandler {
     private void appendTooltipArmorRoll(List<Text> textList, ItemStack itemStack) {
         if(itemStack.getItem() == Items.LEATHER_CHESTPLATE || itemStack.getItem() == Items.LEATHER_BOOTS || itemStack.getItem() == Items.LEATHER_LEGGINGS) {
             if(KeybindHandler.instance().showExtraInfo) {
+                int offsetSlot = 0;
+
+                NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
+                if(nbtCompound != null && nbtCompound.contains("renderInfo", NbtElement.LIST_TYPE)) {
+                    offsetSlot = 7;
+                }
+
                 Armor armor = Armor.getArmor(itemStack);
                 if(armor != null && armor.identified) {
                     Text emptyLine = getTextRarity(armor.rarity).TAG;
 
                     int slot = textList.size() - (MinecraftClient.getInstance().options.advancedItemTooltips ? 9 : 7);
-                    if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(slot, 4, armor, emptyLine, textList);
-                    if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(slot, 3, armor, emptyLine, textList);
-                    if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(slot, 2, armor, emptyLine, textList);
-                    if(armor.armorBonuses.get(1).rolled) insertArmorRollTooltip(slot, 1, armor, emptyLine, textList);
-                    if(armor.armorBonuses.get(0).rolled) insertArmorRollTooltip(slot, 0, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(4).rolled) insertArmorRollTooltip(slot - offsetSlot, 4, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(3).rolled) insertArmorRollTooltip(slot - offsetSlot, 3, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(2).rolled) insertArmorRollTooltip(slot - offsetSlot, 2, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(1).rolled) insertArmorRollTooltip(slot - offsetSlot, 1, armor, emptyLine, textList);
+                    if(armor.armorBonuses.get(0).rolled) insertArmorRollTooltip(slot - offsetSlot, 0, armor, emptyLine, textList);
                 }
             }
         }

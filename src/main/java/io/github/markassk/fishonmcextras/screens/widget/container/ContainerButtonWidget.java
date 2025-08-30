@@ -27,6 +27,13 @@ public class ContainerButtonWidget extends ClickableWidget {
         this.clickCallback = clickCallback;
     }
 
+    public ContainerButtonWidget(int x, int y, Text message, @Nullable Tooltip tooltip) {
+        super(x, y, 22, 22, message);
+        this.textRenderer = MinecraftClient.getInstance().textRenderer;
+        this.setTooltip(tooltip);
+        this.clickCallback = null;
+    }
+
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         context.getMatrices().push();
@@ -39,8 +46,6 @@ public class ContainerButtonWidget extends ClickableWidget {
         } finally {
             context.getMatrices().pop();
         }
-
-
     }
 
     @Override
@@ -50,8 +55,10 @@ public class ContainerButtonWidget extends ClickableWidget {
     @Override
     public void onClick(double mouseX, double mouseY) {
         super.onClick(mouseX, mouseY);
-        this.clickCallback.onClick(this);
-        this.setMessage(Text.literal("...").formatted(Formatting.GRAY));
+        if(clickCallback != null) {
+            this.clickCallback.onClick(this);
+            this.setMessage(Text.literal("...").formatted(Formatting.GRAY));
+        }
     }
 
     public interface ClickCallback {
