@@ -3,7 +3,9 @@ package io.github.markassk.fishonmcextras.mixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ReconfiguringScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,10 +38,10 @@ public abstract class ReconfiguringMixin extends Screen {
             }
 
             // Reconnect instantly
-            net.minecraft.client.network.ServerAddress addr =
-                    net.minecraft.client.network.ServerAddress.parse(last.address);
+            ServerAddress addr =
+                    ServerAddress.parse(last.address);
 
-            net.minecraft.client.gui.screen.multiplayer.ConnectScreen.connect(
+            ConnectScreen.connect(
                     this, client, addr, last, false, null
             );
         }).dimensions(this.width / 2 - 100, this.height - 40, 200, 20).build();
