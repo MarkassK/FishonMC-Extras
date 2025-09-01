@@ -21,6 +21,7 @@
     "PlayerListHudAccessor",
     "PlayerListHudMixin",
     "RecipeBookScreenAccessor",
-    "TextFieldWidgetMixin"
+    "TextFieldWidgetMixin",
+    "ReconfiguringMixin"
   ]
 }
