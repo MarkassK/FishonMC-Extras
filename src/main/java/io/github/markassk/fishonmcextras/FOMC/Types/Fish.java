@@ -79,6 +79,7 @@ public class Fish extends FOMCItem {
                     || itemStack.getItem() == Items.BLACK_DYE
                     || itemStack.getItem() == Items.GOLD_INGOT
                     || itemStack.getItem() == Items.PRISMARINE_SHARD
+                    || itemStack.getItem() == Items.DRIED_KELP
             ) {
                 String line = Objects.requireNonNull(itemStack.getComponents().get(DataComponentTypes.LORE)).lines().get(15).getString();
                 return Fish.getFish(itemStack, Defaults.ItemTypes.FISH, line.substring(line.lastIndexOf(" ") + 1));
