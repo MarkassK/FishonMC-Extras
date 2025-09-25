@@ -4,6 +4,7 @@ import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.Types.Fish;
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.handler.packet.PacketHandler;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -64,17 +65,20 @@ public class FishCatchHandler  {
                             continue;
                         }
                         this.processStack(stack, minecraftClient);
+                        
                     }
                 }
 
                 if(FullInventoryHandler.instance().slotsLeft == 0) {
                     this.isFull = true;
                 }
+                
+                
 
             } else {
                 this.fishFound = false;
                 this.isFull = false;
-                this.updateTrackedFish(minecraftClient.player);
+                this.updateTrackedFish(minecraftClient.player);   
                 FishOnMCExtras.LOGGER.error("[FoE] Fish not found");
             }
         }
@@ -133,7 +137,7 @@ public class FishCatchHandler  {
         }
     }
 
-    public void onReceiveMessage(Text text) {
+    public boolean onReceiveMessage(Text text) {
         if(text.getString().startsWith("PET DROP! You pulled")) {
             ProfileDataHandler.instance().updatePetCaughtStatsOnCatch();
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Pet");
@@ -148,6 +152,8 @@ public class FishCatchHandler  {
             ProfileDataHandler.instance().updateLightningBottleCaughtStatsOnCatch();
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
         }
+        
+        return false; // Don't suppress any messages
     }
 
     private boolean isFish(char character) {
@@ -172,12 +178,34 @@ public class FishCatchHandler  {
             QuestHandler.instance().updateQuest(fish);
             PetEquipHandler.instance().updatePet(minecraftClient.player);
 
+            if (config.contestTracker.showFullContest && config.contestTracker.refreshOnContestPB) {
+                // Check if caught fish is for contest and refresh if it's heavier
+                var typecheck = ContestHandler.instance().type.replace("Heaviest", "").trim().toLowerCase();
+                ContestHandler contestHandler = ContestHandler.instance();
+                if (contestHandler.isContest && typecheck.contains(fish.groupId.toLowerCase())
+                        && (fish.weight > contestHandler.biggestFish)) {
+                    ContestHandler.instance().biggestFish = fish.weight;
+                    ContestHandler.instance().setRefreshReason("personal_best");
+                    minecraftClient.player.networkHandler.sendChatCommand("contest");
+                    
+                    // Send packet to notify other players of contest PB
+                    if(config.contestTracker.recieveLocalPBs) {
+                        PacketHandler.CONTEST_PB_PACKET.sendContestPBPacket(fish.groupId, minecraftClient.player.getName().getString());
+                    }
+                    
+                    FishOnMCExtras.LOGGER.info("[FoE] Refreshed Contest Stats - New heaviest fish: {} lbs",
+                            fish.weight);
+                }
+            }
+
             this.fishFound = false;
             this.isFull = false;
             this.updateTrackedFish(minecraftClient.player);
             this.title = Text.empty();
             this.subtitle = Text.empty();
+            
         }
+        
     }
 
     private void updateTrackedFish(PlayerEntity player) {

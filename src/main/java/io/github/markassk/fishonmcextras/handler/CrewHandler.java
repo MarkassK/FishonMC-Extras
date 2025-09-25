@@ -121,7 +121,7 @@ public class CrewHandler {
         this.crewState = CrewState.NOTINITIALIZED;
     }
 
-    public void onReceiveMessage(Text message) {
+    public boolean onReceiveMessage(Text message) {
         if(message.getString().contains("CREWS » You left the crew")) {
             setNoCrew();
         } else if(message.getString().contains("CREWS » You have joined")) {
@@ -133,6 +133,8 @@ public class CrewHandler {
         } else if (message.getString().startsWith("CREWS » Crew Chat has been disabled")) {
             ProfileDataHandler.instance().profileData.isInCrewChat = false;
         }
+        
+        return false; // Don't suppress any messages
     }
 
     public void renderCrewChatMarker(DrawContext context, TextRenderer textRenderer, int xCoord, int yCoord) {

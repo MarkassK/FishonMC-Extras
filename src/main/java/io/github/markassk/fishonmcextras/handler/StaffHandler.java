@@ -15,11 +15,13 @@ public class StaffHandler {
     }
 
 
-    public void onReceiveMessage(Text text) {
+    public boolean onReceiveMessage(Text text) {
         if(text.getString().startsWith("SayanVanish | Your vanish state has been updated to ON")) {
             this.isVanished = true;
         } else if (text.getString().startsWith("SayanVanish | Your vanish state has been updated to OFF")) {
             this.isVanished = false;
         }
+        
+        return false; // Don't suppress any messages
     }
 }

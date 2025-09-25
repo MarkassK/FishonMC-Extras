@@ -41,7 +41,7 @@ public class TimerHandler {
         this.contestEndTimer = contestEndTime - ((currentTime + contestEndOffset) % contestEndTime);
     }
 
-    public void onReceiveMessage(Text text) {
+    public boolean onReceiveMessage(Text text) {
         if(text.getString().startsWith("TACKLE SHOP »") && text.getString().contains("Tackle items restocked!")) {
             baitShopAlertTime = System.currentTimeMillis();
 
@@ -50,5 +50,7 @@ public class TimerHandler {
                 AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
             }
         }
+        
+        return false; // Don't suppress any messages
     }
 }

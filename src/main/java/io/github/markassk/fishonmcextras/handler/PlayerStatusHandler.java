@@ -68,7 +68,7 @@ public class PlayerStatusHandler {
         }
     }
 
-    public void onReceiveMessage(Text text) {
+    public boolean onReceiveMessage(Text text) {
         if(config.playerStatus.showIsTyping && MinecraftClient.getInstance().world != null && !MinecraftClient.getInstance().options.hudHidden) {
             String textString = text.getString();
             if(textString.startsWith("!")) {
@@ -77,6 +77,8 @@ public class PlayerStatusHandler {
                 sendBubble(textString, Text.literal(textString.substring(textString.indexOf("»") + 2)).withColor(0xbcf4bc));
             }
         }
+        
+        return false; // Don't suppress any messages
     }
 
 

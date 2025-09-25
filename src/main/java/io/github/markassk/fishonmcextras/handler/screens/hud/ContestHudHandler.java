@@ -61,52 +61,107 @@ public class ContestHudHandler {
                         Text.literal("ʟᴏᴄᴀᴛɪᴏɴ: ").formatted(Formatting.GRAY),
                         location
                 ));
-                if (Objects.equals(Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location)) == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.ID : Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location).ID), BossBarHandler.instance().currentLocation.ID)) {
-                    if(!Objects.equals(ContestHandler.instance().firstName, "")) {
+                // Check if location matches
+                boolean locationMatches = Objects.equals(Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location)) == Constant.SPAWNHUB ? Constant.CYPRESS_LAKE.ID : Objects.requireNonNull(Constant.valueOfTag(ContestHandler.instance().location).ID), BossBarHandler.instance().currentLocation.ID);
+                
+                // Show warning if location doesn't match
+                if (!locationMatches) {
+                    textList.add(TextHelper.concat(
+                            Text.literal("⚠ ").formatted(Formatting.YELLOW),
+                            Text.literal("ɴᴏᴛ ɪɴ ᴀᴄᴛɪᴠᴇ ᴀʀᴇᴀ").formatted(Formatting.YELLOW)
+                    ));
+                }
+                
+                textList.add(Text.empty());
+                // First place
+                if(!Objects.equals(ContestHandler.instance().firstName, "")) {
+                    textList.add(TextHelper.concat(
+                            Text.literal("\uF060 ").formatted(Formatting.WHITE),
+                            Text.literal(ContestHandler.instance().firstName).formatted(Formatting.WHITE),
+                            Text.literal(" (").formatted(Formatting.DARK_GRAY),
+                            Text.literal(ContestHandler.instance().firstStat).formatted(Formatting.GRAY),
+                            Text.literal(")").formatted(Formatting.DARK_GRAY)
+                    ));
+                } else {
+                    textList.add(TextHelper.concat(
+                            Text.literal("\uF060 ").formatted(Formatting.WHITE),
+                            Text.literal("ᴇᴍᴘᴛʏ").formatted(Formatting.GRAY)
+                    ));
+                }
+                // Second place
+                if(!Objects.equals(ContestHandler.instance().secondName, "")) {
+                    textList.add(TextHelper.concat(
+                            Text.literal("\uF061 ").formatted(Formatting.WHITE),
+                            Text.literal(ContestHandler.instance().secondName).formatted(Formatting.WHITE),
+                            Text.literal(" (").formatted(Formatting.DARK_GRAY),
+                            Text.literal(ContestHandler.instance().secondStat).formatted(Formatting.GRAY),
+                            Text.literal(")").formatted(Formatting.DARK_GRAY)
+                    ));
+                } else {
+                    textList.add(TextHelper.concat(
+                            Text.literal("\uF061 ").formatted(Formatting.WHITE),
+                            Text.literal("ᴇᴍᴘᴛʏ").formatted(Formatting.GRAY)
+                    ));
+                }
+                // Third place
+                if(!Objects.equals(ContestHandler.instance().thirdName, "")) {
+                    textList.add(TextHelper.concat(
+                            Text.literal("\uF062 ").formatted(Formatting.WHITE),
+                            Text.literal(ContestHandler.instance().thirdName).formatted(Formatting.WHITE),
+                            Text.literal(" (").formatted(Formatting.DARK_GRAY),
+                            Text.literal(ContestHandler.instance().thirdStat).formatted(Formatting.GRAY),
+                            Text.literal(")").formatted(Formatting.DARK_GRAY)
+                    ));
+                } else {
+                    textList.add(TextHelper.concat(
+                            Text.literal("\uF062 ").formatted(Formatting.WHITE),
+                            Text.literal("ᴇᴍᴘᴛʏ").formatted(Formatting.GRAY)
+                    ));
+                }
+                if(!Objects.equals(ContestHandler.instance().firstName, "")) {
+                    if (MinecraftClient.getInstance().player != null) {
+                        // Add spacing before player rank
                         textList.add(Text.empty());
-                        textList.add(TextHelper.concat(
-                                Text.literal("\uF060 ").formatted(Formatting.WHITE),
-                                Text.literal(ContestHandler.instance().firstName).formatted(Formatting.WHITE),
-                                Text.literal(" (").formatted(Formatting.DARK_GRAY),
-                                Text.literal(ContestHandler.instance().firstStat).formatted(Formatting.GRAY),
-                                Text.literal(")").formatted(Formatting.DARK_GRAY)
-                        ));
-                    }
-                    if(!Objects.equals(ContestHandler.instance().secondName, "")) {
-                        textList.add(TextHelper.concat(
-                                Text.literal("\uF061 ").formatted(Formatting.WHITE),
-                                Text.literal(ContestHandler.instance().secondName).formatted(Formatting.WHITE),
-                                Text.literal(" (").formatted(Formatting.DARK_GRAY),
-                                Text.literal(ContestHandler.instance().secondStat).formatted(Formatting.GRAY),
-                                Text.literal(")").formatted(Formatting.DARK_GRAY)
-                        ));
-                    }
-                    if(!Objects.equals(ContestHandler.instance().thirdName, "")) {
-                        textList.add(TextHelper.concat(
-                                Text.literal("\uF062 ").formatted(Formatting.WHITE),
-                                Text.literal(ContestHandler.instance().thirdName).formatted(Formatting.WHITE),
-                                Text.literal(" (").formatted(Formatting.DARK_GRAY),
-                                Text.literal(ContestHandler.instance().thirdStat).formatted(Formatting.GRAY),
-                                Text.literal(")").formatted(Formatting.DARK_GRAY)
-                        ));
-                    }
-                    if(!Objects.equals(ContestHandler.instance().firstName, "")) {
-                        if (MinecraftClient.getInstance().player != null) {
-                            textList.add(TextHelper.concat(
-                                    Text.literal(ContestHandler.instance().rank).formatted(Formatting.GRAY),
-                                    Text.literal(" " + MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.YELLOW),
-                                    !Objects.equals(ContestHandler.instance().rankStat, "") ? Text.literal(" (").formatted(Formatting.DARK_GRAY).append(Text.literal(ContestHandler.instance().rankStat).formatted(Formatting.GRAY)).append(Text.literal(")").formatted(Formatting.DARK_GRAY)) : Text.empty()
-                            ));
+                        
+                        // Check if player is in top 3 and get appropriate indicator
+                        String playerRank = ContestHandler.instance().rank;
+                        Text rankIndicator;
+                        Text playerNameColor;
+                        
+                        if (playerRank.equals("#1") || playerRank.equals("1")) {
+                            rankIndicator = Text.literal("👑 ").formatted(Formatting.GOLD);
+                            playerNameColor = Text.literal(MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.GOLD);
+                        } else if (playerRank.equals("#2") || playerRank.equals("2")) {
+                            rankIndicator = Text.literal("🥈 ").formatted(Formatting.GRAY);
+                            playerNameColor = Text.literal(MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.AQUA);
+                        } else if (playerRank.equals("#3") || playerRank.equals("3")) {
+                            rankIndicator = Text.literal("🥉 ").formatted(Formatting.GOLD);
+                            playerNameColor = Text.literal(MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.YELLOW);
+                        } else {
+                            rankIndicator = Text.literal("🫡 ").formatted(Formatting.DARK_GRAY);
+                            playerNameColor = Text.literal(MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.YELLOW);
                         }
-                        textList.add(Text.empty());
-                    }
-                    if(ContestHandler.instance().isContest) {
+                        
                         textList.add(TextHelper.concat(
-                                Text.literal("ʟᴀѕᴛ ᴜᴘᴅᴀᴛᴇ ᴡᴀѕ ").formatted(Formatting.GRAY),
-                                Text.literal(String.format("%02d:%02d", lastUpdatedMinutes, lastUpdatedSeconds)).formatted(Formatting.GREEN),
-                                Text.literal(" ᴀɢᴏ").formatted(Formatting.GRAY)
+                                Text.literal("ʏᴏᴜʀ ʀᴀɴᴋ: ").formatted(Formatting.GRAY),
+                                rankIndicator,
+                                Text.literal(playerRank).formatted(Formatting.WHITE)
                         ));
+                        textList.add(!Objects.equals(ContestHandler.instance().rankStat, "") ? TextHelper.concat(
+                                playerNameColor,
+                                Text.literal(" (").formatted(Formatting.DARK_GRAY),
+                                Text.literal(ContestHandler.instance().rankStat).formatted(Formatting.GRAY),
+                                Text.literal(")").formatted(Formatting.DARK_GRAY)
+                        ) : Text.empty());
                     }
+                    textList.add(Text.empty());
+                }
+                if(ContestHandler.instance().isContest) {
+                    textList.add(TextHelper.concat(
+                            Text.literal("ʟᴀѕᴛ ᴜᴘᴅᴀᴛᴇ ᴡᴀѕ ").formatted(Formatting.GRAY),
+                            Text.literal(String.format("%02d:%02d", lastUpdatedMinutes, lastUpdatedSeconds)).formatted(Formatting.GREEN),
+                            Text.literal(" ᴀɢᴏ").formatted(Formatting.GRAY)
+                    ));
                 }
             } else if (config.contestTracker.showFullContest) {
                 textList.add(TextHelper.concat(

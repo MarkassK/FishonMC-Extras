@@ -7,6 +7,10 @@ public class TrackerContestHUDConfig {
         public boolean showContest = true;
         @ConfigEntry.Gui.Tooltip
         public boolean showFullContest = true;
+        @ConfigEntry.Gui.Tooltip
+        public boolean refreshOnContestPB = true;
+        @ConfigEntry.Gui.Tooltip
+        public boolean recieveLocalPBs = true;
         public boolean rightAlignment = false;
         @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
         public int backgroundOpacity = 40;

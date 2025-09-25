@@ -55,7 +55,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ClientPlayConnectionEvents.JOIN.register(this::onJoin);
         ClientPlayConnectionEvents.DISCONNECT.register(this::onLeave);
         ClientTickEvents.END_CLIENT_TICK.register(this::onEndClientTick);
-        ClientReceiveMessageEvents.GAME.register(this::receiveGameMessage);
+        ClientReceiveMessageEvents.ALLOW_GAME.register(this::allowGameMessage);
         ClientReceiveMessageEvents.MODIFY_GAME.register(this::modifyGameMessage);
         ItemTooltipCallback.EVENT.register(this::onItemTooltipCallback);
         ScreenEvents.BEFORE_INIT.register(this::beforeScreenInit);
@@ -134,20 +134,27 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         }
     }
 
-    private void receiveGameMessage(Text text, boolean b) {
+    private boolean allowGameMessage(Text text, boolean overlay) {
         if(LoadingHandler.instance().isOnServer) {
-            PetEquipHandler.instance().onReceiveMessage(text);
-            ContestHandler.instance().onReceiveMessage(text);
-            CrewHandler.instance().onReceiveMessage(text);
-            FishCatchHandler.instance().onReceiveMessage(text);
-            StaffHandler.instance().onReceiveMessage(text);
-            PlayerStatusHandler.instance().onReceiveMessage(text);
-            TimerHandler.instance().onReceiveMessage(text);
+            // Check if any handler wants to suppress this message
+            if (PetEquipHandler.instance().onReceiveMessage(text) ||
+                ContestHandler.instance().onReceiveMessage(text) ||
+                CrewHandler.instance().onReceiveMessage(text) ||
+                FishCatchHandler.instance().onReceiveMessage(text) ||
+                StaffHandler.instance().onReceiveMessage(text) ||
+                PlayerStatusHandler.instance().onReceiveMessage(text) ||
+                TimerHandler.instance().onReceiveMessage(text)) {
+                FishOnMCExtras.LOGGER.info("[FoE] Suppressing message: {}", text.getString());
+                return false; // Return false to completely suppress the message
+            }
         }
+        return true; // Allow the message to be displayed
     }
 
-    private Text modifyGameMessage(Text text, boolean b) {
+    private Text modifyGameMessage(Text text, boolean overlay) {
         if(LoadingHandler.instance().isOnServer) {
+            // Apply modifications to messages that are allowed
+            text = ContestHandler.instance().modifyMessage(text);
             text = PetTooltipHandler.instance().appendTooltip(text);
             text = ChatScreenHandler.instance().appendTooltip(text);
         }
