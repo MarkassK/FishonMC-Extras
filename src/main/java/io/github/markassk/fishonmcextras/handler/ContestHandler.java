@@ -79,6 +79,13 @@ public class ContestHandler {
 
         // Replace "FISHING CONTEST RANKINGS" with custom message
         if (messageText.contains("FISHING CONTEST RANKINGS")) {
+
+            if (messageText.contains("FISHING CONTEST RANKINGS (ENDED)")) {
+                this.isFilteringMessages = false;
+                this.refreshReason = "contest_ended";
+                this.hasEnded = true;
+            }
+
             this.lastUpdated = System.currentTimeMillis();
             this.isContest = true;
 
@@ -144,9 +151,7 @@ public class ContestHandler {
             suppressMessage = true;
         }
 
-        // Process other contest-related messages when not filtering
-        if (messageText.contains("FISHING CONTEST RANKINGS (ENDED)"))
-            this.hasEnded = true;
+    
         if (messageText.startsWith("Type: "))
             this.type = messageText.substring(messageText.indexOf(": ") + 2);
         if (messageText.startsWith("Location: "))
