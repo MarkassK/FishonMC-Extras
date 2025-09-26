@@ -25,6 +25,8 @@ public class ContestHandler {
     public float biggestFish = 0.0f;
     public boolean isReset = true;
     public String refreshReason = "";
+    public float otherPlayerFishSize = 0.0f;
+    public String otherPlayerName = "";
 
     private boolean hasEnded = false;
     private boolean isFilteringMessages = false;
@@ -78,13 +80,7 @@ public class ContestHandler {
         String messageText = message.getString();
 
         // Replace "FISHING CONTEST RANKINGS" with custom message
-        if (messageText.contains("FISHING CONTEST RANKINGS")) {
-
-            if (messageText.contains("FISHING CONTEST RANKINGS (ENDED)")) {
-                this.isFilteringMessages = false;
-                this.refreshReason = "contest_ended";
-                this.hasEnded = true;
-            }
+        if (messageText.contains("FISHING CONTEST RANKINGS")) {          
 
             this.lastUpdated = System.currentTimeMillis();
             this.isContest = true;
@@ -95,8 +91,17 @@ public class ContestHandler {
                 // Return contextual message based on refresh reason
                 String contextualMessage = getContextualMessage();
                 this.refreshReason = "";
+
+                if (messageText.contains("FISHING CONTEST RANKINGS (ENDED)")) {
+                    this.isFilteringMessages = false;
+                    this.refreshReason = "contest_ended";
+                    this.hasEnded = true;
+                }
+
                 return Text.literal(contextualMessage);
             }
+
+            
         }
 
         return message; // Return original message if no modification needed
@@ -108,8 +113,27 @@ public class ContestHandler {
         }
 
         if (this.refreshReason.startsWith("other_player_pb:")) {
-            String playerName = this.refreshReason.substring("other_player_pb:".length());
-            return playerName + " got a contest PB!";
+            String[] parts = this.refreshReason.split(":", 3);
+            if (parts.length >= 3) {
+                String playerName = parts[1];
+                float fishSize = Float.parseFloat(parts[2]);
+                this.otherPlayerFishSize = fishSize;
+                this.otherPlayerName = playerName;
+                
+                String baseMessage = playerName + " got a contest PB of " + fishSize + " lbs!";
+                
+                // Check ranking against current leaderboard data
+                String rankingInfo = getPlayerRanking();
+                if (rankingInfo != null) {
+                    return baseMessage + " (" + rankingInfo + ")";
+                } else {
+                    return baseMessage + " (still not ranked)";
+                }
+            } else {
+                String playerName = this.refreshReason.substring("other_player_pb:".length());
+                this.otherPlayerName = playerName;
+                return playerName + " got a contest PB! (still not ranked)";
+            }
         }
 
         switch (this.refreshReason) {
@@ -117,6 +141,8 @@ public class ContestHandler {
                 return "New Contest Personal Best! Leaderboard refreshed";
             case "manual_refresh":
                 return "Manually refreshed Contest Stats";
+            case "contest_ended":
+                return "Displaying Contest Results:";
             default:
                 return "Contest stats refreshed: " + this.refreshReason;
         }
@@ -180,6 +206,70 @@ public class ContestHandler {
         return suppressMessage;
     }
 
+    private String getPlayerRanking() {
+        if (this.otherPlayerName.isEmpty() || this.otherPlayerFishSize <= 0) return null;
+        
+        float pbWeight = this.otherPlayerFishSize;
+        
+        // Parse current leaderboard weights for comparison
+        float firstWeight = parseWeightFromStat(this.firstStat);
+        float secondWeight = parseWeightFromStat(this.secondStat);
+        float thirdWeight = parseWeightFromStat(this.thirdStat);
+        
+        // Check if player is already in a position and their PB doesn't change it
+        if (!this.firstName.isEmpty() && this.firstName.equals(this.otherPlayerName)) {
+            // Player is already 1st, check if PB improves their position
+            if (pbWeight > firstWeight) {
+                return "now in 1st"; // Improved their 1st place
+            } else {
+                return "unchanged"; // Still 1st but didn't improve
+            }
+        } else if (!this.secondName.isEmpty() && this.secondName.equals(this.otherPlayerName)) {
+            // Player is already 2nd, check if PB improves their position
+            if (pbWeight > firstWeight) {
+                return "now in 1st"; // Moved up to 1st
+            } else if (pbWeight > secondWeight) {
+                return "now in 2nd"; // Improved their 2nd place
+            } else {
+                return "unchanged"; // Still 2nd but didn't improve
+            }
+        } else if (!this.thirdName.isEmpty() && this.thirdName.equals(this.otherPlayerName)) {
+            // Player is already 3rd, check if PB improves their position
+            if (pbWeight > firstWeight) {
+                return "now in 1st"; // Moved up to 1st
+            } else if (pbWeight > secondWeight) {
+                return "now in 2nd"; // Moved up to 2nd
+            } else if (pbWeight > thirdWeight) {
+                return "now in 3rd"; // Improved their 3rd place
+            } else {
+                return "unchanged"; // Still 3rd but didn't improve
+            }
+        }
+        
+        // Player is not currently in top 3, check if PB gets them into top 3
+        if (firstWeight > 0 && pbWeight > firstWeight) {
+            return "now in 1st";
+        } else if (secondWeight > 0 && pbWeight > secondWeight && (firstWeight <= 0 || pbWeight <= firstWeight)) {
+            return "now in 2nd";
+        } else if (thirdWeight > 0 && pbWeight > thirdWeight && (secondWeight <= 0 || pbWeight <= secondWeight)) {
+            return "now in 3rd";
+        }
+        
+        return null; // Player is not in top 3 and PB doesn't change that
+    }
+    
+    private float parseWeightFromStat(String stat) {
+        if (stat == null || stat.isEmpty()) return 0.0f;
+        
+        try {
+            // Remove "lb" suffix and parse as float
+            String weightStr = stat.replace("lb", "").trim();
+            return Float.parseFloat(weightStr);
+        } catch (NumberFormatException e) {
+            return 0.0f;
+        }
+    }
+
     private void reset() {
         this.type = "";
         this.location = "";
@@ -194,6 +284,7 @@ public class ContestHandler {
         this.biggestFish = 0.0f;
         this.isFilteringMessages = false;
         this.refreshReason = "";
-
+        this.otherPlayerFishSize = 0.0f;
+        this.otherPlayerName = "";
     }
 }

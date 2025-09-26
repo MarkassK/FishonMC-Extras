@@ -85,7 +85,7 @@ public class ContestHudHandler {
                 } else {
                     textList.add(TextHelper.concat(
                             Text.literal("\uF060 ").formatted(Formatting.WHITE),
-                            Text.literal("ᴇᴍᴘᴛʏ").formatted(Formatting.GRAY)
+                            Text.literal("ᴜɴᴄʟᴀɪᴍᴇᴅ").formatted(Formatting.GRAY)
                     ));
                 }
                 // Second place
@@ -100,7 +100,7 @@ public class ContestHudHandler {
                 } else {
                     textList.add(TextHelper.concat(
                             Text.literal("\uF061 ").formatted(Formatting.WHITE),
-                            Text.literal("ᴇᴍᴘᴛʏ").formatted(Formatting.GRAY)
+                            Text.literal("ᴜɴᴄʟᴀɪᴍᴇᴅ").formatted(Formatting.GRAY)
                     ));
                 }
                 // Third place
@@ -115,7 +115,7 @@ public class ContestHudHandler {
                 } else {
                     textList.add(TextHelper.concat(
                             Text.literal("\uF062 ").formatted(Formatting.WHITE),
-                            Text.literal("ᴇᴍᴘᴛʏ").formatted(Formatting.GRAY)
+                            Text.literal("ᴜɴᴄʟᴀɪᴍᴇᴅ").formatted(Formatting.GRAY)
                     ));
                 }
                 if(!Objects.equals(ContestHandler.instance().firstName, "")) {

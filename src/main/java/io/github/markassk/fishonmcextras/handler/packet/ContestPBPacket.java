@@ -20,13 +20,13 @@ public class ContestPBPacket {
 
     protected ContestPBPacket() {}
 
-    public void sendContestPBPacket(String fishGroupId, String userName) {
+    public void sendContestPBPacket(String fishGroupId, String userName, float fishSize) {
         if(MinecraftClient.getInstance().player != null) {
             try {
-                // Send notification with fish group ID and user name
-                String packetData = "contest_pb:" + fishGroupId + ":" + userName;
+                // Send notification with fish group ID, user name, and fish size
+                String packetData = "contest_pb:" + fishGroupId + ":" + userName + ":" + fishSize;
                 PacketHandler.instance().sendPacket(CONTEST_PB_NOTIFICATION_ID, packetData);
-                FishOnMCExtras.LOGGER.info("[FoE] Sent contest PB notification packet with groupId: {} and user: {}", fishGroupId, userName);
+                FishOnMCExtras.LOGGER.info("[FoE] Sent contest PB notification packet with groupId: {}, user: {}, and fish size: {} lbs", fishGroupId, userName, fishSize);
             } catch (IOException e) {
                 FishOnMCExtras.LOGGER.error("[FoE] Failed to send contest PB packet", e);
             }
@@ -42,24 +42,25 @@ public class ContestPBPacket {
                 if(type == PacketHandler.PacketType.STRING) {
                     String message = dataIn.readUTF();
                     if(message.startsWith("contest_pb:")) {
-                        // Parse the packet data: contest_pb:groupId:userName
-                        String[] parts = message.split(":", 3);
-                        if(parts.length >= 3) {
+                        // Parse the packet data: contest_pb:groupId:userName:fishSize
+                        String[] parts = message.split(":", 4);
+                        if(parts.length >= 4) {
                             String fishGroupId = parts[1];
                             String userName = parts[2];
+                            float fishSize = Math.round(Float.parseFloat(parts[3]) * 100f) / 100f;
                             
-                            FishOnMCExtras.LOGGER.info("[FoE] Received contest PB notification from {} for fish group: {}", userName, fishGroupId);
+                            FishOnMCExtras.LOGGER.info("[FoE] Received contest PB notification from {} for fish group: {} with size: {} lbs", userName, fishGroupId, fishSize);
                             
                             // Check if the fish group matches the current contest type
                             ContestHandler contestHandler = ContestHandler.instance();
                             if(contestHandler.isContest) {
                                 String contestType = contestHandler.type.replace("Heaviest", "").trim().toLowerCase();
                                 if(contestType.contains(fishGroupId.toLowerCase())) {
-                                    // Refresh contest stats when receiving PB notification for matching fish type
+                                    // Store the fish size and refresh contest stats when receiving PB notification for matching fish type
                                     if(MinecraftClient.getInstance().player != null) {
-                                        ContestHandler.instance().setRefreshReason("other_player_pb:" + userName);
+                                        ContestHandler.instance().setRefreshReason("other_player_pb:" + userName + ":" + fishSize);
                                         MinecraftClient.getInstance().player.networkHandler.sendChatCommand("contest");
-                                        FishOnMCExtras.LOGGER.info("[FoE] Refreshed contest stats due to PB notification from {} for matching fish group: {}", userName, fishGroupId);
+                                        FishOnMCExtras.LOGGER.info("[FoE] Refreshed contest stats due to PB notification from {} for matching fish group: {} with size: {} lbs", userName, fishGroupId, fishSize);
                                     }
                                 } else {
                                     FishOnMCExtras.LOGGER.info("[FoE] Contest PB notification from {} for fish group {} does not match current contest type: {}", userName, fishGroupId, contestType);
