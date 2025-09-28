@@ -2,6 +2,7 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.config.TrackerContestHUDConfig;
 import net.minecraft.text.Text;
 
 import java.util.Objects;
@@ -87,18 +88,29 @@ public class ContestHandler {
             this.lastUpdated = System.currentTimeMillis();
             this.isContest = true;
 
-            if (FishOnMCExtrasConfig.getConfig().contestTracker.showFullContest) {
+            if (FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages) {
                 this.isFilteringMessages = true;
 
                 // Return contextual message based on refresh reason
-                String contextualMessage = getContextualMessage();
                 this.refreshReason = "";
 
                 if (messageText.contains("FISHING CONTEST RANKINGS (ENDED)")) {
+                    FishOnMCExtras.LOGGER.info("[FoE] Contest ended");
                     this.isFilteringMessages = false;
                     this.refreshReason = "contest_ended";
                     this.hasEnded = true;
+                    // Return green contest ended message
+                    return Text.literal("Displaying Contest Results:")
+                            .formatted(net.minecraft.util.Formatting.GREEN);
+                } else {
+                    // Check if message contains time remaining in parentheses
+                    String timeRemaining = extractTimeRemaining(messageText);
+                    if (timeRemaining != null && this.refreshReason.isEmpty()) {
+                        // Create fancy message with green time
+                        return createFancyRefreshMessage(timeRemaining);
+                    }
                 }
+                String contextualMessage = getContextualMessage();
 
                 return Text.literal(contextualMessage);
             }
@@ -109,9 +121,34 @@ public class ContestHandler {
         return message; // Return original message if no modification needed
     }
 
+    private String extractTimeRemaining(String messageText) {
+        // Look for pattern like "FISHING CONTEST RANKINGS (10m)" or "FISHING CONTEST RANKINGS (30s)" or similar
+        if (messageText.contains("FISHING CONTEST RANKINGS (")) {
+            int startIndex = messageText.indexOf("FISHING CONTEST RANKINGS (") + "FISHING CONTEST RANKINGS (".length();
+            int endIndex = messageText.indexOf(")", startIndex);
+            if (endIndex > startIndex) {
+                String timeStr = messageText.substring(startIndex, endIndex).trim();
+                // Check if it's a time format (contains 'm' for minutes or 's' for seconds and is not "ENDED")
+                if ((timeStr.contains("m") || timeStr.contains("s")) && !timeStr.equals("ENDED")) {
+                    return timeStr;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Text createFancyRefreshMessage(String timeRemaining) {
+        // Create a fancy message with green time
+        return Text.literal("Contest refreshed by server. ⏱ (")
+                .formatted(net.minecraft.util.Formatting.GRAY)
+                .append(Text.literal(timeRemaining)
+                        .formatted(net.minecraft.util.Formatting.GREEN))
+                .append(Text.literal(")")); 
+    }
+
     private String getContextualMessage() {
         if (this.refreshReason.isEmpty()) {
-            return "Contest stats refreshed by server";
+            return "Resfreshed by server";
         }
 
         if (this.refreshReason.startsWith("other_player_pb:")) {
@@ -216,7 +253,7 @@ public class ContestHandler {
         }
 
         // Suppress all messages while filtering is active
-        if (this.isFilteringMessages && FishOnMCExtrasConfig.getConfig().contestTracker.showFullContest) {
+        if (this.isFilteringMessages && FishOnMCExtrasConfig.getConfig().contestTracker.shouldShowFullContest() && FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages) {
             suppressMessage = true;
         }
 

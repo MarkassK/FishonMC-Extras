@@ -178,7 +178,7 @@ public class FishCatchHandler  {
             QuestHandler.instance().updateQuest(fish);
             PetEquipHandler.instance().updatePet(minecraftClient.player);
 
-            if (config.contestTracker.showFullContest && config.contestTracker.refreshOnContestPB) {
+            if (config.contestTracker.shouldShowFullContest() && config.contestTracker.refreshOnContestPB) {
                 // Check if caught fish is for contest and refresh if it's heavier
                 var typecheck = ContestHandler.instance().type.replace("Heaviest", "").trim().toLowerCase();
                 ContestHandler contestHandler = ContestHandler.instance();
