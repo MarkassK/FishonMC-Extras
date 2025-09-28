@@ -42,17 +42,32 @@ public class ContestHudHandler {
 
 
         if(!ContestHandler.instance().isReset) {
-            if(ContestHandler.instance().isContest) {
-                textList.add(TextHelper.concat(
-                        Text.literal("ᴄᴏɴᴛᴇѕᴛ ᴛɪᴍᴇ ʟᴇꜰᴛ: ").formatted(Formatting.GRAY),
-                        Text.literal(String.format("%02d:%02d", timeLeftMinutes, timeLeftSeconds)).formatted(Formatting.GREEN)
-                ));
-            } else if (config.contestTracker.showFullContest){
-                textList.add(TextHelper.concat(
-                        Text.literal("ᴄᴏɴᴛᴇѕᴛ ʀᴇѕᴜʟᴛѕ").formatted(Formatting.GRAY)
-                ));
-            }
             if(!Objects.equals(ContestHandler.instance().type, "") && config.contestTracker.showFullContest) {
+                // Add contest header with level range
+                if (ContestHandler.instance().levelLow > 0 && ContestHandler.instance().levelHigh > 0) {
+                    textList.add(TextHelper.concat(
+                            Text.literal("ᴄᴏɴᴛᴇѕᴛ ").formatted(Formatting.GOLD),
+                            Text.literal("(ʟᴇᴠᴇʟѕ ").formatted(Formatting.GRAY),
+                            Text.literal(String.valueOf(ContestHandler.instance().levelLow)).formatted(Formatting.YELLOW),
+                            Text.literal(" - ").formatted(Formatting.GRAY),
+                            Text.literal(String.valueOf(ContestHandler.instance().levelHigh)).formatted(Formatting.YELLOW),
+                            Text.literal(")").formatted(Formatting.GRAY)
+                    ));
+                } else {
+                    textList.add(Text.literal("ᴄᴏɴᴛᴇѕᴛ").formatted(Formatting.GOLD));
+                }
+                
+                // Add timer under contest header
+                if(ContestHandler.instance().isContest) {
+                    textList.add(TextHelper.concat(
+                            Text.literal("⏱ ").formatted(Formatting.GRAY),
+                            Text.literal(String.format("%02d:%02d", timeLeftMinutes, timeLeftSeconds)).formatted(Formatting.GREEN)
+                    ));
+                } else if (config.contestTracker.showFullContest){
+                    textList.add(Text.literal("ʀᴇѕᴜʟᴛѕ").formatted(Formatting.GRAY));
+                }
+                textList.add(Text.empty());
+                
                 textList.add(TextHelper.concat(
                         Text.literal("ᴛʏᴘᴇ: ").formatted(Formatting.GRAY),
                         Text.literal(ContestHandler.instance().type).formatted(Formatting.WHITE)

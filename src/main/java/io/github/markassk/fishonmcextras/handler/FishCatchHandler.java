@@ -190,7 +190,7 @@ public class FishCatchHandler  {
                     
                     // Send packet to notify other players of contest PB
                     if(config.contestTracker.recieveLocalPBs) {
-                        PacketHandler.CONTEST_PB_PACKET.sendContestPBPacket(fish.groupId, minecraftClient.player.getName().getString(), fish.weight);
+                        PacketHandler.CONTEST_PB_PACKET.sendContestPBPacket(fish.groupId, minecraftClient.player.getName().getString(), fish.weight, ScoreboardHandler.instance().level);
                     }
                     
                     FishOnMCExtras.LOGGER.info("[FoE] Refreshed Contest Stats - New heaviest fish: {} lbs",

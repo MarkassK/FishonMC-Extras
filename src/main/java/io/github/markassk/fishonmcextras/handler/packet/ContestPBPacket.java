@@ -20,11 +20,11 @@ public class ContestPBPacket {
 
     protected ContestPBPacket() {}
 
-    public void sendContestPBPacket(String fishGroupId, String userName, float fishSize) {
+    public void sendContestPBPacket(String fishGroupId, String userName, float fishSize, int level) {
         if(MinecraftClient.getInstance().player != null) {
             try {
                 // Send notification with fish group ID, user name, and fish size
-                String packetData = "contest_pb:" + fishGroupId + ":" + userName + ":" + fishSize;
+                String packetData = "contest_pb:" + fishGroupId + ":" + userName + ":" + fishSize + ":" + level;
                 PacketHandler.instance().sendPacket(CONTEST_PB_NOTIFICATION_ID, packetData);
                 FishOnMCExtras.LOGGER.info("[FoE] Sent contest PB notification packet with groupId: {}, user: {}, and fish size: {} lbs", fishGroupId, userName, fishSize);
             } catch (IOException e) {
@@ -42,18 +42,36 @@ public class ContestPBPacket {
                 if(type == PacketHandler.PacketType.STRING) {
                     String message = dataIn.readUTF();
                     if(message.startsWith("contest_pb:")) {
-                        // Parse the packet data: contest_pb:groupId:userName:fishSize
-                        String[] parts = message.split(":", 4);
+                        // Parse the packet data: contest_pb:groupId:userName:fishSize:level (level may be missing)
+                        String[] parts = message.split(":", 5);
                         if(parts.length >= 4) {
                             String fishGroupId = parts[1];
                             String userName = parts[2];
                             float fishSize = Math.round(Float.parseFloat(parts[3]) * 100f) / 100f;
+                            int level = -1; // Default to -1 if level is missing
+                            if(parts.length >= 5 && !parts[4].isEmpty()) {
+                                try {
+                                    level = Integer.parseInt(parts[4]);
+                                } catch (NumberFormatException e) {
+                                    FishOnMCExtras.LOGGER.warn("[FoE] Failed to parse level from contest PB packet: {}", parts[4]);
+                                    level = -1;
+                                }
+                            }
                             
-                            FishOnMCExtras.LOGGER.info("[FoE] Received contest PB notification from {} for fish group: {} with size: {} lbs", userName, fishGroupId, fishSize);
+                            FishOnMCExtras.LOGGER.info("[FoE] Received contest PB notification from {} for fish group: {} with size: {} lbs at level {}", userName, fishGroupId, fishSize, level);
                             
                             // Check if the fish group matches the current contest type
                             ContestHandler contestHandler = ContestHandler.instance();
                             if(contestHandler.isContest) {
+                                // Check if the level falls within the contest range (only if level is provided)
+                                if(level >= 0 && contestHandler.levelLow > 0 && contestHandler.levelHigh > 0) {
+                                    if(level < contestHandler.levelLow || level > contestHandler.levelHigh) {
+                                        FishOnMCExtras.LOGGER.info("[FoE] Contest PB notification from {} at level {} is outside contest range ({} - {})", userName, level, contestHandler.levelLow, contestHandler.levelHigh);
+                                        return;
+                                    }
+                                } else if(level < 0) {
+                                    FishOnMCExtras.LOGGER.info("[FoE] Contest PB notification from {} has no level information, proceeding with fish type check", userName);
+                                }
                                 String contestType = contestHandler.type.replace("Heaviest", "").trim().toLowerCase();
                                 if(contestType.contains(fishGroupId.toLowerCase())) {
                                     // Store the fish size and refresh contest stats when receiving PB notification for matching fish type

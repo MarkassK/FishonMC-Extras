@@ -13,6 +13,8 @@ public class ContestHandler {
     public boolean isContest = false;
     public String type = "";
     public String location = "";
+    public int levelLow = 0;
+    public int levelHigh = 0;
     public long lastUpdated = 0L;
     public String firstName = "";
     public String firstStat = "";
@@ -182,6 +184,21 @@ public class ContestHandler {
             this.type = messageText.substring(messageText.indexOf(": ") + 2);
         if (messageText.startsWith("Location: "))
             this.location = messageText.substring(messageText.indexOf(": ") + 2);
+        if (messageText.startsWith("Level: ")) {
+            String levelText = messageText.substring(messageText.indexOf(": ") + 2);
+            try {
+                if (levelText.contains("-")) {
+                    String[] parts = levelText.split("-");
+                    if (parts.length == 2) {
+                        this.levelLow = Integer.parseInt(parts[0].trim());
+                        this.levelHigh = Integer.parseInt(parts[1].trim());
+                        FishOnMCExtras.LOGGER.info("[FoE] Parsed level range: {} -> {} to {}", levelText, this.levelLow, this.levelHigh);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                FishOnMCExtras.LOGGER.warn("[FoE] Failed to parse level range: {}", levelText);
+            }
+        }
         if (messageText.startsWith("\uF060")) {
             this.firstName = messageText.substring(messageText.indexOf("\uF060 ") + 2, messageText.indexOf(" →"));
             this.firstStat = messageText.substring(messageText.indexOf("→ ") + 2);
@@ -273,6 +290,8 @@ public class ContestHandler {
     private void reset() {
         this.type = "";
         this.location = "";
+        this.levelLow = 0;
+        this.levelHigh = 0;
         this.lastUpdated = 0L;
         this.firstName = "";
         this.firstStat = "";
