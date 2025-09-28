@@ -233,6 +233,8 @@
 
   "text.autoconfig.fishonmcextras.option.barHUD": "§f§lTop Bar Options",
   "text.autoconfig.fishonmcextras.option.barHUD.showBar": "Show Top Bar",
+  "text.autoconfig.fishonmcextras.option.barHUD.showClimate": "Show Climate in Top Bar",
+  "text.autoconfig.fishonmcextras.option.barHUD.showClimate.@Tooltip": "§7Display the current area's climate information in the top bar with color-coded gradient text.",
   "text.autoconfig.fishonmcextras.option.barHUD.backgroundOpacity": "Background opacity",
   "text.autoconfig.fishonmcextras.option.barHUD.fontSize": "Font size",
 
