@@ -84,6 +84,10 @@ public class ContestHandler {
     public Text modifyMessage(Text message) {
         String messageText = message.getString();
 
+        if (this.hasEnded) {
+            return message;
+        }
+
         // Replace the final "You →" message with our contextual message instead of the header
         if (messageText.startsWith("You → ")) {
             if (FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages) {
@@ -124,10 +128,8 @@ public class ContestHandler {
             }
         }
 
-        // Replace "FISHING CONTEST RANKINGS" with custom message
+   
         if (messageText.contains("FISHING CONTEST RANKINGS")) {          
-            // Header is handled (and suppressed) in onReceiveMessage now; no modification here
-            // when suppression is enabled. Leave original message untouched for non-suppressed flows.
             this.lastUpdated = System.currentTimeMillis();
             this.isContest = true;
 
@@ -280,10 +282,12 @@ public class ContestHandler {
                     FishOnMCExtras.LOGGER.info("[FoE] Contest ended");
                     this.refreshReason = "contest_ended";
                     this.hasEnded = true;
+                    return false;
                 } else {
                     String timeRemaining = extractTimeRemaining(messageText);
                     if (timeRemaining != null) {
                         this.pendingTimeRemaining = timeRemaining;
+                        this.hasEnded = false;
                     }
                 }
                 return true; // suppress header
@@ -361,9 +365,13 @@ public class ContestHandler {
             FishOnMCExtras.LOGGER.info("[FoE] Parsed third place: {} → {}", this.thirdName, this.thirdStat);
         }
 
-        // Suppress all messages while filtering is active, but not when contest has ended
-        if (this.isFilteringMessages && FishOnMCExtrasConfig.getConfig().contestTracker.shouldShowFullContest() && FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages && !this.hasEnded) {
+        // Suppress all messages while filtering is active
+        if (this.isFilteringMessages && FishOnMCExtrasConfig.getConfig().contestTracker.shouldShowFullContest() && FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages) {
             suppressMessage = true;
+        }
+
+        if (this.hasEnded) {
+            suppressMessage = false;
         }
 
         return suppressMessage;
