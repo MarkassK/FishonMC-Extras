@@ -2,8 +2,8 @@ package io.github.markassk.fishonmcextras.handler;
 
 import io.github.markassk.fishonmcextras.FishOnMCExtras;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
-import io.github.markassk.fishonmcextras.config.TrackerContestHUDConfig;
 import net.minecraft.text.Text;
+import net.minecraft.text.MutableText;
 
 import java.util.Objects;
 
@@ -30,6 +30,8 @@ public class ContestHandler {
     public String refreshReason = "";
     public float otherPlayerFishSize = 0.0f;
     public String otherPlayerName = "";
+    public String previousPlayerPosition = "";
+    public String pendingTimeRemaining = "";
 
     private boolean hasEnded = false;
     private boolean isFilteringMessages = false;
@@ -82,38 +84,52 @@ public class ContestHandler {
     public Text modifyMessage(Text message) {
         String messageText = message.getString();
 
-        // Replace "FISHING CONTEST RANKINGS" with custom message
-        if (messageText.contains("FISHING CONTEST RANKINGS")) {          
-
-            this.lastUpdated = System.currentTimeMillis();
-            this.isContest = true;
-
+        // Replace the final "You →" message with our contextual message instead of the header
+        if (messageText.startsWith("You → ")) {
             if (FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages) {
-                this.isFilteringMessages = true;
+                // Check for specific refresh reasons first, before checking hasEnded
+                if (this.refreshReason.equals("personal_best")) {
+                    Text pbMessage = getPersonalBestMessage();
+                    this.refreshReason = "";
+                    this.pendingTimeRemaining = "";
+                    return pbMessage;
+                }
 
-                // Return contextual message based on refresh reason
-                this.refreshReason = "";
+                // Check for other player PB before checking hasEnded
+                if (this.refreshReason.startsWith("other_player_pb:")) {
+                    String contextualMessage = getContextualMessage();
+                    this.refreshReason = "";
+                    this.pendingTimeRemaining = "";
+                    return Text.literal(contextualMessage);
+                }
 
-                if (messageText.contains("FISHING CONTEST RANKINGS (ENDED)")) {
-                    FishOnMCExtras.LOGGER.info("[FoE] Contest ended");
-                    this.isFilteringMessages = false;
-                    this.refreshReason = "contest_ended";
-                    this.hasEnded = true;
-                    // Return green contest ended message
+                // Check for contest ended
+                if (this.hasEnded || this.refreshReason.equals("contest_ended")) {
+                    this.refreshReason = "";
+                    this.pendingTimeRemaining = "";
                     return Text.literal("Displaying Contest Results:")
                             .formatted(net.minecraft.util.Formatting.GREEN);
-                } else {
-                    // Check if message contains time remaining in parentheses
-                    String timeRemaining = extractTimeRemaining(messageText);
-                    if (timeRemaining != null && this.refreshReason.isEmpty()) {
-                        // Create fancy message with green time
-                        return createFancyRefreshMessage(timeRemaining);
-                    }
                 }
-                String contextualMessage = getContextualMessage();
 
+                if (this.pendingTimeRemaining != null && !this.pendingTimeRemaining.isEmpty() && this.refreshReason.isEmpty()) {
+                    Text fancy = createFancyRefreshMessage(this.pendingTimeRemaining);
+                    this.pendingTimeRemaining = ""; // clear after use
+                    return fancy;
+                }
+
+                String contextualMessage = getContextualMessage();
+                this.refreshReason = "";
+                this.pendingTimeRemaining = "";
                 return Text.literal(contextualMessage);
             }
+        }
+
+        // Replace "FISHING CONTEST RANKINGS" with custom message
+        if (messageText.contains("FISHING CONTEST RANKINGS")) {          
+            // Header is handled (and suppressed) in onReceiveMessage now; no modification here
+            // when suppression is enabled. Leave original message untouched for non-suppressed flows.
+            this.lastUpdated = System.currentTimeMillis();
+            this.isContest = true;
 
             
         }
@@ -124,15 +140,30 @@ public class ContestHandler {
     private String extractTimeRemaining(String messageText) {
         // Look for pattern like "FISHING CONTEST RANKINGS (10m)" or "FISHING CONTEST RANKINGS (30s)" or similar
         if (messageText.contains("FISHING CONTEST RANKINGS (")) {
-            int startIndex = messageText.indexOf("FISHING CONTEST RANKINGS (") + "FISHING CONTEST RANKINGS (".length();
-            int endIndex = messageText.indexOf(")", startIndex);
-            if (endIndex > startIndex) {
-                String timeStr = messageText.substring(startIndex, endIndex).trim();
-                // Check if it's a time format (contains 'm' for minutes or 's' for seconds and is not "ENDED")
-                if ((timeStr.contains("m") || timeStr.contains("s")) && !timeStr.equals("ENDED")) {
-                    return timeStr;
+            try {
+                int startIndex = messageText.indexOf("FISHING CONTEST RANKINGS (") + "FISHING CONTEST RANKINGS (".length();
+                int endIndex = messageText.indexOf(")", startIndex);
+                
+                
+                if (endIndex > startIndex && startIndex >= 0 && endIndex < messageText.length()) {
+                    String timeStr = messageText.substring(startIndex, endIndex).trim();
+                    
+                    // Check if it's a time format (contains 'm' for minutes or 's' for seconds and is not "ENDED")
+                    if ((timeStr.contains("m") || timeStr.contains("s")) && !timeStr.equals("ENDED")) {                      
+                        return timeStr;
+                    } else {
+                        FishOnMCExtras.LOGGER.info("[FoE] Time string does not contain valid time format: '{}'", timeStr);
+                    }
+                } else {
+                    FishOnMCExtras.LOGGER.warn("[FoE] Invalid indices - start: {}, end: {}, length: {}", startIndex, endIndex, messageText.length());
                 }
+            } catch (StringIndexOutOfBoundsException e) {
+                FishOnMCExtras.LOGGER.error("[FoE] StringIndexOutOfBoundsException parsing time from contest message: '{}'", messageText, e);
+            } catch (Exception e) {
+                FishOnMCExtras.LOGGER.error("[FoE] Unexpected error parsing time from contest message: '{}'", messageText, e);
             }
+        } else {
+            FishOnMCExtras.LOGGER.debug("[FoE] Message does not contain 'FISHING CONTEST RANKINGS (': '{}'", messageText);
         }
         return null;
     }
@@ -166,18 +197,18 @@ public class ContestHandler {
                 if (rankingInfo != null) {
                     return baseMessage + " (" + rankingInfo + ")";
                 } else {
-                    return baseMessage + " (still not ranked)";
+                    return baseMessage + " (still not top 3)";
                 }
             } else {
                 String playerName = this.refreshReason.substring("other_player_pb:".length());
                 this.otherPlayerName = playerName;
-                return playerName + " got a contest PB! (still not ranked)";
+                return playerName + " got a contest PB! (still not top 3)";
             }
         }
 
         switch (this.refreshReason) {
             case "personal_best":
-                return "New Contest Personal Best! Leaderboard refreshed";
+                return getPersonalBestMessage().getString();
             case "manual_refresh":
                 return "Manually refreshed Contest Stats";
             case "contest_ended":
@@ -187,20 +218,97 @@ public class ContestHandler {
         }
     }
 
+    private MutableText getPersonalBestMessage() {
+        String baseMessage = "New Contest Personal Best!";
+        
+        // Get current player ranking information
+        String rankingInfo = getCurrentPlayerRanking();
+        
+        // Create base message with default color
+        MutableText message = Text.literal(baseMessage).formatted(net.minecraft.util.Formatting.YELLOW);
+        
+        if (rankingInfo != null) {
+            // Add ranking info with color based on position
+            MutableText rankingText = getRankingText(rankingInfo);
+            return message.append(Text.literal(" (")).append(rankingText).append(Text.literal(")"));
+        } else {
+            return message.append(Text.literal(" (still not top 3)").formatted(net.minecraft.util.Formatting.GRAY));
+        }
+    }
+
+    private MutableText getRankingText(String rankingInfo) {
+        if (rankingInfo.equals("1st")) {
+            return Text.literal("1st").formatted(net.minecraft.util.Formatting.GOLD);
+        } else if (rankingInfo.equals("2nd")) {
+            return Text.literal("2nd").formatted(net.minecraft.util.Formatting.GRAY);
+        } else if (rankingInfo.equals("3rd")) {
+            return Text.literal("3rd").formatted(net.minecraft.util.Formatting.RED);
+        } else if (rankingInfo.equals("still not top 3")) {
+            return Text.literal("still not top 3").formatted(net.minecraft.util.Formatting.GRAY);
+        } else if (rankingInfo.contains(" - unchanged")) {
+            // Handle "1st - unchanged", "2nd - unchanged", etc.
+            String rank = rankingInfo.substring(0, rankingInfo.indexOf(" - unchanged"));
+            MutableText rankText;
+            if (rank.equals("1st")) {
+                rankText = Text.literal("1st").formatted(net.minecraft.util.Formatting.GOLD);
+            } else if (rank.equals("2nd")) {
+                rankText = Text.literal("2nd").formatted(net.minecraft.util.Formatting.GRAY);
+            } else if (rank.equals("3rd")) {
+                rankText = Text.literal("3rd").formatted(net.minecraft.util.Formatting.RED);
+            } else {
+                rankText = Text.literal(rank).formatted(net.minecraft.util.Formatting.GRAY);
+            }
+            return rankText.append(Text.literal(" - unchanged").formatted(net.minecraft.util.Formatting.WHITE));
+        } else if (rankingInfo.equals("unchanged")) {
+            return Text.literal("unchanged").formatted(net.minecraft.util.Formatting.WHITE);
+        } else {
+            return Text.literal(rankingInfo).formatted(net.minecraft.util.Formatting.GRAY);
+        }
+    }
+
     public boolean onReceiveMessage(Text message) {
+        String messageText = message.getString();
+
+        // Suppress the contest header and prime state for replacement at the final line
+        if (messageText.contains("FISHING CONTEST RANKINGS")) {
+            this.lastUpdated = System.currentTimeMillis();
+            this.isContest = true;
+            if (FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages) {
+                this.isFilteringMessages = true;
+
+                if (messageText.contains("FISHING CONTEST RANKINGS (ENDED)")) {
+                    FishOnMCExtras.LOGGER.info("[FoE] Contest ended");
+                    this.refreshReason = "contest_ended";
+                    this.hasEnded = true;
+                } else {
+                    String timeRemaining = extractTimeRemaining(messageText);
+                    if (timeRemaining != null) {
+                        this.pendingTimeRemaining = timeRemaining;
+                    }
+                }
+                return true; // suppress header
+            }
+        }
+
         if (!this.isContest)
             return false;
-
-        String messageText = message.getString();
 
         boolean suppressMessage = false;
 
         // Stop filtering when we see "You →" message
         if (messageText.startsWith("You → ")) {
             this.isFilteringMessages = false;
-            this.rank = messageText.substring(messageText.indexOf(" → ") + 3, messageText.indexOf("(")).trim();
-            this.rankStat = this.rank.contains("Unranked") ? ""
+            String newRank = messageText.substring(messageText.indexOf(" → ") + 3, messageText.indexOf("(")).trim();
+            String newRankStat = newRank.contains("Unranked") ? ""
                     : messageText.substring(messageText.indexOf("(") + 1, messageText.indexOf(")"));
+            
+            // Store previous position before updating to new position
+            if (!this.rank.equals("Unranked") && !this.rank.equals(newRank)) {
+                this.previousPlayerPosition = this.rank;
+            }
+            
+            this.rank = newRank;
+            this.rankStat = newRankStat;
 
             // Parse rankStat as float, removing "lb" suffix if present
             if (!this.rankStat.isEmpty() && !this.rank.contains("Unranked")) {
@@ -213,7 +321,8 @@ public class ContestHandler {
                     FishOnMCExtras.LOGGER.warn("[FoE] Failed to parse rank stat: {}", this.rankStat);
                 }
             }
-            suppressMessage = true;
+            // Allow this message to pass so we can replace it in modifyMessage()
+            suppressMessage = false;
         }
 
     
@@ -252,8 +361,8 @@ public class ContestHandler {
             FishOnMCExtras.LOGGER.info("[FoE] Parsed third place: {} → {}", this.thirdName, this.thirdStat);
         }
 
-        // Suppress all messages while filtering is active
-        if (this.isFilteringMessages && FishOnMCExtrasConfig.getConfig().contestTracker.shouldShowFullContest() && FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages) {
+        // Suppress all messages while filtering is active, but not when contest has ended
+        if (this.isFilteringMessages && FishOnMCExtrasConfig.getConfig().contestTracker.shouldShowFullContest() && FishOnMCExtrasConfig.getConfig().contestTracker.suppressServerMessages && !this.hasEnded) {
             suppressMessage = true;
         }
 
@@ -261,67 +370,53 @@ public class ContestHandler {
     }
 
     private String getPlayerRanking() {
-        if (this.otherPlayerName.isEmpty() || this.otherPlayerFishSize <= 0) return null;
+        if (this.otherPlayerName.isEmpty()) return null;
         
-        float pbWeight = this.otherPlayerFishSize;
-        
-        // Parse current leaderboard weights for comparison
-        float firstWeight = parseWeightFromStat(this.firstStat);
-        float secondWeight = parseWeightFromStat(this.secondStat);
-        float thirdWeight = parseWeightFromStat(this.thirdStat);
-        
-        // Check if player is already in a position and their PB doesn't change it
+        // Check if player is in the top 3 leaderboard positions we already parsed
         if (!this.firstName.isEmpty() && this.firstName.equals(this.otherPlayerName)) {
-            // Player is already 1st, check if PB improves their position
-            if (pbWeight > firstWeight) {
-                return "now in 1st"; // Improved their 1st place
-            } else {
-                return "unchanged"; // Still 1st but didn't improve
-            }
+            return "1st";
         } else if (!this.secondName.isEmpty() && this.secondName.equals(this.otherPlayerName)) {
-            // Player is already 2nd, check if PB improves their position
-            if (pbWeight > firstWeight) {
-                return "now in 1st"; // Moved up to 1st
-            } else if (pbWeight > secondWeight) {
-                return "now in 2nd"; // Improved their 2nd place
-            } else {
-                return "unchanged"; // Still 2nd but didn't improve
-            }
+            return "2nd";
         } else if (!this.thirdName.isEmpty() && this.thirdName.equals(this.otherPlayerName)) {
-            // Player is already 3rd, check if PB improves their position
-            if (pbWeight > firstWeight) {
-                return "now in 1st"; // Moved up to 1st
-            } else if (pbWeight > secondWeight) {
-                return "now in 2nd"; // Moved up to 2nd
-            } else if (pbWeight > thirdWeight) {
-                return "now in 3rd"; // Improved their 3rd place
-            } else {
-                return "unchanged"; // Still 3rd but didn't improve
-            }
+            return "3rd";
         }
         
-        // Player is not currently in top 3, check if PB gets them into top 3
-        if (firstWeight > 0 && pbWeight > firstWeight) {
-            return "now in 1st";
-        } else if (secondWeight > 0 && pbWeight > secondWeight && (firstWeight <= 0 || pbWeight <= firstWeight)) {
-            return "now in 2nd";
-        } else if (thirdWeight > 0 && pbWeight > thirdWeight && (secondWeight <= 0 || pbWeight <= secondWeight)) {
-            return "now in 3rd";
-        }
-        
-        return null; // Player is not in top 3 and PB doesn't change that
+        // Player is not in top 3, so they're unranked
+        return "still not top 3";
     }
     
-    private float parseWeightFromStat(String stat) {
-        if (stat == null || stat.isEmpty()) return 0.0f;
-        
-        try {
-            // Remove "lb" suffix and parse as float
-            String weightStr = stat.replace("lb", "").trim();
-            return Float.parseFloat(weightStr);
-        } catch (NumberFormatException e) {
-            return 0.0f;
+
+    private String getCurrentPlayerRanking() {
+        // Use the rank we already parsed from the "You →" message
+        if (this.rank == null || this.rank.isEmpty() || this.rank.equals("Unranked")) {
+            return "still not top 3";
         }
+
+        // Extract numeric part from ranks like "#1", "#2", "#3"
+        String digits = this.rank.replaceAll("[^0-9]", "");
+        if (digits.isEmpty()) {
+            return "still not top 3";
+        }
+
+        String ordinal;
+        switch (digits) {
+            case "1": ordinal = "1st"; break;
+            case "2": ordinal = "2nd"; break;
+            case "3": ordinal = "3rd"; break;
+            default: ordinal = digits + "th"; break;
+        }
+
+        // Compare with previous position to detect if it changed
+        if (this.previousPlayerPosition != null && !this.previousPlayerPosition.isEmpty()) {
+            String previousDigits = this.previousPlayerPosition.replaceAll("[^0-9]", "");
+            if (!previousDigits.isEmpty() && previousDigits.equals(digits)) {
+                return ordinal + " - unchanged";
+            }
+        }
+        
+        // Update the previous position for next time
+        this.previousPlayerPosition = this.rank;
+        return ordinal;
     }
 
     private void reset() {
@@ -342,5 +437,6 @@ public class ContestHandler {
         this.refreshReason = "";
         this.otherPlayerFishSize = 0.0f;
         this.otherPlayerName = "";
+        this.previousPlayerPosition = "";
     }
 }

@@ -1,6 +1,7 @@
 package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
+import io.github.markassk.fishonmcextras.FOMC.LevelColors;
 import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.config.TrackerContestHUDConfig;
 import io.github.markassk.fishonmcextras.handler.BossBarHandler;
@@ -51,20 +52,20 @@ public class ContestHudHandler {
                     // Determine timer color based on remaining time
                     Formatting timerColor = Formatting.GREEN;
                     long totalTimeLeft = ContestHandler.instance().timeLeft;
-                    if (totalTimeLeft <= 5 * 60 * 1000) { // 5 minutes or less
+                    if (totalTimeLeft < 5 * 60 * 1000) { // 5 minutes or less
                         timerColor = Formatting.DARK_RED;
                     } else if (totalTimeLeft <= 10 * 60 * 1000) { // 10 minutes or less
                         timerColor = Formatting.RED;
-                    } else if (totalTimeLeft <= 20 * 60 * 1000) { // 20 minutes or less
+                    } else if (totalTimeLeft <= 15 * 60 * 1000) { // 15 minutes or less
                         timerColor = Formatting.GOLD;
                     }
                     
                     if (ContestHandler.instance().levelLow > 0 && ContestHandler.instance().levelHigh > 0) {
                         textList.add(TextHelper.concat(
                                 Text.literal("ᴄᴏɴᴛᴇѕᴛ (").formatted(Formatting.GOLD),
-                                Text.literal(String.valueOf(ContestHandler.instance().levelLow)).formatted(Formatting.YELLOW),
+                                Text.literal(String.valueOf(ContestHandler.instance().levelLow)).withColor(LevelColors.valueOfLvl(ContestHandler.instance().levelLow).color),
                                 Text.literal("-").formatted(Formatting.GRAY),
-                                Text.literal(String.valueOf(ContestHandler.instance().levelHigh)).formatted(Formatting.YELLOW),
+                                Text.literal(String.valueOf(ContestHandler.instance().levelHigh)).withColor(LevelColors.valueOfLvl(ContestHandler.instance().levelHigh).color),
                                 Text.literal(") ").formatted(Formatting.GOLD),
                                 Text.literal("⏱ ").formatted(Formatting.GRAY),
                                 Text.literal(String.format("%02d:%02d", timeLeftMinutes, timeLeftSeconds)).formatted(timerColor)
@@ -80,11 +81,11 @@ public class ContestHudHandler {
                     // Results mode
                     if (ContestHandler.instance().levelLow > 0 && ContestHandler.instance().levelHigh > 0) {
                         textList.add(TextHelper.concat(
-                                Text.literal("ᴄᴏɴᴛᴇѕᴛ (").formatted(Formatting.GOLD),
-                                Text.literal(String.valueOf(ContestHandler.instance().levelLow)).formatted(Formatting.YELLOW),
+                                Text.literal("ᴄᴏɴᴛᴇѕᴛ (").formatted(Formatting.GRAY),
+                                Text.literal(String.valueOf(ContestHandler.instance().levelLow)).withColor(LevelColors.valueOfLvl(ContestHandler.instance().levelLow).color),
                                 Text.literal("-").formatted(Formatting.GRAY),
-                                Text.literal(String.valueOf(ContestHandler.instance().levelHigh)).formatted(Formatting.YELLOW),
-                                Text.literal(") ").formatted(Formatting.GOLD),
+                                Text.literal(String.valueOf(ContestHandler.instance().levelHigh)).withColor(LevelColors.valueOfLvl(ContestHandler.instance().levelHigh).color),
+                                Text.literal(") ").formatted(Formatting.GRAY),
                                 Text.literal("ʀᴇѕᴜʟᴛѕ").formatted(Formatting.GRAY)
                         ));
                     } else {
@@ -214,13 +215,13 @@ public class ContestHudHandler {
                             Text playerNameColor;
                             
                             if (playerRank.equals("#1") || playerRank.equals("1")) {
-                                rankIndicator = Text.literal("👑 ").formatted(Formatting.GOLD);
+                                rankIndicator = Text.literal("\uF060 ").formatted(Formatting.WHITE);
                                 playerNameColor = Text.literal(MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.GOLD);
                             } else if (playerRank.equals("#2") || playerRank.equals("2")) {
-                                rankIndicator = Text.literal("🥈 ").formatted(Formatting.GRAY);
+                                rankIndicator = Text.literal("\uF061 ").formatted(Formatting.WHITE);
                                 playerNameColor = Text.literal(MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.AQUA);
                             } else if (playerRank.equals("#3") || playerRank.equals("3")) {
-                                rankIndicator = Text.literal("🥉 ").formatted(Formatting.GOLD);
+                                rankIndicator = Text.literal("\uF062 ").formatted(Formatting.WHITE);
                                 playerNameColor = Text.literal(MinecraftClient.getInstance().player.getName().getString()).formatted(Formatting.YELLOW);
                             } else {
                                 rankIndicator = Text.literal("🫡 ").formatted(Formatting.DARK_GRAY);
