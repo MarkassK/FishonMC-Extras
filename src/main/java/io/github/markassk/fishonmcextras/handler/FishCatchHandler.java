@@ -15,6 +15,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.*;
+import java.util.Objects;
 
 public class FishCatchHandler  {
     private static FishCatchHandler INSTANCE = new FishCatchHandler();
@@ -182,8 +183,17 @@ public class FishCatchHandler  {
                 // Check if caught fish is for contest and refresh if it's heavier
                 var typecheck = ContestHandler.instance().type.replace("Heaviest", "").trim().toLowerCase();
                 ContestHandler contestHandler = ContestHandler.instance();
+                
+                // Check if we are in the right location for the contest
+                boolean locationMatches = Objects.equals(
+                    Objects.requireNonNull(Constant.valueOfTag(contestHandler.location)) == Constant.SPAWNHUB 
+                        ? Constant.CYPRESS_LAKE.ID 
+                        : Objects.requireNonNull(Constant.valueOfTag(contestHandler.location).ID), 
+                    BossBarHandler.instance().currentLocation.ID
+                );
+                
                 if (contestHandler.isContest && typecheck.contains(fish.groupId.toLowerCase())
-                        && (fish.weight > contestHandler.biggestFish)) {
+                        && locationMatches && (fish.weight > contestHandler.biggestFish)) {
                     ContestHandler.instance().biggestFish = fish.weight;
                     ContestHandler.instance().setRefreshReason("personal_best");
                     minecraftClient.player.networkHandler.sendChatCommand("contest");
