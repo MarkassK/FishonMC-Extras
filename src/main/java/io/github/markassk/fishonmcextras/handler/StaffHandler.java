@@ -16,9 +16,9 @@ public class StaffHandler {
 
 
     public boolean onReceiveMessage(Text text) {
-        if(text.getString().startsWith("SayanVanish | Your vanish state has been updated to ON")) {
+        if(text.getString().startsWith("You are now invisible!")) {
             this.isVanished = true;
-        } else if (text.getString().startsWith("SayanVanish | Your vanish state has been updated to OFF")) {
+        } else if (text.getString().startsWith("You are no longer invisible!")) {
             this.isVanished = false;
         }
         

@@ -144,12 +144,12 @@ public class FishCatchHandler  {
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Pet");
         }
 
-        if(text.getString().startsWith("RARE DROP! You pulled") && text.getString().contains("Shard")) {
+        if(text.getString().startsWith("RARE CATCH! You pulled") && text.getString().contains("Shard")) {
             ProfileDataHandler.instance().updateShardCaughtStatsOnCatch(1);
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
         }
 
-        if(text.getString().startsWith("RARE DROP! You pulled") && text.getString().contains("Lightning in a Bottle")) {
+        if(text.getString().startsWith("RARE CATCH! You pulled") && text.getString().contains("Lightning in a Bottle")) {
             ProfileDataHandler.instance().updateLightningBottleCaughtStatsOnCatch();
             FishOnMCExtras.LOGGER.info("[FoE] Tracking Shard");
         }
