@@ -26,9 +26,11 @@ public class EventHandler {
         return INSTANCE;
     }
 
-    public void onReceiveMessage(Text text) {
+    public boolean onReceiveMessage(Text text) {
         processOtherEvents(text);
         processWeatherEvents(text);
+        
+        return false; // Don't suppress any messages
     }
 
     private void processOtherEvents(Text text) {

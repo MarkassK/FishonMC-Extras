@@ -1,0 +1,99 @@
+package io.github.markassk.fishonmcextras.handler.packet;
+
+import io.github.markassk.fishonmcextras.FishOnMCExtras;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
+import io.github.markassk.fishonmcextras.handler.ContestHandler;
+import me.enderkill98.proxlib.ProxPacketIdentifier;
+import me.enderkill98.proxlib.client.ProxLib;
+import net.minecraft.client.MinecraftClient;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+
+public class ContestPBPacket {
+    private static final ProxPacketIdentifier CONTEST_PB_NOTIFICATION_ID = ProxPacketIdentifier.of(PacketHandler.VENDOR_ID, PacketHandler.PacketID.CONTEST_PB_NOTIFICATION_ID.ID);
+
+    protected static void addHandler() {
+        receiveContestPBPacket();
+    }
+
+    protected ContestPBPacket() {}
+
+    public void sendContestPBPacket(String fishGroupId, String userName, float fishSize, int level) {
+        if(MinecraftClient.getInstance().player != null) {
+            try {
+                // Send notification with fish group ID, user name, and fish size
+                String packetData = "contest_pb:" + fishGroupId + ":" + userName + ":" + fishSize + ":" + level;
+                PacketHandler.instance().sendPacket(CONTEST_PB_NOTIFICATION_ID, packetData);
+                FishOnMCExtras.LOGGER.info("[FoE] Sent contest PB notification packet with groupId: {}, user: {}, and fish size: {} lbs", fishGroupId, userName, fishSize);
+            } catch (IOException e) {
+                FishOnMCExtras.LOGGER.error("[FoE] Failed to send contest PB packet", e);
+            }
+        }
+    }
+
+    private static void receiveContestPBPacket() {
+        ProxLib.addHandlerFor(CONTEST_PB_NOTIFICATION_ID, (sender, identifier, data) -> {
+            if(!FishOnMCExtrasConfig.getConfig().contestTracker.recieveLocalPBs) return;
+            try {
+                DataInputStream dataIn = new DataInputStream(new ByteArrayInputStream(data));
+                PacketHandler.PacketType type = PacketHandler.getPacketType(dataIn.readUnsignedByte());
+                if(type == PacketHandler.PacketType.STRING) {
+                    String message = dataIn.readUTF();
+                    if(message.startsWith("contest_pb:")) {
+                        // Parse the packet data: contest_pb:groupId:userName:fishSize:level (level may be missing)
+                        String[] parts = message.split(":", 5);
+                        if(parts.length >= 4) {
+                            String fishGroupId = parts[1];
+                            String userName = parts[2];
+                            float fishSize = Math.round(Float.parseFloat(parts[3]) * 100f) / 100f;
+                            int level = -1; // Default to -1 if level is missing
+                            if(parts.length >= 5 && !parts[4].isEmpty()) {
+                                try {
+                                    level = Integer.parseInt(parts[4]);
+                                } catch (NumberFormatException e) {
+                                    FishOnMCExtras.LOGGER.warn("[FoE] Failed to parse level from contest PB packet: {}", parts[4]);
+                                    level = -1;
+                                }
+                            }
+                            
+                            FishOnMCExtras.LOGGER.info("[FoE] Received contest PB notification from {} for fish group: {} with size: {} lbs at level {}", userName, fishGroupId, fishSize, level);
+                            
+                            // Check if the fish group matches the current contest type
+                            ContestHandler contestHandler = ContestHandler.instance();
+                            if(contestHandler.isContest) {
+                                // Check if the level falls within the contest range (only if level is provided)
+                                if(level >= 0 && contestHandler.levelLow > 0 && contestHandler.levelHigh > 0) {
+                                    if(level < contestHandler.levelLow || level > contestHandler.levelHigh) {
+                                        FishOnMCExtras.LOGGER.info("[FoE] Contest PB notification from {} at level {} is outside contest range ({} - {})", userName, level, contestHandler.levelLow, contestHandler.levelHigh);
+                                        return;
+                                    }
+                                } else if(level < 0) {
+                                    FishOnMCExtras.LOGGER.info("[FoE] Contest PB notification from {} has no level information, proceeding with fish type check", userName);
+                                }
+                                String contestType = contestHandler.type.replace("Heaviest", "").trim().toLowerCase();
+                                if(contestType.contains(fishGroupId.toLowerCase())) {
+                                    // Store the fish size and refresh contest stats when receiving PB notification for matching fish type
+                                    if(MinecraftClient.getInstance().player != null) {
+                                        ContestHandler.instance().setRefreshReason("other_player_pb:" + userName + ":" + fishSize);
+                                        MinecraftClient.getInstance().player.networkHandler.sendChatCommand("contest");
+                                        FishOnMCExtras.LOGGER.info("[FoE] Refreshed contest stats due to PB notification from {} for matching fish group: {} with size: {} lbs", userName, fishGroupId, fishSize);
+                                    }
+                                } else {
+                                    FishOnMCExtras.LOGGER.info("[FoE] Contest PB notification from {} for fish group {} does not match current contest type: {}", userName, fishGroupId, contestType);
+                                }
+                            }
+                        } else {
+                            FishOnMCExtras.LOGGER.warn("[FoE] Received malformed contest PB packet: {}", message);
+                        }
+                    }
+                } else {
+                    PacketHandler.instance().sendWrongTypeWarn(type);
+                }
+            } catch (IOException e) {
+                FishOnMCExtras.LOGGER.error("[FoE] Failed to process contest PB packet", e);
+            }
+        });
+    }
+}
