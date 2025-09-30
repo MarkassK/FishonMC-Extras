@@ -104,7 +104,8 @@ public class Armor extends FOMCItem {
     }
 
     public static Armor getArmor(ItemStack itemStack) {
-        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+        if(itemStack.get(DataComponentTypes.LORE) != null
+                && itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
                 && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem").orElse(false)) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")

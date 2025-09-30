@@ -205,6 +205,10 @@ public enum Constant {
     RAIN("☂", Text.literal("☂"), 0x5555FF),
     SUN("☀", Text.literal("☀"), 0xFFFF55),
     THUNDERSTORM("⚡", Text.literal("⚡"), 0xFFFF55),
+    BLOOMINGOASIS("♣", Text.literal("♣"), 0xFC54FC),
+    FABLEDWEATHER("⭐", Text.literal("⭐"), 0xF7453E),
+    GOLDRUSH("⚠", Text.literal("⚠"), 0xF7EA3E),
+    MOON("○", Text.literal("○"), 0x5FC0E6),
 
     DEFAULT("default", Text.empty(), Defaults.DEFAULT_COLOR)
     ;

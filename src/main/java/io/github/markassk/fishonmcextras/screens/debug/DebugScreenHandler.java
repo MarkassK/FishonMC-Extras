@@ -359,6 +359,14 @@ public class DebugScreenHandler {
                         assembleText("showExtraInfo", keybindHandler.showExtraInfo)
                 ));
             }
+            case EVENT -> {
+                EventHandler eventHandler = EventHandler.instance();
+
+                textList.addAll(List.of(
+                        assembleText("weatherEventAlertTime", eventHandler.weatherEventAlertTime),
+                        assembleText("weatherEvents", eventHandler.weatherEvents.isEmpty() ? "null" : "not null")
+                ));
+            }
         }
 
         return textList;
@@ -410,10 +418,11 @@ public class DebugScreenHandler {
         FISHCATCH(2, "FishCatchHandler"),
         FULLINVENTORY(3, "FullInventoryHandler"),
         LOADING(4, "LoadingHandler"),
-        LOOKTICK(6, "LookTickhandler"),
-        NOTIFICATIONSOUND(7, "NotificationSoundHandler"),
-        PETCALCULATOR(8, "PetCalculatorHandler"),
-        PETEQUIP(9, "PetEquipHandler"),
+        LOOKTICK(5, "LookTickhandler"),
+        NOTIFICATIONSOUND(6, "NotificationSoundHandler"),
+        PETCALCULATOR(7, "PetCalculatorHandler"),
+        PETEQUIP(8, "PetEquipHandler"),
+        KEYBIND(9, "KeybindHandler"),
         PROFILEDATA(10, "ProfileDataHandler"),
         RAYTRACING(11, "RayTracingHandler"),
         SCOREBOARD(12, "ScoreboardHandler"),
@@ -432,7 +441,7 @@ public class DebugScreenHandler {
         DISCORD(25, "DiscordHandler"),
         FISHINGSTATS(26, "FishingStatsHandler"),
         INVENTORYSCREEN(27, "InventoryScreenHandler"),
-        KEYBIND(28, "KeybindHandler")
+        EVENT(28, "EventHandler")
         ;
 
         public final int id;

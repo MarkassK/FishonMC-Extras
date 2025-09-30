@@ -96,7 +96,6 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
                     SearchBarContainerHandler.instance().tick(minecraftClient);
                     ThemingHandler.instance().tick();
                     OtherPlayerHandler.instance().tick(minecraftClient);
-                    WeatherHandler.instance().tick(minecraftClient);
                     HiderHandler.instance().tick(minecraftClient);
                     OwnPlayerHandler.instance().tick(minecraftClient);
                     PlayerStatusHandler.instance().tick(minecraftClient);
@@ -143,6 +142,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
             StaffHandler.instance().onReceiveMessage(text);
             PlayerStatusHandler.instance().onReceiveMessage(text);
             TimerHandler.instance().onReceiveMessage(text);
+            EventHandler.instance().onReceiveMessage(text);
         }
     }
 
@@ -160,7 +160,7 @@ public class FishOnMCExtrasClient implements ClientModInitializer {
         ContestHandler.instance().onLeaveServer();
         LoadingHandler.instance().isOnServer = false;
         DiscordHandler.instance().disconnect();
-        WeatherHandler.instance().onLeaveServer();
+//        WeatherHandler.instance().onLeaveServer();
     }
 
     private void onItemTooltipCallback(ItemStack itemStack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> textList) {

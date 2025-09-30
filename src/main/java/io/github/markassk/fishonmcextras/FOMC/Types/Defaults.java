@@ -21,6 +21,7 @@ public class Defaults {
         public static final String FISHINGROD = "fishing_rod";
         public static final String CRAFTINGCOMPONENT = "craftingComponent";
         public static final String BAITPACKAGE = "package";
+        public static final String CHUMMER = "chummer";
     }
 
     public static final Map<String, FoEDevType> foeDevs = Map.of(

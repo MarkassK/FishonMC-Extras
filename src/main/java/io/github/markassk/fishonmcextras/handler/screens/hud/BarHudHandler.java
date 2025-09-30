@@ -48,7 +48,13 @@ public class BarHudHandler {
             weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.RAIN.COLOR);
         } else if(BossBarHandler.instance().weather.contains(Constant.THUNDERSTORM.ID)) {
             weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.THUNDERSTORM.COLOR);
-        } else {
+        } else if(BossBarHandler.instance().weather.contains(Constant.BLOOMINGOASIS.ID)) {
+            weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.BLOOMINGOASIS.COLOR);
+        } else if(BossBarHandler.instance().weather.contains(Constant.FABLEDWEATHER.ID)) {
+            weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.FABLEDWEATHER.COLOR);
+        } else if(BossBarHandler.instance().weather.contains(Constant.GOLDRUSH.ID)) {
+            weather = Text.literal(BossBarHandler.instance().weather).withColor(Constant.GOLDRUSH.COLOR);
+        } else{
             // Moon
             weather = Text.literal(BossBarHandler.instance().weather);
         }
