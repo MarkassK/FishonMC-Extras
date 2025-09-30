@@ -17,10 +17,10 @@ public class Chummer extends FOMCItem {
 
     private Chummer(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
         super(type, Constant.DEFAULT);
-        this.timer = nbtCompound.getFloat("timer");
-        this.bitespeed = nbtCompound.getFloat("bitespeed");
+        this.timer = nbtCompound.getFloat("timer").orElse(0F);
+        this.bitespeed = nbtCompound.getFloat("bitespeed").orElse(0F);
         this.customModelData = customModelData;
-        this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
+        this.rarity = Constant.valueOfId(nbtCompound.getString("rarity").orElse(Constant.COMMON.ID));
     }
 
     public static Chummer getChummer(ItemStack itemStack, String type) {
@@ -30,10 +30,10 @@ public class Chummer extends FOMCItem {
     public static Chummer getChummer(ItemStack itemStack) {
         if(itemStack.get(DataComponentTypes.LORE) != null
                 && itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
-                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
+                && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem").orElse(false)) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")
-                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.CHUMMER)) {
+                    && Objects.equals(nbtCompound.getString("type").orElse(""), Defaults.ItemTypes.CHUMMER)) {
                 return Chummer.getChummer(itemStack, Defaults.ItemTypes.CHUMMER);
             }
         }
