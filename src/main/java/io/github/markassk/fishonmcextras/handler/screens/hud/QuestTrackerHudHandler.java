@@ -56,7 +56,7 @@ public class QuestTrackerHudHandler {
                                 Text.literal("#").formatted(Formatting.GRAY),
                                 Text.literal(String.valueOf(quest.slot)).formatted(Formatting.GRAY),
                                 Text.literal(": ").formatted(Formatting.GRAY),
-                                Text.literal("ǫᴜᴇѕᴛ ᴅᴏɴᴇ").formatted(Formatting.GREEN, Formatting.BOLD)
+                                Text.literal("ꞯᴜᴇѕᴛ ᴅᴏɴᴇ").formatted(Formatting.GREEN, Formatting.BOLD)
                         ));
                     } else if (!quest.isStarted) {
                         textList.add(TextHelper.concat(
