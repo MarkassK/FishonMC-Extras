@@ -194,31 +194,48 @@ public class NotificationHudHandler {
                 ));
             }
 
-            if(config.weatherTracker.showAlertHUD
+            if(config.eventTracker.weatherEventOptions.showAlertHUD
                     && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
-                    && System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime <= config.weatherTracker.alertDismissSeconds * 1000L
+                    && System.currentTimeMillis() - EventHandler.instance().weatherEventAlertTime <= config.eventTracker.weatherEventOptions.alertDismissSeconds * 1000L
             ) {
-                int seconds = config.weatherTracker.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime) % 60));
+                EventHandler.instance().weatherEvents.forEach((weatherEvent, time) -> {
+                    if(System.currentTimeMillis() - time <= config.eventTracker.weatherEventOptions.alertDismissSeconds * 1000L) {
+                        int seconds = config.eventTracker.weatherEventOptions.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time)));
+                        textList.add(Text.empty());
+                        textList.add(weatherEvent.TAG);
+                        textList.add(weatherEvent.DESC);
+                        textList.add(TextHelper.concat(
+                                Text.literal("ᴛʜɪѕ ᴀʟᴇʀᴛ ᴡɪʟʟ ʙᴇ ᴅɪѕᴍɪѕѕᴇᴅ ɪɴ ").formatted(Formatting.GRAY),
+                                Text.literal("" + seconds),
+                                Text.literal(" ѕᴇᴄᴏɴᴅѕ").formatted(Formatting.GRAY)
+                        ));
+                    }
+                });
+            }
 
-                if (Objects.equals(WeatherHandler.instance().currentWeather, Constant.THUNDERSTORM.ID)) {
-                    textList.add(Text.empty());
-                    textList.add(TextHelper.concat(
-                            Constant.THUNDERSTORM.TAG.copy().withColor(Constant.THUNDERSTORM.COLOR),
-                            Text.literal(" Lightning Storm").formatted(Formatting.YELLOW, Formatting.BOLD),
-                            Text.literal(" Alert!").formatted(Formatting.YELLOW)
-                    ));
-                    textList.add(TextHelper.concat(
-                            Text.literal("ᴛʜɪѕ ᴀʟᴇʀᴛ ᴡɪʟʟ ʙᴇ ᴅɪѕᴍɪѕѕᴇᴅ ɪɴ ").formatted(Formatting.GRAY),
-                            Text.literal("" + seconds),
-                            Text.literal(" ѕᴇᴄᴏɴᴅѕ").formatted(Formatting.GRAY)
-                    ));
-                }
+            if(config.eventTracker.otherEventOptions.fabledOptions.showAlertHUD
+                    && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
+                    && System.currentTimeMillis() - EventHandler.instance().fabledEventAlertTime <= config.eventTracker.otherEventOptions.fabledOptions.alertDismissSeconds * 1000L
+            ) {
+                int seconds = config.eventTracker.otherEventOptions.fabledOptions.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EventHandler.instance().fabledEventAlertTime)));
+
+                textList.add(Text.empty());
+                textList.add(TextHelper.concat(
+                        Text.literal("Fabled Fish Event").formatted(Formatting.YELLOW).withColor(0xcc302a),
+                        Text.literal(" at ").formatted(Formatting.WHITE),
+                        Constant.valueOfTag(EventHandler.instance().fabledLocation).TAG
+                ));
+                textList.add(TextHelper.concat(
+                        Text.literal("ᴛʜɪѕ ɴᴏᴛɪꜰɪᴄᴀᴛɪᴏɴ ᴡɪʟʟ ʙᴇ ᴅɪѕᴍɪѕѕᴇᴅ ɪɴ ").formatted(Formatting.GRAY),
+                        Text.literal("" + seconds),
+                        Text.literal(" ѕᴇᴄᴏɴᴅѕ").formatted(Formatting.GRAY)
+                ));
             }
 
             if(config.timerTracker.baitShopNotification
                     && System.currentTimeMillis() - TimerHandler.instance().baitShopAlertTime <= config.timerTracker.alertDismissSeconds * 1000L
             ) {
-                int seconds = config.timerTracker.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - TimerHandler.instance().baitShopAlertTime) % 60));
+                int seconds = config.timerTracker.alertDismissSeconds - ((int) (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - TimerHandler.instance().baitShopAlertTime)));
 
                 textList.add(Text.empty());
                 textList.add(TextHelper.concat(

@@ -72,7 +72,8 @@ public class Fish extends FOMCItem {
     }
 
     public static Fish getFish(ItemStack itemStack) {
-        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+        if(itemStack.get(DataComponentTypes.LORE) != null
+                && itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
                 && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
             if (itemStack.getItem() == Items.COD
                     || itemStack.getItem() == Items.WHITE_DYE

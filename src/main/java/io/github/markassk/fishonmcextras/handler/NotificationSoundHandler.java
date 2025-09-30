@@ -56,20 +56,6 @@ public class NotificationSoundHandler {
                         lastPlayedSoundTime.put(NotificationType.INVENTORY_FULL, System.currentTimeMillis());
                     }
                 }
-
-                // Weather Alert Warning Sound
-                if(config.weatherTracker.showAlertHUD
-                        && config.weatherTracker.useAlertWarningSound
-                        && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND
-                        && System.currentTimeMillis() - WeatherHandler.instance().weatherChangedAtTime <= config.weatherTracker.alertDismissSeconds * 1000L
-                ) {
-                    if(Objects.equals(WeatherHandler.instance().currentWeather, Constant.THUNDERSTORM.ID)
-                            && System.currentTimeMillis() - lastPlayedSoundTime.get(NotificationType.WEATHER_ALERT) > config.weatherTracker.intervalWarningSound * 1000L
-                    ) {
-                        playSoundWarning(config.weatherTracker.alertSoundType, minecraftClient);
-                        lastPlayedSoundTime.put(NotificationType.WEATHER_ALERT, System.currentTimeMillis());
-                    }
-                }
             }
         }
     }
