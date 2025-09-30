@@ -96,6 +96,10 @@ public class ProfileDataHandler {
         if(!Objects.equals(BossBarHandler.instance().weather, Constant.THUNDERSTORM.ID)) {
             this.profileData.lightningBottleDryStreak++;
         }
+
+        if(!Objects.equals(BossBarHandler.instance().weather, Constant.FABLEDWEATHER.ID)) {
+            this.profileData.variantDryStreak.put(Constant.FABLED, this.profileData.variantDryStreak.getOrDefault(Constant.FABLED, 0) + 1);
+        }
     }
 
     public void updatePetCaughtStatsOnCatch() {

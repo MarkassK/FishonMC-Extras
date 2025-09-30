@@ -9,26 +9,32 @@ import net.minecraft.nbt.NbtCompound;
 
 import java.util.Objects;
 
-public class CraftingComponent extends FOMCItem {
+public class Chummer extends FOMCItem {
+    public final float timer;
+    public final float bitespeed;
     public final CustomModelDataComponent customModelData;
+    public final Constant rarity;
 
-    public CraftingComponent(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
-        super(type, Constant.valueOfId(nbtCompound.getString("rarity")));
+    private Chummer(NbtCompound nbtCompound, String type, CustomModelDataComponent customModelData) {
+        super(type, Constant.DEFAULT);
+        this.timer = nbtCompound.getFloat("timer");
+        this.bitespeed = nbtCompound.getFloat("bitespeed");
         this.customModelData = customModelData;
+        this.rarity = Constant.valueOfId(nbtCompound.getString("rarity"));
     }
 
-    public static CraftingComponent getCraftingComponent(ItemStack itemStack, String type) {
-        return new CraftingComponent(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
+    public static Chummer getChummer(ItemStack itemStack, String type) {
+        return new Chummer(Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)), type, itemStack.get(DataComponentTypes.CUSTOM_MODEL_DATA));
     }
 
-    public static CraftingComponent getCraftingComponent(ItemStack itemStack) {
+    public static Chummer getChummer(ItemStack itemStack) {
         if(itemStack.get(DataComponentTypes.LORE) != null
                 && itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
                 && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")
-                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.CRAFTINGCOMPONENT)) {
-                return CraftingComponent.getCraftingComponent(itemStack, Defaults.ItemTypes.CRAFTINGCOMPONENT);
+                    && Objects.equals(nbtCompound.getString("type"), Defaults.ItemTypes.CHUMMER)) {
+                return Chummer.getChummer(itemStack, Defaults.ItemTypes.CHUMMER);
             }
         }
         return null;

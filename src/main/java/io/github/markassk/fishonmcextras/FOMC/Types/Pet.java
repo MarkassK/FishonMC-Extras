@@ -193,7 +193,8 @@ public class Pet extends FOMCItem {
     }
 
     public static Pet getPet(ItemStack itemStack) {
-        if(itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
+        if(itemStack.get(DataComponentTypes.LORE) != null
+                && itemStack.get(DataComponentTypes.CUSTOM_DATA) != null
                 && !Objects.requireNonNull(ItemStackHelper.getNbt(itemStack)).getBoolean("shopitem")) {
             NbtCompound nbtCompound = ItemStackHelper.getNbt(itemStack);
             if (nbtCompound != null && nbtCompound.contains("type")

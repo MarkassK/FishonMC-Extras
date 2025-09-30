@@ -48,7 +48,7 @@ public class FishOnMCExtrasConfig implements ConfigData {
 
     @ConfigEntry.Category(value = TRACKERS)
     @ConfigEntry.Gui.CollapsibleObject
-    public TrackerWeatherConfig.WeatherTracker weatherTracker = new TrackerWeatherConfig.WeatherTracker();
+    public TrackerEventConfig.EventTracker eventTracker = new TrackerEventConfig.EventTracker();
 
     @ConfigEntry.Category(value = TRACKERS)
     @ConfigEntry.Gui.CollapsibleObject
