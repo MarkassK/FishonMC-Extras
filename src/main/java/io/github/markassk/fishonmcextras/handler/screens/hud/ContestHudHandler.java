@@ -230,22 +230,51 @@ public class ContestHudHandler {
                             
                             if (config.contestTracker.compactMode) {
                                 // Combine rank and stat on same line in compact mode
-                                textList.add(TextHelper.concat(
-                                        Text.literal("ʏᴏᴜʀ ʀᴀɴᴋ: ").formatted(Formatting.GRAY),
-                                        rankIndicator,
-                                        Text.literal(playerRank).formatted(Formatting.WHITE),
-                                        !Objects.equals(ContestHandler.instance().rankStat, "") ? TextHelper.concat(
-                                                Text.literal(" (").formatted(Formatting.DARK_GRAY),
-                                                Text.literal(ContestHandler.instance().rankStat).formatted(Formatting.GRAY),
-                                                Text.literal(")").formatted(Formatting.DARK_GRAY)
-                                        ) : Text.empty()
-                                ));
-                            } else {
-                                textList.add(TextHelper.concat(
+                                Text rankText = TextHelper.concat(
                                         Text.literal("ʏᴏᴜʀ ʀᴀɴᴋ: ").formatted(Formatting.GRAY),
                                         rankIndicator,
                                         Text.literal(playerRank).formatted(Formatting.WHITE)
-                                ));
+                                );
+                                
+                                // Add total participants if available
+                                if (ContestHandler.instance().totalParticipants > 0) {
+                                    rankText = TextHelper.concat(
+                                            rankText,
+                                            Text.literal(" (ᴏᴜᴛ ᴏғ ").formatted(Formatting.DARK_GRAY),
+                                            Text.literal(String.valueOf(ContestHandler.instance().totalParticipants)).formatted(Formatting.GRAY),
+                                            Text.literal(")").formatted(Formatting.DARK_GRAY)
+                                    );
+                                }
+                                
+                                // Add stat if available
+                                if (!Objects.equals(ContestHandler.instance().rankStat, "")) {
+                                    rankText = TextHelper.concat(
+                                            rankText,
+                                            Text.literal(" (").formatted(Formatting.DARK_GRAY),
+                                            Text.literal(ContestHandler.instance().rankStat).formatted(Formatting.GRAY),
+                                            Text.literal(")").formatted(Formatting.DARK_GRAY)
+                                    );
+                                }
+                                
+                                textList.add(rankText);
+                            } else {
+                                Text rankText = TextHelper.concat(
+                                        Text.literal("ʏᴏᴜʀ ʀᴀɴᴋ: ").formatted(Formatting.GRAY),
+                                        rankIndicator,
+                                        Text.literal(playerRank).formatted(Formatting.WHITE)
+                                );
+                                
+                                // Add total participants if available
+                                if (ContestHandler.instance().totalParticipants > 0) {
+                                    rankText = TextHelper.concat(
+                                            rankText,
+                                            Text.literal(" (ᴏᴜᴛ ᴏғ ").formatted(Formatting.DARK_GRAY),
+                                            Text.literal(String.valueOf(ContestHandler.instance().totalParticipants)).formatted(Formatting.GRAY),
+                                            Text.literal(")").formatted(Formatting.DARK_GRAY)
+                                    );
+                                }
+                                
+                                textList.add(rankText);
                                 textList.add(!Objects.equals(ContestHandler.instance().rankStat, "") ? TextHelper.concat(
                                         playerNameColor,
                                         Text.literal(" (").formatted(Formatting.DARK_GRAY),

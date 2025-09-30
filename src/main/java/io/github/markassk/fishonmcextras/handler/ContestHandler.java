@@ -26,6 +26,7 @@ public class ContestHandler {
     public String rank = "Unranked";
     public String rankStat = "";
     public float biggestFish = 0.0f;
+    public int totalParticipants = 0;
     public boolean isReset = true;
     public String refreshReason = "";
     public float otherPlayerFishSize = 0.0f;
@@ -306,6 +307,21 @@ public class ContestHandler {
             String newRankStat = newRank.contains("Unranked") ? ""
                     : messageText.substring(messageText.indexOf("(") + 1, messageText.indexOf(")"));
             
+            // Extract total participants from "out of X" pattern
+            if (messageText.contains("(out of ")) {
+                try {
+                    int startIndex = messageText.indexOf("(out of ") + "(out of ".length();
+                    int endIndex = messageText.indexOf(")", startIndex);
+                    if (endIndex > startIndex) {
+                        String totalStr = messageText.substring(startIndex, endIndex).trim();
+                        this.totalParticipants = Integer.parseInt(totalStr);
+                        FishOnMCExtras.LOGGER.info("[FoE] Parsed total participants: {}", this.totalParticipants);
+                    }
+                } catch (NumberFormatException e) {
+                    FishOnMCExtras.LOGGER.warn("[FoE] Failed to parse total participants from: {}", messageText);
+                }
+            }
+            
             // Store previous position before updating to new position
             if (!this.rank.equals("Unranked") && !this.rank.equals(newRank)) {
                 this.previousPlayerPosition = this.rank;
@@ -441,6 +457,7 @@ public class ContestHandler {
         this.thirdStat = "";
         this.rank = "Unranked";
         this.biggestFish = 0.0f;
+        this.totalParticipants = 0;
         this.isFilteringMessages = false;
         this.refreshReason = "";
         this.otherPlayerFishSize = 0.0f;
