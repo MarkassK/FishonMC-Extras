@@ -210,6 +210,8 @@
   "text.autoconfig.fishonmcextras.option.eventTracker.weatherEventOptions.useAlertWarningSound": "Play alert sound",
   "text.autoconfig.fishonmcextras.option.eventTracker.weatherEventOptions.useAlertWarningSound.@Tooltip": "§7If §aShow notification when weather event is active§7 is §cdisabled§7, this option will be ignored",
   "text.autoconfig.fishonmcextras.option.eventTracker.weatherEventOptions.alertSoundType": "Sound used for notification",
+  "text.autoconfig.fishonmcextras.option.eventTracker.weatherEventOptions.muteMoonAlerts": "Mute all Moon alerts",
+  "text.autoconfig.fishonmcextras.option.eventTracker.weatherEventOptions.muteMoonAlerts.@Tooltip": "Overrides per-moon toggles and silences Moon alerts",
   "text.autoconfig.fishonmcextras.option.eventTracker.otherEventOptions": "§f§lOther Event Tracker Options",
   "text.autoconfig.fishonmcextras.option.eventTracker.otherEventOptions.fabledOptions": "§f§lFabled Event Tracker Options",
   "text.autoconfig.fishonmcextras.option.eventTracker.otherEventOptions.fabledOptions.showAlertHUD": "Show notification when Fabled event is active",
@@ -221,6 +223,7 @@
   "text.autoconfig.fishonmcextras.option.timerTracker": "§f§lTimer Tracker Options",
   "text.autoconfig.fishonmcextras.option.timerTracker.baitShopNotification": "Show notification when shop is reset",
   "text.autoconfig.fishonmcextras.option.timerTracker.alertDismissSeconds": "Amount of seconds before dismissing notification",
+  "text.autoconfig.fishonmcextras.option.timerTracker.showMoonTimerWidget": "Show Moon Timer",
 
   "text.autoconfig.fishonmcextras.option.bobberTracker": "§f§lBobber Tracker Options",
   "text.autoconfig.fishonmcextras.option.bobberTracker.skyLightWarning": "Show warning on bobber when fishing under a block",

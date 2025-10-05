@@ -59,6 +59,13 @@ public class EventHandler {
         if(!config.eventTracker.weatherEventOptions.toggleOptions.superMoon && foundEvent == WeatherEvent.SUPER_MOON) foundEvent = null;
         if(!config.eventTracker.weatherEventOptions.toggleOptions.bloodMoon && foundEvent == WeatherEvent.BLOOD_MOON) foundEvent = null;
 
+        // Check moon alerts mute override
+        boolean isMoon = foundEvent == WeatherEvent.FULL_MOON || foundEvent == WeatherEvent.BLUE_MOON ||
+                         foundEvent == WeatherEvent.SUPER_MOON || foundEvent == WeatherEvent.BLOOD_MOON;
+        if (config.eventTracker.weatherEventOptions.muteMoonAlerts && isMoon) {
+            foundEvent = null;
+        }
+
         if(foundEvent != null) {
             weatherEvents.put(foundEvent, System.currentTimeMillis());
 

@@ -10,6 +10,7 @@ import io.github.markassk.fishonmcextras.screens.widget.container.ContainerButto
 import io.github.markassk.fishonmcextras.screens.widget.container.ContainerButtonsWidget;
 import io.github.markassk.fishonmcextras.screens.widget.container.ContainerHeaderWidget;
 import io.github.markassk.fishonmcextras.screens.widget.timer.BaitShopTimerWidget;
+import io.github.markassk.fishonmcextras.screens.widget.timer.MoonTimerWidget;
 import io.github.markassk.fishonmcextras.screens.widget.timer.TimerWidget;
 import io.github.markassk.fishonmcextras.util.TextHelper;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -345,6 +346,41 @@ public class InventoryScreenHandler {
             }
 
             clickableWidgets.add(new BaitShopTimerWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 22 / 2 - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 2 + buttonSize * 2));
+
+            // Moon Timer section
+            if(config.timerTracker.showMoonTimerWidget) {
+                Text moonTimer = Text.literal("Moon Cycle").formatted(Formatting.WHITE);
+                clickableWidgets.add(new TextWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 105 / 2 - MinecraftClient.getInstance().textRenderer.getWidth(moonTimer) / 2 - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 4 + buttonSize * 3 + buttonSize / 2 - MinecraftClient.getInstance().textRenderer.fontHeight, moonTimer, 0xFFFFFF, true));
+
+                // Moon alerts mute toggle
+                if(config.eventTracker.weatherEventOptions.muteMoonAlerts) {
+                    clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 82/2 - 22/2 - (23 * 2) - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 4 + buttonSize * 3 + buttonSize / 2, Text.literal("🔕").formatted(Formatting.RED), Tooltip.of(
+                            TextHelper.concat(
+                                    Text.literal("Moon alerts ").formatted(Formatting.WHITE),
+                                    Text.literal("Muted\n").formatted(Formatting.RED),
+                                    Text.literal("Unmute to use config toggles").formatted(Formatting.GRAY, Formatting.ITALIC)
+                            )
+                    ), button -> {
+                        config.eventTracker.weatherEventOptions.muteMoonAlerts = false;
+                        AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                        this.resetButtons(minecraftClient);
+                    }));
+                } else {
+                    clickableWidgets.add(new ContainerButtonWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 82/2 - 22/2 - (23 * 2) - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 4 + buttonSize * 3 + buttonSize / 2, Text.literal("🔔").formatted(Formatting.GREEN), Tooltip.of(
+                            TextHelper.concat(
+                                    Text.literal("Moon alerts ").formatted(Formatting.WHITE),
+                                    Text.literal("Using Config\n").formatted(Formatting.GREEN),
+                                    Text.literal("Click to mute all moon alerts").formatted(Formatting.GRAY, Formatting.ITALIC)
+                            )
+                    ), button -> {
+                        config.eventTracker.weatherEventOptions.muteMoonAlerts = true;
+                        AutoConfig.getConfigHolder(FishOnMCExtrasConfig.class).save();
+                        this.resetButtons(minecraftClient);
+                    }));
+                }
+
+                clickableWidgets.add(new MoonTimerWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - 22 / 2 - offsetRecipe, minecraftClient.getWindow().getScaledHeight() / 2 + height - 2 + buttonSize * 3 + buttonSize / 2));
+            }
 
             clickableWidgets.add(new ContainerSideWidget(minecraftClient.getWindow().getScaledWidth() / 2 - 177 / 2 - offsetRecipe - 105,  minecraftClient.getWindow().getScaledHeight() / 2 + height, Text.empty()));
 
