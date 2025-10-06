@@ -142,7 +142,7 @@
   "text.autoconfig.fishonmcextras.option.contestTracker.recieveLocalPBs": "Receive local PB notifications",
   "text.autoconfig.fishonmcextras.option.contestTracker.recieveLocalPBs.@Tooltip": "§7This will receive local PB notifications when a nearby player gets a contest PB.",
   "text.autoconfig.fishonmcextras.option.contestTracker.suppressServerMessages": "Suppress server contest messages",
-  "text.autoconfig.fishonmcextras.option.contestTracker.suppressServerMessages.@Tooltip": "§7When enabled, server messages will not be filtered out from contest data, allowing you to see original contest messages alongside the custom HUD.",
+  "text.autoconfig.fishonmcextras.option.contestTracker.suppressServerMessages.@Tooltip": "§7When enabled, server messages will be filtered out from contest data, allowing you to see original contest messages alongside the custom HUD.",
   "text.autoconfig.fishonmcextras.option.contestTracker.rightAlignment": "Right alignment",
   "text.autoconfig.fishonmcextras.option.contestTracker.fontSize": "Font size",
   "text.autoconfig.fishonmcextras.option.contestTracker.backgroundOpacity": "Background opacity",
