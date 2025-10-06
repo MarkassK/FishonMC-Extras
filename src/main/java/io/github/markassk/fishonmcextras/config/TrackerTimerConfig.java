@@ -10,5 +10,7 @@ public class TrackerTimerConfig {
 
         @ConfigEntry.Gui.Excluded
         public long hiddenOffsetBaitShop = 0L;
+        
+        public boolean showMoonTimerWidget = true;
     }
 }

@@ -30,6 +30,8 @@ public class TrackerEventConfig {
             public boolean useAlertWarningSound = true;
             @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
             public NotificationSoundHandler.SoundType alertSoundType = NotificationSoundHandler.SoundType.BELL;
+            @ConfigEntry.Gui.Tooltip
+            public boolean muteMoonAlerts = false;
         }
 
         @ConfigEntry.Gui.CollapsibleObject

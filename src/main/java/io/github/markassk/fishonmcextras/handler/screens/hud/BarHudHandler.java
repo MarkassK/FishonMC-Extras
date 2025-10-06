@@ -2,6 +2,8 @@ package io.github.markassk.fishonmcextras.handler.screens.hud;
 
 import io.github.markassk.fishonmcextras.FOMC.Constant;
 import io.github.markassk.fishonmcextras.FOMC.LevelColors;
+import io.github.markassk.fishonmcextras.FOMC.LocationInfo;
+import io.github.markassk.fishonmcextras.config.FishOnMCExtrasConfig;
 import io.github.markassk.fishonmcextras.handler.BossBarHandler;
 import io.github.markassk.fishonmcextras.handler.ScoreboardHandler;
 import io.github.markassk.fishonmcextras.handler.TabHandler;
@@ -13,6 +15,7 @@ import java.util.Objects;
 
 public class BarHudHandler {
     private static BarHudHandler INSTANCE = new BarHudHandler();
+    private final FishOnMCExtrasConfig config = FishOnMCExtrasConfig.getConfig();
 
     public static BarHudHandler instance() {
         if (INSTANCE == null) {
@@ -72,10 +75,25 @@ public class BarHudHandler {
                 Text.literal(")").formatted(Formatting.DARK_GRAY)
         ) : Text.literal("");
 
+        // Add climate information if enabled and not in crew island
+        Text climateText = Text.empty();
+        if(config.barHUD.showClimate && BossBarHandler.instance().currentLocation != Constant.CREW_ISLAND && BossBarHandler.instance().currentLocation != Constant.UNKNOWN) {
+            LocationInfo locationInfo = LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID);
+            if(locationInfo != LocationInfo.DEFAULT) {
+                climateText = TextHelper.concat(
+                        Text.literal(" ").formatted(Formatting.DARK_GRAY),
+                        Text.literal("[").formatted(Formatting.DARK_GRAY),
+                        locationInfo.CLIMATE.TAG,
+                        Text.literal("]").formatted(Formatting.DARK_GRAY)
+                );
+            }
+        }
+
         return TextHelper.concat(
                 Text.literal("\uF039 ").formatted(Formatting.WHITE),
                 BossBarHandler.instance().currentLocation != null ? BossBarHandler.instance().currentLocation.TAG : Text.empty(),
                 locationCatch,
+                climateText,
                 time
         );
     }

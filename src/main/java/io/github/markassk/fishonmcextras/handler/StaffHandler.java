@@ -15,11 +15,13 @@ public class StaffHandler {
     }
 
 
-    public void onReceiveMessage(Text text) {
+    public boolean onReceiveMessage(Text text) {
         if(text.getString().startsWith("You are now invisible!")) {
             this.isVanished = true;
         } else if (text.getString().startsWith("You are no longer invisible!")) {
             this.isVanished = false;
         }
+        
+        return false; // Don't suppress any messages
     }
 }
