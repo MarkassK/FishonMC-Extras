@@ -122,7 +122,7 @@ public class NotificationHudHandler {
                     textList.add(Text.empty());
                     textList.add(TextHelper.concat(
                             Text.literal("Your ").formatted(Formatting.RED),
-                            Text.literal(lure.name).formatted(Formatting.WHITE),
+                            Text.literal(TextHelper.upperCaseAllFirstCharacter(lure.name)).formatted(Formatting.WHITE),
                             Text.literal(" has no use in ").formatted(Formatting.RED),
                             LocationInfo.valueOfId(BossBarHandler.instance().currentLocation.ID).WATER.TAG,
                             Text.literal(" here").formatted(Formatting.RED),
