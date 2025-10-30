@@ -172,7 +172,7 @@ public class EventHandler {
         ),
         BLOOD_MOON("blood_moon", "BLOOD MOON » A Blood Moon has risen!", TextHelper.concat(
                 Text.literal("A ").formatted(Formatting.WHITE),
-                Text.literal("Super Moon ").formatted(Formatting.BOLD).withColor(0xE44848),
+                Text.literal("Blood Moon ").formatted(Formatting.BOLD).withColor(0xE44848),
                 Text.literal("has risen!").formatted(Formatting.WHITE)),
                 TextHelper.concat(
                         Text.literal("+").formatted(Formatting.GRAY),
